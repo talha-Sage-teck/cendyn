@@ -1,7 +1,7 @@
 ## SuiteCRM 8 ##
 
 ###> symfony/framework-bundle ###
-/.env.local
+
 /.env.local.php
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
@@ -37,8 +37,8 @@
 /dist/
 
 # Custom
-/extensions/
-!extensions/.gitkeep
+
+
 
 
 
