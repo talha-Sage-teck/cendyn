@@ -301,7 +301,7 @@ $dictionary["Opportunity"]["fields"]["b2bplandate"] = array (
             'labelValue' => 'Plan Date',
             'required' => false,
 
-            'name' => 'b2bplandate_c',
+            'name' => 'b2bplandate',
             'vname' => 'LBL_B2BPLANDATE',
             'type' => 'date',
             'massupdate' => '0',

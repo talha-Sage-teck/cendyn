@@ -77,7 +77,7 @@ $dictionary["Account"]["fields"]["accountsubtype"] = array (
     'options' => 'account_subtype_list',
     'studio' => 'visible',
     'dbType' => 'enum',
-    'parentenum' => 'accountbasetype_c',
+    'parentenum' => 'accountbasetype',
 );
 
 $dictionary["Account"]["fields"]["b2baccountid"] = array (
