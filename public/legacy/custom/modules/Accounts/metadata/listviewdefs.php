@@ -8,6 +8,14 @@ array (
     'link' => true,
     'default' => true,
   ),
+  'ACCOUNTBASETYPE' => /*** added in the start of the list before account_type */
+  array (
+    'type' => 'enum',
+    'default' => true,
+    'studio' => 'visible',
+    'label' => 'LBL_ACCOUNTBASETYPE',
+    'width' => '8%',
+  ),
   'ACCOUNT_TYPE' => 
   array (
     'width' => '10%',
@@ -41,14 +49,6 @@ array (
     'width' => '15%',
     'label' => 'LBL_BILLING_ADDRESS_STREET',
     'default' => true,
-  ),
-  'ACCOUNTBASETYPE' =>
-  array (
-    'type' => 'enum',
-    'default' => true,
-    'studio' => 'visible',
-    'label' => 'LBL_ACCOUNTBASETYPE',
-    'width' => '8%',
   ),
   'ACCOUNTSUBTYPE' =>
   array (

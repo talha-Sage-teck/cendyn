@@ -106,7 +106,13 @@ array (
         'default' => true,
         'width' => '10%',
       ),
-      'account_type' => 
+      'accountbasetype' => /*** added accountbasetype to allow user to filter records */
+      array (
+        'name' => 'accountbasetype',
+        'default' => true,
+        'width' => '10%',
+      ),
+      'account_type' => /*** added account_type to allow user to filter records */
       array (
         'name' => 'account_type',
         'default' => true,
