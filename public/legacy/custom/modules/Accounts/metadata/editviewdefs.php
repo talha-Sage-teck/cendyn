@@ -76,15 +76,32 @@ array (
             'label' => 'LBL_PRIORITY',
           ),
         ),
-        1 => 
+        1 =>
         array (
-          0 => 'accountbasetype',
-          1 => array (
-              'name' => 'b2baccountno',
-              'type' => 'readonly', /*** Never editable */
+          0 =>
+          array (
+            'name' => 'b2baccountno',
+            'label' => 'LBL_B2BACCOUNTNO',
+            'type' => 'readonly', /*** Never editable */
+          ),
+          1 => '',
+        ),
+        2 =>
+        array (
+          0 => /*** added accountbasetype and refactored the array such that accountbasetype and account_type fields are next to each other  */
+          array (
+            'name' => 'accountbasetype',
+            'studio' => 'visible',
+            'label' => 'LBL_ACCOUNTBASETYPE',
+          ),
+          1 =>
+          array (
+            'name' => 'account_type',
+            'studio' => 'visible',
+            'label' => 'LBL_TYPE',
           ),
         ),
-        2 => 
+        3 =>
         array (
           0 => 
           array (
@@ -97,7 +114,7 @@ array (
             'label' => 'LBL_ASSIGNED_TO',
           ),
         ),
-        3 => 
+        4 =>
         array (
           0 => 
           array (
@@ -112,7 +129,7 @@ array (
             'label' => 'LBL_BLACKLISTREASON',
           ),
         ),
-        4 => 
+        5 =>
         array (
           0 => 
           array (
@@ -122,7 +139,7 @@ array (
           ),
           1 => 'industry',
         ),
-        5 => 
+        6 =>
         array (
           0 => 
           array (
@@ -143,7 +160,7 @@ array (
             'label' => 'LBL_DESCRIPTION',
           ),
         ),
-        6 => 
+        7 =>
         array (
           0 => 
           array (
