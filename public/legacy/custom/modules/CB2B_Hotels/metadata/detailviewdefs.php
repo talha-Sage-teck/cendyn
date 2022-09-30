@@ -30,6 +30,20 @@ array (
           'field' => '30',
         ),
       ),
+      'useTabs' => false,
+      'tabDefs' => 
+      array (
+        'DEFAULT' => 
+        array (
+          'newTab' => false,
+          'panelDefault' => 'expanded',
+        ),
+        'LBL_DETAILVIEW_PANEL1' => 
+        array (
+          'newTab' => false,
+          'panelDefault' => 'expanded',
+        ),
+      ),
     ),
     'panels' => 
     array (
@@ -37,74 +51,68 @@ array (
       array (
         0 => 
         array (
-          0 =>
+          0 => 
           array (
             'name' => 'name',
-            'type' => 'readonly',
           ),
-          1 => 'assigned_user_name',
-        ),
-        1 =>
-        array (
-          0 =>
+          1 => 
           array (
-            'name' => 'b2bhotelid',
-            'type' => 'readonly',
-          ),
-          1 =>
-          array (
-            'name' => 'brand',
-            'type' => 'readonly',
+            'name' => 'shortname',
           ),
         ),
-        2 =>
+        1 => 
         array (
-          0 =>
+          0 => 
           array (
             'name' => 'address',
-            'type' => 'readonly',
           ),
-          1 =>
+          1 => 
           array (
-            'name' => 'address_city',
-            'type' => 'readonly',
+            'name' => 'brand',
           ),
         ),
-        3 =>
+        2 => 
         array (
-          0 =>
+          0 => 
           array (
             'name' => 'address_city',
-            'type' => 'readonly',
           ),
-          1 =>
+          1 => 
           array (
-            'name' => 'address_postalcode',
-            'type' => 'readonly',
+            'name' => 'address_state',
           ),
         ),
-        4 =>
+        3 => 
         array (
-          0 =>
+          0 => 
           array (
             'name' => 'address_country',
-            'type' => 'readonly',
           ),
-          1 =>
+          1 => 
           array (
-            'name' => 'region',
-            'type' => 'readonly',
+            'name' => 'address_postalcode',
           ),
         ),
-        5 =>
+        4 => 
         array (
-          0 =>
+          0 => 
           array (
             'name' => 'phone',
-            'type' => 'readonly',
+          ),
+          1 => 
+          array (
+            'name' => 'region',
           ),
         ),
-        6 =>
+      ),
+      'lbl_detailview_panel1' => 
+      array (
+        0 => 
+        array (
+          0 => 'description',
+          1 => 'assigned_user_name',
+        ),
+        1 => 
         array (
           0 => 
           array (
@@ -118,11 +126,6 @@ array (
             'customCode' => '{$fields.date_modified.value} {$APP.LBL_BY} {$fields.modified_by_name.value}',
             'label' => 'LBL_DATE_MODIFIED',
           ),
-        ),
-        7 =>
-        array (
-          0 => 'description',
-          1 => '',
         ),
       ),
     ),
