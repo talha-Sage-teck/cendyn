@@ -8,12 +8,12 @@ array (
     'link' => true,
     'default' => true,
   ),
-  'ACCOUNTBASETYPE' => /*** added in the start of the list before account_type */
+  'ACCOUNT_BASE_TYPE' => /*** added in the start of the list before account_type */
   array (
     'type' => 'enum',
     'default' => true,
     'studio' => 'visible',
-    'label' => 'LBL_ACCOUNTBASETYPE',
+    'label' => 'LBL_ACCOUNT_BASE_TYPE',
     'width' => '8%',
   ),
   'ACCOUNT_TYPE' => 
@@ -30,12 +30,12 @@ array (
     'label' => 'LBL_PRIORITY',
     'width' => '10%',
   ),
-  'ACCOUNTLEVEL' =>
+  'ACCOUNT_LEVEL' =>
   array (
     'type' => 'enum',
     'default' => true,
     'studio' => 'visible',
-    'label' => 'LBL_ACCOUNTLEVEL',
+    'label' => 'LBL_ACCOUNT_LEVEL',
     'width' => '10%',
   ),
   'BILLING_ADDRESS_CITY' => 
@@ -50,12 +50,12 @@ array (
     'label' => 'LBL_BILLING_ADDRESS_STREET',
     'default' => true,
   ),
-  'ACCOUNTSUBTYPE' =>
+  'ACCOUNT_SUB_TYPE' =>
   array (
     'type' => 'dynamicenum',
     'default' => true,
     'studio' => 'visible',
-    'label' => 'LBL_ACCOUNTSUBTYPE',
+    'label' => 'LBL_ACCOUNT_SUB_TYPE',
     'width' => '8%',
   ),
   'INDUSTRY' => 
@@ -177,11 +177,11 @@ array (
     'label' => 'LBL_CREATED',
     'default' => false,
   ),
-  'B2BACCOUNTID' =>
+  'B2B_ACCOUNT_ID' =>
   array (
     'type' => 'int',
     'default' => false,
-    'label' => 'LBL_B2BACCOUNTID',
+    'label' => 'LBL_B2B_ACCOUNT_ID',
     'width' => '8%',
   ),
   'MODIFIED_BY_NAME' => 
@@ -193,7 +193,7 @@ array (
   'B2BACCOUNTNO' => /*** added B2BAccountNo as a default field in ListView */
   array(
     'width' => '5%',
-    'label' => 'LBL_B2BACCOUNTNO',
+    'label' => 'LBL_B2B_ACCOUNT_NO',
     'default' => true,
   ),
   'IATA' => /*** added IATA as a default field in ListView */

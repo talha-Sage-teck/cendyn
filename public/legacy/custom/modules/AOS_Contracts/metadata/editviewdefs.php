@@ -235,13 +235,13 @@ array (
         array (
           0 => 
           array (
-            'name' => 'roomnights',
-            'label' => 'LBL_ROOMNIGHTS',
+            'name' => 'room_nights',
+            'label' => 'LBL_ROOM_NIGHTS',
           ),
           1 => 
           array (
-            'name' => 'ratecode',
-            'label' => 'LBL_RATECODE',
+            'name' => 'rate_code',
+            'label' => 'LBL_RATE_CODE',
           ),
         ),
       ),

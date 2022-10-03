@@ -91,11 +91,11 @@ $popupMeta = array (
   ),
 ),
     'listviewdefs' => array (
-  'B2BEXTACCOUNTNO' =>
+  'B2B_EXT_ACCOUNT_NO' =>
   array (
     'type' => 'varchar',
     'default' => true,
-    'label' => 'LBL_B2BEXTACCOUNTNO',
+    'label' => 'LBL_B2B_EXT_ACCOUNT_NO',
     'width' => '10%',
   ),
   'NAME' => 

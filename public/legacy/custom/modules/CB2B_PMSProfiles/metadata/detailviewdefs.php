@@ -131,8 +131,8 @@ array (
         array (
           0 => 
           array (
-            'name' => 'contactfirstname',
-            'label' => 'LBL_CONTACTFIRSTNAME',
+            'name' => 'contact_first_name',
+            'label' => 'LBL_CONTACT_FIRST_NAME',
           ),
           1 => 
           array (

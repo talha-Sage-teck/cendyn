@@ -34,14 +34,14 @@ array (
         'default' => true,
         'width' => '10%',
       ),
-      'accountlevel' =>
+      'account_level' =>
       array (
         'type' => 'enum',
         'default' => true,
         'studio' => 'visible',
-        'label' => 'LBL_ACCOUNTLEVEL',
+        'label' => 'LBL_ACCOUNT_LEVEL',
         'width' => '10%',
-        'name' => 'accountlevel',
+        'name' => 'account_level',
       ),
       'website' => 
       array (
@@ -106,9 +106,9 @@ array (
         'default' => true,
         'width' => '10%',
       ),
-      'accountbasetype' => /*** added accountbasetype to allow user to filter records */
+      'account_base_type' => /*** added accountbasetype to allow user to filter records */
       array (
-        'name' => 'accountbasetype',
+        'name' => 'account_base_type',
         'default' => true,
         'width' => '10%',
       ),
@@ -149,11 +149,11 @@ array (
         'width' => '10%',
         'name' => 'priority',
       ),
-      'b2baccountno' => /*** Account can be searched via account no */
+      'b2b_account_no' => /*** Account can be searched via account no */
       array(
-        'name' => 'b2baccountno',
+        'name' => 'b2b_account_no',
         'width' => '10%',
-        'label' => 'LBL_B2BACCOUNTNO',
+        'label' => 'LBL_B2B_ACCOUNT_NO',
         'default' => true,
       ),
     ),
