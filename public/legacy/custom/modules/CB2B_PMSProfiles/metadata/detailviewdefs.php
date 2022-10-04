@@ -38,11 +38,6 @@ array (
           'newTab' => false,
           'panelDefault' => 'expanded',
         ),
-        'LBL_DETAILVIEW_PANEL1' => 
-        array (
-          'newTab' => false,
-          'panelDefault' => 'expanded',
-        ),
       ),
     ),
     'panels' => 
@@ -65,6 +60,11 @@ array (
             'name' => 'type',
             'studio' => 'visible',
             'label' => 'LBL_TYPE',
+          ),
+          1 => 
+          array (
+            'name' => 'website',
+            'label' => 'LBL_WEBSITE',
           ),
         ),
         2 => 
@@ -95,6 +95,27 @@ array (
         ),
         4 => 
         array (
+          0 => 'b2bprofileid',
+          1 => 'hotel_short_name',
+        ),
+        5 => 
+        array (
+          0 => 
+          array (
+            'name' => 'pms_address_street',
+            'type' => 'address',
+            'displayParams' => 
+            array (
+              'key' => 'pms',
+            ),
+          ),
+          1 => 
+          array (
+            'name' => 'accounts_cb2b_pmsprofiles_1_name',
+          ),
+        ),
+        6 => 
+        array (
           0 => 
           array (
             'name' => 'date_entered',
@@ -106,90 +127,6 @@ array (
             'name' => 'date_modified',
             'customCode' => '{$fields.date_modified.value} {$APP.LBL_BY} {$fields.modified_by_name.value}',
             'label' => 'LBL_DATE_MODIFIED',
-          ),
-        ),
-        5 => 
-        array (
-          0 => 
-          array (
-            'name' => 'website',
-            'label' => 'LBL_WEBSITE',
-          ),
-          1 => '',
-        ),
-        6 => 
-        array (
-          0 => 
-          array (
-            'name' => 'accounts_cb2b_pmsprofiles_1_name',
-          ),
-        ),
-      ),
-      'lbl_detailview_panel1' => 
-      array (
-        0 => 
-        array (
-          0 => 
-          array (
-            'name' => 'contact_first_name',
-            'label' => 'LBL_CONTACT_FIRST_NAME',
-          ),
-          1 => 
-          array (
-            'name' => 'contactname',
-            'label' => 'LBL_CONTACTNAME',
-          ),
-        ),
-        1 => 
-        array (
-          0 => 
-          array (
-            'name' => 'address',
-            'label' => 'LBL_ADDRESS',
-          ),
-          1 => 
-          array (
-            'name' => 'address_city',
-            'label' => 'LBL_ADDRESS_CITY',
-          ),
-        ),
-        2 => 
-        array (
-          0 => 
-          array (
-            'name' => 'address_state',
-            'label' => 'LBL_ADDRESS_STATE',
-          ),
-          1 => 
-          array (
-            'name' => 'address_country',
-            'label' => 'LBL_ADDRESS_COUNTRY',
-          ),
-        ),
-        3 => 
-        array (
-          0 => 
-          array (
-            'name' => 'donotmail',
-            'label' => 'LBL_DONOTMAIL',
-          ),
-          1 => 
-          array (
-            'name' => 'invalidadress',
-            'label' => 'LBL_INVALIDADRESS',
-          ),
-        ),
-        4 => 
-        array (
-          0 => 
-          array (
-            'name' => 'marketsegment',
-            'label' => 'LBL_MARKETSEGMENT',
-          ),
-          1 => 
-          array (
-            'name' => 'iata',
-            'label' => 'LBL_IATA',
           ),
         ),
       ),
