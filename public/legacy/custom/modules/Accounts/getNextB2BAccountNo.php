@@ -12,7 +12,7 @@
 
     global $db;
     $offset = 1;
-    $ret = $db->query("SELECT * FROM accounts WHERE b2b_account_no IS NOT NULL AND b2baccountno <> '' ORDER BY date_entered DESC LIMIT 1");
+    $ret = $db->query("SELECT * FROM accounts WHERE b2b_account_no IS NOT NULL AND b2b_account_no <> '' ORDER BY date_entered DESC LIMIT 1");
     if($ret->num_rows > 0) {
         $row = $db->fetchByAssoc($ret);
         if(trim($row['b2b_account_no']) !== '') {
