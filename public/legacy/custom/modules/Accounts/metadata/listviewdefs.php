@@ -8,7 +8,7 @@ array (
     'link' => true,
     'default' => true,
   ),
-  'ACCOUNT_BASE_TYPE' => /*** added in the start of the list before account_type */
+  'ACCOUNT_BASE_TYPE' => 
   array (
     'type' => 'enum',
     'default' => true,
@@ -22,7 +22,7 @@ array (
     'label' => 'LBL_TYPE',
     'default' => true,
   ),
-  'PRIORITY' =>
+  'PRIORITY' => 
   array (
     'type' => 'enum',
     'default' => true,
@@ -30,7 +30,7 @@ array (
     'label' => 'LBL_PRIORITY',
     'width' => '10%',
   ),
-  'ACCOUNT_LEVEL' =>
+  'ACCOUNT_LEVEL' => 
   array (
     'type' => 'enum',
     'default' => true,
@@ -50,13 +50,31 @@ array (
     'label' => 'LBL_BILLING_ADDRESS_STREET',
     'default' => true,
   ),
-  'ACCOUNT_SUB_TYPE' =>
+  'ACCOUNT_SUB_TYPE' => 
   array (
     'type' => 'dynamicenum',
     'default' => true,
     'studio' => 'visible',
     'label' => 'LBL_ACCOUNT_SUB_TYPE',
     'width' => '8%',
+  ),
+  'B2B_ACCOUNT_NO' =>
+  array (
+    'width' => '5%',
+    'label' => 'LBL_B2B_ACCOUNT_NO',
+    'default' => true,
+  ),
+  'IATA' => 
+  array (
+    'width' => '5%',
+    'label' => 'LBL_IATA',
+    'default' => true,
+  ),
+  'B2B_COMMISSION' => 
+  array (
+    'width' => '5%',
+    'label' => 'LBL_B2B_COMMISSION',
+    'default' => true,
   ),
   'INDUSTRY' => 
   array (
@@ -177,7 +195,7 @@ array (
     'label' => 'LBL_CREATED',
     'default' => false,
   ),
-  'B2B_ACCOUNT_ID' =>
+  'B2B_ACCOUNT_ID' => 
   array (
     'type' => 'int',
     'default' => false,
@@ -189,24 +207,6 @@ array (
     'width' => '10%',
     'label' => 'LBL_MODIFIED',
     'default' => false,
-  ),
-  'B2BACCOUNTNO' => /*** added B2BAccountNo as a default field in ListView */
-  array(
-    'width' => '5%',
-    'label' => 'LBL_B2B_ACCOUNT_NO',
-    'default' => true,
-  ),
-  'IATA' => /*** added IATA as a default field in ListView */
-  array(
-      'width' => '5%',
-      'label' => 'LBL_IATA',
-      'default' => true,
-  ),
-  'B2B_COMMISSION' => /*** added B2BCommission as a default field in ListView */
-  array(
-      'width' => '5%',
-      'label' => 'LBL_B2B_COMMISSION',
-      'default' => true,
   ),
 );
 ;
