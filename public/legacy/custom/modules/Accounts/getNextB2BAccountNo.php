@@ -12,11 +12,11 @@
 
     global $db;
     $offset = 1;
-    $ret = $db->query("SELECT * FROM accounts WHERE b2baccountno IS NOT NULL AND b2baccountno <> '' ORDER BY date_entered DESC LIMIT 1");
+    $ret = $db->query("SELECT * FROM accounts WHERE b2b_account_no IS NOT NULL AND b2baccountno <> '' ORDER BY date_entered DESC LIMIT 1");
     if($ret->num_rows > 0) {
         $row = $db->fetchByAssoc($ret);
-        if(trim($row['b2baccountno']) !== '') {
-            $lastAccountNo = intval($row['b2baccountno']);
+        if(trim($row['b2b_account_no']) !== '') {
+            $lastAccountNo = intval($row['b2b_account_no']);
             $accountNo = strval($lastAccountNo + $offset);
             if(intval($accountNo) < 1000000) {
                 $nonSignificantZeros = 6 - strlen($accountNo);

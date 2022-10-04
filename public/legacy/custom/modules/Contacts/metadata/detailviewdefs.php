@@ -320,8 +320,8 @@ array (
           ),
           1 => 
           array (
-            'name' => 'b2b_isbooker',
-            'label' => 'LBL_B2B_ISBOOKER',
+            'name' => 'b2b_is_booker',
+            'label' => 'LBL_B2B_IS_BOOKER',
           ),
         ),
         7 => 
@@ -432,9 +432,9 @@ array (
           ),
           1 => 
           array (
-            'name' => 'b2b_actioncode',
+            'name' => 'b2b_action_code',
             'studio' => 'visible',
-            'label' => 'LBL_B2B_ACTIONCODE',
+            'label' => 'LBL_B2B_ACTION_CODE',
           ),
         ),
         1 => 

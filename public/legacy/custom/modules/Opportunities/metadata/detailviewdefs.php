@@ -164,9 +164,9 @@ array (
         array (
           0 => 
           array (
-            'name' => 'b2b_opportunitytype',
+            'name' => 'b2b_opportunity_type',
             'studio' => 'visible',
-            'label' => 'LBL_B2B_OPPORTUNITYTYPE',
+            'label' => 'LBL_B2B_OPPORTUNITY_TYPE',
           ),
           1 => 'opportunity_type',
         ),

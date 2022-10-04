@@ -212,8 +212,8 @@ array (
         array (
           0 =>
           array (
-            'name' => 'b2baccountno',
-            'label' => 'LBL_B2BACCOUNTNO',
+            'name' => 'b2b_account_no',
+            'label' => 'LBL_B2B_ACCOUNT_NO',
             'type' => 'readonly', /*** Never editable */
           ),
           1 => '',
@@ -222,9 +222,9 @@ array (
         array (
           0 => /*** added accountbasetype and refactored the array such that accountbasetype and account_type fields are next to each other  */
           array (
-            'name' => 'accountbasetype',
+            'name' => 'account_base_type',
             'studio' => 'visible',
-            'label' => 'LBL_ACCOUNTBASETYPE',
+            'label' => 'LBL_ACCOUNT_BASE_TYPE',
           ),
           1 =>
           array (
@@ -250,15 +250,15 @@ array (
         array (
           0 => 
           array (
-            'name' => 'blacklist',
+            'name' => 'black_list',
             'studio' => 'visible',
-            'label' => 'LBL_BLACKLIST',
+            'label' => 'LBL_BLACK_LIST',
           ),
           1 => 
           array (
-            'name' => 'blacklistreason',
+            'name' => 'black_list_reason',
             'studio' => 'visible',
-            'label' => 'LBL_BLACKLISTREASON',
+            'label' => 'LBL_BLACK_LIST_REASON',
           ),
         ),
         5 =>

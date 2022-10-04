@@ -59,18 +59,18 @@ array (
     'sortable' => false,
     'width' => '10%',
   ),
-  'RATECODE' =>
+  'RATE_CODE' =>
   array (
     'type' => 'varchar',
     'default' => true,
-    'label' => 'LBL_RATECODE',
+    'label' => 'LBL_RATE_CODE',
     'width' => '10%',
   ),
-  'ROOMNIGHTS' =>
+  'ROOM_NIGHTS' =>
   array (
     'type' => 'int',
     'default' => true,
-    'label' => 'LBL_ROOMNIGHTS',
+    'label' => 'LBL_ROOM_NIGHTS',
     'width' => '10%',
   ),
   'ASSIGNED_USER_NAME' => 

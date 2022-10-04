@@ -2,11 +2,11 @@
 $module_name = 'FP_events';
 $listViewDefs [$module_name] = 
 array (
-  'B2BACTIVITYID' =>
+  'B2B_ACTIVITY_ID' =>
   array (
     'type' => 'int',
     'default' => true,
-    'label' => 'LBL_B2BACTIVITYID',
+    'label' => 'LBL_B2B_ACTIVITY_ID',
     'width' => '8%',
   ),
   'NAME' => 

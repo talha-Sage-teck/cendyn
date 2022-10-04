@@ -10,7 +10,7 @@ function loadNextB2BAccountNo() {
     if(document.getElementsByName("record")[0].value == '') {
         const xhttp = new XMLHttpRequest();
         xhttp.onload = function () {
-            document.getElementById("b2baccountno").innerText = this.responseText;
+            document.getElementById("b2b_account_no").innerText = this.responseText;
         };
         xhttp.open("GET", "index.php?entryPoint=getNextB2BAccountNo", true);
         xhttp.send();
@@ -30,7 +30,7 @@ function loadNextB2BAccountNo() {
 function toggleDisplay() {
     const iata = document.getElementById("iata");
     const commission = document.getElementById("b2b_commission");
-    const accountbase = document.getElementById("accountbasetype");
+    const accountbase = document.getElementById("account_base_type");
 
     if(accountbase.value === "T") {
         iata.value = '';
