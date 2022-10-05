@@ -64,36 +64,19 @@ array (
         array (
           0 => 
           array (
-            'name' => 'address',
+            'name' => 'hotel_address_street',
+            'type' => 'address',
+            'displayParams' =>
+            array (
+                'key' => 'hotel',
+            ),
           ),
           1 => 
           array (
             'name' => 'brand',
           ),
         ),
-        2 => 
-        array (
-          0 => 
-          array (
-            'name' => 'address_city',
-          ),
-          1 => 
-          array (
-            'name' => 'address_state',
-          ),
-        ),
-        3 => 
-        array (
-          0 => 
-          array (
-            'name' => 'address_country',
-          ),
-          1 => 
-          array (
-            'name' => 'address_postalcode',
-          ),
-        ),
-        4 => 
+        2 =>
         array (
           0 => 
           array (
