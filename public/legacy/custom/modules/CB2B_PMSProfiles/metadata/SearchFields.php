@@ -1,5 +1,5 @@
 <?php
-// created: 2022-07-12 21:00:31
+// created: 2022-10-05 17:25:45
 $searchFields['CB2B_PMSProfiles'] = array (
   'name' => 
   array (
@@ -55,5 +55,24 @@ $searchFields['CB2B_PMSProfiles'] = array (
     'query_type' => 'default',
     'enable_range_search' => true,
     'is_date_field' => true,
+  ),
+  'is_assigned_account' =>
+  array (
+    'db_field' => 
+    array (
+      0 => 'id',
+    ),
+    'query_type' => 'format',
+    'operator' => 'subquery',
+    'subquery' => 'SELECT 
+            cb2b_pmsprofiles.id
+        FROM
+            cb2b_pmsprofiles
+            LEFT JOIN accounts_cb2b_pmsprofiles_1_c ON cb2b_pmsprofiles.id = accounts_cb2b_pmsprofiles_1_c.accounts_cb2b_pmsprofiles_1cb2b_pmsprofiles_idb
+        WHERE
+            ({0} = 0
+                AND accounts_cb2b_pmsprofiles_1_c.accounts_cb2b_pmsprofiles_1cb2b_pmsprofiles_idb IS NULL)
+                OR ({0} = 1
+                AND accounts_cb2b_pmsprofiles_1_c.accounts_cb2b_pmsprofiles_1cb2b_pmsprofiles_idb IS NOT NULL)',
   ),
 );
