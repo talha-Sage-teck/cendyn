@@ -173,6 +173,15 @@ $dictionary['CB2B_PMSProfiles']['fields']['currency_id'] = array(
     'id' => 'CB2B_PMSProfiles_currency_id',
 );
 
+$dictionary['CB2B_PMSProfiles']['fields']['is_update'] = array(
+    'name' => 'is_update',
+    'vname' => 'LBL_IS_UPDATE',
+    'type' => 'bool',
+    'default' => '0',
+    'reportable' => false,
+    'comment' => 'is_update = 0 in case of Create & is_update = 1 in case of Update',
+);
+
 //
 //$dictionary["CB2B_PMSProfiles"]['fields']['b2baccountid'] = array(
 //    'labelValue' => 'B2B Account ID',

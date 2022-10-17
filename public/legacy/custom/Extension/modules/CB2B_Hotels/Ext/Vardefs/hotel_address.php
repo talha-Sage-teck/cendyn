@@ -1,5 +1,6 @@
 <?php
-$dictionary['CB2B_Hotels']['fields']['hotel_address_street'] = array (
+
+$dictionary['CB2B_Hotels']['fields']['hotel_address_street'] = array(
     'inline_edit' => '1',
     'required' => false,
     'name' => 'hotel_address_street',
@@ -23,7 +24,7 @@ $dictionary['CB2B_Hotels']['fields']['hotel_address_street'] = array (
     'group' => 'hotel_address',
 );
 
-$dictionary['CB2B_Hotels']['fields']['hotel_address_city'] = array (
+$dictionary['CB2B_Hotels']['fields']['hotel_address_city'] = array(
     'inline_edit' => 1,
     'required' => false,
     'name' => 'hotel_address_city',
@@ -47,7 +48,7 @@ $dictionary['CB2B_Hotels']['fields']['hotel_address_city'] = array (
     'group' => 'hotel_address',
 );
 
-$dictionary['CB2B_Hotels']['fields']['hotel_address_country'] = array (
+$dictionary['CB2B_Hotels']['fields']['hotel_address_country'] = array(
     'inline_edit' => 1,
     'required' => false,
     'name' => 'hotel_address_country',
@@ -71,7 +72,7 @@ $dictionary['CB2B_Hotels']['fields']['hotel_address_country'] = array (
     'group' => 'hotel_address',
 );
 
-$dictionary['CB2B_Hotels']['fields']['hotel_address_postalcode'] = array (
+$dictionary['CB2B_Hotels']['fields']['hotel_address_postalcode'] = array(
     'inline_edit' => 1,
     'required' => false,
     'name' => 'hotel_address_postalcode',
@@ -95,7 +96,7 @@ $dictionary['CB2B_Hotels']['fields']['hotel_address_postalcode'] = array (
     'group' => 'hotel_address',
 );
 
-$dictionary['CB2B_Hotels']['fields']['hotel_address_state'] = array (
+$dictionary['CB2B_Hotels']['fields']['hotel_address_state'] = array(
     'inline_edit' => 1,
     'required' => false,
     'name' => 'hotel_address_state',
@@ -117,4 +118,13 @@ $dictionary['CB2B_Hotels']['fields']['hotel_address_state'] = array (
     'size' => '20',
     'id' => 'CB2B_Hotelshotel_address_state',
     'group' => 'hotel_address',
+);
+
+$dictionary['CB2B_Hotels']['fields']['is_update'] = array(
+    'name' => 'is_update',
+    'vname' => 'LBL_IS_UPDATE',
+    'type' => 'bool',
+    'default' => '0',
+    'reportable' => false,
+    'comment' => 'is_update = 0 in case of Create & is_update = 1 in case of Update',
 );
