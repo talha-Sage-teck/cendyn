@@ -1,7 +1,6 @@
 <?php
 
-
-$dictionary["CB2B_PMSProfiles"]['fields']['b2b_account_id'] = array (
+$dictionary["CB2B_PMSProfiles"]['fields']['b2b_account_id'] = array(
     'labelValue' => 'B2B Account ID',
     'required' => false,
     'name' => 'b2b_account_id',
@@ -28,7 +27,7 @@ $dictionary["CB2B_PMSProfiles"]['fields']['b2b_account_id'] = array (
     'id' => 'CB2B_PMSProfiles_b2b_account_id',
 );
 
-$dictionary["CB2B_PMSProfiles"]['fields']['tot_revenue'] = array (
+$dictionary["CB2B_PMSProfiles"]['fields']['tot_revenue'] = array(
     'inline_edit' => '1',
     'labelValue' => 'Total Revenue',
     'required' => false,
@@ -54,7 +53,7 @@ $dictionary["CB2B_PMSProfiles"]['fields']['tot_revenue'] = array (
     'id' => 'CB2B_PMSProfiles_tot_revenue',
 );
 
-$dictionary["CB2B_PMSProfiles"]['fields']['contact_first_name'] = array (
+$dictionary["CB2B_PMSProfiles"]['fields']['contact_first_name'] = array(
     'required' => false,
     'name' => 'contact_first_name',
     'vname' => 'LBL_CONTACT_FIRST_NAME',
@@ -77,7 +76,7 @@ $dictionary["CB2B_PMSProfiles"]['fields']['contact_first_name'] = array (
     'id' => 'CB2B_PMSProfiles_contact_first_name',
 );
 
-$dictionary["CB2B_PMSProfiles"]['fields']['hotel_short_name'] = array (
+$dictionary["CB2B_PMSProfiles"]['fields']['hotel_short_name'] = array(
     'required' => false,
     'name' => 'hotel_short_name',
     'vname' => 'LBL_HOTEL_SHORT_NAME',
@@ -100,7 +99,51 @@ $dictionary["CB2B_PMSProfiles"]['fields']['hotel_short_name'] = array (
     'id' => 'CB2B_PMSProfiles_hotel_short_name',
 );
 
-$dictionary['CB2B_PMSProfiles']['fields']['currency_id'] = array (
+$dictionary["CB2B_PMSProfiles"]['fields']['einsight_pmsprofile_id'] = array(
+    'required' => false,
+    'name' => 'einsight_pmsprofile_id',
+    'vname' => 'LBL_EINSIGHT_PMSPROFILE_ID',
+    'type' => 'varchar',
+    'massupdate' => '0',
+    'default' => '',
+    'no_default' => false,
+    'comments' => '',
+    'help' => 'Unique ID for PMS Profile generated in E-Insight',
+    'importable' => 'true',
+    'duplicate_merge' => 'disabled',
+    'duplicate_merge_dom_value' => '0',
+    'audited' => false,
+    'inline_edit' => true,
+    'reportable' => true,
+    'unified_search' => false,
+    'merge_filter' => 'disabled',
+    'len' => '255',
+    'size' => '20',
+);
+
+$dictionary["CB2B_PMSProfiles"]['fields']['pms_einsight_profile_id'] = array(
+    'required' => false,
+    'name' => 'pms_einsight_profile_id',
+    'vname' => 'LBL_PMS_EINSIGHT_PROFILE_ID',
+    'type' => 'varchar',
+    'massupdate' => '0',
+    'default' => '',
+    'no_default' => false,
+    'comments' => '',
+    'help' => 'Unique ID of PMS Profile carried over to E-Insight',
+    'importable' => 'true',
+    'duplicate_merge' => 'disabled',
+    'duplicate_merge_dom_value' => '0',
+    'audited' => false,
+    'inline_edit' => true,
+    'reportable' => true,
+    'unified_search' => false,
+    'merge_filter' => 'disabled',
+    'len' => '255',
+    'size' => '20',
+);
+
+$dictionary['CB2B_PMSProfiles']['fields']['currency_id'] = array(
     'inline_edit' => 1,
     'required' => false,
     'name' => 'currency_id',
@@ -123,10 +166,10 @@ $dictionary['CB2B_PMSProfiles']['fields']['currency_id'] = array (
     'dbType' => 'id',
     'studio' => 'visible',
     'function' =>
-        array (
-            'name' => 'getCurrencyDropDown',
-            'returns' => 'html',
-        ),
+    array(
+        'name' => 'getCurrencyDropDown',
+        'returns' => 'html',
+    ),
     'id' => 'CB2B_PMSProfiles_currency_id',
 );
 
