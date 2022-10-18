@@ -1,5 +1,5 @@
 <?php
-// created: 2022-10-05 17:25:45
+// created: 2022-10-18 20:27:01
 $searchFields['CB2B_PMSProfiles'] = array (
   'name' => 
   array (
@@ -56,7 +56,7 @@ $searchFields['CB2B_PMSProfiles'] = array (
     'enable_range_search' => true,
     'is_date_field' => true,
   ),
-  'is_assigned_account' =>
+  'is_assigned_account' => 
   array (
     'db_field' => 
     array (
