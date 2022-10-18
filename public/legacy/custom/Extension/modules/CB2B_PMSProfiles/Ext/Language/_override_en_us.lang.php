@@ -7,4 +7,5 @@ $mod_strings['LBL_TOT_REVENUE'] = 'Total Revenue';
 $mod_strings['LBL_TYPE'] = 'Type';
 $mod_strings['LBL_IS_UPDATE'] = 'Is Update';
 $mod_strings['LBL_EINSIGHT_PMSPROFILE_ID'] = 'eInsight Generated PMS Profile ID';
-$mod_strings['LBL_PMS_EINSIGHT_PROFILE_ID'] = 'eInsight Carried Over PMS Profile ID';
+$mod_strings['LBL_PMS_EINSIGHT_PROFILE_ID'] = 'PMS Profile ID'; // 'eInsight Carried Over PMS Profile ID'
+$mod_strings['LBL_FIRST_RELATED_HOTEL_SHORT_NAME'] = 'Hotel';

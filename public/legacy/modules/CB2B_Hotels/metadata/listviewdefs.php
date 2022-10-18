@@ -4,7 +4,7 @@ $listViewDefs [$module_name] =
 array (
   'B2BHOTELID' => 
   array (
-    'type' => 'int',
+    'type' => 'varchar',
     'label' => 'LBL_B2BHOTELID',
     'width' => '10%',
     'default' => true,

@@ -91,7 +91,7 @@ $viewdefs [$module_name] = array(
                 ),
                 4 =>
                 array(
-                    0 => 'b2bprofileid',
+                    0 => 'pms_einsight_profile_id',
                     1 => 'hotel_short_name',
                 ),
                 5 =>

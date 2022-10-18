@@ -63,7 +63,6 @@ class CB2B_PMSProfiles extends Basic
     public $assigned_user_name;
     public $assigned_user_link;
     public $SecurityGroups;
-    public $b2bprofileid;
     public $b2bhotelid;
     public $profilename;
     public $company;

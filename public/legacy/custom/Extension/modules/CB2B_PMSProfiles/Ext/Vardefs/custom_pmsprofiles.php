@@ -182,6 +182,15 @@ $dictionary['CB2B_PMSProfiles']['fields']['is_update'] = array(
     'comment' => 'is_update = 0 in case of Create & is_update = 1 in case of Update',
 );
 
+$dictionary["CB2B_PMSProfiles"]['fields']['first_related_hotel_short_name'] = array(
+    'name' => 'first_related_hotel_short_name',
+    'vname' => 'LBL_FIRST_RELATED_HOTEL_SHORT_NAME',
+    'type' => 'varchar',
+    'source' => 'non-db',
+    'len' => '255',
+    'size' => '20',
+);
+
 //
 //$dictionary["CB2B_PMSProfiles"]['fields']['b2baccountid'] = array(
 //    'labelValue' => 'B2B Account ID',

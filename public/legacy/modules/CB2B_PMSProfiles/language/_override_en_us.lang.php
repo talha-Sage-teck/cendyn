@@ -74,7 +74,6 @@ $mod_strings = array (
   'LBL_ACTIVITIES_SUBPANEL_TITLE' => 'Activities',
   'LBL_CB2B_B2BPMSPROFILES_SUBPANEL_TITLE' => 'PMS Profiles',
   'LBL_NEW_FORM_TITLE' => 'New PMS Profiles',
-  'LBL_B2BPROFILEID' => 'b2bprofileID',
   'LBL_B2BHOTELID' => 'b2bhotelid',
   'LBL_PROFILENAME' => 'Profile Name',
   'LBL_COMPANY' => 'Company',

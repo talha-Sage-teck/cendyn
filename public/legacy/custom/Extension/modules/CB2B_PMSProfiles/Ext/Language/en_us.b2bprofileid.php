@@ -1,2 +1,2 @@
 <?php
-$mod_strings['LBL_B2BPROFILEID'] = 'B2B Profile ID';
+$mod_strings['LBL_PMS_EINSIGHT_PROFILE_ID'] = 'PMS Profile ID';
