@@ -15,14 +15,14 @@ class UsersViewmatchcriteriaconfig extends SugarView
         global $sugar_config;
         $this->ss->assign('APP', $GLOBALS['app_strings']);
         $this->ss->assign('MOD', $GLOBALS['mod_strings']);
-        $this->ss->assign('title', "P2P Profiles Matching Criteria");
+        $this->ss->assign('title', "PMS Profiles Matching Criteria");
         $settingArray = $this->MatchCriteriaSettings();
         echo '<script>'
             . 'criteria = ' . json_encode($settingArray['criteria']) . '</script>';
 
         $vals = array();
         $labels = array();
-        $fields = $sugar_config['P2P_PROFILES_MATCHING_FIELDS'];
+        $fields = $sugar_config['PMS_PROFILES_MATCHING_FIELDS'];
         foreach ($fields as $field => $label) {
             $vals[] = $field;
             $labels[] = $label;

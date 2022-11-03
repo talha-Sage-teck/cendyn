@@ -8,13 +8,13 @@ $admin_option_defs = [];
 $admin_option_defs['Administration']['manage_profile_matching_criteria'] = array (
     '',
     'Manage Profile Matching Criteria',
-    'View and Manage P2P Profiles Matching Criteria',
+    'View and Manage PMS Profiles Matching Criteria',
     'index.php?module=Users&action=MatchCriteriaConfig'
 );
 
 
 $admin_group_header[] = array (
-    'P2P Profiles',
+    'PMS Profiles',
     '',
     false,
     $admin_option_defs,
