@@ -1,6 +1,6 @@
 <?php
 
-/***
+/* * *
  * Overriding original Users' module controller to add actions related to Match Criteria Config
  */
 
@@ -11,10 +11,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 require_once __DIR__ . '/../../../modules/Users/controller.php';
 
-class CustomUsersController extends UsersController
-{
-    function action_MatchCriteriaConfig()
-    {
+class CustomUsersController extends UsersController {
+
+    function action_matchCriteriaConfig() {
         if (is_admin($GLOBALS['current_user'])) {
             $this->view = 'matchcriteriaconfig';
             $GLOBALS['view'] = $this->view;
@@ -24,8 +23,7 @@ class CustomUsersController extends UsersController
         return true;
     }
 
-    function action_saveMatchCriteriaConfig()
-    {
+    function action_saveMatchCriteriaConfig() {
         global $db;
         $query = "SELECT * FROM config WHERE category = 'MySettings' AND name = 'MatchCriteriaConfig'";
         $result = $db->query($query, true);
@@ -36,4 +34,5 @@ class CustomUsersController extends UsersController
         $db->query($query, true);
         SugarApplication::redirect("index.php?module=Administration&action=index");
     }
+
 }

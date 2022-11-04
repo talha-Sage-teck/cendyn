@@ -1,5 +1,6 @@
 <?php
-/***CONFIGURATOR***/
+
+/* * *CONFIGURATOR** */
 $sugar_config['default_export_charset'] = 'ISO-8859-1';
 $sugar_config['dbconfigoption']['collation'] = 'utf8_general_ci';
 $sugar_config['logger']['file']['name'] = 'b2b';
@@ -22,5 +23,5 @@ $sugar_config['PMS_PROFILES_MATCHING_FIELDS'] = array(
     'phone' => 'Phone',
     'contactemail' => 'Email'
 );
-$sugar_config['http_referer']['actions'] =array( 'studio', 'index', 'ListView', 'DetailView', 'EditView', 'oauth', 'authorize', 'Authenticate', 'Login', 'SupportPortal', 'Studio' ); ;
+$sugar_config['http_referer']['actions'] = array('studio', 'index', 'ListView', 'DetailView', 'EditView', 'oauth', 'authorize', 'Authenticate', 'Login', 'SupportPortal', 'Studio');
 /***CONFIGURATOR***/

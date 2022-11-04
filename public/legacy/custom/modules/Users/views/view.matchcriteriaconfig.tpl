@@ -44,7 +44,7 @@
         td1.setAttribute("valign", "top");
         td1.setAttribute("width", "12.5%");
         td1.setAttribute("scope", "col");
-        td1.innerText = "Matching Criteria :";
+        td1.innerText = "Matching Criteria: ";
         tr.appendChild(td1);
         td2.setAttribute("valign", "top");
         td2.setAttribute("width", "37.5%");
