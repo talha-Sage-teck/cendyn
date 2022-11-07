@@ -1,7 +1,8 @@
 <?php
 
 /**
- *  This scheduler runs every 10 minutes and matches PMS Profiles with each other on the basis of the set criteria in PMS Profiles Criteria config
+ *  This scheduler runs every 10 minutes and matches PMS Profiles with each other on the basis of the set criteria in
+ *  PMS Profiles Criteria config
  * @Conditions:
  * 1. Any of the criteria match
  * @Actions:
@@ -41,7 +42,8 @@ function matchPMSProfiles() {
                 $profile = $db->fetchByAssoc($getAllProfilesResult);
                 $profileBean = BeanFactory::getBean('CB2B_PMSProfiles', $profile['id']);
                 foreach($settings as $criteria => $fields) {
-                    $selectMatchingQuery = "SELECT A.*, B.* FROM `cb2b_pmsprofiles` A, `cb2b_pmsprofiles` B WHERE A.id='{$profile['id']}' AND A.id <> B.id AND B.deleted=0";
+                    $selectMatchingQuery = "SELECT A.*, B.* FROM `cb2b_pmsprofiles` A, `cb2b_pmsprofiles` B WHERE A.id=
+                    '{$profile['id']}' AND A.id <> B.id AND B.deleted=0";
                     foreach ($fields as $field)
                         $selectMatchingQuery .= " AND A.{$field}=B.{$field}";
                     $selectMatchingQuery .= ";";
@@ -49,7 +51,8 @@ function matchPMSProfiles() {
                     if($selectMatchingResult->num_rows > 0) {
                         for($j = 0; $j < $selectMatchingResult->num_rows; ++$j) {
                             $matchedProfile = $db->fetchByAssoc($selectMatchingResult);
-                            $matchedProfileBean = BeanFactory::getBean('CB2B_PMSProfiles', $matchedProfile['id']);
+                            $matchedProfileBean = BeanFactory::getBean(
+                                'CB2B_PMSProfiles', $matchedProfile['id']);
                             $alreadyExists = checkRelatedBeanExists($profileBean, $matchedProfileBean);
                             if(!$alreadyExists) {
                                 $profileBean->load_relationship($relationship);
