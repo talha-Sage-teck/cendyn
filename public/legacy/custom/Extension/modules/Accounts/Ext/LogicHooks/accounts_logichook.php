@@ -16,3 +16,10 @@ $hook_array['before_save'][] = Array(
     'AccountsLogicHook',
     'autoIncrementB2BAccountNo'
 );
+$hook_array['before_save'][] = Array(
+    77,
+    'Set the Ready to Sync flag for each created/updated account',
+    'custom/modules/Accounts/AccountsLogicHook.php',
+    'AccountsLogicHook',
+    'setSyncFlag'
+);
