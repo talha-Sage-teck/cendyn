@@ -7,3 +7,10 @@ $hook_array['process_record'][] = Array(
     'processRecordHandler',
     'processRecord'
 );
+$hook_array['before_save'][] = Array(
+    2,
+    'Link account with related profiles as specified with profiles_to_relate field',
+    'custom/modules/CB2B_PMSProfiles/before_save.php',
+    'beforeSaveHandler',
+    'linkAccountToRelatedProfiles'
+);

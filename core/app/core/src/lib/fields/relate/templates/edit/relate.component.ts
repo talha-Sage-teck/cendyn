@@ -26,7 +26,7 @@
 
 import {Component, ViewChild} from '@angular/core';
 import {TagInputComponent} from 'ngx-chips';
-import {ButtonInterface, Field, Record} from 'common';
+import {ButtonInterface, Field, ModalButtonInterface, Record} from 'common';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ModuleNameMapper} from '../../../../services/navigation/module-name-mapper/module-name-mapper.service';
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
@@ -37,6 +37,9 @@ import {RelateService} from '../../../../services/record/relate/relate.service';
 import {RecordListModalResult} from '../../../../containers/record-list-modal/components/record-list-modal/record-list-modal.model';
 import {TagModel} from "ngx-chips/core/accessor";
 import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
+import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {Router} from "@angular/router";
+import {MessageModalComponent} from "../../../../components/modal/components/message-modal/message-modal.component";
 
 @Component({
     selector: 'scrm-relate-edit',
@@ -48,6 +51,8 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
     @ViewChild('tag') tag: TagInputComponent;
     selectButton: ButtonInterface;
     idField: Field;
+    pModule: string;
+    rec: string;
 
     /**
      * Constructor
@@ -60,6 +65,8 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
      * @param {object} logic
      */
     constructor(
+        private http: HttpClient,
+        private router: Router,
         protected languages: LanguageStore,
         protected typeFormatter: DataTypeFormatter,
         protected relateService: RelateService,
@@ -84,6 +91,9 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
     ngOnInit(): void {
 
         super.ngOnInit();
+        let r = this.router.url.split('/');
+        this.pModule = r[1];
+        this.rec = r[r.length - 1];
         this.init();
     }
 
@@ -97,6 +107,14 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
         if (idFieldName && this.record && this.record.fields && this.record.fields[idFieldName]) {
             this.idField = this.record.fields[idFieldName];
         }
+    }
+
+    runPMSProfilesAction(): void {
+        let headers = new HttpHeaders();
+        headers.set('Content-Type', 'application/json; charset=utf-8');
+        this.http.get(location.origin + location.pathname + 'legacy/index.php?entryPoint=relateProfilesToAccount&profileID=' +
+            this.rec, {headers: headers, responseType: 'text'})
+            .subscribe(data => {}, error => console.log("Error: " + error));
     }
 
     protected initValue(): void {
@@ -120,10 +138,31 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
      * @param {object} item added
      */
     onAdd(item): void {
-
         if (item) {
             const relateName = this.getRelateFieldName();
             this.setValue(item.id, item[relateName]);
+            let uuidPattern = /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/;
+            if(this.field.definition.module.toLowerCase() === "accounts" && this.module.toLowerCase() === "cb2b_pmsprofiles" && this.rec !== null && this.rec !== '' && typeof this.rec !== 'undefined' && uuidPattern.test(this.rec)) {
+                const modal = this.modalService.open(MessageModalComponent);
+                modal.componentInstance.textKey = 'LBL_POPUP_PROFILES';
+                modal.componentInstance.buttons = [
+                    {
+                        labelKey: 'LBL_POPUP_NO',
+                        klass: ['btn-secondary'],
+                        onClick: activeModal => {
+                            activeModal.dismiss();
+                        }
+                    } as ModalButtonInterface,
+                    {
+                        labelKey: 'LBL_POPUP_YES',
+                        klass: ['btn-main'],
+                        onClick: activeModal => {
+                            this.runPMSProfilesAction();
+                            activeModal.close();
+                        }
+                    } as ModalButtonInterface,
+                ];
+            }
             return;
         }
 
