@@ -42,22 +42,6 @@ $dictionary["Account"]["fields"]["account_level"] = array(
     'dependency' => false,
 );
 
-
-$dictionary["Account"]["fields"]["account_sub_type"] = array(
-    'labelValue' => 'Sub Type',
-    'required' => false,
-    'name' => 'account_sub_type',
-    'vname' => 'LBL_ACCOUNT_SUB_TYPE',
-    'type' => 'dynamicenum',
-    'audited' => true,
-    'merge_filter' => 'disabled',
-    'len' => 100,
-    'options' => 'account_subtype_list',
-    'studio' => 'visible',
-    'dbType' => 'enum',
-    'parentenum' => 'account_base_type',
-);
-
 $dictionary["Account"]["fields"]["b2b_account_id"] = array(
     'inline_edit' => '',
     'labelValue' => 'b2b_account_id',

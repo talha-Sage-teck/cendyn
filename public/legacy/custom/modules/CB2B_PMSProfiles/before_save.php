@@ -3,8 +3,22 @@
 if (!defined('sugarEntry') || !sugarEntry)
     die('Not A Valid Entry Point');
 
-class beforeSaveHandler
-{
+class beforeSaveHandler {
+
+    /**
+     * 
+     * @param type $bean
+     * @param type $event
+     * @param type $arguments
+     */
+    function beforeSave(&$bean, $event, $arguments) {
+        // Check if it's a new or existing record
+        if ($bean->fetched_row == false) {
+            $bean->is_update = 0;
+        } else {
+            $bean->is_update = 1;
+        }
+    }
 
     function linkAccountToRelatedProfiles(&$bean, $event, $arguments)
     {
