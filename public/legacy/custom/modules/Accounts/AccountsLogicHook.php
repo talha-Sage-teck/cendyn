@@ -49,6 +49,8 @@ class AccountsLogicHook {
         /***
          * This function sets the readToSync flag when a new account is created or updated
          * @LogicHook Before Save
+         * @Condition
+         * The save has not occurred in scheduler (fromScheduler flag is unset)
          * @Objectives
          * 1. Set the ready_to_sync flag equal to 1 when an account is created
          * 2. Set the ready_to_sync flag equal to 2 when an account is updated
@@ -58,10 +60,12 @@ class AccountsLogicHook {
          * Function returns void
          */
 
-        if($bean->fetched_row != false) {
-            $bean->ready_to_sync = 2;
-            return;
+        if(!$bean->fromScheduler) {
+            if($bean->fetched_row != false) {
+                $bean->ready_to_sync = 2;
+                return;
+            }
+            $bean->ready_to_sync = 1;
         }
-        $bean->ready_to_sync = 1;
     }
 }

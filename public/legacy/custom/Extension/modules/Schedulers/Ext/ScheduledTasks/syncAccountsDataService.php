@@ -1,5 +1,10 @@
 <?php
 
+if (!defined('sugarEntry') || !sugarEntry)
+    die('Not A Valid Entry Point');
+
+$job_strings[] = 'syncAccountsDataService';
+
 function sendData($data, $account_id = null) {
 
     /***
@@ -11,9 +16,10 @@ function sendData($data, $account_id = null) {
      * Return void
      */
 
+    global $sugar_config;
     $curl = curl_init();
-    $endpoint = 'https://b2bapiqa.cendyn.com/api/v1/companyid/10017/b2b/B2BAccounts' .
-    ($account_id != null) ? '/update/'.$account_id : '';
+    $endpoint = "https://eu02b2bapi.cendyn.com/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/{$sugar_config['EINSIGHT_API_COMPANY_ID']}/b2b/B2BAccounts" .
+        (($account_id != null) ? '/update/'.$account_id : '');
     $object = array(
         CURLOPT_URL => $endpoint,
         CURLOPT_RETURNTRANSFER => true,
@@ -23,9 +29,10 @@ function sendData($data, $account_id = null) {
         CURLOPT_FOLLOWLOCATION => true,
         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
         CURLOPT_CUSTOMREQUEST => 'POST',
-        CURLOPT_POSTFIELDS => "'".$data."'",
+        CURLOPT_POSTFIELDS => json_encode($data),
         CURLOPT_HTTPHEADER => array(
-            'Content-Type: text/plain',
+            'X-Api-Key: ' . $sugar_config['EINSIGHT_API_KEY'],
+            'Content-Type: application/json'
         ),
     );
     curl_setopt_array($curl, $object);
@@ -37,10 +44,10 @@ function sendData($data, $account_id = null) {
 function syncAccountsDataService() {
 
     /**
-     *  This scheduler runs every 10 minutes and matches PMS Profiles with each other on the basis of the set criteria
-     *  in PMS Profiles Criteria config
+     *  This scheduler runs every 10 minutes and syncs with eInsight
      * @Conditions:
-     * 1. Any of the criteria match
+     * 1. The ready_to_sync flag is 1 (created account), or
+     * 2. The ready_to_sync flag is 2 (updated account)
      * @Actions:
      * 1. Unsets the ready_to_sync flag
      * 2. Prepares the POST data of all accounts to send to eInsight.
@@ -87,7 +94,7 @@ function syncAccountsDataService() {
             'description' => $accountBean->description,
             'updateDate' => $accountBean->last_sync_date,
             'id' => 0,
-            'active' => 1,
+            'inactive' => 0,
         );
 
         //check value of ready_to_sync flag and call API endpoint accordingly
@@ -97,7 +104,7 @@ function syncAccountsDataService() {
                 sendData($data);
                 break;
             case 2:
-                $data['id'] = $accountBean->einsight_account_id;
+                $data['id'] = $accountBean->einsight_account_id ?? 0;
                 sendData($data, $data['externalAccountId']);
                 break;
             default:
@@ -105,8 +112,11 @@ function syncAccountsDataService() {
                 return true;
         }
 
-        //unsetting the read_to_sync flag and saving
+        //unsetting the read_to_sync flag, setting the fromScheduler flag and saving
         $accountBean->ready_to_sync = 0;
+        $accountBean->fromScheduler = true;
         $accountBean->save();
     }
+    return true;
 }
+?>
