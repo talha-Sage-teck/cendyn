@@ -1,11 +1,11 @@
 <?php
-// created: 2022-11-04 07:39:09
-$dictionary["cb2b_pmsprofiles_cb2b_pmsprofiles_1"] = array (
-  'true_relationship_type' => 'one-to-many',
+// created: 2022-11-15 18:10:53
+$dictionary["cb2b_pmsprofiles_cb2b_pmsprofiles_2"] = array (
+  'true_relationship_type' => 'many-to-many',
   'from_studio' => true,
   'relationships' => 
   array (
-    'cb2b_pmsprofiles_cb2b_pmsprofiles_1' => 
+    'cb2b_pmsprofiles_cb2b_pmsprofiles_2' => 
     array (
       'lhs_module' => 'CB2B_PMSProfiles',
       'lhs_table' => 'cb2b_pmsprofiles',
@@ -14,12 +14,12 @@ $dictionary["cb2b_pmsprofiles_cb2b_pmsprofiles_1"] = array (
       'rhs_table' => 'cb2b_pmsprofiles',
       'rhs_key' => 'id',
       'relationship_type' => 'many-to-many',
-      'join_table' => 'cb2b_pmsprofiles_cb2b_pmsprofiles_1_c',
-      'join_key_lhs' => 'cb2b_pmsprofiles_cb2b_pmsprofiles_1cb2b_pmsprofiles_ida',
-      'join_key_rhs' => 'cb2b_pmsprofiles_cb2b_pmsprofiles_1cb2b_pmsprofiles_idb',
+      'join_table' => 'cb2b_pmsprofiles_cb2b_pmsprofiles_2_c',
+      'join_key_lhs' => 'cb2b_pmsprofiles_cb2b_pmsprofiles_2cb2b_pmsprofiles_ida',
+      'join_key_rhs' => 'cb2b_pmsprofiles_cb2b_pmsprofiles_2cb2b_pmsprofiles_idb',
     ),
   ),
-  'table' => 'cb2b_pmsprofiles_cb2b_pmsprofiles_1_c',
+  'table' => 'cb2b_pmsprofiles_cb2b_pmsprofiles_2_c',
   'fields' => 
   array (
     0 => 
@@ -43,13 +43,13 @@ $dictionary["cb2b_pmsprofiles_cb2b_pmsprofiles_1"] = array (
     ),
     3 => 
     array (
-      'name' => 'cb2b_pmsprofiles_cb2b_pmsprofiles_1cb2b_pmsprofiles_ida',
+      'name' => 'cb2b_pmsprofiles_cb2b_pmsprofiles_2cb2b_pmsprofiles_ida',
       'type' => 'varchar',
       'len' => 36,
     ),
     4 => 
     array (
-      'name' => 'cb2b_pmsprofiles_cb2b_pmsprofiles_1cb2b_pmsprofiles_idb',
+      'name' => 'cb2b_pmsprofiles_cb2b_pmsprofiles_2cb2b_pmsprofiles_idb',
       'type' => 'varchar',
       'len' => 36,
     ),
@@ -58,7 +58,7 @@ $dictionary["cb2b_pmsprofiles_cb2b_pmsprofiles_1"] = array (
   array (
     0 => 
     array (
-      'name' => 'cb2b_pmsprofiles_cb2b_pmsprofiles_1spk',
+      'name' => 'cb2b_pmsprofiles_cb2b_pmsprofiles_2spk',
       'type' => 'primary',
       'fields' => 
       array (
@@ -67,20 +67,12 @@ $dictionary["cb2b_pmsprofiles_cb2b_pmsprofiles_1"] = array (
     ),
     1 => 
     array (
-      'name' => 'cb2b_pmsprofiles_cb2b_pmsprofiles_1_ida1',
-      'type' => 'index',
-      'fields' => 
-      array (
-        0 => 'cb2b_pmsprofiles_cb2b_pmsprofiles_1cb2b_pmsprofiles_ida',
-      ),
-    ),
-    2 => 
-    array (
-      'name' => 'cb2b_pmsprofiles_cb2b_pmsprofiles_1_alt',
+      'name' => 'cb2b_pmsprofiles_cb2b_pmsprofiles_2_alt',
       'type' => 'alternate_key',
       'fields' => 
       array (
-        0 => 'cb2b_pmsprofiles_cb2b_pmsprofiles_1cb2b_pmsprofiles_idb',
+        0 => 'cb2b_pmsprofiles_cb2b_pmsprofiles_2cb2b_pmsprofiles_ida',
+        1 => 'cb2b_pmsprofiles_cb2b_pmsprofiles_2cb2b_pmsprofiles_idb',
       ),
     ),
   ),
