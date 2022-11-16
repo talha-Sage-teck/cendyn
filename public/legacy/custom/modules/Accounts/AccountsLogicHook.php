@@ -44,4 +44,28 @@ class AccountsLogicHook {
         global $sugar_config;
         $bean->b2b_account_no = $sugar_config['ACCOUNTS_INITIAL_TOKEN'];
     }
+
+    public function setSyncFlag($bean, $events, $args) {
+        /***
+         * This function sets the readToSync flag when a new account is created or updated
+         * @LogicHook Before Save
+         * @Condition
+         * The save has not occurred in scheduler (fromScheduler flag is unset)
+         * @Objectives
+         * 1. Set the ready_to_sync flag equal to 1 when an account is created
+         * 2. Set the ready_to_sync flag equal to 2 when an account is updated
+         * @Input
+         * 1. An unsaved account bean
+         * @Returns
+         * Function returns void
+         */
+
+        if(!$bean->fromScheduler) {
+            if($bean->fetched_row != false) {
+                $bean->ready_to_sync = 2;
+                return;
+            }
+            $bean->ready_to_sync = 1;
+        }
+    }
 }
