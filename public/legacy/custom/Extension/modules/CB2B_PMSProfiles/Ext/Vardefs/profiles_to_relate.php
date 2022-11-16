@@ -1,7 +1,6 @@
 <?php
 
-$dictionary['CB2B_PMSProfiles']['fields']['profiles_to_relate'] =
-array (
+$dictionary['CB2B_PMSProfiles']['fields']['profiles_to_relate'] = array(
     'required' => false,
     'name' => 'profiles_to_relate',
     'vname' => 'LBL_PROFILES_TO_RELATE',

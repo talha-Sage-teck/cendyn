@@ -1,6 +1,6 @@
 <?php
 
-/***
+/* * *
  * Class file which contains the Accounts module logichook functions.
  */
 
@@ -8,7 +8,7 @@ class AccountsLogicHook {
 
     public function autoIncrementB2BAccountNo($bean, $events, $args) {
 
-        /***
+        /*         * *
          * This function generates new account number for each new account created.
          * @LogicHook Before Save
          * @Objectives
@@ -20,19 +20,19 @@ class AccountsLogicHook {
          * Function returns void
          */
 
-        if($bean->fetched_row != false)
+        if ($bean->fetched_row != false)
             return;
 
         global $db;
         $offset = 1;
         $ret = $db->query("SELECT * FROM accounts WHERE b2b_account_no IS NOT NULL AND b2b_account_no <> '' ORDER BY date_entered DESC LIMIT 1");
-        if($ret->num_rows > 0) {
+        if ($ret->num_rows > 0) {
             $row = $db->fetchByAssoc($ret);
-            if(trim($row['b2b_account_no']) !== '') {
+            if (trim($row['b2b_account_no']) !== '') {
                 $lastAccountNo = intval($row['b2b_account_no']);
                 $bean->b2b_account_no = strval($lastAccountNo + $offset);
                 $accountNo = $bean->b2b_account_no;
-                if(intval($accountNo) < 1000000) {
+                if (intval($accountNo) < 1000000) {
                     $nonSignificantZeros = 6 - strlen($accountNo);
                     $accountNoPadded = str_pad($accountNo, $nonSignificantZeros + strlen($accountNo), "0", STR_PAD_LEFT);
                     $bean->b2b_account_no = $accountNoPadded;
@@ -46,7 +46,7 @@ class AccountsLogicHook {
     }
 
     public function setSyncFlag($bean, $events, $args) {
-        /***
+        /*         * *
          * This function sets the readToSync flag when a new account is created or updated
          * @LogicHook Before Save
          * @Condition
@@ -60,12 +60,13 @@ class AccountsLogicHook {
          * Function returns void
          */
 
-        if(!$bean->fromScheduler) {
-            if($bean->fetched_row != false) {
+        if (!$bean->fromScheduler) {
+            if ($bean->fetched_row != false) {
                 $bean->ready_to_sync = 2;
                 return;
             }
             $bean->ready_to_sync = 1;
         }
     }
+
 }
