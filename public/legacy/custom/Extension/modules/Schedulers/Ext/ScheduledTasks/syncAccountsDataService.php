@@ -54,7 +54,7 @@ function sendData($data, $account_id = null) {
 
 function checkForErrorsInResponse($response) {
     $GLOBALS['log']->fatal('checkForErrorsInResponse -> $response : ' . print_r($response, 1));
-    if (!empty($response) && !empty($response->errors)) {
+    if (!empty($response) && $response->status != 200) {
         $GLOBALS['log']->fatal('Error Response --> : ' . print_r($response->status . ' :: ' . $response->title, 1));
         return true;
     }
@@ -146,5 +146,3 @@ function syncAccountsDataService() {
 
     return true;
 }
-
-?>
