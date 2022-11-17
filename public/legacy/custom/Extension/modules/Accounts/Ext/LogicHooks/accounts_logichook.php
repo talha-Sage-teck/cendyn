@@ -1,6 +1,6 @@
 <?php
 
-/***
+/* * *
  * This file defines the functions to be executed according the hook specified.
  * Hook Class: custom/modules/Accounts/AccountsLogicHook.php
  */
@@ -16,6 +16,7 @@ $hook_array['before_save'][] = Array(
     'AccountsLogicHook',
     'autoIncrementB2BAccountNo'
 );
+
 $hook_array['before_save'][] = Array(
     77,
     'Set the Ready to Sync flag for each created/updated account',

@@ -7,7 +7,7 @@ $job_strings[] = 'syncAccountsDataService';
 
 function sendData($data, $account_id = null) {
 
-    /***
+    /*     * *
      * @Input:
      * data: The Account data to send to eInsight
      * account_id: Optional, if value is set than eInsight account update endpoint will be called with this argument's
@@ -19,7 +19,7 @@ function sendData($data, $account_id = null) {
     global $sugar_config;
     $curl = curl_init();
     $endpoint = "https://eu02b2bapi.cendyn.com/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/{$sugar_config['EINSIGHT_API_COMPANY_ID']}/b2b/B2BAccounts" .
-        (($account_id != null) ? '/update/'.$account_id : '');
+            (($account_id != null) ? '/update/' . $account_id : '');
     $object = array(
         CURLOPT_URL => $endpoint,
         CURLOPT_RETURNTRANSFER => true,
@@ -36,10 +36,16 @@ function sendData($data, $account_id = null) {
         ),
     );
     curl_setopt_array($curl, $object);
+
     $response = curl_exec($curl);
+
+    if (curl_errno($curl)) {
+        $GLOBALS['log']->fatal('CURL ERROR -> : ' . print_r(curl_error($curl), 1));
+    }
+
     curl_close($curl);
 
-    if($response != "") {
+    if ($response != "") {
         $GLOBALS['log']->fatal($response);
         return false;
     }
@@ -60,14 +66,13 @@ function syncAccountsDataService() {
      * @Returns
      * true
      */
-
     //Fetching all the accounts that are either created or updated
     global $db;
     $selectQuery = "SELECT * FROM accounts WHERE deleted = 0 AND ready_to_sync > 0";
     $resultSelect = $db->query($selectQuery);
 
     //Looping over all the fetched accounts
-    while($accountRow = $db->fetchByAssoc($resultSelect)) {
+    while ($accountRow = $db->fetchByAssoc($resultSelect)) {
         //setting the last_sync_date field
         $accountBean = BeanFactory::getBean('Accounts', $accountRow['id']);
         $accountBean->last_sync_date = $GLOBALS['timedate']->nowDb();
@@ -76,7 +81,9 @@ function syncAccountsDataService() {
         $data = array(
             'externalAccountId' => $accountBean->id,
             'source' => 'SuiteCRM',
-            'externalParentAccountId' => $accountBean->parent_id,
+            'externalParentAccountId' => '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+            // TBD
+//            'externalParentAccountId' => $accountBean->parent_id,
             'accountName' => $accountBean->name,
             'accountBaseType' => $accountBean->account_base_type,
             'accountType' => $accountBean->account_type,
@@ -104,7 +111,7 @@ function syncAccountsDataService() {
 
         //check value of ready_to_sync flag and call API endpoint accordingly
         $res = false;
-        switch($accountRow['ready_to_sync']) {
+        switch ($accountRow['ready_to_sync']) {
             case 1:
                 $data['insertDate'] = $accountBean->last_sync_date;
                 $res = sendData($data);
@@ -112,6 +119,7 @@ function syncAccountsDataService() {
             case 2:
                 $data['id'] = $accountBean->einsight_account_id ?? 0;
                 $res = sendData($data, $data['externalAccountId']);
+
                 break;
             default:
                 $GLOBALS['log']->fatal("syncAccountsDataService: Unexpected sync flag value in scheduler.");
@@ -119,11 +127,11 @@ function syncAccountsDataService() {
         }
 
         //unsetting the read_to_sync flag, setting the fromScheduler flag and saving
-        if($res)
+        if ($res)
             $accountBean->ready_to_sync = 0;
         $accountBean->fromScheduler = true;
         $accountBean->save();
     }
+
     return true;
 }
-?>

@@ -50,14 +50,6 @@ array (
     'label' => 'LBL_BILLING_ADDRESS_STREET',
     'default' => true,
   ),
-  'ACCOUNT_SUB_TYPE' => 
-  array (
-    'type' => 'dynamicenum',
-    'default' => true,
-    'studio' => 'visible',
-    'label' => 'LBL_ACCOUNT_SUB_TYPE',
-    'width' => '8%',
-  ),
   'B2B_ACCOUNT_NO' =>
   array (
     'width' => '5%',

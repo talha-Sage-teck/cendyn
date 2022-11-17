@@ -1,13 +1,12 @@
 <?php
 
-
-$dictionary["Opportunity"]["fields"]["b2b_account_id"] = array (
+$dictionary["Opportunity"]["fields"]["b2b_account_id"] = array(
     'inline_edit' => '1',
     'labelValue' => 'b2b_account_id',
     'required' => false,
     'name' => 'b2b_account_id',
     'vname' => 'LBL_B2B_ACCOUNT_ID',
-    'type' => 'int',
+    'type' => 'varchar',
     'massupdate' => '0',
     'default' => '',
     'no_default' => false,
@@ -28,13 +27,13 @@ $dictionary["Opportunity"]["fields"]["b2b_account_id"] = array (
     'max' => false,
 );
 
-$dictionary["Opportunity"]["fields"]["b2b_banquet_fb_persons"] = array (
+$dictionary["Opportunity"]["fields"]["b2b_banquet_fb_persons"] = array(
     'inline_edit' => '1',
     'labelValue' => 'Banquet FB Persons',
     'required' => false,
     'name' => 'b2b_banquet_fb_persons',
     'vname' => 'LBL_B2B_BANQUET_FB_PERSONS',
-    'type' => 'int',
+    'type' => 'varchar',
     'massupdate' => '0',
     'default' => '',
     'no_default' => false,
@@ -55,7 +54,7 @@ $dictionary["Opportunity"]["fields"]["b2b_banquet_fb_persons"] = array (
     'max' => false,
 );
 
-$dictionary["Opportunity"]["fields"]["b2b_banquet_fb_rev"] = array (
+$dictionary["Opportunity"]["fields"]["b2b_banquet_fb_rev"] = array(
     'inline_edit' => '1',
     'labelValue' => 'Banquet F&B Revenue',
     'required' => false,
@@ -80,13 +79,13 @@ $dictionary["Opportunity"]["fields"]["b2b_banquet_fb_rev"] = array (
     'precision' => 6,
 );
 
-$dictionary["Opportunity"]["fields"]["b2b_banquet_other_persons"] = array (
+$dictionary["Opportunity"]["fields"]["b2b_banquet_other_persons"] = array(
     'inline_edit' => '1',
     'labelValue' => 'Banquet Other Persons',
     'required' => false,
     'name' => 'b2b_banquet_other_persons',
     'vname' => 'LBL_B2B_BANQUET_OTHER_PERSONS',
-    'type' => 'int',
+    'type' => 'varchar',
     'massupdate' => '0',
     'default' => '0',
     'no_default' => false,
@@ -106,14 +105,14 @@ $dictionary["Opportunity"]["fields"]["b2b_banquet_other_persons"] = array (
     'min' => 0,
     'max' => false,
     'validation' =>
-        array (
-            'type' => 'range',
-            'min' => 0,
-            'max' => false,
-        ),
+    array(
+        'type' => 'range',
+        'min' => 0,
+        'max' => false,
+    ),
 );
 
-$dictionary["Opportunity"]["fields"]["b2b_banquet_other_rev"] = array (
+$dictionary["Opportunity"]["fields"]["b2b_banquet_other_rev"] = array(
     'inline_edit' => '1',
     'labelValue' => 'Banquet Other Revenue',
     'required' => false,
@@ -138,13 +137,13 @@ $dictionary["Opportunity"]["fields"]["b2b_banquet_other_rev"] = array (
     'precision' => 6,
 );
 
-$dictionary["Opportunity"]["fields"]["b2b_contact_id"] = array (
+$dictionary["Opportunity"]["fields"]["b2b_contact_id"] = array(
     'inline_edit' => '1',
     'labelValue' => 'b2b_contact_id',
     'required' => false,
     'name' => 'b2b_contact_id',
     'vname' => 'LBL_B2B_CONTACT_ID',
-    'type' => 'int',
+    'type' => 'varchar',
     'massupdate' => '0',
     'default' => '',
     'no_default' => false,
@@ -165,7 +164,7 @@ $dictionary["Opportunity"]["fields"]["b2b_contact_id"] = array (
     'max' => false,
 );
 
-$dictionary["Opportunity"]["fields"]["b2b_currency"] = array (
+$dictionary["Opportunity"]["fields"]["b2b_currency"] = array(
     'inline_edit' => '1',
     'labelValue' => 'Currency',
     'required' => false,
@@ -191,13 +190,13 @@ $dictionary["Opportunity"]["fields"]["b2b_currency"] = array (
     'dependency' => false,
 );
 
-$dictionary["Opportunity"]["fields"]["b2b_employee_id"] = array (
+$dictionary["Opportunity"]["fields"]["b2b_employee_id"] = array(
     'inline_edit' => '1',
     'labelValue' => 'b2b_employee_id',
     'required' => false,
     'name' => 'b2b_employee_id',
     'vname' => 'LBL_B2B_EMPLOYEE_ID',
-    'type' => 'int',
+    'type' => 'varchar',
     'massupdate' => '0',
     'default' => '',
     'no_default' => false,
@@ -218,13 +217,13 @@ $dictionary["Opportunity"]["fields"]["b2b_employee_id"] = array (
     'max' => false,
 );
 
-$dictionary["Opportunity"]["fields"]["b2b_nights"] = array (
+$dictionary["Opportunity"]["fields"]["b2b_nights"] = array(
     'inline_edit' => '1',
     'labelValue' => 'Nights',
     'required' => false,
     'name' => 'b2b_nights',
     'vname' => 'LBL_B2B_NIGHTS',
-    'type' => 'int',
+    'type' => 'varchar',
     'massupdate' => '0',
     'default' => '',
     'no_default' => false,
@@ -245,13 +244,13 @@ $dictionary["Opportunity"]["fields"]["b2b_nights"] = array (
     'max' => false,
 );
 
-$dictionary["Opportunity"]["fields"]["b2b_persons"] = array (
+$dictionary["Opportunity"]["fields"]["b2b_persons"] = array(
     'inline_edit' => '1',
     'labelValue' => 'Persons',
     'required' => false,
     'name' => 'b2b_persons',
     'vname' => 'LBL_B2B_PERSONS',
-    'type' => 'int',
+    'type' => 'varchar',
     'massupdate' => '0',
     'default' => '',
     'no_default' => false,
@@ -272,7 +271,7 @@ $dictionary["Opportunity"]["fields"]["b2b_persons"] = array (
     'max' => false,
 );
 
-$dictionary["Opportunity"]["fields"]["b2b_plan_date"] = array (
+$dictionary["Opportunity"]["fields"]["b2b_plan_date"] = array(
     'inline_edit' => '1',
     'labelValue' => 'Plan Date',
     'required' => false,
@@ -295,13 +294,13 @@ $dictionary["Opportunity"]["fields"]["b2b_plan_date"] = array (
     'enable_range_search' => false,
 );
 
-$dictionary["Opportunity"]["fields"]["b2b_potential_id"] = array (
+$dictionary["Opportunity"]["fields"]["b2b_potential_id"] = array(
     'inline_edit' => '1',
     'labelValue' => 'b2b_potential_id',
     'required' => false,
     'name' => 'b2b_potential_id',
     'vname' => 'LBL_B2B_POTENTIAL_ID',
-    'type' => 'int',
+    'type' => 'varchar',
     'massupdate' => '0',
     'default' => '',
     'no_default' => false,
@@ -321,7 +320,7 @@ $dictionary["Opportunity"]["fields"]["b2b_potential_id"] = array (
     'min' => false,
     'max' => false,
 );
-$dictionary["Opportunity"]["fields"]["b2b_room_rev"] = array (
+$dictionary["Opportunity"]["fields"]["b2b_room_rev"] = array(
     'inline_edit' => '1',
     'labelValue' => 'Room Revenue',
     'required' => false,
@@ -345,13 +344,13 @@ $dictionary["Opportunity"]["fields"]["b2b_room_rev"] = array (
     'enable_range_search' => false,
     'precision' => 6,
 );
-$dictionary["Opportunity"]["fields"]["b2b_rooms"] = array (
+$dictionary["Opportunity"]["fields"]["b2b_rooms"] = array(
     'inline_edit' => '1',
     'labelValue' => 'Rooms',
     'required' => false,
     'name' => 'b2b_rooms',
     'vname' => 'LBL_B2B_ROOMS',
-    'type' => 'int',
+    'type' => 'varchar',
     'massupdate' => '0',
     'default' => '',
     'no_default' => false,
@@ -373,7 +372,7 @@ $dictionary["Opportunity"]["fields"]["b2b_rooms"] = array (
 );
 
 
-$dictionary["Opportunity"]["fields"]["b2b_status"] = array (
+$dictionary["Opportunity"]["fields"]["b2b_status"] = array(
     'inline_edit' => '1',
     'labelValue' => 'Status',
     'required' => false,
@@ -398,7 +397,7 @@ $dictionary["Opportunity"]["fields"]["b2b_status"] = array (
     'studio' => 'visible',
     'dependency' => false,
 );
-$dictionary["Opportunity"]["fields"]["b2b_type"] = array (
+$dictionary["Opportunity"]["fields"]["b2b_type"] = array(
     'inline_edit' => '1',
     'labelValue' => 'Type',
     'required' => false,
@@ -423,7 +422,7 @@ $dictionary["Opportunity"]["fields"]["b2b_type"] = array (
     'studio' => 'visible',
     'dependency' => false,
 );
-$dictionary["Opportunity"]["fields"]["b2b_opportunity_type"] = array (
+$dictionary["Opportunity"]["fields"]["b2b_opportunity_type"] = array(
     'inline_edit' => '1',
     'labelValue' => 'Opportunity',
     'required' => false,
@@ -448,498 +447,3 @@ $dictionary["Opportunity"]["fields"]["b2b_opportunity_type"] = array (
     'studio' => 'visible',
     'dependency' => NULL,
 );
-
-//
-//$dictionary["Opportunity"]["fields"]["b2baccountid"] = array (
-//
-//            'inline_edit' => '1',
-//            'labelValue' => 'b2baccountid',
-//            'required' => false,
-//    'name' => 'b2baccountid',
-//
-//            'vname' => 'LBL_B2BACCOUNTID',
-//            'type' => 'int',
-//            'massupdate' => '0',
-//            'default' => '',
-//            'no_default' => false,
-//            'comments' => '',
-//            'help' => '',
-//            'importable' => 'true',
-//            'duplicate_merge' => 'disabled',
-//            'duplicate_merge_dom_value' => '0',
-//            'audited' => false,
-//            'reportable' => true,
-//            'unified_search' => false,
-//            'merge_filter' => 'disabled',
-//            'len' => '255',
-//            'size' => '20',
-//            'enable_range_search' => false,
-//            'disable_num_format' => '',
-//            'min' => false,
-//            'max' => false,
-//
-//);
-//
-//$dictionary["Opportunity"]["fields"]["b2bbanquet_fbpersons"] = array (
-//
-//            'inline_edit' => '1',
-//            'labelValue' => 'Banquet FB Persons',
-//            'required' => false,
-//
-//            'name' => 'b2bbanquet_fbpersons',
-//            'vname' => 'LBL_B2BBANQUET_FBPERSONS',
-//            'type' => 'int',
-//            'massupdate' => '0',
-//            'default' => '',
-//            'no_default' => false,
-//            'comments' => '',
-//            'help' => '',
-//            'importable' => 'true',
-//            'duplicate_merge' => 'disabled',
-//            'duplicate_merge_dom_value' => '0',
-//            'audited' => false,
-//            'reportable' => true,
-//            'unified_search' => false,
-//            'merge_filter' => 'disabled',
-//            'len' => '255',
-//            'size' => '20',
-//            'enable_range_search' => false,
-//            'disable_num_format' => '',
-//            'min' => false,
-//            'max' => false,
-//
-//);
-//
-//$dictionary["Opportunity"]["fields"]["b2bbanquet_fbrev"] = array (
-//
-//            'inline_edit' => '1',
-//            'labelValue' => 'Banquet F&B Revenue',
-//            'required' => false,
-//
-//            'name' => 'b2bbanquet_fbrev',
-//            'vname' => 'LBL_B2BBANQUET_FBREV',
-//            'type' => 'currency',
-//            'massupdate' => '0',
-//            'default' => '',
-//            'no_default' => false,
-//            'comments' => '',
-//            'help' => '',
-//            'importable' => 'true',
-//            'duplicate_merge' => 'disabled',
-//            'duplicate_merge_dom_value' => '0',
-//            'audited' => false,
-//            'reportable' => true,
-//            'unified_search' => false,
-//            'merge_filter' => 'disabled',
-//            'len' => '26',
-//            'size' => '20',
-//            'enable_range_search' => false,
-//            'precision' => 6,
-//
-//);
-//$dictionary["Opportunity"]["fields"]["b2bbanquet_otherpersons"] = array (
-//
-//            'inline_edit' => '1',
-//            'labelValue' => 'Banquet Other Persons',
-//            'required' => false,
-//
-//            'name' => 'b2bbanquet_otherpersons',
-//            'vname' => 'LBL_B2BBANQUET_OTHERPERSONS',
-//            'type' => 'int',
-//            'massupdate' => '0',
-//            'default' => '0',
-//            'no_default' => false,
-//            'comments' => '',
-//            'help' => '',
-//            'importable' => 'true',
-//            'duplicate_merge' => 'disabled',
-//            'duplicate_merge_dom_value' => '0',
-//            'audited' => false,
-//            'reportable' => true,
-//            'unified_search' => false,
-//            'merge_filter' => 'disabled',
-//            'len' => '255',
-//            'size' => '20',
-//            'enable_range_search' => false,
-//            'disable_num_format' => NULL,
-//            'min' => 0,
-//            'max' => false,
-//            'validation' =>
-//                array (
-//                    'type' => 'range',
-//                    'min' => 0,
-//                    'max' => false,
-//                ),
-//
-//
-//        );
-//$dictionary["Opportunity"]["fields"]["b2bbanquet_otherrev"] = array (
-//
-//            'inline_edit' => '1',
-//            'labelValue' => 'Banquet Other Revenue',
-//            'required' => false,
-//
-//            'name' => 'b2bbanquet_otherrev',
-//            'vname' => 'LBL_B2BBANQUET_OTHERREV',
-//            'type' => 'currency',
-//            'massupdate' => '0',
-//            'default' => '',
-//            'no_default' => false,
-//            'comments' => '',
-//            'help' => '',
-//            'importable' => 'true',
-//            'duplicate_merge' => 'disabled',
-//            'duplicate_merge_dom_value' => '0',
-//            'audited' => false,
-//            'reportable' => true,
-//            'unified_search' => false,
-//            'merge_filter' => 'disabled',
-//            'len' => '26',
-//            'size' => '20',
-//            'enable_range_search' => false,
-//            'precision' => 6,
-//
-//);
-//$dictionary["Opportunity"]["fields"]["b2bcontactid"] = array (
-//
-//            'inline_edit' => '1',
-//            'labelValue' => 'b2bcontactid',
-//            'required' => false,
-//
-//            'name' => 'b2bcontactid',
-//            'vname' => 'LBL_B2BCONTACTID',
-//            'type' => 'int',
-//            'massupdate' => '0',
-//            'default' => '',
-//            'no_default' => false,
-//            'comments' => '',
-//            'help' => '',
-//            'importable' => 'true',
-//            'duplicate_merge' => 'disabled',
-//            'duplicate_merge_dom_value' => '0',
-//            'audited' => false,
-//            'reportable' => true,
-//            'unified_search' => false,
-//            'merge_filter' => 'disabled',
-//            'len' => '255',
-//            'size' => '20',
-//            'enable_range_search' => false,
-//            'disable_num_format' => '',
-//            'min' => false,
-//            'max' => false,
-//
-//);
-//$dictionary["Opportunity"]["fields"]["b2bcurrency"] = array (
-//
-//            'inline_edit' => '1',
-//            'labelValue' => 'Currency',
-//            'required' => false,
-//
-//            'name' => 'b2bcurrency',
-//            'vname' => 'LBL_B2BCURRENCY',
-//            'type' => 'enum',
-//            'massupdate' => '0',
-//            'default' => NULL,
-//            'no_default' => false,
-//            'comments' => '',
-//            'help' => '',
-//            'importable' => 'true',
-//            'duplicate_merge' => 'disabled',
-//            'duplicate_merge_dom_value' => '0',
-//            'audited' => false,
-//            'reportable' => true,
-//            'unified_search' => false,
-//            'merge_filter' => 'disabled',
-//            'len' => 100,
-//            'size' => '20',
-//            'options' => 'b2bcurrency_list',
-//            'studio' => 'visible',
-//            'dependency' => false,
-//
-//);
-//$dictionary["Opportunity"]["fields"]["b2bemployeeid"] = array (
-//
-//            'inline_edit' => '1',
-//            'labelValue' => 'b2bemployeeid',
-//            'required' => false,
-//
-//            'name' => 'b2bemployeeid',
-//            'vname' => 'LBL_B2BEMPLOYEEID',
-//            'type' => 'int',
-//            'massupdate' => '0',
-//            'default' => '',
-//            'no_default' => false,
-//            'comments' => '',
-//            'help' => '',
-//            'importable' => 'true',
-//            'duplicate_merge' => 'disabled',
-//            'duplicate_merge_dom_value' => '0',
-//            'audited' => false,
-//            'reportable' => true,
-//            'unified_search' => false,
-//            'merge_filter' => 'disabled',
-//            'len' => '255',
-//            'size' => '20',
-//            'enable_range_search' => false,
-//            'disable_num_format' => '',
-//            'min' => false,
-//            'max' => false,
-//
-//);
-//
-//$dictionary["Opportunity"]["fields"]["b2bnights"] = array (
-//
-//            'inline_edit' => '1',
-//            'labelValue' => 'Nights',
-//            'required' => false,
-//
-//            'name' => 'b2bnights',
-//            'vname' => 'LBL_B2BNIGHTS',
-//            'type' => 'int',
-//            'massupdate' => '0',
-//            'default' => '',
-//            'no_default' => false,
-//            'comments' => '',
-//            'help' => '',
-//            'importable' => 'true',
-//            'duplicate_merge' => 'disabled',
-//            'duplicate_merge_dom_value' => '0',
-//            'audited' => false,
-//            'reportable' => true,
-//            'unified_search' => false,
-//            'merge_filter' => 'disabled',
-//            'len' => '255',
-//            'size' => '20',
-//            'enable_range_search' => false,
-//            'disable_num_format' => '',
-//            'min' => false,
-//            'max' => false,
-//
-//);
-//$dictionary["Opportunity"]["fields"]["b2bpersons"] = array (
-//
-//            'inline_edit' => '1',
-//            'labelValue' => 'Persons',
-//            'required' => false,
-//
-//            'name' => 'b2bpersons',
-//            'vname' => 'LBL_B2BPERSONS',
-//            'type' => 'int',
-//            'massupdate' => '0',
-//            'default' => '',
-//            'no_default' => false,
-//            'comments' => '',
-//            'help' => '',
-//            'importable' => 'true',
-//            'duplicate_merge' => 'disabled',
-//            'duplicate_merge_dom_value' => '0',
-//            'audited' => false,
-//            'reportable' => true,
-//            'unified_search' => false,
-//            'merge_filter' => 'disabled',
-//            'len' => '255',
-//            'size' => '20',
-//            'enable_range_search' => false,
-//            'disable_num_format' => '',
-//            'min' => false,
-//            'max' => false,
-//
-//);
-//$dictionary["Opportunity"]["fields"]["b2bplandate"] = array (
-//
-//            'inline_edit' => '1',
-//            'labelValue' => 'Plan Date',
-//            'required' => false,
-//
-//            'name' => 'b2bplandate',
-//            'vname' => 'LBL_B2BPLANDATE',
-//            'type' => 'date',
-//            'massupdate' => '0',
-//            'default' => '',
-//            'no_default' => false,
-//            'comments' => '',
-//            'help' => '',
-//            'importable' => 'true',
-//            'duplicate_merge' => 'disabled',
-//            'duplicate_merge_dom_value' => '0',
-//            'audited' => false,
-//            'reportable' => true,
-//            'unified_search' => false,
-//            'merge_filter' => 'disabled',
-//            'size' => '20',
-//            'enable_range_search' => false,
-//
-//);
-//
-//
-//$dictionary["Opportunity"]["fields"]["b2bpotentialid"] = array (
-//
-//            'inline_edit' => '1',
-//            'labelValue' => 'b2bpotentialid',
-//            'required' => false,
-//
-//            'name' => 'b2bpotentialid',
-//            'vname' => 'LBL_B2BPOTENTIALID',
-//            'type' => 'int',
-//            'massupdate' => '0',
-//            'default' => '',
-//            'no_default' => false,
-//            'comments' => '',
-//            'help' => '',
-//            'importable' => 'true',
-//            'duplicate_merge' => 'disabled',
-//            'duplicate_merge_dom_value' => '0',
-//            'audited' => false,
-//            'reportable' => true,
-//            'unified_search' => false,
-//            'merge_filter' => 'disabled',
-//            'len' => '255',
-//            'size' => '20',
-//            'enable_range_search' => false,
-//            'disable_num_format' => '',
-//            'min' => false,
-//            'max' => false,
-//
-//);
-//$dictionary["Opportunity"]["fields"]["b2broomrev"] = array (
-//
-//            'inline_edit' => '1',
-//            'labelValue' => 'Room Revenue',
-//            'required' => false,
-//
-//            'name' => 'b2broomrev',
-//            'vname' => 'LBL_B2BROOMREV',
-//            'type' => 'currency',
-//            'massupdate' => '0',
-//            'default' => '',
-//            'no_default' => false,
-//            'comments' => '',
-//            'help' => '',
-//            'importable' => 'true',
-//            'duplicate_merge' => 'disabled',
-//            'duplicate_merge_dom_value' => '0',
-//            'audited' => false,
-//            'reportable' => true,
-//            'unified_search' => false,
-//            'merge_filter' => 'disabled',
-//            'len' => '26',
-//            'size' => '20',
-//            'enable_range_search' => false,
-//            'precision' => 6,
-//
-//);
-//$dictionary["Opportunity"]["fields"]["b2brooms"] = array (
-//
-//            'inline_edit' => '1',
-//            'labelValue' => 'Rooms',
-//            'required' => false,
-//
-//            'name' => 'b2brooms',
-//            'vname' => 'LBL_B2BROOMS',
-//            'type' => 'int',
-//            'massupdate' => '0',
-//            'default' => '',
-//            'no_default' => false,
-//            'comments' => '',
-//            'help' => '',
-//            'importable' => 'true',
-//            'duplicate_merge' => 'disabled',
-//            'duplicate_merge_dom_value' => '0',
-//            'audited' => false,
-//            'reportable' => true,
-//            'unified_search' => false,
-//            'merge_filter' => 'disabled',
-//            'len' => '255',
-//            'size' => '20',
-//            'enable_range_search' => false,
-//            'disable_num_format' => '',
-//            'min' => false,
-//            'max' => false,
-//
-//);
-//
-//
-//$dictionary["Opportunity"]["fields"]["b2bstatus"] = array (
-//
-//            'inline_edit' => '1',
-//            'labelValue' => 'Status',
-//            'required' => false,
-//
-//            'name' => 'b2bstatus',
-//            'vname' => 'LBL_B2BSTATUS',
-//            'type' => 'enum',
-//            'massupdate' => '0',
-//            'default' => NULL,
-//            'no_default' => false,
-//            'comments' => '',
-//            'help' => '',
-//            'importable' => 'true',
-//            'duplicate_merge' => 'disabled',
-//            'duplicate_merge_dom_value' => '0',
-//            'audited' => false,
-//            'reportable' => true,
-//            'unified_search' => false,
-//            'merge_filter' => 'disabled',
-//            'len' => 100,
-//            'size' => '20',
-//            'options' => 'b2b_Potential_Status_list',
-//            'studio' => 'visible',
-//            'dependency' => false,
-//
-//);
-//$dictionary["Opportunity"]["fields"]["b2btype"] = array (
-//
-//            'inline_edit' => '1',
-//            'labelValue' => 'Type',
-//            'required' => false,
-//
-//            'name' => 'b2btype',
-//            'vname' => 'LBL_B2BTYPE',
-//            'type' => 'enum',
-//            'massupdate' => '0',
-//            'default' => NULL,
-//            'no_default' => false,
-//            'comments' => '',
-//            'help' => '',
-//            'importable' => 'true',
-//            'duplicate_merge' => 'disabled',
-//            'duplicate_merge_dom_value' => '0',
-//            'audited' => false,
-//            'reportable' => true,
-//            'unified_search' => false,
-//            'merge_filter' => 'disabled',
-//            'len' => 100,
-//            'size' => '20',
-//            'options' => 'b2b_potential_type_list',
-//            'studio' => 'visible',
-//            'dependency' => false,
-//
-//);
-//$dictionary["Opportunity"]["fields"]["b2b_opportunitytype"] = array (
-//
-//            'inline_edit' => '1',
-//            'labelValue' => 'Opportunity',
-//            'required' => false,
-//
-//            'name' => 'b2b_opportunitytype',
-//            'vname' => 'LBL_B2B_OPPORTUNITYTYPE',
-//            'type' => 'enum',
-//            'massupdate' => '0',
-//            'default' => NULL,
-//            'no_default' => false,
-//            'comments' => '',
-//            'help' => '',
-//            'importable' => 'true',
-//            'duplicate_merge' => 'disabled',
-//            'duplicate_merge_dom_value' => '0',
-//            'audited' => false,
-//            'reportable' => true,
-//            'unified_search' => false,
-//            'merge_filter' => 'disabled',
-//            'len' => 100,
-//            'size' => '20',
-//            'options' => 'b2b_opportunitytype_c_list',
-//            'studio' => 'visible',
-//            'dependency' => NULL,
-//
-//);
