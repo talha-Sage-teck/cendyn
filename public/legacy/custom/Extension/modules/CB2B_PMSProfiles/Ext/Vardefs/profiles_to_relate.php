@@ -5,7 +5,7 @@ array (
     'required' => false,
     'name' => 'profiles_to_relate',
     'vname' => 'LBL_PROFILES_TO_RELATE',
-    'type' => 'varchar',
+    'type' => 'text',
     'massupdate' => 0,
     'no_default' => false,
     'comments' => '',
