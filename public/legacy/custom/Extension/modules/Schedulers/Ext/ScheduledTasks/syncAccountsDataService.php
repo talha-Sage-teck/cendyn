@@ -45,20 +45,11 @@ function sendData($data, $account_id = null) {
 
     curl_close($curl);
 
-    $GLOBALS['log']->fatal('$response : ' . print_r($response, 1));
-
-    if (!empty($response)) {
-        return json_decode($response);
+    if ($response != "") {
+        $GLOBALS['log']->fatal($response);
+        return false;
     }
-}
-
-function checkForErrorsInResponse($response) {
-    $GLOBALS['log']->fatal('checkForErrorsInResponse -> $response : ' . print_r($response, 1));
-    if (!empty($response) && $response->status != 200) {
-        $GLOBALS['log']->fatal('Error Response --> : ' . print_r($response->status . ' :: ' . $response->title, 1));
-        return true;
-    }
-    return false;
+    return true;
 }
 
 function syncAccountsDataService() {
@@ -119,16 +110,16 @@ function syncAccountsDataService() {
         );
 
         //check value of ready_to_sync flag and call API endpoint accordingly
+        $res = false;
         switch ($accountRow['ready_to_sync']) {
             case 1:
                 $data['insertDate'] = $accountBean->last_sync_date;
-                $response = sendData($data);
+                $res = sendData($data);
                 break;
             case 2:
-                $data['id'] = 0;
-                // TBD
-//                $data['id'] = $accountBean->einsight_account_id ?? 0;
-                $response = sendData($data, $data['externalAccountId']);
+                $data['id'] = $accountBean->einsight_account_id ?? 0;
+                $res = sendData($data, $data['externalAccountId']);
+
                 break;
             default:
                 $GLOBALS['log']->fatal("syncAccountsDataService: Unexpected sync flag value in scheduler.");
@@ -136,12 +127,10 @@ function syncAccountsDataService() {
         }
 
         //unsetting the read_to_sync flag, setting the fromScheduler flag and saving
-        $findError = checkForErrorsInResponse($response);
-        if (!$findError) {
+        if ($res)
             $accountBean->ready_to_sync = 0;
-            $accountBean->fromScheduler = true;
-            $accountBean->save();
-        }
+        $accountBean->fromScheduler = true;
+        $accountBean->save();
     }
 
     return true;
