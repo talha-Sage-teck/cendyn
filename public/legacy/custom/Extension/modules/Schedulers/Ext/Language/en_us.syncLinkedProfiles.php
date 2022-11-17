@@ -1,2 +1,3 @@
 <?php
-$mod_strings['LBL_SYNCLINKEDPMSPROFILES'] = 'Sync linked PMS Profiles';
+
+$mod_strings['LBL_SYNCLINKEDPROFILES'] = 'Sync linked PMS Profiles';
