@@ -38,7 +38,12 @@ function sendData($data, $account_id = null) {
     curl_setopt_array($curl, $object);
     $response = curl_exec($curl);
     curl_close($curl);
-    $GLOBALS['log']->fatal($response);
+
+    if($response != "") {
+        $GLOBALS['log']->fatal($response);
+        return false;
+    }
+    return true;
 }
 
 function syncAccountsDataService() {
@@ -98,14 +103,15 @@ function syncAccountsDataService() {
         );
 
         //check value of ready_to_sync flag and call API endpoint accordingly
+        $res = false;
         switch($accountRow['ready_to_sync']) {
             case 1:
                 $data['insertDate'] = $accountBean->last_sync_date;
-                sendData($data);
+                $res = sendData($data);
                 break;
             case 2:
                 $data['id'] = $accountBean->einsight_account_id ?? 0;
-                sendData($data, $data['externalAccountId']);
+                $res = sendData($data, $data['externalAccountId']);
                 break;
             default:
                 $GLOBALS['log']->fatal("syncAccountsDataService: Unexpected sync flag value in scheduler.");
@@ -113,7 +119,8 @@ function syncAccountsDataService() {
         }
 
         //unsetting the read_to_sync flag, setting the fromScheduler flag and saving
-        $accountBean->ready_to_sync = 0;
+        if($res)
+            $accountBean->ready_to_sync = 0;
         $accountBean->fromScheduler = true;
         $accountBean->save();
     }
