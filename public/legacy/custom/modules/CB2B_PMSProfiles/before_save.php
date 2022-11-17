@@ -6,7 +6,7 @@ if (!defined('sugarEntry') || !sugarEntry)
 class beforeSaveHandler {
 
     /**
-     * 
+     *
      * @param type $bean
      * @param type $event
      * @param type $arguments
@@ -22,12 +22,19 @@ class beforeSaveHandler {
 
     function linkAccountToRelatedProfiles(&$bean, $event, $arguments)
     {
-        if ($bean->profiles_to_relate != "" && $bean->profiles_to_relate != null) {
+        //get the related profile IDs that do not already have an account related to them
+        global $db;
+        $select_relate = "SELECT * FROM cb2b_pmsprofiles WHERE id='{$bean->id}' AND deleted = 0";
+        $result_relate = $db->query($select_relate);
+        $profile = $db->fetchByAssoc($result_relate);
+
+        //if related profiles exist, and if the save did not occur in the entry point "relateProfilesToAccount"
+        if ($profile['profiles_to_relate'] != "" && $profile['profiles_to_relate'] != null && !$bean->fromEntryPoint) {
             //defining relationship
             $accountRel = "accounts_cb2b_pmsprofiles_1";
 
             //loading the IDs and converting them to array
-            $ids = $bean->profiles_to_relate;
+            $ids = $profile['profiles_to_relate'];
             $ids_array = explode(', ', $ids);
 
             //loading the related account
@@ -35,10 +42,8 @@ class beforeSaveHandler {
             $relAccount = $bean->$accountRel->getBeans();
 
             //if account exists than relate
-            if (sizeof($relAccount) > 0) {
-                $account = $relAccount[0];
-
-                //looping over every profile to link the account
+            foreach($relAccount as $account) {
+            //looping over every profile to link the account
                 foreach ($ids_array as $id) {
                     $profile = BeanFactory::getBean('CB2B_PMSProfiles', $id);
                     $profile->load_relationship($accountRel);

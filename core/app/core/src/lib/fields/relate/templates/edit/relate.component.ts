@@ -53,6 +53,7 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
     idField: Field;
     pModule: string;
     rec: string;
+    unrelated: number;
 
     /**
      * Constructor
@@ -89,11 +90,13 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
      * On init handler
      */
     ngOnInit(): void {
-
         super.ngOnInit();
-        let r = this.router.url.split('/');
-        this.pModule = r[1];
-        this.rec = r[r.length - 1];
+        (async() => {
+            let r = this.router.url.split('/');
+            this.pModule = r[1];
+            this.rec = r[r.length - 1];
+            this.unrelated = await this.getUnrelatedProfiles();
+        })();
         this.init();
     }
 
@@ -109,10 +112,26 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
         }
     }
 
+    getUnrelatedProfiles = async(): Promise<number> => {
+        let headers = new HttpHeaders();
+        headers.set('Content-Type', 'application/json; charset=utf-8');
+        return await new Promise((resolve, reject) => {
+            this.http.get(location.origin + location.pathname +
+                'legacy/index.php?entryPoint=checkRelatedProfilesAccounts&profileID=' +
+                this.rec, {headers: headers, responseType: 'text'})
+            .subscribe(data => {
+                resolve(parseInt(data));
+            }, error => {
+                reject(error);
+            });
+        });
+    }
+
     runPMSProfilesAction(): void {
         let headers = new HttpHeaders();
         headers.set('Content-Type', 'application/json; charset=utf-8');
-        this.http.get(location.origin + location.pathname + 'legacy/index.php?entryPoint=relateProfilesToAccount&profileID=' +
+        this.http.get(location.origin + location.pathname +
+            'legacy/index.php?entryPoint=relateProfilesToAccount&profileID=' +
             this.rec, {headers: headers, responseType: 'text'})
             .subscribe(data => {}, error => console.log("Error: " + error));
     }
@@ -142,7 +161,9 @@ export class RelateEditFieldComponent extends BaseRelateComponent {
             const relateName = this.getRelateFieldName();
             this.setValue(item.id, item[relateName]);
             let uuidPattern = /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/;
-            if(this.field.definition.module.toLowerCase() === "accounts" && this.module.toLowerCase() === "cb2b_pmsprofiles" && this.rec !== null && this.rec !== '' && typeof this.rec !== 'undefined' && uuidPattern.test(this.rec)) {
+            if(this.field.definition.module.toLowerCase() === "accounts" && this.module.toLowerCase()
+                === "cb2b_pmsprofiles" && this.rec !== null && this.rec !== '' && typeof this.rec !== 'undefined' &&
+                uuidPattern.test(this.rec) && this.unrelated > 0) {
                 const modal = this.modalService.open(MessageModalComponent);
                 modal.componentInstance.textKey = 'LBL_POPUP_PROFILES';
                 modal.componentInstance.buttons = [

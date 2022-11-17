@@ -1,9 +1,11 @@
 <?php
 
-/* * *
- * Entrypoint to relate Account with PMS Profiles
- * @Condition:
- * The PMS Profile must not already be related to another account
+/***
+ * Checks if at least one of all the related profiles of the selected profile has a related account
+ * @Input
+ * Current Profile ID
+ * @Output
+ * Number of profiles that do not have an account associated with them
  */
 
 // defining relationship variables
@@ -20,20 +22,13 @@ $profileBean->load_relationship($profilesRel);
 // loading all the profiles related to the current profile
 $relatedProfiles = $profileBean->$profilesRel->getBeans();
 
-// looping over all related profiles to check if any profile has a related account,
-// if no account is already related then the profile ID is added to the string
-$profiles = "";
-foreach ($relatedProfiles as $profile) {
+// looping over all related profiles to check if any profile does not have a related account
+$count = 0;
+foreach($relatedProfiles as $profile) {
     $profile->load_relationship($accountRel);
     $relAccount = $profile->$accountRel->getBeans();
-    if (sizeof($relAccount) == 0) {
-        if ($profiles !== "")
-            $profiles .= ", ";
-        $profiles .= $profile->id;
-    }
+    if(sizeof($relAccount) == 0)
+        ++$count;
 }
 
-// saving the profile
-$profileBean->profiles_to_relate = $profiles;
-$profileBean->fromEntryPoint = true;
-$profileBean->save();
+echo $count;
