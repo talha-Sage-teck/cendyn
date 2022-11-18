@@ -20,8 +20,10 @@ class beforeRelationshipAddHandler
                 }
             }
             else {
-                $bean->ready_to_link = 1;
-                $bean->save();
+                if($arguments['related_module'] == "Accounts") {
+                    $bean->ready_to_link = 1;
+                    $bean->save();
+                }
             }
         }
     }

@@ -348,6 +348,10 @@ export class RecordViewStore extends ViewStore implements StateStore {
                     ...this.internalState,
                     loading: false
                 });
+
+                //Custom CB2B_PMSProfiles -> Accounts subpanel refresh onload code
+                if(this.getModuleName().toLowerCase() === "cb2b_pmsprofiles")
+                    window.location.reload();
             })
         );
     }
