@@ -22,18 +22,14 @@ $relatedProfiles = $profileBean->$profilesRel->getBeans();
 
 // looping over all related profiles to check if any profile has a related account,
 // if no account is already related then the profile ID is added to the string
-$profiles = "";
+$profileIdsArr = array();
 foreach ($relatedProfiles as $profile) {
-    $profile->load_relationship($accountRel);
-    $relAccount = $profile->$accountRel->getBeans();
-    if (sizeof($relAccount) == 0) {
-        if ($profiles !== "")
-            $profiles .= ", ";
-        $profiles .= $profile->id;
+    if (empty($profile->accounts_cb2b_pmsprofiles_1accounts_ida)) {
+        array_push($profileIdsArr, $profile->id);
     }
 }
 
 // saving the profile
-$profileBean->profiles_to_relate = $profiles;
+$profileBean->profiles_to_relate = implode(',', $profileIdsArr);
 $profileBean->fromEntryPoint = true;
 $profileBean->save();
