@@ -1,0 +1,32 @@
+<?php
+ // created: 2022-10-12 09:19:57
+$dictionary['FP_events']['fields']['contract'] = array (
+    'inline_edit' => '1',
+    'labelValue' => 'Contract',
+    'required' => false,
+    'source' => 'non-db',
+    'name' => 'contract',
+    'vname' => 'LBL_CONTRACT',
+    'type' => 'relate',
+    'massupdate' => '0',
+    'default' => NULL,
+    'no_default' => false,
+    'comments' => '',
+    'help' => '',
+    'importable' => 'true',
+    'duplicate_merge' => 'disabled',
+    'duplicate_merge_dom_value' => '0',
+    'audited' => false,
+    'reportable' => true,
+    'unified_search' => false,
+    'merge_filter' => 'disabled',
+    'len' => '255',
+    'size' => '20',
+    'id_name' => 'aos_contracts_id',
+    'ext2' => 'AOS_Contracts',
+    'module' => 'AOS_Contracts',
+    'rname' => 'name',
+    'quicksearch' => 'enabled',
+    'studio' => 'visible',
+);
+ ?>
