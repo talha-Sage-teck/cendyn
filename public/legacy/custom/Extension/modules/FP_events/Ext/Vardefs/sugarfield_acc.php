@@ -1,0 +1,32 @@
+<?php
+ // created: 2022-10-12 09:07:48
+$dictionary['FP_events']['fields']['acc'] = array (
+    'inline_edit' => '1',
+    'labelValue' => 'Customer/ Account',
+    'required' => false,
+    'source' => 'non-db',
+    'name' => 'acc',
+    'vname' => 'LBL_ACC',
+    'type' => 'relate',
+    'massupdate' => '0',
+    'default' => NULL,
+    'no_default' => false,
+    'comments' => '',
+    'help' => '',
+    'importable' => 'true',
+    'duplicate_merge' => 'disabled',
+    'duplicate_merge_dom_value' => '0',
+    'audited' => false,
+    'reportable' => true,
+    'unified_search' => false,
+    'merge_filter' => 'disabled',
+    'id_name' => 'account_id',
+    'len' => '255',
+    'size' => '20',
+    'ext2' => 'Accounts',
+    'module' => 'Accounts',
+    'rname' => 'name',
+    'quicksearch' => 'enabled',
+    'studio' => 'visible',
+);
+ ?>
