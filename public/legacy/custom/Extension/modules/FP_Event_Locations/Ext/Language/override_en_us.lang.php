@@ -8,4 +8,4 @@ $mod_strings['LBL_MICROPHONE2'] = 'Microphone (handsfree)';
 $mod_strings['LBL_WIFI'] = 'WIFI';
 $mod_strings['LBL_WATER'] = 'Water';
 $mod_strings['LBL_EDITVIEW_PANEL2'] = 'Arrangement';
-$mod_strings['LBL_ARRANGEMENT '] = 'Arrangement';
+$mod_strings['LBL_ARRANGEMENT'] = 'Arrangement';
