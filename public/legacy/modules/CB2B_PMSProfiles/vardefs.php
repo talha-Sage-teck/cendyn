@@ -65,27 +65,6 @@ $dictionary['CB2B_PMSProfiles'] = array(
             'len' => '255',
             'size' => '20',
         ),
-        'contactemail' =>
-        array(
-            'required' => false,
-            'name' => 'contactemail',
-            'vname' => 'LBL_CONTACTEMAIL',
-            'type' => 'varchar',
-            'massupdate' => 0,
-            'no_default' => false,
-            'comments' => '',
-            'help' => '',
-            'importable' => 'true',
-            'duplicate_merge' => 'disabled',
-            'duplicate_merge_dom_value' => '0',
-            'audited' => false,
-            'inline_edit' => '',
-            'reportable' => true,
-            'unified_search' => false,
-            'merge_filter' => 'disabled',
-            'len' => '255',
-            'size' => '20',
-        ),
         'remarks' =>
         array(
             'required' => false,

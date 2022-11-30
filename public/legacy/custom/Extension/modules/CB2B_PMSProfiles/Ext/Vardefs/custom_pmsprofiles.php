@@ -151,10 +151,19 @@ $dictionary["CB2B_PMSProfiles"]['fields']['pms_einsight_profile_id'] = array(
 $dictionary['CB2B_PMSProfiles']['fields']['is_update'] = array(
     'name' => 'is_update',
     'vname' => 'LBL_IS_UPDATE',
-    'type' => 'bool',
+    'type' => 'int',
     'default' => '0',
     'reportable' => false,
     'comment' => 'is_update = 0 in case of Create & is_update = 1 in case of Update & is_update = -1 in case processed by Matching Engine',
+);
+
+$dictionary['CB2B_PMSProfiles']['fields']['is_update_dup'] = array(
+    'name' => 'is_update_dup',
+    'vname' => 'LBL_IS_UPDATE_DUP',
+    'type' => 'int',
+    'default' => '0',
+    'reportable' => false,
+    'comment' => 'is_update_dup = 0 in case of Create & is_update_dup = 1 in case of Update & is_update_dup = -1 in case processed by Auto Linking Engine (Profile and Account Auto Linking)',
 );
 
 $dictionary["CB2B_PMSProfiles"]['fields']['first_related_hotel_short_name'] = array(

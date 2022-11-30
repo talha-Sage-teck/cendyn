@@ -216,7 +216,12 @@ array (
             'label' => 'LBL_B2B_ACCOUNT_NO',
             'type' => 'readonly', /*** Never editable */
           ),
-          1 => '',
+          1 => 
+          array (
+            'name' => 'email1',
+            'studio' => 'false',
+            'label' => 'LBL_EMAIL_ADDRESS',
+          ),
         ),
         2 =>
         array (

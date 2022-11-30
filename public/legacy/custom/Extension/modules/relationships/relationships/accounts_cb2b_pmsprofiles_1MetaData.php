@@ -53,6 +53,13 @@ $dictionary["accounts_cb2b_pmsprofiles_1"] = array (
       'type' => 'varchar',
       'len' => 36,
     ),
+    5 => 
+    array (
+      'name' => 'is_auto_linking',
+      'type' => 'bool',
+      'len' => '1',
+      'default' => '0',
+    ),
   ),
   'indices' => 
   array (

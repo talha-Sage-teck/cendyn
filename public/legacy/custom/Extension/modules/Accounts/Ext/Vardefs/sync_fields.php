@@ -5,6 +5,7 @@ $dictionary["Account"]["fields"]["ready_to_sync"] = array(
     'name' => 'ready_to_sync',
     'vname' => 'LBL_READY_TO_SYNC',
     'type' => 'int',
+    'default' => '0',
     'audited' => false,
 );
 

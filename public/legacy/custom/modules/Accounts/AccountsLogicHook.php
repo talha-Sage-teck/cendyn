@@ -69,4 +69,13 @@ class AccountsLogicHook {
         }
     }
 
+//    public function isRecordCreatedOrUpdated($bean, $events, $args) {
+//        // Check if it's a new or existing record
+//        if ($bean->fetched_row == false) {
+//            $bean->is_update_dup = 0;
+//        } else {
+//            $bean->is_update_dup = 1;
+//        }
+//    }
+
 }

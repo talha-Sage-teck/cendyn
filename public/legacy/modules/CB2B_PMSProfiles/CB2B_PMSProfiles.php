@@ -74,7 +74,6 @@ class CB2B_PMSProfiles extends Basic
     public $address_building;
     public $contactname;
     public $contactlastname;
-    public $contactemail;
     public $remarks;
     public $language;
     public $website;

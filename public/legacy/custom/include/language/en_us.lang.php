@@ -232,7 +232,7 @@ $app_list_strings['event_type_list']=array (
 );
 $app_list_strings['account_base_list']=array (
   'C' => 'Company',
-  'T' => 'Agent',
+  'A' => 'Agent',
   'O' => 'Other',
 );
 $app_list_strings['account_customer_subtype_list']=array (

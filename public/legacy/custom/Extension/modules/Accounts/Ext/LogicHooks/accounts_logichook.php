@@ -24,3 +24,11 @@ $hook_array['before_save'][] = Array(
     'AccountsLogicHook',
     'setSyncFlag'
 );
+
+//$hook_array['before_save'][] = Array(
+//    10,
+//    'Set the Ready to Sync flag for each created/updated account',
+//    'custom/modules/Accounts/AccountsLogicHook.php',
+//    'AccountsLogicHook',
+//    'isRecordCreatedOrUpdated'
+//);

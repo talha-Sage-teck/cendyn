@@ -315,3 +315,12 @@ $dictionary["Account"]["fields"]["sales_rep_code"] = array(
     'len' => '255',
     'size' => '20',
 );
+
+//$dictionary['Account']['fields']['is_update_dup'] = array(
+//    'name' => 'is_update_dup',
+//    'vname' => 'LBL_IS_UPDATE_DUP',
+//    'type' => 'bool',
+//    'default' => '0',
+//    'reportable' => false,
+//    'comment' => 'is_update_dup = 0 in case of Create & is_update_dup = 1 in case of Update & is_update_dup = -1 in case processed by Auto Linking Engine (Profile and Account Auto Linking)',
+//);
