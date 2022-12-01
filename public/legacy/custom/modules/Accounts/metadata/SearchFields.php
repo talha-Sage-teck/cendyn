@@ -1,5 +1,5 @@
 <?php
-// created: 2022-07-04 12:01:18
+// created: 2022-12-02 02:30:40
 $searchFields['Accounts'] = array (
   'name' => 
   array (
@@ -211,5 +211,23 @@ $searchFields['Accounts'] = array (
   'billing_address_street' => 
   array (
     'query_type' => 'default',
+  ),
+  'range_last_sync_date' => 
+  array (
+    'query_type' => 'default',
+    'enable_range_search' => true,
+    'is_date_field' => true,
+  ),
+  'start_range_last_sync_date' => 
+  array (
+    'query_type' => 'default',
+    'enable_range_search' => true,
+    'is_date_field' => true,
+  ),
+  'end_range_last_sync_date' => 
+  array (
+    'query_type' => 'default',
+    'enable_range_search' => true,
+    'is_date_field' => true,
   ),
 );

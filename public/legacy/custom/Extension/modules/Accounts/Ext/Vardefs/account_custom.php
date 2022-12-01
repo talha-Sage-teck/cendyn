@@ -324,3 +324,18 @@ $dictionary["Account"]["fields"]["sales_rep_code"] = array(
 //    'reportable' => false,
 //    'comment' => 'is_update_dup = 0 in case of Create & is_update_dup = 1 in case of Update & is_update_dup = -1 in case processed by Auto Linking Engine (Profile and Account Auto Linking)',
 //);
+
+$dictionary["Account"]["fields"]["status"] = array(
+    'inline_edit' => '1',
+    'labelValue' => 'Status',
+    'name' => 'status',
+    'vname' => 'LBL_STATUS',
+    'type' => 'enum',
+    'massupdate' => '0',
+    'default' => 'Active',
+    'no_default' => false,
+    'audited' => true,
+    'len' => 100,
+    'size' => '20',
+    'options' => 'account_status_list',
+);

@@ -247,8 +247,8 @@ array (
           ),
           1 => 
           array (
-            'name' => 'assigned_user_name',
-            'label' => 'LBL_ASSIGNED_TO',
+            'name' => 'status',
+            'label' => 'LBL_STATUS',
           ),
         ),
         4 =>
@@ -318,6 +318,15 @@ array (
             'comment' => 'The fax phone number of this company',
             'label' => 'LBL_FAX',
           ),
+        ),
+          8 =>
+        array (
+          0 => 
+          array (
+            'name' => 'assigned_user_name',
+            'label' => 'LBL_ASSIGNED_TO',
+          ),
+          1 => '',
         ),
       ),
       'LBL_PANEL_ADVANCED' => 

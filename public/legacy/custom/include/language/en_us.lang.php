@@ -235,6 +235,12 @@ $app_list_strings['account_base_list']=array (
   'A' => 'Agent',
   'O' => 'Other',
 );
+
+$app_list_strings['account_status_list']=array (
+  'Active' => 'Active',
+  'In-Active' => 'In-Active',
+);
+
 $app_list_strings['account_customer_subtype_list']=array (
   133 => 'Government & Embassy',
   '6CD' => 'Airline',

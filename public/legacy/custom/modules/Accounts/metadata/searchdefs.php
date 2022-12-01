@@ -11,6 +11,14 @@ array (
         'default' => true,
         'width' => '10%',
       ),
+      'status' => 
+      array (
+        'type' => 'enum',
+        'default' => true,
+        'label' => 'LBL_STATUS',
+        'width' => '10%',
+        'name' => 'status',
+      ),
       'current_user_only' => 
       array (
         'name' => 'current_user_only',
@@ -24,6 +32,8 @@ array (
         'name' => 'favorites_only',
         'label' => 'LBL_FAVORITES_FILTER',
         'type' => 'bool',
+        'default' => true,
+        'width' => '10%',
       ),
     ),
     'advanced_search' => 
@@ -34,7 +44,15 @@ array (
         'default' => true,
         'width' => '10%',
       ),
-      'account_level' =>
+      'status' => 
+      array (
+        'type' => 'enum',
+        'default' => true,
+        'label' => 'LBL_STATUS',
+        'width' => '10%',
+        'name' => 'status',
+      ),
+      'account_level' => 
       array (
         'type' => 'enum',
         'default' => true,
@@ -106,13 +124,13 @@ array (
         'default' => true,
         'width' => '10%',
       ),
-      'account_base_type' => /*** added accountbasetype to allow user to filter records */
+      'account_base_type' => 
       array (
         'name' => 'account_base_type',
         'default' => true,
         'width' => '10%',
       ),
-      'account_type' => /*** added account_type to allow user to filter records */
+      'account_type' => 
       array (
         'name' => 'account_type',
         'default' => true,
@@ -140,7 +158,7 @@ array (
         'default' => true,
         'width' => '10%',
       ),
-      'priority' =>
+      'priority' => 
       array (
         'type' => 'enum',
         'default' => true,
@@ -149,8 +167,8 @@ array (
         'width' => '10%',
         'name' => 'priority',
       ),
-      'b2b_account_no' => /*** Account can be searched via account no */
-      array(
+      'b2b_account_no' => 
+      array (
         'name' => 'b2b_account_no',
         'width' => '10%',
         'label' => 'LBL_B2B_ACCOUNT_NO',
