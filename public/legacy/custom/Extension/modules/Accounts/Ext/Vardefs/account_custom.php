@@ -134,7 +134,7 @@ $dictionary["Account"]["fields"]["b2b_commission"] = array(
                 ),
                 'targetDisplayType' => 'block',
                 'activeOnFields' => array(
-                    'account_base_type' => array('T')
+                    'account_base_type' => array('A')
                 ),
             ),
         ),
@@ -235,7 +235,7 @@ $dictionary["Account"]["fields"]["iata"] = array(
                 ),
                 'targetDisplayType' => 'block',
                 'activeOnFields' => array(
-                    'account_base_type' => array('T'),
+                    'account_base_type' => array('A'),
                 ),
             ),
         ),
