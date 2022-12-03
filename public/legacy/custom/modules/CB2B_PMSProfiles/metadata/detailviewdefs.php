@@ -47,7 +47,7 @@ $viewdefs [$module_name] = array(
                 0 =>
                 array(
                     0 => 'name',
-                    1 => '',
+                    1 => 'iata',
                 ),
                 1 =>
                 array(
