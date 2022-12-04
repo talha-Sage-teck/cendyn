@@ -4,7 +4,7 @@
  *  This scheduler runs every 10 minutes and matches PMS Profiles with each other on the basis of the set criteria in
  *  PMS Profiles Criteria config
  * @Conditions:
- * 1. Any of the criteria match
+ * 1. If the first criteria matches then there is no need to match subsequent criteria
  * @Actions:
  * 1. Relate the two PMS Profiles through the relationship "suggested profiles"
  * @Returns:
