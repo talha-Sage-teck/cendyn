@@ -78,4 +78,23 @@ class AccountsLogicHook {
 //        }
 //    }
 
+    public function relatePromotedAccount($bean, $events, $args) {
+        /***
+         * Makes sure the promoted account is linked to the original profile
+         * 1. Checks if the return module and return ID is set
+         * 2. Checks if the return module is CB2B_PMSProfiles
+         * 3. Check if any account is already related
+         * 4. If not, then relate the profile
+         */
+
+        $return_module = $_REQUEST['return_module'];
+        $return_id = $_REQUEST['return_id'];
+        if($return_module && $return_id && strtolower($return_module) === "cb2b_pmsprofiles") {
+            if(!$bean->accounts_cb2b_pmsprofiles_1accounts_ida || trim($bean->accounts_cb2b_pmsprofiles_1accounts_ida) == "") {
+                $profileBean = BeanFactory::getBean('CB2B_PMSProfiles', $return_id);
+                $bean->load_relationship('accounts_cb2b_pmsprofiles_1');
+                $bean->accounts_cb2b_pmsprofiles_1->add($profileBean);
+            }
+        }
+    }
 }

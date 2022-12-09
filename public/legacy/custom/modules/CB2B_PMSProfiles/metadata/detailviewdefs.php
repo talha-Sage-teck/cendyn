@@ -40,6 +40,22 @@ $viewdefs [$module_name] = array(
                 ),
             ),
         ),
+        'recordActions' => [
+            'actions' => [
+                'convert-pms-profile' => [
+                    'key' => 'convert-pms-profile',
+                    'labelKey' => 'LBL_CONVERT_PMS_PROFILE',
+                    'asyncProcess' => true,
+                    'modes' => ['detail'],
+                    'acl' => ['edit'],
+                    'params' => [
+                        'displayConfirmation' => true,
+                        'confirmationLabel' => 'LBL_POPUP_CONVERT_PROFILE',
+                        'checkRelatedAccount' => true
+                    ],
+                ],
+            ],
+        ],
         'panels' =>
         array(
             'default' =>
