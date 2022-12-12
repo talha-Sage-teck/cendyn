@@ -32,27 +32,49 @@ function toggleDisplay() {
     const commission = document.getElementById("b2b_commission");
     const accountbase = document.getElementById("account_base_type");
 
-    if(accountbase.value === "T") {
-        iata.value = '';
-        commission.value = '';
-        iata.parentElement.parentElement.style.display = 'block';
-        commission.parentElement.parentElement.style.display = 'block';
+    if(accountbase.value === "A") {
+        const iata_parent = iata.parentElement.parentElement;
+        Array.from(iata_parent.children).forEach(function(child) {
+            child.style.display = 'block';
+        });
+        const commission_parent = commission.parentElement.parentElement;
+        Array.from(commission_parent.children).forEach(function(child) {
+            child.style.display = 'block';
+        });
     }
     else {
-        iata.parentElement.parentElement.style.display = 'none';
-        commission.parentElement.parentElement.style.display = 'none';
+        const iata_parent = iata.parentElement.parentElement;
+        Array.from(iata_parent.children).forEach(function(child) {
+            child.style.display = 'none';
+        });
+        const commission_parent = commission.parentElement.parentElement;
+        Array.from(commission_parent.children).forEach(function(child) {
+            child.style.display = 'none';
+        });
     }
 
     accountbase.addEventListener("change", function() {
-       if(this.value === "T") {
+       if(this.value === "A") {
            iata.value = '';
            commission.value = '';
-           iata.parentElement.parentElement.style.display = 'block';
-           commission.parentElement.parentElement.style.display = 'block';
+           const iata_parent = iata.parentElement.parentElement;
+           Array.from(iata_parent.children).forEach(function(child) {
+               child.style.display = 'block';
+           });
+           const commission_parent = commission.parentElement.parentElement;
+           Array.from(commission_parent.children).forEach(function(child) {
+               child.style.display = 'block';
+           });
        }
        else {
-           iata.parentElement.parentElement.style.display = 'none';
-           commission.parentElement.parentElement.style.display = 'none';
+           const iata_parent = iata.parentElement.parentElement;
+           Array.from(iata_parent.children).forEach(function(child) {
+               child.style.display = 'none';
+           });
+           const commission_parent = commission.parentElement.parentElement;
+           Array.from(commission_parent.children).forEach(function(child) {
+               child.style.display = 'none';
+           });
        }
     });
 }
