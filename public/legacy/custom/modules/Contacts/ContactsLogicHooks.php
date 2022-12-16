@@ -7,7 +7,9 @@ class ContactsLogicHooks
          * This function sets the readToSync flag when a new contact is created or updated
          * @LogicHook Before Save
          * @Condition
-         * The save has not occurred in scheduler (fromScheduler flag is unset)
+         * The save has not occurred in scheduler
+         * The save has not occurred after setting delete flag
+         * The save has not occurred after setting account relationship add or delete
          * @Objectives
          * 1. Set the ready_to_sync flag equal to 1 when a contact is created
          * 2. Set the ready_to_sync flag equal to 2 when a contact is updated
@@ -18,13 +20,11 @@ class ContactsLogicHooks
          */
 
         if(!$bean->skipBeforeSave) {
-            if (!$bean->fromScheduler) {
-                if ($bean->fetched_row != false) {
-                    $bean->ready_to_sync = 2;
-                    return;
-                }
-                $bean->ready_to_sync = 1;
+            if ($bean->fetched_row != false) {
+                $bean->ready_to_sync = 2;
+                return;
             }
+            $bean->ready_to_sync = 1;
         }
     }
 
@@ -42,5 +42,7 @@ class ContactsLogicHooks
          */
 
         $bean->ready_to_sync = 3;
+        $bean->skipBeforeSave = true;
+        $bean->save();
     }
 }

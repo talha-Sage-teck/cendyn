@@ -243,7 +243,7 @@ function deleteContact($contact_id): bool {
     global $sugar_config;
     $endpoint = "https://eu02b2bapi.cendyn.com/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/{$sugar_config['EINSIGHT_API_COMPANY_ID']}/b2b/B2BContacts" .
         '/delete/' . $contact_id;
-    return sendPostData($endpoint);
+    return sendPostData($endpoint, null, 'Content-Length: 0');
 }
 
 function sendContactData($data, $contact_id = null): bool {
@@ -313,7 +313,7 @@ function postContactsDataService() {
     //Looping over all the fetched accounts
     while ($contactRow = $db->fetchByAssoc($resultSelect)) {
         //setting the last_sync_date field
-        $contactBean = BeanFactory::getBean('Contacts', $contactRow['id']);
+        $contactBean = BeanFactory::getBean('Contacts', $contactRow['id'], [], false);
 
         //making the data object to send to eInsight
         $data = array(
@@ -402,6 +402,7 @@ function postContactsDataService() {
                 $res = sendContactData($data, $data['externalContactId']);
                 break;
             case 3:
+                $emailSyncDone = true;
                 $res = deleteContact($data['externalContactId']);
                 break;
             case 4:
@@ -429,7 +430,7 @@ function postContactsDataService() {
             $contactBean->ready_to_sync = 0;
             $contactBean->last_sync_date = $GLOBALS['timedate']->nowDb();
         }
-        $contactBean->fromScheduler = true;
+        $contactBean->skipBeforeSave = true;
         $contactBean->save();
     }
 
