@@ -9,4 +9,3 @@ $mod_strings['LBL_EINSIGHT_PMSPROFILE_ID'] = 'eInsight Generated PMS Profile ID'
 $mod_strings['LBL_PMS_EINSIGHT_PROFILE_ID'] = 'PMS Profile ID';
 $mod_strings['LBL_FIRST_RELATED_HOTEL_SHORT_NAME'] = 'Hotel';
 $mod_strings['LBL_CB2B_PMSPROFILES_CB2B_PMSPROFILES_2_FROM_CB2B_PMSPROFILES_R_TITLE'] = 'Matching PMS Profiles';
-$mod_strings['LBL_MATCH_CRITERIA'] = 'Matching Criteria';

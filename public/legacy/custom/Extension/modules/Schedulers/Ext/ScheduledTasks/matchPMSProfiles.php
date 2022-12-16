@@ -16,7 +16,7 @@ if (!defined('sugarEntry') || !sugarEntry)
 $job_strings[] = 'matchPMSProfiles';
 
 function ifRelationshipAlreadyExists($left_pmsProfileId, $matchedProfileBeanId, $matchingProfiles) {
-    if ($matchingProfiles[$left_pmsProfileId][$matchedProfileBeanId] == 1) {
+    if (isset($matchingProfiles[$left_pmsProfileId][$matchedProfileBeanId])) {
         return true;
     } else {
         return false;
@@ -29,7 +29,8 @@ function loadMatchingProfileRelationship() {
 
     $query = "SELECT 
                 cb2b_pmsprofiles_cb2b_pmsprofiles_2cb2b_pmsprofiles_ida,
-                cb2b_pmsprofiles_cb2b_pmsprofiles_2cb2b_pmsprofiles_idb
+                cb2b_pmsprofiles_cb2b_pmsprofiles_2cb2b_pmsprofiles_idb,
+                match_criteria
             FROM
                 cb2b_pmsprofiles_cb2b_pmsprofiles_2_c
             WHERE
@@ -39,9 +40,9 @@ function loadMatchingProfileRelationship() {
     while ($row = $db->fetchByAssoc($result)) {
         if (!array_key_exists($row['cb2b_pmsprofiles_cb2b_pmsprofiles_2cb2b_pmsprofiles_ida'], $matchingProfiles)) {
             $matchingProfiles[$row['cb2b_pmsprofiles_cb2b_pmsprofiles_2cb2b_pmsprofiles_ida']] = array();
-            $matchingProfiles[$row['cb2b_pmsprofiles_cb2b_pmsprofiles_2cb2b_pmsprofiles_ida']][$row['cb2b_pmsprofiles_cb2b_pmsprofiles_2cb2b_pmsprofiles_idb']] = true;
+            $matchingProfiles[$row['cb2b_pmsprofiles_cb2b_pmsprofiles_2cb2b_pmsprofiles_ida']][$row['cb2b_pmsprofiles_cb2b_pmsprofiles_2cb2b_pmsprofiles_idb']] = $row['match_criteria'];
         } else {
-            $matchingProfiles[$row['cb2b_pmsprofiles_cb2b_pmsprofiles_2cb2b_pmsprofiles_ida']][$row['cb2b_pmsprofiles_cb2b_pmsprofiles_2cb2b_pmsprofiles_idb']] = true;
+            $matchingProfiles[$row['cb2b_pmsprofiles_cb2b_pmsprofiles_2cb2b_pmsprofiles_ida']][$row['cb2b_pmsprofiles_cb2b_pmsprofiles_2cb2b_pmsprofiles_idb']] = $row['match_criteria'];
         }
     }
 
@@ -83,6 +84,21 @@ function getMatchingProfilesPreparedQuery($left_pmsProfileId, $fields) {
     return $selectMatchingQuery;
 }
 
+function getMatchedCriteriaString($fields) {
+    global $sugar_config;
+    $match_criteria = array();
+
+    foreach ($fields as $field) {
+        if (array_key_exists($field, $sugar_config['PMS_PROFILES_MATCHING_FIELDS'])) {
+            array_push($match_criteria, $sugar_config['PMS_PROFILES_MATCHING_FIELDS'][$field]);
+        } else {
+            $sugar_config['scheduler_log'] ? $GLOBALS['log']->fatal('getMatchedCriteriaString :: Key ' . $field . ' does not exist in PMS_PROFILES_MATCHING_FIELDS Configuration Array.') : '';
+        }
+    }
+
+    return implode(', ', $match_criteria);
+}
+
 //function deleteUpdatedPMSProfilesRelationship() {
 //    global $db;
 //    $getAllUpdatedProfilesQuery = "SELECT id FROM `cb2b_pmsprofiles` WHERE deleted=0 AND `is_update`=1";
@@ -117,6 +133,12 @@ function getExistingRelationShipIds($pmsProfileId) {
 
 function matchPMSProfiles() {
     global $db, $timedate, $sugar_config;
+    // We have this DELETE time in a separate variable to keep it smaller than the Insert time.
+    // If we took this time at the end of code (at run time) where we are doing the DELETE, it's modified time would always be 
+    // greater than the INSERT time, which is not right from the Audit perspective.
+    // Action: First Delete will happen then Insert will happen, so we get the delete time first (to have a smaller delete timestamp)
+    // then the Insert time (to have a greater insert timestamp)
+    $deleteTime = $timedate->nowDb();
 
     // Get Matching Criterias from Configuration
     $getMatchCriteriaQuery = "SELECT * FROM `config` WHERE `category`='MySettings' AND `name`='MatchCriteriaConfig'";
@@ -150,12 +172,14 @@ function matchPMSProfiles() {
         $sugar_config['scheduler_log'] ? $GLOBALS['log']->fatal('----------------------------------------------------') : '';
         $queryArray = array();
         $existingRelationShipIds = array();
+        $relationShipCheckFlag = false;
         $newRelationShipIds = array();
 
         $existingRelationShipIds = getExistingRelationShipIds($profile['id']);
         $sugar_config['scheduler_log'] ? $GLOBALS['log']->fatal('$existingRelationShipIds : ' . print_r($existingRelationShipIds, 1)) : '';
 
         foreach ($settings as $criteria => $fields) {
+            $match_criteria = getMatchedCriteriaString($fields);
             $selectMatchingQuery = getMatchingProfilesPreparedQuery($profile['id'], $fields);
             $selectMatchingResult = $db->query($selectMatchingQuery);
 
@@ -167,51 +191,106 @@ function matchPMSProfiles() {
 
             while ($matchedProfile = $db->fetchByAssoc($selectMatchingResult)) {
 
-                $newRelationShipIds[] = $profile['id'] . "|" . $matchedProfile['matched_profile'];
-                $newRelationShipIds[] = $matchedProfile['matched_profile'] . "|" . $profile['id'];
+                if ($relationShipCheckFlag) {
+                    // Validating and sustaining the Existing Relationships
+                    if (in_array($profile['id'] . "|" . $matchedProfile['matched_profile'], $existingRelationShipIds)) {
+                        $newRelationShipIds[] = $profile['id'] . "|" . $matchedProfile['matched_profile'];
+                        $newRelationShipIds[] = $matchedProfile['matched_profile'] . "|" . $profile['id'];
+
+                        $sugar_config['scheduler_log'] ? $GLOBALS['log']->fatal('In relationShipCheckFlag') : '';
+                    }
+
+                    $sugar_config['scheduler_log'] ? $GLOBALS['log']->fatal('Out relationShipCheckFlag') : '';
+
+                    continue;
+                } else {
+                    $newRelationShipIds[] = $profile['id'] . "|" . $matchedProfile['matched_profile'];
+                    $newRelationShipIds[] = $matchedProfile['matched_profile'] . "|" . $profile['id'];
+                }
 
                 $alreadyExists = ifRelationshipAlreadyExists($profile['id'], $matchedProfile['matched_profile'], $matchingProfiles);
                 if (!$alreadyExists) {
 
-                    array_push($queryArray, "('" . create_guid() . "', '{$timedate->nowDb()}', '0', '{$profile['id']}', '{$matchedProfile['matched_profile']}')");
-                    array_push($queryArray, "('" . create_guid() . "', '{$timedate->nowDb()}', '0', '{$matchedProfile['matched_profile']}', '{$profile['id']}')");
+                    // At time of new entry creation, date_entered and date_modified will be same
+                    $dateTimeStamp = $timedate->nowDb();
+                    array_push($queryArray, "('" . create_guid() . "', '{$dateTimeStamp}', '0', '{$profile['id']}', '{$matchedProfile['matched_profile']}', '{$match_criteria}', '{$dateTimeStamp}')");
+                    array_push($queryArray, "('" . create_guid() . "', '{$dateTimeStamp}', '0', '{$matchedProfile['matched_profile']}', '{$profile['id']}', '{$match_criteria}', '{$dateTimeStamp}')");
 
                     if (is_array($matchingProfiles[$profile['id']])) {
-                        $matchingProfiles[$profile['id']][$matchedProfile['matched_profile']] = 1;
+                        $matchingProfiles[$profile['id']][$matchedProfile['matched_profile']] = $match_criteria;
                     } else {
                         $matchingProfiles[$profile['id']] = array();
-                        $matchingProfiles[$profile['id']][$matchedProfile['matched_profile']] = 1;
+                        $matchingProfiles[$profile['id']][$matchedProfile['matched_profile']] = $match_criteria;
                     }
 
                     if (is_array($matchingProfiles[$matchedProfile['matched_profile']])) {
-                        $matchingProfiles[$matchedProfile['matched_profile']][$profile['id']] = 1;
+                        $matchingProfiles[$matchedProfile['matched_profile']][$profile['id']] = $match_criteria;
                     } else {
                         $matchingProfiles[$matchedProfile['matched_profile']] = array();
-                        $matchingProfiles[$matchedProfile['matched_profile']][$profile['id']] = 1;
+                        $matchingProfiles[$matchedProfile['matched_profile']][$profile['id']] = $match_criteria;
                     }
 
                     $sugar_config['scheduler_log'] ? $GLOBALS['log']->fatal('Adding Relationship between : ' . print_r($profile['id'], 1) . ' AND ' . print_r($matchedProfile['matched_profile'], 1)) : '';
                 } else {
                     $sugar_config['scheduler_log'] ? $GLOBALS['log']->fatal('Relationship already exist between : ' . print_r($profile['id'], 1) . ' AND ' . print_r($matchedProfile['matched_profile'], 1)) : '';
+                    if ($matchingProfiles[$profile['id']][$matchedProfile['matched_profile']] != $match_criteria) {
+                        $sugar_config['scheduler_log'] ? $GLOBALS['log']->fatal('In the Match Criteria Update Section.') : '';
+                        // Delete the Existing Relationship
+                        // When we unset it here from the $newRelationShipIds Array, at time of array_diff these ids 
+                        // will be sent to $relationShipsToDelete for deletion
+                        unset($newRelationShipIds[$profile['id'] . "|" . $matchedProfile['matched_profile']]);
+                        unset($newRelationShipIds[$matchedProfile['matched_profile'] . "|" . $profile['id']]);
+
+                        $query = "UPDATE `cb2b_pmsprofiles_cb2b_pmsprofiles_2_c` SET `deleted`='1', `date_modified`='{$deleteTime}' WHERE "
+                                . "`cb2b_pmsprofiles_cb2b_pmsprofiles_2cb2b_pmsprofiles_ida`='{$profile['id']}' "
+                                . "AND `cb2b_pmsprofiles_cb2b_pmsprofiles_2cb2b_pmsprofiles_idb`='{$matchedProfile['matched_profile']}' "
+                                . "AND `deleted`='0' "
+                                . "ORDER BY date_modified DESC LIMIT 1;";
+                        $db->query($query, true);
+                        $sugar_config['scheduler_log'] ? $GLOBALS['log']->fatal('Relationship Delete / Update (1) : ' . print_r($query, 1)) : '';
+
+                        $query = "UPDATE `cb2b_pmsprofiles_cb2b_pmsprofiles_2_c` SET `deleted`='1', `date_modified`='{$deleteTime}' WHERE "
+                                . "`cb2b_pmsprofiles_cb2b_pmsprofiles_2cb2b_pmsprofiles_ida`='{$matchedProfile['matched_profile']}' "
+                                . "AND `cb2b_pmsprofiles_cb2b_pmsprofiles_2cb2b_pmsprofiles_idb`='{$profile['id']}' "
+                                . "AND `deleted`='0' "
+                                . "ORDER BY date_modified DESC LIMIT 1;";
+                        $db->query($query, true);
+                        $sugar_config['scheduler_log'] ? $GLOBALS['log']->fatal('Relationship Delete / Update (2) : ' . print_r($query, 1)) : '';
+
+                        // Insert the same Relationship but with new match criteria
+                        $matchingProfiles[$profile['id']][$matchedProfile['matched_profile']] = $match_criteria;
+                        $matchingProfiles[$matchedProfile['matched_profile']][$profile['id']] = $match_criteria;
+                        // At time of new entry creation, date_entered and date_modified will be same
+                        $dateTimeStamp = $timedate->nowDb();
+                        array_push($queryArray, "('" . create_guid() . "', '{$dateTimeStamp}', '0', '{$profile['id']}', '{$matchedProfile['matched_profile']}', '{$match_criteria}', '{$dateTimeStamp}')");
+                        array_push($queryArray, "('" . create_guid() . "', '{$dateTimeStamp}', '0', '{$matchedProfile['matched_profile']}', '{$profile['id']}', '{$match_criteria}', '{$dateTimeStamp}')");
+                    }
                 }
             }
 
             // We have to break the loop so that, If the first condition matches then 
             // there is no need to match subsequent conditions
-            break;
+            if (empty($existingRelationShipIds)) {
+                break;
+            } else {
+                $relationShipCheckFlag = true;
+            }
         }
 
         if (!empty($queryArray)) {
             $insert = "INSERT INTO cb2b_pmsprofiles_cb2b_pmsprofiles_2_c "
-                    . "(`id`, `date_modified`, `deleted`, `cb2b_pmsprofiles_cb2b_pmsprofiles_2cb2b_pmsprofiles_ida`, `cb2b_pmsprofiles_cb2b_pmsprofiles_2cb2b_pmsprofiles_idb`) "
+                    . "(`id`, `date_modified`, `deleted`, `cb2b_pmsprofiles_cb2b_pmsprofiles_2cb2b_pmsprofiles_ida`, `cb2b_pmsprofiles_cb2b_pmsprofiles_2cb2b_pmsprofiles_idb`, `match_criteria`, `date_entered`) "
                     . "VALUES "
                     . implode(", ", $queryArray);
             $db->query($insert, true);
+
+            $sugar_config['scheduler_log'] ? $GLOBALS['log']->fatal('Relationship Insert : ' . print_r($insert, 1)) : '';
         }
 
-        $sugar_config['scheduler_log'] ? $GLOBALS['log']->fatal('$newRelationShipIds : ' . print_r($newRelationShipIds, 1)) : '';
-
         setIsUpdateFlag($profile['id']);
+
+        $newRelationShipIds = array_unique($newRelationShipIds);
+        $sugar_config['scheduler_log'] ? $GLOBALS['log']->fatal('$newRelationShipIds : ' . print_r($newRelationShipIds, 1)) : '';
 
         $relationShipsToDelete = array_diff($existingRelationShipIds, $newRelationShipIds);
         $sugar_config['scheduler_log'] ? $GLOBALS['log']->fatal('$relationShipsToDelete : ' . print_r($relationShipsToDelete, 1)) : '';
@@ -220,13 +299,14 @@ function matchPMSProfiles() {
             if (!empty($idsString)) {
                 $pieces = explode("|", $idsString);
                 if (!empty($pieces[0]) && !empty($pieces[1])) {
-                    $query = "UPDATE `cb2b_pmsprofiles_cb2b_pmsprofiles_2_c` SET `deleted`='1', `date_modified`='{$timedate->nowDb()}' WHERE "
+                    $query = "UPDATE `cb2b_pmsprofiles_cb2b_pmsprofiles_2_c` SET `deleted`='1', `date_modified`='{$deleteTime}' WHERE "
                             . "`cb2b_pmsprofiles_cb2b_pmsprofiles_2cb2b_pmsprofiles_ida`='{$pieces[0]}' "
                             . "AND `cb2b_pmsprofiles_cb2b_pmsprofiles_2cb2b_pmsprofiles_idb`='{$pieces[1]}' "
+                            . "AND `deleted`='0' "
                             . "ORDER BY date_modified DESC LIMIT 1;";
                     $db->query($query, true);
 
-                    $sugar_config['scheduler_log'] ? $GLOBALS['log']->fatal('Relationship Delete / Update : ' . print_r($query, 1)) : '';
+                    $sugar_config['scheduler_log'] ? $GLOBALS['log']->fatal('Relationship Delete : ' . print_r($query, 1)) : '';
                 }
             }
         }
