@@ -3,7 +3,7 @@
 if (!defined('sugarEntry') || !sugarEntry)
     die('Not A Valid Entry Point');
 
-$job_strings[] = 'postContactsDataService';
+$job_strings[] = 'syncContactsDataService';
 
 function getContactById($contactID) {
     /***
@@ -286,7 +286,7 @@ function deleteDups(&$array, $email) {
     return $newArr;
 }
 
-function postContactsDataService() {
+function syncContactsDataService() {
 
     /**
      *  This scheduler runs every 10 minutes and syncs with eInsight
@@ -415,7 +415,7 @@ function postContactsDataService() {
                     emailsNeedToBeDeleted($data['emails'], $contactBean);
                 break;
             default:
-                $GLOBALS['log']->fatal("postContactsDataService: Unexpected sync flag value in scheduler.");
+                $GLOBALS['log']->fatal("syncContactsDataService: Unexpected sync flag value in scheduler.");
                 return true;
         }
 
