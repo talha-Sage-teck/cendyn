@@ -30,3 +30,11 @@ $hook_array['after_relationship_delete'][] = Array(
     'afterRelationshipDeleteHandler',
     'setReadyToLinkAfterDelete'
 );
+
+$hook_array['before_save'][] = Array(
+    45,
+    'Add emails to audit table',
+    'custom/modules/Contacts/ContactsLogicHooks.php',
+    'ContactsLogicHooks',
+    'addEmailsToAudit'
+);
