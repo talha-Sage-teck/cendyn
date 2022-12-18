@@ -39,6 +39,18 @@ function getContactById($contactID) {
     return json_decode($response);
 }
 
+function contactExists($contactID) {
+    /***
+     * Checks if contact is available on eInsight
+     * @Input:
+     * $contactId: ID of the contact to get
+     * @Output
+     * Return true or false
+     */
+    $contact = getContactById($contactID);
+    return !($contact->status && $contact->status != 200);
+}
+
 function sendPostData($endpoint, $postData = null, $content_length = null) {
     /***
      * @Input:
@@ -421,21 +433,31 @@ function syncContactsDataService() {
                 $res = sendContactData($data);
                 break;
             case 2:
-                $res = sendContactData($data, $data['externalContactId']);
+                if(contactExists($data['externalContactId']))
+                    $res = sendContactData($data, $data['externalContactId']);
+                else
+                    $res = sendContactData($data);
                 break;
             case 3:
                 $emailSyncDone = true;
                 $deleted = true;
-                $res = deleteContact($data['externalContactId']);
+                if(contactExists($data['externalContactId']))
+                    $res = deleteContact($data['externalContactId']);
+                else
+                    $res = true;
                 break;
             case 4:
-                if(sizeof($data['accounts']) > 0)
-                    $res = syncAccounts($data['accounts'], $contactBean);
+                if(contactExists($data['externalContactId'])) {
+                    if(sizeof($data['accounts']) > 0)
+                        $res = syncAccounts($data['accounts'], $contactBean);
+                    else
+                        $res = deleteAllAccounts($contactBean->id);
+                    if($res)
+                        $contactBean->ready_to_sync = 2;
+                    $res = sendContactData($data, $data['externalContactId']);
+                }
                 else
-                    $res = deleteAllAccounts($contactBean->id);
-                if($res)
-                    $contactBean->ready_to_sync = 2;
-                $res = sendContactData($data, $data['externalContactId']);
+                    $res = sendContactData($data);
                 break;
             case 5:
                 $emailSyncDone = true;

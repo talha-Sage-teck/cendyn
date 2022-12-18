@@ -5,6 +5,53 @@ if (!defined('sugarEntry') || !sugarEntry)
 
 $job_strings[] = 'syncAccountsDataService';
 
+function getAccountById($accountID) {
+    /***
+     * @Input:
+     * $contactId: ID of the account to get
+     * @Output
+     * Return associative array form of the JSON response
+     */
+    global $sugar_config;
+
+    $endpoint = "https://eu02b2bapi.cendyn.com/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/{$sugar_config['EINSIGHT_API_COMPANY_ID']}/b2b/B2BAccounts/"
+        . $accountID;
+    $curl = curl_init();
+    $object = array(
+        CURLOPT_URL => $endpoint,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'GET',
+        CURLOPT_HTTPHEADER => array(
+            'X-Api-Key: ' . $sugar_config['EINSIGHT_API_KEY'],
+        ),
+    );
+    curl_setopt_array($curl, $object);
+    $response = curl_exec($curl);
+    if (curl_errno($curl)) {
+        $GLOBALS['log']->fatal('CURL ERROR -> : ' . print_r(curl_error($curl), 1));
+    }
+    curl_close($curl);
+    return json_decode($response);
+}
+
+function accountExists($accountID): bool {
+    /***
+     * Checks if account is available on eInsight
+     * @Input:
+     * $accountID: ID of the account to get
+     * @Output
+     * Return true or false
+     */
+    $account = getAccountById($accountID);
+    return !($account->status && $account->status != 200);
+}
+
+
 function deleteAccount($accountID) {
     /*     * *
      * @Input:
@@ -14,7 +61,7 @@ function deleteAccount($accountID) {
      */
 
     global $sugar_config;
-    $endpoint = "https://eu02b2bapi.cendyn.com/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/{$sugar_config['EINSIGHT_API_COMPANY_ID']}/b2b/B2BAccounts/" .
+    $endpoint = "https://eu02b2bapi.cendyn.com/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/{$sugar_config['EINSIGHT_API_COMPANY_ID']}/b2b/B2BAccounts" .
         "/delete/" . $accountID;
     return sendPostData($endpoint, null, 'Content-Length: 0');
 }
@@ -103,12 +150,23 @@ function syncAccountsDataService() {
                 $res = addAccountData($data);
                 break;
             case 2:
-                $data['id'] = $accountBean->einsight_account_id ?? 0;
-                $res = addAccountData($data, $data['externalAccountId']);
+                if(accountExists($data['externalAccountId'])) {
+                    $data['id'] = $accountBean->einsight_account_id ?? 0;
+                    $res = addAccountData($data, $data['externalAccountId']);
+                }
+                else {
+                    $data['insertDate'] = $accountBean->last_sync_date;
+                    $res = addAccountData($data);
+                }
                 break;
             case 3:
                 $deleted = true;
-                $res = deleteAccount($data['externalAccountId']);
+                if(accountExists($data['externalAccountId'])) {
+                    $res = deleteAccount($data['externalAccountId']);
+                }
+                else {
+                    $res = true;
+                }
                 break;
             default:
                 $GLOBALS['log']->fatal("syncAccountsDataService: Unexpected sync flag value in scheduler.");
