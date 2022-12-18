@@ -5,7 +5,21 @@ if (!defined('sugarEntry') || !sugarEntry)
 
 $job_strings[] = 'syncAccountsDataService';
 
-function sendData($data, $account_id = null) {
+function deleteAccount($accountID) {
+    /*     * *
+     * @Input:
+     * accountID: ID of account to delete
+     * @Output:
+     * Return true or false
+     */
+
+    global $sugar_config;
+    $endpoint = "https://eu02b2bapi.cendyn.com/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/{$sugar_config['EINSIGHT_API_COMPANY_ID']}/b2b/B2BAccounts/" .
+        "/delete/" . $accountID;
+    return sendPostData($endpoint, null, 'Content-Length: 0');
+}
+
+function addAccountData($data, $account_id = null) {
 
     /*     * *
      * @Input:
@@ -13,43 +27,13 @@ function sendData($data, $account_id = null) {
      * account_id: Optional, if value is set than eInsight account update endpoint will be called with this argument's
      * value, otherwise create endpoint is called
      * @Output:
-     * Return void
+     * Return true or false
      */
 
     global $sugar_config;
-    $curl = curl_init();
     $endpoint = "https://eu02b2bapi.cendyn.com/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/{$sugar_config['EINSIGHT_API_COMPANY_ID']}/b2b/B2BAccounts" .
             (($account_id != null) ? '/update/' . $account_id : '');
-    $object = array(
-        CURLOPT_URL => $endpoint,
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => '',
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 0,
-        CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => 'POST',
-        CURLOPT_POSTFIELDS => json_encode($data),
-        CURLOPT_HTTPHEADER => array(
-            'X-Api-Key: ' . $sugar_config['EINSIGHT_API_KEY'],
-            'Content-Type: application/json'
-        ),
-    );
-    curl_setopt_array($curl, $object);
-
-    $response = curl_exec($curl);
-
-    if (curl_errno($curl)) {
-        $GLOBALS['log']->fatal('CURL ERROR -> : ' . print_r(curl_error($curl), 1));
-    }
-
-    curl_close($curl);
-
-    if ($response != "") {
-        $GLOBALS['log']->fatal($response);
-        return false;
-    }
-    return true;
+    return sendPostData($endpoint, $data);
 }
 
 function syncAccountsDataService() {
@@ -59,6 +43,7 @@ function syncAccountsDataService() {
      * @Conditions:
      * 1. The ready_to_sync flag is 1 (created account), or
      * 2. The ready_to_sync flag is 2 (updated account)
+     * 3. The ready_to_sync flag is 3 (deleted account)
      * @Actions:
      * 1. Unsets the ready_to_sync flag
      * 2. Prepares the POST data of all accounts to send to eInsight.
@@ -68,13 +53,13 @@ function syncAccountsDataService() {
      */
     //Fetching all the accounts that are either created or updated
     global $db;
-    $selectQuery = "SELECT * FROM accounts WHERE deleted = 0 AND ready_to_sync > 0";
+    $selectQuery = "SELECT * FROM accounts WHERE (deleted = 0 AND ready_to_sync > 0) OR (deleted = 1 AND ready_to_sync = 3)";
     $resultSelect = $db->query($selectQuery);
 
     //Looping over all the fetched accounts
     while ($accountRow = $db->fetchByAssoc($resultSelect)) {
         //setting the last_sync_date field
-        $accountBean = BeanFactory::getBean('Accounts', $accountRow['id']);
+        $accountBean = BeanFactory::getBean('Accounts', $accountRow['id'], [], false);
         $accountBean->last_sync_date = $GLOBALS['timedate']->nowDb();
 
         //making the data object to send to eInsight
@@ -106,30 +91,37 @@ function syncAccountsDataService() {
             'description' => $accountBean->description,
             'updateDate' => $accountBean->last_sync_date,
             'id' => 0,
-            'inactive' => 0,
+            'inactive' => $accountBean->deleted,
         );
 
         //check value of ready_to_sync flag and call API endpoint accordingly
         $res = false;
+        $deleted = false;
         switch ($accountRow['ready_to_sync']) {
             case 1:
                 $data['insertDate'] = $accountBean->last_sync_date;
-                $res = sendData($data);
+                $res = addAccountData($data);
                 break;
             case 2:
                 $data['id'] = $accountBean->einsight_account_id ?? 0;
-                $res = sendData($data, $data['externalAccountId']);
-
+                $res = addAccountData($data, $data['externalAccountId']);
+                break;
+            case 3:
+                $deleted = true;
+                $res = deleteAccount($data['externalAccountId']);
                 break;
             default:
                 $GLOBALS['log']->fatal("syncAccountsDataService: Unexpected sync flag value in scheduler.");
                 return true;
         }
 
-        //unsetting the read_to_sync flag, setting the fromScheduler flag and saving
+        if($res && $deleted)
+            unsetFlagAfterDelete($accountBean->id, 'accounts');
+
+        //unsetting the read_to_sync flag, setting the skipBeforeSave flag and saving
         if ($res)
             $accountBean->ready_to_sync = 0;
-        $accountBean->fromScheduler = true;
+        $accountBean->skipBeforeSave = true;
         $accountBean->save();
     }
 
