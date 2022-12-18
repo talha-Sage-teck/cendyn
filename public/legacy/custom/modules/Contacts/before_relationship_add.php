@@ -7,7 +7,7 @@ class beforeRelationshipAddHandler
 {
     function setReadyToLink(&$bean, $event, $arguments) {
         global $db;
-        if($arguments['module'] == "Contacts" && $arguments['related_module'] == "Accounts" && !$bean->fromScheduler) {
+        if($arguments['module'] == "Contacts" && $arguments['related_module'] == "Accounts") {
             $selectContact = "SELECT * FROM contacts WHERE id='{$bean->id}'";
             $selectContactResult = $db->query($selectContact);
             $contact = $db->fetchByAssoc($selectContactResult);

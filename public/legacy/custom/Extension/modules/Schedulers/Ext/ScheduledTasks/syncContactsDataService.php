@@ -266,6 +266,7 @@ function sendContactData($data, $contact_id = null): bool {
 function deleteDups(&$array, $email) {
 
     /***
+     * Deletes duplicate instances of the provided email
      * @Input:
      * &$array: emails array to change
      * $email: Target email to check against
@@ -284,6 +285,26 @@ function deleteDups(&$array, $email) {
     });
     $newArr = array_values($array);
     return $newArr;
+}
+
+function unsetFlagAfterDelete($id, $table) {
+
+    /***
+     * Unsets the ready_to_sync flag for given module
+     * @Input:
+     * $id: ID of the record
+     * $table: Table where the ID is present
+     * @Output:
+     * Returns true or false
+     */
+
+    global $db;
+    $updateQuery = "UPDATE {$table} SET ready_to_sync=0 WHERE id='{$id}' AND ready_to_sync=3";
+    $updateResult = $db->query($updateQuery);
+    if($updateResult)
+        return true;
+    else
+        return false;
 }
 
 function syncContactsDataService() {
@@ -394,6 +415,7 @@ function syncContactsDataService() {
         //check value of ready_to_sync flag and call API endpoint accordingly
         $res = false;
         $emailSyncDone = false;
+        $deleted = false;
         switch ($contactRow['ready_to_sync']) {
             case 1:
                 $res = sendContactData($data);
@@ -403,11 +425,17 @@ function syncContactsDataService() {
                 break;
             case 3:
                 $emailSyncDone = true;
+                $deleted = true;
                 $res = deleteContact($data['externalContactId']);
                 break;
             case 4:
-                $res = syncAccounts($data['accounts'], $contactBean) &&
-                    sendContactData($data, $data['externalContactId']);
+                if(sizeof($data['accounts']) > 0)
+                    $res = syncAccounts($data['accounts'], $contactBean);
+                else
+                    $res = deleteAllAccounts($contactBean->id);
+                if($res)
+                    $contactBean->ready_to_sync = 2;
+                $res = sendContactData($data, $data['externalContactId']);
                 break;
             case 5:
                 $emailSyncDone = true;
@@ -425,11 +453,16 @@ function syncContactsDataService() {
                 emailsNeedToBeDeleted($data['emails'], $contactBean);
         }
 
+        //manually (sql query) set the ready_to_save to 3 after delete because $bean->save() does not work
+        if($res && $deleted)
+            unsetFlagAfterDelete($contactBean->id, 'contacts');
+
         //unsetting the read_to_sync flag, setting the fromScheduler flag and saving
         if($res) {
             $contactBean->ready_to_sync = 0;
             $contactBean->last_sync_date = $GLOBALS['timedate']->nowDb();
         }
+
         $contactBean->skipBeforeSave = true;
         $contactBean->save();
     }
