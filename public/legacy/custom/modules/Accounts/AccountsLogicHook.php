@@ -60,7 +60,7 @@ class AccountsLogicHook {
          * Function returns void
          */
 
-        if (!$bean->fromScheduler) {
+        if (!$bean->skipBeforeSave) {
             if ($bean->fetched_row != false) {
                 $bean->ready_to_sync = 2;
                 return;
@@ -96,5 +96,36 @@ class AccountsLogicHook {
                 $bean->accounts_cb2b_pmsprofiles_1->add($profileBean);
             }
         }
+    }
+
+    public function unsetAccount($bean, $events, $args) {
+        /***
+         * Set ready_to_sync flag for account and/or contact
+         * @Objectives:
+         * 1. Set the ready_to_sync flag for account
+         * 2. Set the ready_to_sync flag for contact on the basis of conditions
+         * @Conditions
+         * 1. The account must be related to a contact
+         * 2. The contact must not be deleted
+         * 3. The contact's ready_to_sync flag must not be 3
+         * @Flags
+         * Account's ready_to_sync = 3
+         * Contact's ready_to_sync = 0 | 4
+         */
+
+        $bean->load_relationship('contacts');
+        $contacts = $bean->contacts->getBeans();
+        foreach ($contacts as $contact) {
+            if ($contact->deleted == 1 || $contact->ready_to_sync == 3) {
+                continue;
+            }
+            $contact->ready_to_sync = 4;
+            $contact->skipBeforeSave = true;
+            $contact->save();
+        }
+
+        $bean->ready_to_sync = 3;
+        $bean->skipBeforeSave = true;
+        $bean->save();
     }
 }
