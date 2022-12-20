@@ -69,6 +69,10 @@ array (
             'label' => 'LBL_CAPACITY',
           ),
         ),
+        2 =>
+        array (
+          0 => 'hotel_name',
+        ),
       ),
       'lbl_editview_panel1' =>
       array (
