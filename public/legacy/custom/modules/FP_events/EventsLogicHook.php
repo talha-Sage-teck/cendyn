@@ -15,6 +15,6 @@ class EventsLogicHook {
 
         $location = BeanFactory::getBean('FP_Event_Locations', $bean->fp_event_locations_fp_events_1fp_event_locations_ida);
         $bean->hotel_relate_link = $location->hotel_name;
-        $bean->hotel_relate_link_id = $location->hotel_id;
+        $bean->hotel_relate_link_id = $location->cb2b_hotels_id;
     }
 }

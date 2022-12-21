@@ -116,6 +116,10 @@ array (
         4 =>
         array (
           0 => 'description',
+          1 => array (
+            'name' => 'hotel_relate_link',
+            'customCode' => '<a href="../#/CB2B_Hotels/record/{$fields.hotel_relate_link_id.value}">{$fields.hotel_relate_link.value}</a>',
+          ),
         ),
         5 =>
         array (
