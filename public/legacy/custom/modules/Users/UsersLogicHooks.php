@@ -16,6 +16,26 @@ class UsersLogicHooks {
         }
     }
 
+    function trimAdminDashlets($pages, $dashlets) {
+        $dashes = array_keys($dashlets);
+        for($i = 0; $i < sizeof($pages); $i++) {
+            $j = 0;
+            while(is_array($pages[$i]['columns'][$j]['dashlets'])) {
+                $array = $pages[$i]['columns'][$j]['dashlets'];
+                $array = array_filter($array, function($v) use ($dashes) {
+                    if (!in_array($v, $dashes))
+                        return false;
+                    else
+                        return true;
+                });
+                $pages[$i]['columns'][$j]['dashlets'] = array_values($array);
+                ++$j;
+            }
+        }
+
+        return $pages;
+    }
+
     function trimDashlets($user, $adminDashlets) {
         $extraUserDashlets = array_diff(array_keys($user['dashlets']), $adminDashlets);
         $falsePositives = array();
@@ -58,7 +78,7 @@ class UsersLogicHooks {
         $admin = $db->fetchByAssoc($selectAdminResult);
         $adminData = unserialize(base64_decode($admin['contents']));
         $dashlets_ = $adminData['dashlets'];
-        $pages = $adminData['pages'];
+        $pages = $this->trimAdminDashlets($adminData['pages'], $adminData['dashlets']);
 
         $selectPreferenceQuery = "SELECT * FROM user_preferences WHERE category='Home' AND assigned_user_id = '{$bean->id}' AND deleted = 0";
         $selectPreferenceResult = $db->query($selectPreferenceQuery);
