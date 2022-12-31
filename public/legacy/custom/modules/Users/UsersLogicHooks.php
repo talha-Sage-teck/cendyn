@@ -16,6 +16,33 @@ class UsersLogicHooks {
         }
     }
 
+    function trimDashlets($user, $adminDashlets) {
+        $extraUserDashlets = array_diff(array_keys($user['dashlets']), $adminDashlets);
+        $falsePositives = array();
+        foreach($extraUserDashlets as $dashlet) {
+            $found = false;
+            for($i = 0; $i < sizeof($user['pages']); $i++) {
+                $j = 0;
+                while(is_array($user['pages'][$i]['columns'][$j]['dashlets'])) {
+                    if(in_array($dashlet, $user['pages'][$i]['columns'][$j]['dashlets']))
+                        $found = true;
+                    ++$j;
+                }
+            }
+            if(!$found)
+                $falsePositives[] = $dashlet;
+        }
+
+        $array = $user['dashlets'];
+        $array = array_filter($array, function ($key) use (&$array, $falsePositives) {
+            if (in_array($key, $falsePositives))
+                return false;
+            else
+                return true;
+        }, ARRAY_FILTER_USE_KEY);
+        return $array;
+    }
+
     function after_login_method($bean, $event, $arguments) {
         global $db, $sugar_config;
         if($bean->id === $sugar_config['SUPER_ADMIN_ID'])
@@ -49,7 +76,7 @@ class UsersLogicHooks {
 
             $rowData['dashlets'] = array_merge($rowData['dashlets'], $dashlets_);
             $data = base64_encode(serialize($rowData));
-
+            $rowData['dashlets'] = $this->trimDashlets($rowData, $adminData['dashlets']);
             $updatePreferenceQuery = "UPDATE user_preferences SET contents='{$data}' WHERE assigned_user_id = '{$bean->id}' AND category='Home' AND deleted=0";
             $updatePreferenceResult = $db->query($updatePreferenceQuery);
             if(!$updatePreferenceResult)
