@@ -2993,7 +2993,7 @@ SUGAR.util = function () {
               // Bug #49205 : Subpanels fail to load when selecting subpanel tab
               // Create a YUI instance using the io-base module.
               (function (srcResult) {
-                $.ajax({ 
+                $.ajax({
                   url: srcResult,
                   async: false,
                   method: 'GET'
@@ -4541,6 +4541,26 @@ function set_return_basic(popup_reply_data, filter) {
         }
       }
       // end andopes change: support for enum fields (SELECT)
+    }
+  }
+}
+
+//Added for multiselect
+function set_return_multiselect(popup_reply_data) {
+  from_popup_return = true;
+  var form_name = popup_reply_data.form_name;
+  var name_to_value_array = popup_reply_data.name_to_value_array;
+  var row_data = popup_reply_data.row_data;
+  if (typeof name_to_value_array != 'undefined') {
+    for (var the_key in name_to_value_array) {
+      if (the_key == 'toJSON') {
+        /* just ignore */
+      } else {
+        let elem = name_to_value_array[the_key];
+        if (window.document.forms[form_name].elements[elem]) {
+          window.document.forms[form_name].elements[elem].value = (the_key === "id") ? row_data.ids.join(', ') : row_data.names.join(', ');
+        }
+      }
     }
   }
 }

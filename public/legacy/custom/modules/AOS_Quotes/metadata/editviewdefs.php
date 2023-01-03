@@ -1,11 +1,20 @@
 <?php
-$module_name = 'AOS_Contracts';
+$module_name = 'AOS_Quotes';
+$_object_name = 'aos_quotes';
 $viewdefs [$module_name] =
 array (
   'EditView' =>
   array (
     'templateMeta' =>
     array (
+      'form' =>
+      array (
+        'buttons' =>
+        array (
+          0 => 'SAVE',
+          1 => 'CANCEL',
+        ),
+      ),
       'maxColumns' => '2',
       'widths' =>
       array (
@@ -21,10 +30,14 @@ array (
         ),
       ),
       'useTabs' => false,
-      'syncDetailEditViews' => false,
       'tabDefs' =>
       array (
-        'DEFAULT' =>
+        'LBL_ACCOUNT_INFORMATION' =>
+        array (
+          'newTab' => false,
+          'panelDefault' => 'expanded',
+        ),
+        'LBL_ADDRESS_INFORMATION' =>
         array (
           'newTab' => false,
           'panelDefault' => 'expanded',
@@ -34,78 +47,22 @@ array (
           'newTab' => false,
           'panelDefault' => 'expanded',
         ),
-        'LBL_EDITVIEW_PANEL1' =>
-        array (
-          'newTab' => false,
-          'panelDefault' => 'expanded',
-        ),
       ),
     ),
     'panels' =>
     array (
-      'default' =>
+      'lbl_account_information' =>
       array (
         0 =>
         array (
-          0 => 'name',
-          1 =>
-          array (
-            'name' => 'status',
-            'studio' => 'visible',
-            'label' => 'LBL_STATUS',
-          ),
-        ),
-        1 =>
-        array (
           0 =>
           array (
-            'name' => 'total_contract_value',
-            'label' => 'LBL_TOTAL_CONTRACT_VALUE',
-          ),
-          1 =>
-          array (
-            'name' => 'assigned_user_name',
-            'label' => 'LBL_ASSIGNED_TO_NAME',
-          ),
-        ),
-        2 =>
-        array (
-          0 =>
-          array (
-            'name' => 'start_date',
-            'label' => 'LBL_START_DATE',
-          ),
-          1 =>
-          array (
-            'name' => 'contract_account',
-            'label' => 'LBL_CONTRACT_ACCOUNT',
-          ),
-        ),
-        3 =>
-        array (
-          0 =>
-          array (
-            'name' => 'end_date',
-            'label' => 'LBL_END_DATE',
-          ),
-          1 =>
-          array (
-            'name' => 'contact',
-            'studio' => 'visible',
-            'label' => 'LBL_CONTACT',
+            'name' => 'name',
             'displayParams' =>
             array (
-              'initial_filter' => '&account_name="+this.form.{$fields.contract_account.name}.value+"',
+              'required' => true,
             ),
-          ),
-        ),
-        4 =>
-        array (
-          0 =>
-          array (
-            'name' => 'renewal_reminder_date',
-            'label' => 'LBL_RENEWAL_REMINDER_DATE',
-            'type' => 'datetimecombo',
+            'label' => 'LBL_NAME',
           ),
           1 =>
           array (
@@ -113,40 +70,145 @@ array (
             'label' => 'LBL_OPPORTUNITY',
           ),
         ),
+        1 =>
+        array (
+          0 =>
+          array (
+            'name' => 'number',
+            'label' => 'LBL_QUOTE_NUMBER',
+            'customCode' => '{$fields.number.value}',
+          ),
+          1 =>
+          array (
+            'name' => 'stage',
+            'label' => 'LBL_STAGE',
+          ),
+        ),
+        2 =>
+        array (
+          0 =>
+          array (
+            'name' => 'expiration',
+            'label' => 'LBL_EXPIRATION',
+          ),
+          1 =>
+          array (
+            'name' => 'invoice_status',
+            'label' => 'LBL_INVOICE_STATUS',
+          ),
+        ),
+        3 =>
+        array (
+          0 =>
+          array (
+            'name' => 'assigned_user_name',
+            'label' => 'LBL_ASSIGNED_TO_NAME',
+          ),
+          1 =>
+          array (
+            'name' => 'term',
+            'label' => 'LBL_TERM',
+          ),
+        ),
+        4 =>
+        array (
+          0 =>
+          array (
+            'name' => 'approval_status',
+            'label' => 'LBL_APPROVAL_STATUS',
+          ),
+          1 =>
+          array (
+            'name' => 'approval_issue',
+            'label' => 'LBL_APPROVAL_ISSUE',
+          ),
+        ),
         5 =>
         array (
           0 =>
           array (
-            'name' => 'customer_signed_date',
-            'label' => 'LBL_CUSTOMER_SIGNED_DATE',
-          ),
-          1 =>
-          array (
-            'name' => 'contract_type',
-            'studio' => 'visible',
-            'label' => 'LBL_CONTRACT_TYPE',
-          ),
-        ),
-        6 =>
-        array (
-          0 =>
-          array (
-            'name' => 'company_signed_date',
-            'label' => 'LBL_COMPANY_SIGNED_DATE',
+            'name' => 'associate_hotels_quotes',
           ),
           1 => '',
         ),
-        7 =>
+      ),
+      'lbl_address_information' =>
+      array (
+        0 =>
         array (
-          0 => 'description',
-          1 => 'associate_hotels_contracts',
+          0 =>
+          array (
+            'name' => 'billing_account',
+            'label' => 'LBL_BILLING_ACCOUNT',
+            'displayParams' =>
+            array (
+              'key' =>
+              array (
+                0 => 'billing',
+                1 => 'shipping',
+              ),
+              'copy' =>
+              array (
+                0 => 'billing',
+                1 => 'shipping',
+              ),
+              'billingKey' => 'billing',
+              'shippingKey' => 'shipping',
+            ),
+          ),
+          1 => '',
+        ),
+        1 =>
+        array (
+          0 =>
+          array (
+            'name' => 'billing_contact',
+            'label' => 'LBL_BILLING_CONTACT',
+            'displayParams' =>
+            array (
+              'initial_filter' => '&account_name="+this.form.{$fields.billing_account.name}.value+"',
+            ),
+          ),
+          1 => '',
+        ),
+        2 =>
+        array (
+          0 =>
+          array (
+            'name' => 'billing_address_street',
+            'hideLabel' => true,
+            'type' => 'address',
+            'displayParams' =>
+            array (
+              'key' => 'billing',
+              'rows' => 2,
+              'cols' => 30,
+              'maxlength' => 150,
+            ),
+            'label' => 'LBL_BILLING_ADDRESS_STREET',
+          ),
+          1 =>
+          array (
+            'name' => 'shipping_address_street',
+            'hideLabel' => true,
+            'type' => 'address',
+            'displayParams' =>
+            array (
+              'key' => 'shipping',
+              'copy' => 'billing',
+              'rows' => 2,
+              'cols' => 30,
+              'maxlength' => 150,
+            ),
+            'label' => 'LBL_SHIPPING_ADDRESS_STREET',
+          ),
         ),
       ),
       'lbl_line_items' =>
       array (
         0 =>
         array (
-          0 => 
+          0 =>
           array (
             'name' => 'currency_id',
             'studio' => 'visible',
@@ -226,22 +288,6 @@ array (
           array (
             'name' => 'total_amount',
             'label' => 'LBL_GRAND_TOTAL',
-          ),
-        ),
-      ),
-      'lbl_editview_panel1' =>
-      array (
-        0 =>
-        array (
-          0 =>
-          array (
-            'name' => 'room_nights',
-            'label' => 'LBL_ROOM_NIGHTS',
-          ),
-          1 =>
-          array (
-            'name' => 'rate_code',
-            'label' => 'LBL_RATE_CODE',
           ),
         ),
       ),
