@@ -49,13 +49,13 @@ class CustomUsersController extends UsersController {
         global $db;
         $selectQ = "SELECT * FROM user_preferences WHERE category='Home' AND deleted = 0 AND assigned_user_id <> '1'";
         $resultQ = $db->query($selectQ);
-        while($row = $db->fetchByAssoc($resultQ)) {
-            if($row['contents'] && strlen(trim($row['contents'])) !== 0) {
+        while ($row = $db->fetchByAssoc($resultQ)) {
+            if ($row['contents'] && strlen(trim($row['contents'])) !== 0) {
                 $rowData = unserialize(base64_decode($row['contents']));
                 $array = $rowData['pages'];
                 $subkey = "id";
                 $array = array_filter($array, function ($v) use (&$array, $subkey, $delete) {
-                    if (!array_key_exists($subkey,$v))
+                    if (!array_key_exists($subkey, $v))
                         return false;
                     if (in_array($v[$subkey], $delete))
                         return false;
@@ -69,7 +69,7 @@ class CustomUsersController extends UsersController {
 
                 $deleteQ = "UPDATE user_preferences SET contents = '{$data}' WHERE category='Home' AND deleted=0 AND assigned_user_id='{$row['assigned_user_id']}'";
                 $dresultQ = $db->query($deleteQ);
-                if(!$dresultQ)
+                if (!$dresultQ)
                     $GLOBALS['log']->fatal("Error updating dashboard tabs for user with ID: {$row['assigned_user_id']}");
             }
         }
@@ -81,15 +81,20 @@ class CustomUsersController extends UsersController {
             return "'{$user}'";
         }, $users);
         $selected_users = implode(", ", $selected_users);
+
+        if (empty($selected_users)) {
+            $selected_users = "''";
+        }
+
         $selectQ = "SELECT * FROM user_preferences WHERE category='Home' AND deleted = 0 AND assigned_user_id <> '1' AND assigned_user_id IN ({$selected_users})";
         $resultQ = $db->query($selectQ);
-        while($row = $db->fetchByAssoc($resultQ)) {
-            if($row['contents'] && strlen(trim($row['contents'])) !== 0) {
+        while ($row = $db->fetchByAssoc($resultQ)) {
+            if ($row['contents'] && strlen(trim($row['contents'])) !== 0) {
                 $rowData = unserialize(base64_decode($row['contents']));
                 $array = $rowData['pages'];
                 $subkey = "id";
                 $array = array_filter($array, function ($v) use (&$array, $subkey, $tab) {
-                    if (!array_key_exists($subkey,$v))
+                    if (!array_key_exists($subkey, $v))
                         return false;
                     if ($v[$subkey] == $tab)
                         return false;
@@ -103,7 +108,7 @@ class CustomUsersController extends UsersController {
 
                 $deleteQ = "UPDATE user_preferences SET contents = '{$data}' WHERE category='Home' AND deleted=0 AND assigned_user_id='{$row['assigned_user_id']}'";
                 $dresultQ = $db->query($deleteQ);
-                if(!$dresultQ)
+                if (!$dresultQ)
                     $GLOBALS['log']->fatal("Error updating dashboard tabs for user with ID: {$row['assigned_user_id']}");
             }
         }
@@ -126,7 +131,7 @@ class CustomUsersController extends UsersController {
 
         // IDENTIFY ANY DELETED TAB FROM THE ADMIN'S END AND UNSUBSCRIBE USERS
         $delete = array();
-        foreach($dash as $p => $d) {
+        foreach ($dash as $p => $d) {
             foreach ($d['dashlets'] as $page => $datum) {
                 if (!in_array($datum['id'], $tab_ids))
                     $delete[] = $datum['id'];
@@ -139,17 +144,17 @@ class CustomUsersController extends UsersController {
         $result = $db->query($query, true);
         if ($result->num_rows == 0)
             $query = "INSERT INTO config (category, name, value) VALUES ('MySettings', 'StandardDashboardConfig'," .
-                "'" . base64_encode(serialize($_REQUEST)) . "')";
+                    "'" . base64_encode(serialize($_REQUEST)) . "')";
         else
             $query = "UPDATE config SET value = '" . base64_encode(serialize($_REQUEST)) .
-                "' WHERE category = 'MySettings' AND name = 'StandardDashboardConfig'";
+                    "' WHERE category = 'MySettings' AND name = 'StandardDashboardConfig'";
         $db->query($query, true);
 
 
         //We only need the updated or new config from here onwards
         $updated = null;
-        foreach($dash as $d) {
-            if($d['update'] == 1)
+        foreach ($dash as $d) {
+            if ($d['update'] == 1)
                 $updated = $d;
         }
         $users = $updated['users'];
@@ -166,7 +171,7 @@ class CustomUsersController extends UsersController {
         for ($i = 0; $i < sizeof($tabs); $i++) {
             $tabId = $updated['dashlets'][$i]['id'];
             $users_to_unsub = array();
-            while($pref = $db->fetchByAssoc($selectPrefResult)) {
+            while ($pref = $db->fetchByAssoc($selectPrefResult)) {
                 $rowD = unserialize(base64_decode($pref['contents']));
                 foreach ($rowD['pages'] as $page => $da) {
                     if ($da['id'] == $tabId)
@@ -177,15 +182,15 @@ class CustomUsersController extends UsersController {
         }
 
         //UPDATE USERS' PREFERENCES TO ADD THE TABS
-        foreach($users as $user) {
-            if($user == '1')
+        foreach ($users as $user) {
+            if ($user == '1')
                 continue;
             $selectPreferenceQuery = "SELECT * FROM user_preferences WHERE category='Home' AND assigned_user_id = '{$user}' AND deleted = 0";
             $selectPreferenceResult = $db->query($selectPreferenceQuery);
             $prefRow = $db->fetchByAssoc($selectPreferenceResult);
             $rowData = unserialize(base64_decode($prefRow['contents']));
             $updatePreferenceQuery = "";
-            if($rowData && is_array($rowData)) {
+            if ($rowData && is_array($rowData)) {
                 //append or replace a field
                 foreach ($updated['dashlets'] as $p => $d) {
                     $found = false;
@@ -218,7 +223,7 @@ class CustomUsersController extends UsersController {
     VALUES('{$guid}', 'Home', 0, '{$now}', '{$now}', '{$user}', '{$data}')";
             }
             $updatePreferenceResult = $db->query($updatePreferenceQuery);
-            if(!$updatePreferenceResult)
+            if (!$updatePreferenceResult)
                 $GLOBALS['log']->fatal("Error inserting dashboard tabs for user with ID: " . $user);
         }
 
@@ -228,18 +233,19 @@ class CustomUsersController extends UsersController {
         $selectAdminResult = $db->query($selectAdminQuery);
         $prefRow = $db->fetchByAssoc($selectAdminResult);
         $rowData = unserialize(base64_decode($prefRow['contents']));
-        if($rowData && is_array($rowData)) {
-            for($i = 0; $i < sizeof($tab_ids); $i++)
+        if ($rowData && is_array($rowData)) {
+            for ($i = 0; $i < sizeof($tab_ids); $i++)
                 $rowData['pages'][$i]['id'] = $tab_ids[$i];
 
             $data = base64_encode(serialize($rowData));
 
             $updateAdminQuery = "UPDATE user_preferences SET contents='{$data}' WHERE assigned_user_id = '1' AND deleted=0 AND category='Home'";
             $updateAdminResult = $db->query($updateAdminQuery);
-            if(!$updateAdminResult)
+            if (!$updateAdminResult)
                 $GLOBALS['log']->fatal("Error updating dashboard tabs for super admin");
         }
 
         SugarApplication::redirect("index.php?module=Administration&action=index");
     }
+
 }

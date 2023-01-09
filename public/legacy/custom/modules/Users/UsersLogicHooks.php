@@ -95,8 +95,8 @@ class UsersLogicHooks {
             }
 
             $rowData['dashlets'] = array_merge($rowData['dashlets'], $dashlets_);
-            $data = base64_encode(serialize($rowData));
             $rowData['dashlets'] = $this->trimDashlets($rowData, $adminData['dashlets']);
+            $data = base64_encode(serialize($rowData));
             $updatePreferenceQuery = "UPDATE user_preferences SET contents='{$data}' WHERE assigned_user_id = '{$bean->id}' AND category='Home' AND deleted=0";
             $updatePreferenceResult = $db->query($updatePreferenceQuery);
             if(!$updatePreferenceResult)

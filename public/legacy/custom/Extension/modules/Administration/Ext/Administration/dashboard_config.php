@@ -7,8 +7,8 @@
 $admin_option_defs = [];
 $admin_option_defs['Administration']['dashboard_config'] = array(
     '',
-    'Manage Dashboard Config',
-    'Configure SuiteCRM dashboard and assign tabs to users',
+    'Manage Dashboard Sharing',
+    'Configure SuiteCRM dashboard and assign tabs to Users.',
     'index.php?module=Users&action=standardDashboardConfig'
 );
 

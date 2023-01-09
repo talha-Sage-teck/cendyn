@@ -13,9 +13,9 @@ class UsersViewstandarddashboard extends SugarView {
         global $db;
 
         $users = array();
-        $selectUsersQuery = "SELECT id, user_name FROM users WHERE deleted=0";
+        $selectUsersQuery = "SELECT id, user_name FROM users WHERE deleted=0 ORDER BY user_name;";
         $selectUsersResult = $db->query($selectUsersQuery);
-        while($user = $db->fetchByAssoc($selectUsersResult)) {
+        while ($user = $db->fetchByAssoc($selectUsersResult)) {
             $users[] = $user;
         }
         return $users;
@@ -25,16 +25,16 @@ class UsersViewstandarddashboard extends SugarView {
         $names = array();
         foreach ($tabs as $tabNo => $tab) {
             $name = "";
-            if(isset($tab['pageTitle'])) {
+            if (isset($tab['pageTitle'])) {
                 $name = $tab['pageTitle'];
+            } else if (isset($tab['pageTitleLabel'])) {
+//                $name = $tab['pageTitleLabel'];
+                $name = $GLOBALS['app_strings']['LBL_SUITE_DASHBOARD'];
             }
-            else if(isset($tab['pageTitleLabel'])) {
-                $name = $tab['pageTitleLabel'];
-            }
-            if(!$name) {
+            if (!$name) {
                 $name = 'NAMELESS TAB # ' . ($tabNo + 1);
             }
-            $names[] = $name;
+            $names[] = htmlspecialchars_decode($name, ENT_QUOTES);
         }
         return $names;
     }
@@ -42,6 +42,7 @@ class UsersViewstandarddashboard extends SugarView {
     function display() {
         global $current_user;
         $settings = $this->standardDashboardSettings();
+        
         $tab_ids = $settings['tab_ids'];
         $tab_ids = preg_replace('/&#38;/i', '"', $tab_ids);
         $settingArray = $settings["dashboard"];
@@ -59,13 +60,13 @@ class UsersViewstandarddashboard extends SugarView {
         $this->ss->assign('dashlets', $dashlets);
 
         echo '<script>'
-            . ($settingArray !== "" ? 'var configs = JSON.parse(\'' . $settingArray . '\')' : 'var configs = []') . ';'
-            . ($tab_ids !== "" ? 'var tab_ids = JSON.parse(\'' . $tab_ids . '\')' : 'var tab_ids = []') . ';'
-            . 'var tab_names = ' . json_encode($tabNames) . ';'
-            . 'var dass = ' . json_encode($dashlets) . ';'
-            . 'var tabDetails = ' . json_encode($pages) . ';'
-            . 'var users = ' . json_encode($users) . ';'
-            . 'var create = false; </script>';
+        . ($settingArray !== "" ? 'var configs = JSON.parse(\'' . $settingArray . '\')' : 'var configs = []') . ';'
+        . ($tab_ids !== "" ? 'var tab_ids = JSON.parse(\'' . $tab_ids . '\')' : 'var tab_ids = []') . ';'
+        . 'var tab_names = ' . json_encode($tabNames) . ';'
+        . 'var dass = ' . json_encode($dashlets) . ';'
+        . 'var tabDetails = ' . json_encode($pages) . ';'
+        . 'var users = ' . json_encode($users) . ';'
+        . 'var create = false; </script>';
         echo $this->ss->fetch('custom/modules/Users/views/view.standarddashboard.tpl');
     }
 
