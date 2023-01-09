@@ -105,6 +105,23 @@ class UsersLogicHooks {
                     }
                 }
             }
+            $new_array=[];
+            //First keep the synced dashboards
+            $new_array[]=$rowData['pages'][0];
+            for ($i=1;$i<count($rowData['pages']);$i++){
+                $datum=$rowData['pages'][$i];
+                if(empty($datum['is_managed'])){
+                    $new_array[]=$datum;
+                }
+            }
+            //Then put the user own dashboards
+            for ($i=1;$i<count($rowData['pages']);$i++){
+                $datum=$rowData['pages'][$i];
+                if(!empty($datum['is_managed'])){
+                    $new_array[]=$datum;
+                }
+            }
+            $rowData['pages']=$new_array;
 
             $rowData['dashlets'] = array_merge($rowData['dashlets'], $dashlets_);
             $rowData['dashlets'] = $this->trimDashlets($rowData, $adminData['dashlets']);
