@@ -123,7 +123,7 @@ class UsersLogicHooks {
             }
             $rowData['pages']=$new_array;
 
-            $rowData['dashlets'] = array_merge($rowData['dashlets'], $dashlets_);
+            $rowData['dashlets'] = array_merge($rowData['dashlets']??[], $dashlets_);
             $rowData['dashlets'] = $this->trimDashlets($rowData, $adminData['dashlets']);
             $data = base64_encode(serialize($rowData));
             $updatePreferenceQuery = "UPDATE user_preferences SET contents='{$data}' WHERE assigned_user_id = '{$bean->id}' AND category='Home' AND deleted=0";

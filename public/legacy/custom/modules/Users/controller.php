@@ -54,18 +54,21 @@ class CustomUsersController extends UsersController {
                 $rowData = unserialize(base64_decode($row['contents']));
                 $array = $rowData['pages'];
                 $subkey = "id";
-                $array = array_filter($array, function ($v) use (&$array, $subkey, $delete) {
-                    if(empty($v['is_managed'])){
-                        return true;
-                    }
-                    if (!array_key_exists($subkey, $v))
-                        return false;
-                    if (in_array($v[$subkey], $delete))
-                        return false;
-                    else
-                        return true;
-                });
-                $rowData['pages'] = array_values($array);
+                if(!empty($array)&&is_countable($array)){
+                    $array = array_filter($array, function ($v) use (&$array, $subkey, $delete) {
+                        if(empty($v['is_managed'])){
+                            return true;
+                        }
+                        if (!array_key_exists($subkey, $v))
+                            return false;
+                        if (in_array($v[$subkey], $delete))
+                            return false;
+                        else
+                            return true;
+                    });
+                    $rowData['pages'] = array_values($array);
+                }
+
                 $data = base64_encode(serialize($rowData));
 
                 //perhaps we would have to remove dashlets too; not likely
@@ -211,15 +214,21 @@ class CustomUsersController extends UsersController {
                 }
 
                 //append dashlets
-                $rowData['dashlets'] = array_merge($rowData['dashlets'], $dashlets_);
+                $rowData['dashlets'] = array_merge($rowData['dashlets']??[], $dashlets_);
                 $data = base64_encode(serialize($rowData));
 
                 $updatePreferenceQuery = "UPDATE user_preferences SET contents='{$data}' WHERE assigned_user_id = '{$user}' AND deleted=0 AND category='Home'";
             }
             else {
+                $n_updated=[];
+                foreach ($updated['dashlets'] as $p => $d) {
+                    $d['is_managed']='yes';
+                    $d['managed_id']=$d['id'];
+                    $n_updated[$p]=$d;
+                }
                 $rowData = array(
                     "dashlets" => $dashlets_,
-                    "pages" => $updated['dashlets']
+                    "pages" => $n_updated
                 );
                 $data = base64_encode(serialize($rowData));
                 $guid = create_guid();
