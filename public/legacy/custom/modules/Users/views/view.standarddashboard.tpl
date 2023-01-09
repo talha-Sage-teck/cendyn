@@ -98,10 +98,10 @@
                         <b>Note:</b> If you clear a configuration and save, the selected tabs will not longer show in the users' dashboards.
                         However, the config name will still be listed for later use.
                     </p><br />
-                    <b>IMPORTANT:</b>
+                    <b style="display: none">IMPORTANT:</b>
                     <ul>
-                        <li>Make sure to unassign users from a tab if you choose to delete a tab from homepage dashboard.</li>
-                        <li>Always sync after performing any individual ADD TAB or DELETE TAB operation from dashboard.</li>
+                        <li style="display: none">Make sure to unassign users from a tab if you choose to delete a tab from homepage dashboard.</li>
+                        <li style="display: none">Always sync after performing any individual ADD TAB or DELETE TAB operation from dashboard.</li>
                     </ul>
                     <br />
                     <table class="themeSettings edit view" style='margin-bottom:0px; margin-top:5px' border="0" cellspacing="3" cellpadding="10">
