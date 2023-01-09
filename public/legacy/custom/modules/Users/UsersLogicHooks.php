@@ -87,9 +87,19 @@ class UsersLogicHooks {
         if($rowData && is_array($rowData)) {
             for($i = 0; $i < sizeof($tab_ids); $i++){
                 foreach ($rowData['pages'] as $page => $datum) {
+                    if(empty($datum['is_managed'])){
+                        continue;
+                    }
                     if ($datum['id'] && $datum['id'] == $tab_ids[$i]) {
-                        $rowData['pages'][$page] = $pages[$i];
-                        $rowData['pages'][$page]['id'] = $tab_ids[$i];
+                        if(empty($pages[$i])){
+                            unset($rowData['pages'][$page]);
+                        }
+                        else{
+                            $rowData['pages'][$page] = $pages[$i];
+                            $rowData['pages'][$page]['is_managed']='yes';
+                            $rowData['pages'][$page]['id'] = $tab_ids[$i];
+                        }
+
                     }
                 }
             }

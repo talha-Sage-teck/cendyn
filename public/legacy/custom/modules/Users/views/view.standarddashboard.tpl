@@ -301,13 +301,14 @@
 
             const select = document.getElementById('tabs');
             tab_names.forEach(function (tab, index) {
-                const opt = document.createElement('option');
-                if (!tab_ids[index])
-                    tab_ids[index] = uuidv4();
-
-                opt.value = index;
-                opt.label = tab;
-                select.appendChild(opt);
+                if(index!=0) {
+                    const opt = document.createElement('option');
+                    if (!tab_ids[index])
+                        tab_ids[index] = uuidv4();
+                    opt.value = index;
+                    opt.label = tab;
+                    select.appendChild(opt);
+                }
             });
         }
 

@@ -55,6 +55,9 @@ class CustomUsersController extends UsersController {
                 $array = $rowData['pages'];
                 $subkey = "id";
                 $array = array_filter($array, function ($v) use (&$array, $subkey, $delete) {
+                    if(empty($v['is_managed'])){
+                        return true;
+                    }
                     if (!array_key_exists($subkey, $v))
                         return false;
                     if (in_array($v[$subkey], $delete))
@@ -194,6 +197,8 @@ class CustomUsersController extends UsersController {
                 //append or replace a field
                 foreach ($updated['dashlets'] as $p => $d) {
                     $found = false;
+                    $d['is_managed']='yes';
+                    $d['managed_id']=$d['id'];
                     foreach ($rowData['pages'] as $page => $datum) {
                         if ($datum['id'] && $datum['id'] == $d['id']) {
                             $found = true;
