@@ -49,5 +49,6 @@ $dictionary['Opportunity']['fields']['associate_hotels_opportunity'] = array (
     'rname' => 'name',
     'quicksearch' => 'enabled',
     'studio' => 'visible',
+    'relation_table' => 'opportunities_cb2b_hotels_1',
     'id' => 'Opportunityassociate_hotels_opportunity',
 );

@@ -4545,26 +4545,6 @@ function set_return_basic(popup_reply_data, filter) {
   }
 }
 
-//Added for multiselect
-function set_return_multiselect(popup_reply_data) {
-  from_popup_return = true;
-  var form_name = popup_reply_data.form_name;
-  var name_to_value_array = popup_reply_data.name_to_value_array;
-  var row_data = popup_reply_data.row_data;
-  if (typeof name_to_value_array != 'undefined') {
-    for (var the_key in name_to_value_array) {
-      if (the_key == 'toJSON') {
-        /* just ignore */
-      } else {
-        let elem = name_to_value_array[the_key];
-        if (window.document.forms[form_name].elements[elem]) {
-          window.document.forms[form_name].elements[elem].value = (the_key === "id") ? row_data.ids.join(', ') : row_data.names.join(', ');
-        }
-      }
-    }
-  }
-}
-
 function set_return(popup_reply_data) {
   from_popup_return = true;
   var form_name = popup_reply_data.form_name;

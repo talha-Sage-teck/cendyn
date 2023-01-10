@@ -61,10 +61,12 @@ export class RecordListModalComponent implements OnInit, OnDestroy {
     @Input() parentModule: string;
     @Input() adapter: RecordListModalTableAdapterInterface = null;
     @Input() filterAdapter: ModalRecordFilterAdapter = null;
+    @Input() multiselect: boolean = false;
 
     loading$: Observable<boolean>;
-
+    select: boolean = false;
     closeButton: ButtonInterface;
+    selectButton: ButtonInterface;
     tableConfig: TableConfig;
     filterConfig: FilterConfig;
     store: RecordListModalStore;
@@ -88,6 +90,22 @@ export class RecordListModalComponent implements OnInit, OnDestroy {
                 this.activeModal.close({
                     type: 'close-button'
                 } as ModalCloseFeedBack);
+            }
+        } as ButtonInterface;
+
+        this.selectButton = {
+            klass: ['btn', 'btn-outline-dark', 'btn-sm'],
+            onClick: (): void => {
+                this.subs.push(this.store.recordList.selection$.pipe(distinctUntilChanged()).subscribe(selection => {
+                    if (!selection || !selection.selected || Object.keys(selection.selected).length < 1) {
+                        return;
+                    }
+                    this.activeModal.close({
+                        selection,
+                        records: this.store.recordList.records
+                    } as RecordListModalResult);
+
+                }));
             }
         } as ButtonInterface;
 
@@ -118,6 +136,10 @@ export class RecordListModalComponent implements OnInit, OnDestroy {
 
         this.tableConfig = this.adapter.getTable(this.store);
         this.tableConfig.maxColumns$ = this.getMaxColumns();
+        if(this.multiselect) {
+            this.tableConfig.selection = this.store.recordList;
+            this.tableConfig.selection$ = this.store.recordList.selection$;
+        }
     }
 
     protected initFilterAdapters(): void {
@@ -132,16 +154,18 @@ export class RecordListModalComponent implements OnInit, OnDestroy {
         this.store.init(this.module, this.parentModule ?? '');
         this.loading$ = this.store.metadataLoading$;
 
-        this.subs.push(this.store.recordList.selection$.pipe(distinctUntilChanged(), skip(1)).subscribe(selection => {
+        if(!this.multiselect) {
+            this.subs.push(this.store.recordList.selection$.pipe(distinctUntilChanged(), skip(1)).subscribe(selection => {
 
-            if (!selection || !selection.selected || Object.keys(selection.selected).length < 1) {
-                return;
-            }
+                if (!selection || !selection.selected || Object.keys(selection.selected).length < 1) {
+                    return;
+                }
 
-            this.activeModal.close({
-                selection,
-                records: this.store.recordList.records
-            } as RecordListModalResult);
-        }));
+                this.activeModal.close({
+                    selection,
+                    records: this.store.recordList.records
+                } as RecordListModalResult);
+            }));
+        }
     }
 }

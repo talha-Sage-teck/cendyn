@@ -20,6 +20,13 @@ array (
           'field' => '30',
         ),
       ),
+      'includes' =>
+      array(
+        0 =>
+        array (
+         'file' => 'custom/modules/AOS_Contracts/js/AOS_Contracts.js',
+        ),
+      ),
       'useTabs' => false,
       'syncDetailEditViews' => false,
       'tabDefs' =>
@@ -146,7 +153,7 @@ array (
       array (
         0 =>
         array (
-          0 => 
+          0 =>
           array (
             'name' => 'currency_id',
             'studio' => 'visible',

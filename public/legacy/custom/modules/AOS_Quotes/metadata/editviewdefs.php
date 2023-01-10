@@ -15,6 +15,13 @@ array (
           1 => 'CANCEL',
         ),
       ),
+      'includes' =>
+      array(
+        0 =>
+        array (
+         'file' => 'custom/modules/AOS_Quotes/js/AOS_Quotes.js',
+        ),
+      ),
       'maxColumns' => '2',
       'widths' =>
       array (

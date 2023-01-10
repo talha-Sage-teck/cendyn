@@ -101,6 +101,12 @@ import {TinymceDetailFieldModule} from './tinymce/templates/detail/tinymce.modul
 import {TinymceEditFieldModule} from './tinymce/templates/edit/tinymce.module';
 import {TinymceDetailFieldComponent} from './tinymce/templates/detail/tinymce.component';
 import {TinymceEditFieldComponent} from './tinymce/templates/edit/tinymce.component';
+import {MultiRelateDetailFieldsModule} from "./multirelate/templates/detail/multirelate.module";
+import {MultiRelateEditFieldModule} from "./multirelate/templates/edit/multirelate.module";
+import {MultiRelateFilterFieldModule} from "./multirelate/templates/filter/multirelate.module";
+import {MultiRelateDetailFieldComponent} from "./multirelate/templates/detail/multirelate.component";
+import {MultiRelateEditFieldComponent} from "./multirelate/templates/edit/multirelate.component";
+import {MultiRelateFilterFieldComponent} from "./multirelate/templates/filter/multirelate.component";
 
 export const baseFieldModules = [
     VarcharDetailFieldModule,
@@ -140,7 +146,10 @@ export const baseFieldModules = [
     BooleanFilterFieldModule,
     HtmlDetailFieldModule,
     TinymceDetailFieldModule,
-    TinymceEditFieldModule
+    TinymceEditFieldModule,
+    MultiRelateDetailFieldsModule,
+    MultiRelateEditFieldModule,
+    MultiRelateFilterFieldModule,
 ];
 export const baseFieldComponents = [
     VarcharDetailFieldComponent,
@@ -180,7 +189,10 @@ export const baseFieldComponents = [
     BooleanFilterFieldComponent,
     HtmlDetailFieldComponent,
     TinymceDetailFieldComponent,
-    TinymceEditFieldComponent
+    TinymceEditFieldComponent,
+    MultiRelateDetailFieldComponent,
+    MultiRelateEditFieldComponent,
+    MultiRelateFilterFieldComponent,
 ];
 
 export const baseViewFieldsMap: FieldComponentMap = {
@@ -253,5 +265,10 @@ export const baseViewFieldsMap: FieldComponentMap = {
     'bool.edit': BooleanEditFieldComponent,
     'bool.filter': BooleanFilterFieldComponent,
     'html.detail': TinymceDetailFieldComponent,
-    'html.edit': TinymceEditFieldComponent
+    'html.edit': TinymceEditFieldComponent,
+    'multirelate.list': MultiRelateDetailFieldComponent,
+    'multirelate.edit': MultiRelateEditFieldComponent,
+    'multirelate.detail': MultiRelateDetailFieldComponent,
+    'multirelate.filter': MultiRelateFilterFieldComponent,
+
 };

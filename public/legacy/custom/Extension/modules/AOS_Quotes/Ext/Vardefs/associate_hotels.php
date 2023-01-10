@@ -49,5 +49,6 @@ $dictionary['AOS_Quotes']['fields']['associate_hotels_quotes'] = array (
     'rname' => 'name',
     'quicksearch' => 'enabled',
     'studio' => 'visible',
+    'relation_table' => 'aos_quotes_cb2b_hotels_1',
     'id' => 'AOS_Quotesassociate_hotels_quotes',
 );

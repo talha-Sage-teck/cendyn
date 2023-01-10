@@ -52,7 +52,7 @@
 {{/if}}
 <span id="{$id}" class="sugar_field" data-id-value="{$id}">{$names[$i]}</span>
 {{if !$nolink && !empty($vardef.id_name)}}
-{if !empty($id)}</a>{/if}
+{if !empty($id)}</a><br /><br />{/if}
 {assign var=i value=$i+1}
 {{/if}}
 {/foreach}

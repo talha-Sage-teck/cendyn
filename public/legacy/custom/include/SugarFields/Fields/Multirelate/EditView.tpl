@@ -39,14 +39,121 @@
  */
 
 *}
+<link href="custom/include/SugarFields/Fields/Multirelate/css/chips.css" rel="stylesheet" type="text/css"/>
+<script>
+//Added for multiselect
 {{capture name=idname assign=idname}}{{sugarvar key='name'}}{{/capture}}
 {{if !empty($displayParams.idName)}}
     {{assign var=idname value=$displayParams.idName}}
 {{/if}}
-<input type="text" name="{{$idname}}" class={{if empty($displayParams.class) }}"sqsEnabled"{{else}} "{{$displayParams.class}}" {{/if}} tabindex="{{$tabindex}}" id="{{$idname}}" size="{{$displayParams.size}}" value="{{sugarvar key='value'}}" title='{{$vardef.help}}' autocomplete="off" {{$displayParams.readOnly}} {{$displayParams.field}}	{{if !empty($displayParams.accesskey)}} accesskey='{{$displayParams.accesskey}}' {{/if}} >
+
+{literal}
+function set_return_multiselect(popup_reply_data) {
+  from_popup_return = true;
+  var form_name = popup_reply_data.form_name;
+  var name_to_value_array = popup_reply_data.name_to_value_array;
+  var row_data = popup_reply_data.row_data;
+  if (typeof name_to_value_array != 'undefined') {
+    for (var the_key in name_to_value_array) {
+      if (the_key == 'toJSON') {
+        /* just ignore */
+      } else {
+        let elem = name_to_value_array[the_key];
+        if (window.document.forms[form_name].elements[elem]) {
+          if(window.document.forms[form_name].elements[elem].value.trim() === '')
+            window.document.forms[form_name].elements[elem].value = (the_key === "id") ? row_data.ids.join(', ') : row_data.names.join(', ');
+          else {
+            window.document.forms[form_name].elements[elem].value += ", ";
+            window.document.forms[form_name].elements[elem].value += (the_key === "id") ? row_data.ids.join(', ') : row_data.names.join(', ');
+          }
+          plantChips();
+        }
+      }
+    }
+  }
+}
+
+MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
+
+var trackChange = function(element) {
+  var observer = new MutationObserver(function(mutations, observer) {
+    if(mutations[0].attributeName == "value") {
+        $(element).trigger("change");
+    }
+  });
+  observer.observe(element, {
+    attributes: true
+  });
+}
+{/literal}
+
+function multirelate_callback_function(e) {ldelim}
+    console.log(e);
+    if(document.querySelector('[name={{sugarvar key='id_name'}}_sqs]').value.trim().length !== 0) {ldelim}
+        let ids = document.querySelector('[name={{sugarvar key='id_name'}}]').value;
+        let names = document.querySelector('[name={{$idname}}]').value;
+        let idsArr = ids.split(', ');
+        let namesArr = names.split(', ');
+        if(idsArr.indexOf(document.querySelector('[name={{sugarvar key='id_name'}}_sqs]').value) >= 0)
+            return;
+
+        idsArr.push(document.querySelector('[name={{sugarvar key='id_name'}}_sqs]').value);
+        namesArr.push(document.querySelector('[name={{$idname}}_sqs]').value);
+        document.querySelector('[name={{sugarvar key='id_name'}}]').value = idsArr.join(', ');
+        document.querySelector('[name={{$idname}}]').value = namesArr.join(', ');
+        plantChips();
+        document.querySelector('[name={{sugarvar key='id_name'}}_sqs]').value = "";
+    {rdelim}
+{rdelim}
+</script>
+
+<div id="chips_{{$idname}}">
+</div>
+<br />
+<input type="text" name="{{$idname}}" style="display: none;" tabindex="{{$tabindex}}" id="{{$idname}}" size="{{$displayParams.size}}" value="{{sugarvar key='value'}}" title='{{$vardef.help}}' autocomplete="off" {{$displayParams.readOnly}} {{$displayParams.field}}	{{if !empty($displayParams.accesskey)}} accesskey='{{$displayParams.accesskey}}' {{/if}} >
+<input type="text" name="{{$idname}}_sqs" class={{if empty($displayParams.class) }}"sqsEnabled"{{else}} "{{$displayParams.class}}" {{/if}} tabindex="{{$tabindex}}" id="{{$idname}}_sqs" size="{{$displayParams.size}}" title='{{$vardef.help}}' autocomplete="off" {{$displayParams.readOnly}} {{$displayParams.field}}	{{if !empty($displayParams.accesskey)}} accesskey='{{$displayParams.accesskey}}' {{/if}} >
 <input type="hidden" name="{{if !empty($displayParams.idNameHidden)}}{{$displayParams.idNameHidden}}{{/if}}{{sugarvar key='id_name'}}"
 	id="{{if !empty($displayParams.idNameHidden)}}{{$displayParams.idNameHidden}}{{/if}}{{sugarvar key='id_name'}}"
 	{{if !empty($vardef.id_name)}}value="{{sugarvar memberName='vardef.id_name' key='value'}}"{{/if}}>
+<input type="hidden" name="{{if !empty($displayParams.idNameHidden)}}{{$displayParams.idNameHidden}}{{/if}}{{sugarvar key='id_name'}}_sqs"
+    id="{{if !empty($displayParams.idNameHidden)}}{{$displayParams.idNameHidden}}{{/if}}{{sugarvar key='id_name'}}_sqs">
+<script type="text/javascript">
+function removeChip(id) {ldelim}
+    let ids = document.querySelector('[name={{sugarvar key='id_name'}}]').value;
+    let names = document.querySelector('[name={{$idname}}]').value;
+    let idsArr = ids.split(', ');
+    let namesArr = names.split(', ');
+    const ind = idsArr.indexOf(id);
+    if(ind > -1) {ldelim}
+        idsArr.splice(ind, 1);
+        namesArr.splice(ind, 1);
+        document.querySelector('[name={{sugarvar key='id_name'}}]').value = idsArr.join(', ');
+        document.querySelector('[name={{$idname}}]').value = namesArr.join(', ');
+    {rdelim}
+{rdelim}
+function plantChips() {ldelim}
+    let ids = document.querySelector('[name={{sugarvar key='id_name'}}]').value;
+    let names = document.querySelector('[name={{$idname}}]').value;
+    let idsArr = ids.split(', ');
+    let namesArr = names.split(', ');
+    let target = document.querySelector('[id=chips_{{$idname}}]');
+    target.innerHTML = "";
+    for(let i = 0; i < idsArr.length; ++i) {ldelim}
+    target.innerHTML += "<div class=\"chip\"><span class=\"chip-content\">" + namesArr[i] + "</span><span class=\"closebtn\" onclick=\"this.parentElement.style.display='none'; removeChip('" + idsArr[i] + "');\">&times;</span></div>";
+    {rdelim}
+{rdelim}
+
+function init() {ldelim}
+    plantChips();
+{rdelim}
+
+YAHOO.util.Event.onDOMReady(init);
+SUGAR.util.doWhen(
+		"typeof(sqs_objects) != 'undefined' && typeof(sqs_objects['{$form_name}_{{$idname}}']) != 'undefined'",
+		enableQS
+);
+</script>
+
 {{if empty($displayParams.hideButtons) }}
 <span class="id-ff multiple selectcrossbtn">
 <button type="button" name="btn_{{$idname}}" id="btn_{{$idname}}" tabindex="{{$tabindex}}" title="{sugar_translate label="{{$displayParams.accessKeySelectTitle}}"}" class="firstChild" value="{sugar_translate label="{{$displayParams.accessKeySelectLabel}}"}"
@@ -62,21 +169,7 @@ onclick='open_popup(
 	true
 );' {{if isset($displayParams.javascript.btn)}}{{$displayParams.javascript.btn}}{{/if}}>
 {sugar_getimage name="cursor" attr='border="0"'}
-</button>
-{{if empty($displayParams.selectOnly) }}
-<button type="button" name="btn_clr_{{$idname}}" id="btn_clr_{{$idname}}" tabindex="{{$tabindex}}" title="{sugar_translate label="{{$displayParams.accessKeyClearTitle}}"}"  class="lastChild"
-onclick="SUGAR.clearRelateField(this.form, '{{$idname}}', '{{if !empty($displayParams.idName)}}{{$displayParams.idName}}_{{/if}}{{sugarvar key='id_name'}}');"  value="{sugar_translate label="{{$displayParams.accessKeyClearLabel}}"}" {{if isset($displayParams.javascript.btn_clear)}}{{$displayParams.javascript.btn_clear}}{{/if}}>
-{sugar_getimage name="cross" attr='border="0"'}
-</button>
-{{/if}}
-</span>
 {{/if}}
 {{if !empty($displayParams.allowNewValue) }}
 <input type="hidden" name="{{$idname}}_allow_new_value" id="{{$idname}}_allow_new_value" value="true">
 {{/if}}
-<script type="text/javascript">
-SUGAR.util.doWhen(
-		"typeof(sqs_objects) != 'undefined' && typeof(sqs_objects['{$form_name}_{{$idname}}']) != 'undefined'",
-		enableQS
-);
-</script>
