@@ -47,6 +47,11 @@
                             <scrm-list-filter *ngIf="filterConfig" [config]="filterConfig"></scrm-list-filter>
                         </div>
                     </div>
+                    <div class="row pb-3" *ngIf="multiselect">
+                        <div class="col">
+                            <scrm-button [config]="selectButton">Select</scrm-button>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col">
                             <scrm-table [config]="tableConfig"></scrm-table>

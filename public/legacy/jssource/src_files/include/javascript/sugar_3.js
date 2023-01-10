@@ -2993,7 +2993,7 @@ SUGAR.util = function () {
               // Bug #49205 : Subpanels fail to load when selecting subpanel tab
               // Create a YUI instance using the io-base module.
               (function (srcResult) {
-                $.ajax({ 
+                $.ajax({
                   url: srcResult,
                   async: false,
                   method: 'GET'

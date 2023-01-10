@@ -66,9 +66,9 @@ array (
           array (
             'name' => 'hotel_address_street',
             'type' => 'address',
-            'displayParams' =>
+            'displayParams' => 
             array (
-                'key' => 'hotel',
+              'key' => 'hotel',
             ),
           ),
           1 => 
@@ -76,7 +76,7 @@ array (
             'name' => 'brand',
           ),
         ),
-        2 =>
+        2 => 
         array (
           0 => 
           array (
@@ -85,6 +85,24 @@ array (
           1 => 
           array (
             'name' => 'region',
+          ),
+        ),
+        3 => 
+        array (
+          0 => 
+          array (
+            'name' => 'aos_contracts_cb2b_hotels_1_name',
+          ),
+          1 => 
+          array (
+            'name' => 'aos_quotes_cb2b_hotels_1_name',
+          ),
+        ),
+        4 => 
+        array (
+          0 => 
+          array (
+            'name' => 'opportunities_cb2b_hotels_1_name',
           ),
         ),
       ),

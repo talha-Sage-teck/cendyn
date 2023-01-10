@@ -4709,7 +4709,7 @@ class SugarBean
         $this->fill_in_additional_detail_fields();
         $this->fill_in_relationship_fields();
         // save related fields values for audit
-        foreach ($this->get_related_fields() as $rel_field_name) {
+        foreach (array_merge($this->get_related_fields(), $this->get_multirelated_fields()) as $rel_field_name) {
             $field_name = $rel_field_name['name'];
             if (!empty($this->$field_name)) {
                 $this->fetched_rel_row[$rel_field_name['name']] = $this->$field_name;
@@ -5084,6 +5084,76 @@ class SugarBean
     }
 
     /**
+     * @param $module
+     * @param $id
+     * @param $fields
+     * @param bool $return_array
+     *
+     * @return string
+     */
+    public function getMultiRelatedFields($module, $id, $fields, $return_array = false)
+    {
+        if (empty($GLOBALS['beanList'][$module])) {
+            return '';
+        }
+        $object = BeanFactory::getObjectName($module);
+
+        VardefManager::loadVardef($module, $object);
+        if (empty($GLOBALS['dictionary'][$object]['table'])) {
+            return '';
+        }
+        $table = $GLOBALS['dictionary'][$object]['table'];
+        $query = 'SELECT id';
+        foreach ($fields as $field => $alias) {
+            if (!empty($GLOBALS['dictionary'][$object]['fields'][$field]['db_concat_fields'])) {
+                $concat = $this->db->concat(
+                    $table,
+                    $GLOBALS['dictionary'][$object]['fields'][$field]['db_concat_fields']
+                );
+                $query .= ' ,' . $concat . ' as ' . $alias;
+            } elseif (!empty($GLOBALS['dictionary'][$object]['fields'][$field]) &&
+                (empty($GLOBALS['dictionary'][$object]['fields'][$field]['source']) ||
+                    $GLOBALS['dictionary'][$object]['fields'][$field]['source'] != "non-db")
+            ) {
+                $query .= ' ,' . $table . '.' . $field . ' as ' . $alias;
+            }
+            if (!$return_array) {
+                $this->$alias = '';
+            }
+        }
+        if ($query == 'SELECT id' || empty($id)) {
+            return '';
+        }
+
+
+        if (isset($GLOBALS['dictionary'][$object]['fields']['assigned_user_id'])) {
+            $query .= " , " . $table . ".assigned_user_id owner";
+        } elseif (isset($GLOBALS['dictionary'][$object]['fields']['created_by'])) {
+            $query .= " , " . $table . ".created_by owner";
+        }
+        $idsArr = explode(", ", $id);
+        $ids = array_map(function($ids_el) {
+            return "'{$ids_el}'";
+        }, $idsArr);
+        $ids = implode(", ", $ids);
+        $query .= ' FROM ' . $table . ' WHERE deleted=0 AND id IN ';
+        $result = DBManagerFactory::getInstance()->query($query . "($ids)");
+        $row = DBManagerFactory::getInstance()->fetchByAssoc($result);
+        if ($return_array) {
+            return $row;
+        }
+        $owner = (empty($row['owner'])) ? '' : $row['owner'];
+        foreach ($fields as $alias) {
+            $this->$alias = (!empty($row[$alias])) ? $row[$alias] : '';
+            $alias .= '_owner';
+            $this->$alias = $owner;
+            $a_mod = $alias . '_mod';
+            $this->$a_mod = $module;
+        }
+    }
+
+
+    /**
      * Fill in fields where type = relate
      */
     public function fill_in_relationship_fields()
@@ -5143,6 +5213,54 @@ class SugarBean
                     }
                 }
             }
+            else if(0 == strcmp(strtolower($field['type']), 'multirelate') && !empty($field['module'])) {
+                $name = $field['name'];
+                if (empty($this->$name)) {
+                    // set the value of this relate field in this bean ($this->$field['name']) to the value of the
+                    // 'name' field in the related module for the record identified
+                    // by the value of $this->$field['id_name']
+                    $related_module = $field['module'];
+                    $id_name = $field['id_name'];
+
+                    if (empty($this->$id_name)) {
+                        $this->fill_in_link_field($id_name, $field);
+                    }
+                    if (!empty($this->$id_name) &&
+                        ($this->object_name != $related_module ||
+                            ($this->object_name == $related_module && $this->$id_name != $this->id))
+                    ) {
+                        if (!empty($this->$id_name) && isset($this->$name)) {
+                            $ids = explode(", ", $this->$id_name);
+                            $names = array();
+                            foreach($ids as $id) {
+                                $mod = BeanFactory::getShallowBean($related_module, $id);
+                                if ($mod) {
+                                    if (!empty($field['rname'])) {
+                                        $rname = $field['rname'];
+                                        $names[] = $mod->$rname;
+                                    } else {
+                                        if (isset($mod->name)) {
+                                            $names[] = $mod->name;
+                                        }
+                                    }
+                                }
+                            }
+                            $this->$name = implode(", ", $names);
+                        }
+                    }
+                    if (!empty($this->$id_name) && isset($this->$name)) {
+                        if (!isset($field['additionalFields'])) {
+                            $field['additionalFields'] = array();
+                        }
+                        if (!empty($field['rname'])) {
+                            $field['additionalFields'][$field['rname']] = $name;
+                        } else {
+                            $field['additionalFields']['name'] = $name;
+                        }
+//                        $this->getMultiRelatedFields($related_module, $this->$id_name, $field['additionalFields']);
+                    }
+                }
+            }
         }
         $fill_in_rel_depth--;
     }
@@ -5192,6 +5310,31 @@ class SugarBean
         }
 
         return $related_fields;
+    }
+
+    /**
+     * Returns an array of fields that are of type multirelate.
+     *
+     * @return array List of fields.
+     *
+     * Internal function, do not override.
+     */
+    public function get_multirelated_fields()
+    {
+        $multirelated_fields = array();
+
+        $fieldDefs = $this->getFieldDefinitions();
+
+        //find all definitions of type link.
+        if (!empty($fieldDefs)) {
+            foreach ($fieldDefs as $name => $properties) {
+                if (array_search('multirelate', $properties, true) === 'type') {
+                    $multirelated_fields[$name] = $properties;
+                }
+            }
+        }
+
+        return $multirelated_fields;
     }
 
     /**
