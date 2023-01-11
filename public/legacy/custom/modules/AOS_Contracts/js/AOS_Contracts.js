@@ -1,5 +1,5 @@
 function loadSQS() {
-    sqs_objects['EditView_associate_hotels_contracts'] = {
+    sqs_objects['EditView_associate_hotels_contracts_sqs'] = {
         "form": "EditView",
         "method": "query",
         "modules": [
@@ -11,8 +11,8 @@ function loadSQS() {
             "id"
         ],
         "populate_list": [
-            "associate_hotels_contracts",
-            "cb2b_hotels_id"
+            "associate_hotels_contracts_sqs",
+            "cb2b_hotels_id_sqs"
         ],
         "required_list": [],
         "conditions": [
@@ -27,5 +27,6 @@ function loadSQS() {
         "limit": "30",
         "no_match_text": "No Match"
     };
+    QSCallbacksArray['EditView_associate_hotels_contracts_sqs'] = multirelate_callback_function;
 }
 YAHOO.util.Event.onDOMReady(loadSQS);

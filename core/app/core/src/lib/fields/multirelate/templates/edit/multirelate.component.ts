@@ -88,7 +88,6 @@ export class MultiRelateEditFieldComponent extends BaseRelateComponent {
      */
     ngOnInit(): void {
         super.ngOnInit();
-        this.init();
         if(!this.field.valueList)
             this.field.valueList = [];
 
@@ -104,11 +103,20 @@ export class MultiRelateEditFieldComponent extends BaseRelateComponent {
 
         const valueObjectArray = (this.field && this.field.valueObjectArray) || [];
 
+        if(this.field.value && typeof this.field.value !== "undefined") {
+            let ids = this.field.value['id'].split(', ');
+            let names = this.field.value['name'].split(', ');
+            for (let i = 0; i < ids.length; ++i) {
+                valueObjectArray.push({id: ids[i], name: names[i]});
+                this.field.valueList.push(names[i]);
+            }
+        }
+
         if (valueObjectArray.length > 0) {
             this.field.valueObjectArray = deepClone(valueObjectArray);
             this.selectedTags = deepClone(valueObjectArray);
         }
-        console.log(valueObjectArray);
+        this.init();
     }
 
     protected init(): void {
@@ -121,24 +129,18 @@ export class MultiRelateEditFieldComponent extends BaseRelateComponent {
         if (idFieldName && this.record && this.record.fields && this.record.fields[idFieldName]) {
             this.idField = this.record.fields[idFieldName];
         }
-        console.log(idFieldName, this.record);
     }
 
     protected initValue(): void {
-        console.log(this.field);
-        if (!this.field.valueObject) {
-            this.selectedValues = [];
-            return;
-        }
-
-        if (!this.field.valueObject.id) {
+        if (!this.field.valueObjectArray) {
             this.selectedValues = [];
             return;
         }
 
         this.selectedValues = [];
-        this.field.valueObjectArray.forEach((s) => {
-            this.selectedValues.push(s);
+        this.field.valueObjectArray.forEach((o) => {
+            if(o.id.trim() !== '')
+                this.selectedValues.push(o);
         });
     }
 

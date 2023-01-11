@@ -6,6 +6,7 @@ $dictionary['AOS_Contracts']['fields']['cb2b_hotels_id'] = array (
     'vname' => 'LBL_ASSOCIATE_CB2B_HOTELS_ID',
     'type' => 'varchar',
     'massupdate' => '0',
+    'source' => 'non-db',
     'default' => NULL,
     'no_default' => false,
     'comments' => '',
@@ -22,7 +23,7 @@ $dictionary['AOS_Contracts']['fields']['cb2b_hotels_id'] = array (
     'id' => 'AOS_Contractscb2b_hotels_id_c',
 );
 $dictionary['AOS_Contracts']['fields']['associate_hotels_contracts'] = array (
-    'inline_edit' => '1',
+    'inline_edit' => '0',
     'labelValue' => 'Associate Hotels',
     'required' => false,
     'source' => 'non-db',
@@ -49,6 +50,6 @@ $dictionary['AOS_Contracts']['fields']['associate_hotels_contracts'] = array (
     'rname' => 'name',
     'quicksearch' => 'enabled',
     'studio' => 'visible',
-    'relation_table' => 'aos_contracts_cb2b_hotels_1',
+    'relation' => 'aos_contracts_cb2b_hotels_1',
     'id' => 'AOS_Contractsassociate_hotels_contracts',
 );

@@ -25,4 +25,8 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
-{{field.value}}
+<ul style="list-style-type:none;">
+    <li *ngFor="let obj of fieldsArr">
+        <a href="#/{{field.definition.module}}/record/{{obj.id}}">{{obj.name}}</a>
+    </li>
+</ul>

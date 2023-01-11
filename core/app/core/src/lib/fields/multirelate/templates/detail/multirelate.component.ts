@@ -36,7 +36,20 @@ import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
 })
 export class MultiRelateDetailFieldComponent extends BaseFieldComponent {
 
+    fieldsArr: any[] = [];
+
     constructor(protected typeFormatter: DataTypeFormatter, protected logic: FieldLogicManager) {
         super(typeFormatter, logic);
+    }
+
+    ngOnInit() {
+
+        let ids = this.field.value['id'].split(', ');
+        let names = this.field.value['name'].split(', ');
+        for(let i = 0; i < ids.length; ++i) {
+            this.fieldsArr.push({id: ids[i], name: names[i]});
+        }
+
+        super.ngOnInit();
     }
 }

@@ -6,6 +6,7 @@ $dictionary['Opportunity']['fields']['cb2b_hotels_id'] = array (
     'vname' => 'LBL_ASSOCIATE_CB2B_HOTELS_ID',
     'type' => 'varchar',
     'massupdate' => '0',
+    'source' => 'non-db',
     'default' => NULL,
     'no_default' => false,
     'comments' => '',
@@ -22,7 +23,7 @@ $dictionary['Opportunity']['fields']['cb2b_hotels_id'] = array (
     'id' => 'Opportunitycb2b_hotels_id_c',
 );
 $dictionary['Opportunity']['fields']['associate_hotels_opportunity'] = array (
-    'inline_edit' => '1',
+    'inline_edit' => '0',
     'labelValue' => 'Associate Hotels',
     'required' => false,
     'source' => 'non-db',
@@ -49,6 +50,6 @@ $dictionary['Opportunity']['fields']['associate_hotels_opportunity'] = array (
     'rname' => 'name',
     'quicksearch' => 'enabled',
     'studio' => 'visible',
-    'relation_table' => 'opportunities_cb2b_hotels_1',
+    'relation' => 'opportunities_cb2b_hotels_1',
     'id' => 'Opportunityassociate_hotels_opportunity',
 );
