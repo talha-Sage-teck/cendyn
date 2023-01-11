@@ -68,7 +68,7 @@
         {foreach from=$dashboardPages key=tabNum item=tab}
             {if $tabNum == 0}
                 <li role="presentation" class="active">
-                    <a id="tab{$tabNum}"  href="#tab_content_{$tabNum}" {if $dashboardPages.$tabNum.is_managed}style="background: #bb0000"{/if} data-toggle="tab" {if !$lock_homepage}ondblclick="renameTab({$tabNum})"{/if} onClick="retrievePage({$tabNum});" class="hidden-xs">
+                    <a id="tab{$tabNum}"  href="#tab_content_{$tabNum}" data-toggle="tab" {if !$lock_homepage}ondblclick="renameTab({$tabNum})"{/if} onClick="retrievePage({$tabNum});" class="hidden-xs">
                         {$dashboardPages.$tabNum.pageTitle}
                     </a>
 
