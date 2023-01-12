@@ -55,10 +55,10 @@ function set_return_multiselect(popup_reply_data) {
   var row_data = popup_reply_data.row_data;
   if (typeof name_to_value_array != 'undefined') {
     for (var the_key in name_to_value_array) {
+      let elem = name_to_value_array[the_key];
       if (the_key == 'toJSON') {
         /* just ignore */
       } else {
-        let elem = name_to_value_array[the_key];
         if (window.document.forms[form_name].elements[elem]) {
           if(window.document.forms[form_name].elements[elem].value.trim() === '')
             window.document.forms[form_name].elements[elem].value = (the_key === "id") ? row_data.ids.join(', ') : row_data.names.join(', ');
@@ -66,29 +66,18 @@ function set_return_multiselect(popup_reply_data) {
             window.document.forms[form_name].elements[elem].value += ", ";
             window.document.forms[form_name].elements[elem].value += (the_key === "id") ? row_data.ids.join(', ') : row_data.names.join(', ');
           }
-          plantChips();
         }
       }
+      let vals = window.document.forms[form_name].elements[elem].value.split(', ');
+      vals = [...new Set(vals)];
+      window.document.forms[form_name].elements[elem].value = vals.join(', ');
     }
+    plantChips();
   }
-}
-
-MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
-
-var trackChange = function(element) {
-  var observer = new MutationObserver(function(mutations, observer) {
-    if(mutations[0].attributeName == "value") {
-        $(element).trigger("change");
-    }
-  });
-  observer.observe(element, {
-    attributes: true
-  });
 }
 {/literal}
 
 function multirelate_callback_function(e) {ldelim}
-    console.log(e);
     if(document.querySelector('[name={{sugarvar key='id_name'}}_sqs]').value.trim().length !== 0) {ldelim}
         let ids = document.querySelector('[name={{sugarvar key='id_name'}}]').value;
         let names = document.querySelector('[name={{$idname}}]').value;
@@ -134,12 +123,13 @@ function removeChip(id) {ldelim}
 function plantChips() {ldelim}
     let ids = document.querySelector('[name={{sugarvar key='id_name'}}]').value;
     let names = document.querySelector('[name={{$idname}}]').value;
-    let idsArr = ids.split(', ');
-    let namesArr = names.split(', ');
+    let idsArr = ids.split(', ').filter((el) => el.trim().length !== '');
+    let namesArr = names.split(', ').filter((el) => el.trim().length !== '');
     let target = document.querySelector('[id=chips_{{$idname}}]');
     target.innerHTML = "";
     for(let i = 0; i < idsArr.length; ++i) {ldelim}
-    target.innerHTML += "<div class=\"chip\"><span class=\"chip-content\">" + namesArr[i] + "</span><span class=\"closebtn\" onclick=\"this.parentElement.style.display='none'; removeChip('" + idsArr[i] + "');\">&times;</span></div>";
+    if(idsArr[i].trim() !== '' || namesArr[i].trim() !== '')
+        target.innerHTML += "<div class=\"chip\"><span class=\"chip-content\">" + namesArr[i] + "</span><span class=\"closebtn\" onclick=\"this.parentElement.style.display='none'; removeChip('" + idsArr[i] + "');\">&times;</span></div>";
     {rdelim}
 {rdelim}
 

@@ -7,6 +7,7 @@ $dictionary['AOS_Quotes']['fields']['cb2b_hotels_id'] = array (
     'type' => 'varchar',
     'massupdate' => '0',
     'default' => NULL,
+    'source' => 'non-db',
     'no_default' => false,
     'comments' => '',
     'help' => '',
@@ -22,7 +23,7 @@ $dictionary['AOS_Quotes']['fields']['cb2b_hotels_id'] = array (
     'id' => 'AOS_Quotescb2b_hotels_id_c',
 );
 $dictionary['AOS_Quotes']['fields']['associate_hotels_quotes'] = array (
-    'inline_edit' => '1',
+    'inline_edit' => '0',
     'labelValue' => 'Associate Hotels',
     'required' => false,
     'source' => 'non-db',
@@ -49,6 +50,6 @@ $dictionary['AOS_Quotes']['fields']['associate_hotels_quotes'] = array (
     'rname' => 'name',
     'quicksearch' => 'enabled',
     'studio' => 'visible',
-    'relation_table' => 'aos_quotes_cb2b_hotels_1',
+    'relation' => 'aos_quotes_cb2b_hotels_1',
     'id' => 'AOS_Quotesassociate_hotels_quotes',
 );

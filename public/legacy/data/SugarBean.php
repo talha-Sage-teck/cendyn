@@ -5216,15 +5216,17 @@ class SugarBean
             else if(0 == strcmp(strtolower($field['type']), 'multirelate') && !empty($field['module'])) {
                 $name = $field['name'];
                 if (empty($this->$name)) {
-                    // set the value of this relate field in this bean ($this->$field['name']) to the value of the
-                    // 'name' field in the related module for the record identified
-                    // by the value of $this->$field['id_name']
                     $related_module = $field['module'];
                     $id_name = $field['id_name'];
+                    $rel = $field['relation'];
 
-                    if (empty($this->$id_name)) {
-                        $this->fill_in_link_field($id_name, $field);
+                    if($this->load_relationship($rel)) {
+                        $ids = $this->$rel->get();
+                        $this->$id_name = implode(", ", $ids);
                     }
+                    else
+                        continue;
+
                     if (!empty($this->$id_name) &&
                         ($this->object_name != $related_module ||
                             ($this->object_name == $related_module && $this->$id_name != $this->id))
@@ -5247,17 +5249,6 @@ class SugarBean
                             }
                             $this->$name = implode(", ", $names);
                         }
-                    }
-                    if (!empty($this->$id_name) && isset($this->$name)) {
-                        if (!isset($field['additionalFields'])) {
-                            $field['additionalFields'] = array();
-                        }
-                        if (!empty($field['rname'])) {
-                            $field['additionalFields'][$field['rname']] = $name;
-                        } else {
-                            $field['additionalFields']['name'] = $name;
-                        }
-//                        $this->getMultiRelatedFields($related_module, $this->$id_name, $field['additionalFields']);
                     }
                 }
             }

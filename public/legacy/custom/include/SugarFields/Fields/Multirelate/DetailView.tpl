@@ -45,17 +45,19 @@
 {assign var=ids value=", "|explode:$id_s}
 {assign var=names value=", "|explode:$name_s}
 {assign var=i value=0}
+<ul style="list-style-type: none">
 {foreach from=$ids item=id}
 {if !empty($id)}
 {capture assign="detail_url"}index.php?module={{$vardef.module}}&action=DetailView&record={$id}{/capture}
-<a href="{sugar_ajax_url url=$detail_url}">{/if}
+<li><a href="{sugar_ajax_url url=$detail_url}">{/if}
 {{/if}}
 <span id="{$id}" class="sugar_field" data-id-value="{$id}">{$names[$i]}</span>
 {{if !$nolink && !empty($vardef.id_name)}}
-{if !empty($id)}</a><br /><br />{/if}
+{if !empty($id)}</a></li>{/if}
 {assign var=i value=$i+1}
 {{/if}}
 {/foreach}
+</ul>
 {{if !empty($displayParams.enableConnectors) && !empty($vardef.id_name)}}
 {if !empty($id)}
 {{sugarvar_connector view='DetailView'}}
