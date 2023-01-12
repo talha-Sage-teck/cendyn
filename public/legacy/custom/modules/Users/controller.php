@@ -197,6 +197,15 @@ class CustomUsersController extends UsersController {
             $rowData = unserialize(base64_decode($prefRow['contents']));
             $updatePreferenceQuery = "";
             if ($rowData && is_array($rowData)) {
+                //empty out the existing managed tabs so they get re inserted in proper sequence
+                $pages=$rowData['pages'];
+                for ($i=count($pages)-1;$i>=0;$i--){
+                    $datum=$pages[$i];
+                    if (!empty($datum['is_managed'])&&$datum['is_managed']=='yes') {
+                        array_splice($pages, $i, 1);
+                    }
+                }
+                $rowData['pages']=$pages;
                 //append or replace a field
                 foreach ($updated['dashlets'] as $p => $d) {
                     $found = false;
