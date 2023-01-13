@@ -68,10 +68,18 @@ function set_return_multiselect(popup_reply_data) {
           }
         }
       }
-      let vals = window.document.forms[form_name].elements[elem].value.split(', ');
-      vals = [...new Set(vals)];
-      window.document.forms[form_name].elements[elem].value = vals.join(', ');
     }
+    let ids = window.document.forms[form_name].elements[name_to_value_array['id']].value.split(', ');
+    let names = window.document.forms[form_name].elements[name_to_value_array['name']].value.split(', ');
+    ids = ids.filter((item, index) => {
+      if(ids.indexOf(item) !== index) {
+          names.splice(index, 1);
+          return false;
+      }
+      return true;
+    });
+    window.document.forms[form_name].elements[name_to_value_array['id']].value = ids.join(', ');
+    window.document.forms[form_name].elements[name_to_value_array['name']].value = names.join(', ');
     plantChips();
   }
 }

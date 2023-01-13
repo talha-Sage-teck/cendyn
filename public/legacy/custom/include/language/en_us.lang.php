@@ -641,7 +641,7 @@ $app_list_strings['activity_type_list']=array (
   'WEB' => 'Webinar',
 );
 
-$app_strings['LBL_SUITE_DASHBOARD'] = 'MAIN DASHBOARD';
+$app_strings['LBL_SUITE_DASHBOARD'] = 'USER DASHBOARD';
 
 $app_list_strings['PMSProfile_type_list']=array (
   'C' => 'Company',
