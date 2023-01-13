@@ -90,7 +90,7 @@
                 </li>
             {else}
                 <li role="presentation">
-                    <a id="tab{$tabNum}" href="#tab_content_{$tabNum}" {if $dashboardPages.$tabNum.is_managed}style="background: #bb0000"{/if}  data-toggle="tab"  {if !$lock_homepage}ondblclick="renameTab({$tabNum})"{/if} onClick="retrievePage({$tabNum});" class="hidden-xs {if $dashboardPages.$tabNum.is_managed}fixed-active{/if}">
+                    <a id="tab{$tabNum}" href="#tab_content_{$tabNum}" {if $dashboardPages.$tabNum.is_managed}{/if}  data-toggle="tab"  {if !$lock_homepage}ondblclick="renameTab({$tabNum})"{/if} onClick="retrievePage({$tabNum});" class="hidden-xs {if $dashboardPages.$tabNum.is_managed}fixed-active{/if}">
                         {$dashboardPages.$tabNum.pageTitle}
                     </a>
                 </li>
@@ -271,12 +271,7 @@
 
 </script>
     <style>
-        {literal}
 
-        #dashboard ul.nav-dashboard li.active .fixed-active {
-            background: darkred!important;
-        }
-        {/literal}
 
     </style>
 
