@@ -71,4 +71,41 @@ class MultiRelateLinking
             }
         }
     }
+
+    public function set_related_names(SugarBean $bean) {
+        foreach($bean->field_defs as $field => $defs) {
+            if(strtolower($defs['type']) === 'multirelate') {
+                $id_name = $defs['id_name'];
+                $rel = $defs['relation'];
+                $related_module = $defs['module'];
+                $name = $defs['name'];
+                if ($bean->load_relationship($rel)) {
+                    $ids = $bean->$rel->get();
+                    $bean->$id_name = implode(", ", $ids);
+                    if (!empty($bean->$id_name) &&
+                        ($bean->object_name != $related_module ||
+                            ($bean->object_name == $related_module && $bean->$id_name != $bean->id))
+                    ) {
+                        if (!empty($bean->$id_name) && isset($bean->$name)) {
+                            $names = array ();
+                            foreach ($ids as $id) {
+                                $mod = BeanFactory::getShallowBean($related_module, $id);
+                                if ($mod) {
+                                    if (!empty($defs['rname'])) {
+                                        $rname = $defs['rname'];
+                                        $names[] = $mod->$rname;
+                                    } else {
+                                        if (isset($mod->name)) {
+                                            $names[] = $mod->name;
+                                        }
+                                    }
+                                }
+                            }
+                            $bean->$name = implode(", ", $names);
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

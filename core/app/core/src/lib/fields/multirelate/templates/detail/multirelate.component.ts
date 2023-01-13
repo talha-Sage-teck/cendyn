@@ -28,6 +28,7 @@ import {Component} from '@angular/core';
 import {BaseFieldComponent} from '../../../base/base-field.component';
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
 import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 @Component({
     selector: 'scrm-multirelate-detail',
@@ -38,18 +39,38 @@ export class MultiRelateDetailFieldComponent extends BaseFieldComponent {
 
     fieldsArr: any[] = [];
 
-    constructor(protected typeFormatter: DataTypeFormatter, protected logic: FieldLogicManager) {
+    constructor(
+        private http: HttpClient,
+        protected typeFormatter: DataTypeFormatter,
+        protected logic: FieldLogicManager
+    ) {
         super(typeFormatter, logic);
     }
 
+    getMultiRelatedIds = async(): Promise<string>  => {
+        let headers = new HttpHeaders();
+        headers.set('Content-Type', 'application/json; charset=utf-8');
+        return await new Promise((resolve, reject) => {
+            this.http.get(location.origin + location.pathname +
+                'legacy/index.php?entryPoint=getMultiRelatedIds&id=' +
+                this.record.id + '&module=' + this.record.module + '&field=' + this.field.definition.name,
+                {headers: headers, responseType: 'text'})
+                .subscribe(data => {
+                    resolve(data);
+                }, error => {
+                    reject(error);
+                });
+        });
+    }
+
     ngOnInit() {
-
-        let ids = this.field.value['id'].split(', ');
-        let names = this.field.value['name'].split(', ');
-        for(let i = 0; i < ids.length; ++i) {
-            this.fieldsArr.push({id: ids[i], name: names[i]});
-        }
-
+        (async() => {
+            let ids = (await this.getMultiRelatedIds()).split(', ');
+            let names = this.field.value.split(', ');
+            for(let i = 0; i < ids.length; ++i) {
+                this.fieldsArr.push({id: ids[i], name: names[i]});
+            }
+        })();
         super.ngOnInit();
     }
 }
