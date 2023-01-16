@@ -17,18 +17,24 @@ $profileID = $_REQUEST['profileID'];
 $profileBean = BeanFactory::getBean("CB2B_PMSProfiles", $profileID);
 
 // loading relationship: current profile -> related profiles
-$profileBean->load_relationship($profilesRel);
-
-// loading all the profiles related to the current profile
-$relatedProfiles = $profileBean->$profilesRel->getBeans();
-
-// looping over all related profiles to check if any profile does not have a related account
-$count = 0;
-foreach($relatedProfiles as $profile) {
-    $profile->load_relationship($accountRel);
-    $relAccount = $profile->$accountRel->getBeans();
-    if(sizeof($relAccount) == 0)
-        ++$count;
+if($profileBean) {
+    if($profileBean->load_relationship($profilesRel)) {
+        // loading all the profiles related to the current profile
+        $relatedProfiles = $profileBean->$profilesRel->getBeans();
+        // looping over all related profiles to check if any profile does not have a related account
+        $count = 0;
+        foreach ($relatedProfiles as $profile) {
+            if($profile->load_relationship($accountRel)) {
+                $relAccount = $profile->$accountRel->getBeans();
+                if (sizeof($relAccount) == 0) {
+                    ++$count;
+                }
+            }
+        }
+        echo $count;
+    }
+    else
+        echo 0;
 }
-
-echo $count;
+else
+    echo 0;
