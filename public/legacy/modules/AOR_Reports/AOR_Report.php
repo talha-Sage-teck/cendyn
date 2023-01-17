@@ -1913,7 +1913,17 @@ class AOR_Report extends Basic
                             }
                         } else {
                             if (!$where_set) {
-                                $query['where'][] = ($tiltLogicOp ? '' : ($condition->logic_op ? $condition->logic_op . ' ' : 'AND ')) . $field . ' ' . $aor_sql_operator_list[$condition->operator] . ' ' . $value;
+                                if(empty($condition->value)&&$condition->operator=='Not_Equal_To'){
+                                    $query['where'][] = ($tiltLogicOp ? '' : ($condition->logic_op ? $condition->logic_op . ' ' : 'AND ')) . $field . ' ' . 'is not null';
+
+                                }
+                                elseif(empty($condition->value)&&$condition->operator=='Equal_To'){
+                                    $query['where'][] = ($tiltLogicOp ? '' : ($condition->logic_op ? $condition->logic_op . ' ' : 'AND ')) . $field . ' ' . 'is null)';
+
+                                }
+                                else{
+                                    $query['where'][] = ($tiltLogicOp ? '' : ($condition->logic_op ? $condition->logic_op . ' ' : 'AND ')) . $field . ' ' . $aor_sql_operator_list[$condition->operator] . ' ' . $value;
+                                }
                             }
                         }
                     }
