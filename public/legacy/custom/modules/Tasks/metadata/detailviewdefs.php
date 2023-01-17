@@ -119,8 +119,7 @@ array (
         array (
           0 => 
           array (
-            'name' => 'results',
-            'label' => 'LBL_RESULTS',
+            'name' => 'result',
           ),
           1 => '',
         ),
@@ -160,6 +159,11 @@ array (
             'name' => 'assigned_user_name',
             'label' => 'LBL_ASSIGNED_TO',
           ),
+          1 => 
+          array (
+            'name' => 'created_by_name',
+            'label' => 'LBL_CREATED',
+          ),
         ),
         1 => 
         array (
@@ -171,8 +175,9 @@ array (
           ),
           1 => 
           array (
-            'name' => 'created_by_name',
-            'label' => 'LBL_CREATED',
+            'name' => 'date_modified',
+            'customCode' => '{$fields.date_modified.value} {$APP.LBL_BY} {$fields.modified_by_name.value}',
+            'label' => 'LBL_DATE_MODIFIED',
           ),
         ),
       ),
