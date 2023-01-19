@@ -20,4 +20,6 @@ $mod_strings['LBL_B2B_ROOM_REV'] = 'Room Revenue';
 $mod_strings['LBL_B2B_PLAN_DATE'] = 'Plan Date';
 $mod_strings['LBL_B2B_CONTACT_ID'] = 'B2B Contact ID';
 $mod_strings['LBL_B2B_EMPLOYEE_ID'] = 'B2B Employee ID';
-$mod_strings['LBL_B2B_OPPORTUNITY_TYPE'] = 'Business Type';
+$mod_strings['LBL_B2B_OPPORTUNITY_TYPE'] = 'Opportunity Type';
+$mod_strings['LBL_TYPE'] = 'Business Type';
+
