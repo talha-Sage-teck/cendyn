@@ -123,9 +123,9 @@ function formSubmitCheck(){ldelim}if(check_form(\'EditView\')){ldelim}document.E
           ),
           1 => 
           array (
-            'name' => 'b2b_reult',
+            'name' => 'result',
             'studio' => 'visible',
-            'label' => 'LBL_B2B_REULT',
+            'label' => 'LBL_RESULT',
           ),
         ),
         2 => 

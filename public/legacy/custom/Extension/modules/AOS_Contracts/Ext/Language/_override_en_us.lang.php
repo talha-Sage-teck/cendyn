@@ -1,4 +1,5 @@
 <?php
+
 // created: 2022-07-05 01:35:58
 $mod_strings['LBL_B2B_EXT_ACCOUNT_NO'] = 'b2bextaccountno';
 $mod_strings['LBL_B2B_EXT_CONTRACT_ID'] = 'b2bextcontractid';
@@ -13,3 +14,4 @@ $mod_strings['LBL_STATUS'] = 'Status';
 $mod_strings['LBL_CONTRACT_TYPE'] = 'Contract Type';
 $mod_strings['LBL_B2B_BLOB_ID'] = 'b2bblobid';
 $mod_strings['LBL_EDITVIEW_PANEL1'] = 'Details';
+$mod_strings['LBL_SALES_REP_CODE'] = 'Sales Rep Code';

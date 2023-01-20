@@ -26,3 +26,25 @@ $dictionary["Lead"]["fields"]["hotel_id"] = array(
     'min' => false,
     'max' => false,
 );
+
+$dictionary["Lead"]["fields"]["sales_rep_code"] = array(
+    'name' => 'sales_rep_code',
+    'vname' => 'LBL_SALES_REP_CODE',
+    'inline_edit' => '1',
+    'required' => false,
+    'type' => 'varchar',
+    'massupdate' => '0',
+    'default' => NULL,
+    'no_default' => false,
+    'comments' => '',
+    'help' => '',
+    'importable' => 'true',
+    'duplicate_merge' => 'disabled',
+    'duplicate_merge_dom_value' => '0',
+    'audited' => false,
+    'reportable' => true,
+    'unified_search' => false,
+    'merge_filter' => 'disabled',
+    'len' => '255',
+    'size' => '20',
+);

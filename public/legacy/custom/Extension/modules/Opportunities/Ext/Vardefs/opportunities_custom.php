@@ -447,3 +447,32 @@ $dictionary["Opportunity"]["fields"]["b2b_opportunity_type"] = array(
     'studio' => 'visible',
     'dependency' => NULL,
 );
+
+$dictionary["Opportunity"]["fields"]["sales_rep_code"] = array(
+    'name' => 'sales_rep_code',
+    'vname' => 'LBL_SALES_REP_CODE',
+    'inline_edit' => '1',
+    'required' => false,
+    'type' => 'varchar',
+    'massupdate' => '0',
+    'default' => NULL,
+    'no_default' => false,
+    'comments' => '',
+    'help' => '',
+    'importable' => 'true',
+    'duplicate_merge' => 'disabled',
+    'duplicate_merge_dom_value' => '0',
+    'audited' => false,
+    'reportable' => true,
+    'unified_search' => false,
+    'merge_filter' => 'disabled',
+    'len' => '255',
+    'size' => '20',
+);
+
+$dictionary["Opportunity"]["fields"]["sales_stage"]["importable"] = 'true';
+$dictionary["Opportunity"]["fields"]["account_name"]["importable"] = 'true';
+$dictionary["Opportunity"]["fields"]["amount"]["importable"] = 'true';
+$dictionary["Opportunity"]["fields"]["date_closed"]["importable"] = 'true';
+
+

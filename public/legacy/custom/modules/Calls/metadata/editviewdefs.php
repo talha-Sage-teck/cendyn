@@ -125,9 +125,9 @@ function formSubmitCheck(){ldelim}var duration=true;if(typeof(isValidDuration)!=
           ),
           1 => 
           array (
-            'name' => 'results',
+            'name' => 'result',
             'studio' => 'visible',
-            'label' => 'LBL_RESULTS',
+            'label' => 'LBL_RESULT',
           ),
         ),
         2 => 

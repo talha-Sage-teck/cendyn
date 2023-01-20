@@ -170,26 +170,14 @@ $app_list_strings['contract_status_list']=array (
   'R' => 'Re-activated',
   'T' => 'Terminated',
 );
-$app_list_strings['contract_type_list']=array (
-  'ALL' => 'Allotments',
-  'BRO' => 'Broschure Contribution',
-  'COA' => 'Connectivity Agreements',
-  'COM' => 'Commission Agreement',
-  'CON' => 'Consortia Contracts',
-  'COR' => 'Corporate Contract',
-  'DMC' => 'DMC Contract',
-  'HOD' => 'Hotel Dynamic',
-  'HOS' => 'Hotel Static',
-  'LEI' => 'Leisure Contract',
-  'MIC' => 'MICE Contract',
-  'OTH' => 'Other Agreements',
-);
 $app_list_strings['activity_results_list']=array (
+  '' => '',
   'FUP' => 'Follow up',
   'NON' => 'None',
 );
 
 $app_list_strings['activity_status_list']=array (
+  '' => '',
   'DON' => 'Done',
   'IPR' => 'In Progress',
   'OPN' => 'Open',
@@ -687,4 +675,20 @@ $app_list_strings['b2bcurrency_list']=array (
   'JPY' => 'JPY',
   'PHP' => 'PHP',
   'UNK' => 'Unknown',
+);
+
+$app_list_strings['contract_type_list']=array (
+  '' => '',
+  'ALL' => 'Allotments',
+  'BRO' => 'Broschure Contribution',
+  'COA' => 'Connectivity Agreements',
+  'COM' => 'Commission Agreement',
+  'CON' => 'Consortia Contracts',
+  'COR' => 'Corporate Contract',
+  'DMC' => 'DMC Contract',
+  'HOD' => 'Hotel Dynamic',
+  'HOS' => 'Hotel Static',
+  'LEI' => 'Leisure Contract',
+  'MIC' => 'MICE Contract',
+  'OTH' => 'Other Agreements',
 );
