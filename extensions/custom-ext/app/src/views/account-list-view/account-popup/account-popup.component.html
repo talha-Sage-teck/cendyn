@@ -34,7 +34,7 @@
                                 <td *ngIf="column==='name'"
                                     [colSpan]="4"
                                     [style.padding-left]="10+((record.ind)*15)+'px'">
-                                    <a href="#/accounts/record/{{record['id']}}">{{record[column]}}</a>
+                                    <a target="_blank" href="#/accounts/record/{{record['id']}}">{{record[column]}}</a>
                                 </td>
                                 <td *ngIf="column!=='name'">
                                     {{record[column]}}
