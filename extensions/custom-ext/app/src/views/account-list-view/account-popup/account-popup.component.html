@@ -1,0 +1,48 @@
+<scrm-modal [closable]="true"
+            [close]="closeButton"
+            [title]="titleKey"
+            [bodyKlass]="'m-0 small-font'"
+            [footerKlass]="'border-0'"
+            [headerKlass]="'border-0'"
+            [klass]="'record-list-modal'">
+    <div modal-body>
+        <div class="position-relative d-flex flex-column">
+            <div class="record-view-name">
+                <h4>{{accountName}}'s Hierarchy</h4>
+            </div>
+            <br />
+            <ng-container *ngIf="accounts">
+                <table aria-describedby="table-body"
+                       class="list-view-table striped-table table">
+                    <tr>
+                        <ng-container *ngFor="let column of keys">
+                            <th *ngIf="column==='name'"
+                                [colSpan]="4"
+                                scope="col"
+                                class="primary-table-header">
+                                {{displayedColumns[column]}}
+                            </th>
+                            <th *ngIf="column!=='name'"
+                                scope="col"
+                                class="primary-table-header">
+                                {{displayedColumns[column]}}
+                            </th>
+                        </ng-container>
+                    </tr>
+                    <tr *ngFor="let record of dataSource">
+                        <ng-container *ngFor="let column of keys">
+                                <td *ngIf="column==='name'"
+                                    [colSpan]="4"
+                                    [style.padding-left]="10+((record.ind)*15)+'px'">
+                                    <a target="_blank" href="#/accounts/record/{{record['id']}}">{{record[column]}}</a>
+                                </td>
+                                <td *ngIf="column!=='name'">
+                                    {{record[column]}}
+                                </td>
+                        </ng-container>
+                    </tr>
+                </table>
+            </ng-container>
+        </div>
+    </div>
+</scrm-modal>
