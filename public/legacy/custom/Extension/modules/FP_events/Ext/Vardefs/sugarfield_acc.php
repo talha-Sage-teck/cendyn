@@ -1,11 +1,11 @@
 <?php
  // created: 2022-10-12 09:07:48
-$dictionary['FP_events']['fields']['acc'] = array (
+$dictionary['FP_events']['fields']['account_name'] = array (
     'inline_edit' => '1',
     'labelValue' => 'Customer/ Account',
     'required' => false,
     'source' => 'non-db',
-    'name' => 'acc',
+    'name' => 'account_name',
     'vname' => 'LBL_ACC',
     'type' => 'relate',
     'massupdate' => '0',
@@ -23,7 +23,7 @@ $dictionary['FP_events']['fields']['acc'] = array (
     'id_name' => 'account_id',
     'len' => '255',
     'size' => '20',
-    'ext2' => 'Accounts',
+    'ext2' => 'accounts',
     'module' => 'Accounts',
     'rname' => 'name',
     'quicksearch' => 'enabled',
