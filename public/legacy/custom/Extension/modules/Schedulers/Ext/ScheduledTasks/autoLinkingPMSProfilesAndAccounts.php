@@ -63,7 +63,7 @@ function getRuleQuery($fields) {
     $rightWhereList = array();
 
     foreach ($fields as $key => $field) {
-        // If field is email then we have to add the custom Query because 
+        // If field is email then we have to add the custom Query because
         // in Accounts Email field is the widget while in PMS Profile it's a varchar field
         if ($field == 'email') {
             // If it's the first feied then we don't need to add the AND in query otherwise add AND
@@ -151,7 +151,7 @@ function checkIfRelationshipAlreadyExists($pmsProfileId, $matchedAccountId, $pro
         if (in_array($matchedAccountId, $profileAndAccountRelationshipArray[$pmsProfileId])) {
             return true;
         } else {
-            $sugar_config['scheduler_log'] ? $GLOBALS['log']->fatal('This PMS Profile ' . $pmsProfileId . ' has already been linked by someone.') : '';
+            $sugar_config['scheduler_log'] ? $GLOBALS['log']->debug('This PMS Profile ' . $pmsProfileId . ' has already been linked by someone.') : '';
             return true;
         }
     } else {
@@ -166,7 +166,7 @@ function autoLinkingPMSProfilesAndAccounts() {
     $getMatchCriteriaQuery = "SELECT * FROM `config` WHERE `category`='MySettings' AND `name`='MatchCriteriaConfig'";
     $result = $db->query($getMatchCriteriaQuery, true);
     if ($result->num_rows <= 0) {
-        $sugar_config['scheduler_log'] ? $GLOBALS['log']->fatal('autoLinkingPMSProfilesAndAccounts --> : Did not found MatchCriteriaConfig') : '';
+        $sugar_config['scheduler_log'] ? $GLOBALS['log']->debug('autoLinkingPMSProfilesAndAccounts --> : Did not found MatchCriteriaConfig') : '';
         return true;
     }
 
@@ -174,7 +174,7 @@ function autoLinkingPMSProfilesAndAccounts() {
     $record = $db->fetchByAssoc($result);
     $settings = unserialize(base64_decode($record['value']))['criteria'];
 
-    $sugar_config['scheduler_log'] ? $GLOBALS['log']->fatal('$settings : ' . print_r($settings, 1)) : '';
+    $sugar_config['scheduler_log'] ? $GLOBALS['log']->debug('$settings : ' . print_r($settings, 1)) : '';
 
     $profileIds = getAllPMSProfileIds();
 //    $sugar_config['scheduler_log'] ? $GLOBALS['log']->fatal('$profileIds : ' . print_r($profileIds, 1)) : '';
@@ -189,16 +189,16 @@ function autoLinkingPMSProfilesAndAccounts() {
         $queryArray = array();
         $pmsProfileIds = array();
 
-        $sugar_config['scheduler_log'] ? $GLOBALS['log']->fatal('--------------------------------------------------') : '';
-        $sugar_config['scheduler_log'] ? $GLOBALS['log']->fatal('$selectMatchingQuery : ' . print_r($selectMatchingQuery, 1)) : '';
-        $sugar_config['scheduler_log'] ? $GLOBALS['log']->fatal('$selectMatchingResult->num_rows : ' . print_r($selectMatchingResult->num_rows, 1)) : '';
+        $sugar_config['scheduler_log'] ? $GLOBALS['log']->debug('--------------------------------------------------') : '';
+        $sugar_config['scheduler_log'] ? $GLOBALS['log']->debug('$selectMatchingQuery : ' . print_r($selectMatchingQuery, 1)) : '';
+        $sugar_config['scheduler_log'] ? $GLOBALS['log']->debug('$selectMatchingResult->num_rows : ' . print_r($selectMatchingResult->num_rows, 1)) : '';
 
         // If no matching PMS Profile and Account Record for then skip it and look for next Rule
         if ($selectMatchingResult->num_rows <= 0)
             continue;
 
         // Prepare and array having the profileId as a key and accountId as value Array
-        // This will help to identify if we have one Account or multiple Accounts matching a PMS Profile 
+        // This will help to identify if we have one Account or multiple Accounts matching a PMS Profile
         while ($matchedProfileAndAccount = $db->fetchByAssoc($selectMatchingResult)) {
             if (is_array($matchingRecords[$matchedProfileAndAccount['profileId']])) {
                 $matchingRecords[$matchedProfileAndAccount['profileId']][] = $matchedProfileAndAccount['accountId'];
@@ -208,7 +208,7 @@ function autoLinkingPMSProfilesAndAccounts() {
             }
         }
 
-        $sugar_config['scheduler_log'] ? $GLOBALS['log']->fatal('Before $matchingRecords : ' . print_r($matchingRecords, 1)) : '';
+        $sugar_config['scheduler_log'] ? $GLOBALS['log']->debug('Before $matchingRecords : ' . print_r($matchingRecords, 1)) : '';
 
         $profileAndAccountRelationshipArray = loadMatchingProfileAndAccountRelationship();
 
@@ -226,9 +226,9 @@ function autoLinkingPMSProfilesAndAccounts() {
             if (!$alreadyExists) {
                 array_push($pmsProfileIds, $key);
                 array_push($queryArray, "('" . create_guid() . "', '{$timedate->nowDb()}', '0', '{$value[0]}', '{$key}', '1')");
-                $sugar_config['scheduler_log'] ? $GLOBALS['log']->fatal('Adding Relationship between : ' . print_r($key, 1) . ' AND ' . print_r($value[0], 1)) : '';
+                $sugar_config['scheduler_log'] ? $GLOBALS['log']->debug('Adding Relationship between : ' . print_r($key, 1) . ' AND ' . print_r($value[0], 1)) : '';
             } else {
-                $sugar_config['scheduler_log'] ? $GLOBALS['log']->fatal('Relationship already exist between : ' . print_r($key, 1) . ' AND ' . print_r($value[0], 1)) : '';
+                $sugar_config['scheduler_log'] ? $GLOBALS['log']->debug('Relationship already exist between : ' . print_r($key, 1) . ' AND ' . print_r($value[0], 1)) : '';
             }
         }
 
@@ -241,15 +241,15 @@ function autoLinkingPMSProfilesAndAccounts() {
                     . ";";
             $db->query($insert, true);
 
-            // Update the PMSProfile so that it should not appear next time for linking engine and 
+            // Update the PMSProfile so that it should not appear next time for linking engine and
             // Set the ready_to_link flag so that, it will be linked in eInsight
             $update = "UPDATE `cb2b_pmsprofiles` SET `ready_to_link`='1', `is_update_dup`='-2', `date_modified`='{$timedate->nowDb()}' "
                     . "WHERE `id` IN ('" . implode("','", $pmsProfileIds) . "');";
             $db->query($update, true);
         }
 
-        $sugar_config['scheduler_log'] ? $GLOBALS['log']->fatal('$insert : ' . print_r($insert, 1)) : '';
-        $sugar_config['scheduler_log'] ? $GLOBALS['log']->fatal('$update : ' . print_r($update, 1)) : '';
+        $sugar_config['scheduler_log'] ? $GLOBALS['log']->debug('$insert : ' . print_r($insert, 1)) : '';
+        $sugar_config['scheduler_log'] ? $GLOBALS['log']->debug('$update : ' . print_r($update, 1)) : '';
     }
 
     if (!empty($profileIds)) {
@@ -257,7 +257,7 @@ function autoLinkingPMSProfilesAndAccounts() {
         // because they are no longer `is_update_dup`='0'. So where clause save us
         $update = "UPDATE `cb2b_pmsprofiles` SET `is_update_dup`='-1', `date_modified`='{$timedate->nowDb()}' WHERE `id` IN ('" . implode("','", $profileIds) . "') AND `is_update_dup`='0';";
         $db->query($update, true);
-        $sugar_config['scheduler_log'] ? $GLOBALS['log']->fatal('$update : ' . print_r($update, 1)) : '';
+        $sugar_config['scheduler_log'] ? $GLOBALS['log']->debug('$update : ' . print_r($update, 1)) : '';
     }
 
     return true;

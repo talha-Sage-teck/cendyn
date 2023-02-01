@@ -35,7 +35,7 @@ function makeTree($account, $data = [], $index = 0) {
             return $data;
     }
     else {
-        $GLOBALS['log']->fatal("Could not load sub-accounts for record ID {$account->id}");
+        $GLOBALS['log']->debug("Could not load sub-accounts for record ID {$account->id}");
         return $data;
     }
 }

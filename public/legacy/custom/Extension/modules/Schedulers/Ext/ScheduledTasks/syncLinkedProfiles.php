@@ -39,7 +39,7 @@ function sendDeleteLinkData($profileID, $accountID) {
     $response = curl_exec($curl);
     curl_close($curl);
     if($response != "") {
-        $GLOBALS['log']->fatal($response);
+        $GLOBALS['log']->debug($response);
         return false;
     }
     else {
@@ -81,7 +81,7 @@ function sendLinkData($profileID, $accountID, $newAccountID = null) {
     $response = curl_exec($curl);
     curl_close($curl);
     if($response != "") {
-        $GLOBALS['log']->fatal($response);
+        $GLOBALS['log']->debug($response);
         return false;
     }
     else {
@@ -99,7 +99,7 @@ function getPrevAccountID($profileID) {
         return $db->fetchByAssoc($prevRelResult)["{$accountRel}accounts_ida"];
     }
     else {
-        $GLOBALS['log']->fatal("syncLinkedProfiles: Previous Account ID not found during relationship delete");
+        $GLOBALS['log']->debug("syncLinkedProfiles: Previous Account ID not found during relationship delete");
         return 0;
     }
 }
@@ -126,7 +126,7 @@ function syncLinkedProfiles() {
                     case 3:
                         break;
                     default:
-                        $GLOBALS['log']->fatal("syncLinkedProfiles: Unexpected flag in scheduler");
+                        $GLOBALS['log']->debug("syncLinkedProfiles: Unexpected flag in scheduler");
                         break;
                 }
                 if($res) {
@@ -134,11 +134,11 @@ function syncLinkedProfiles() {
                     $profileBean->save();
                 }
                 else {
-                    $GLOBALS['log']->fatal("syncLinkedProfiles: Could not sync with eInsight.");
+                    $GLOBALS['log']->debug("syncLinkedProfiles: Could not sync with eInsight.");
                 }
             }
             else {
-                $GLOBALS['log']->fatal("syncLinkedProfiles: The account related to profile with ID {$profileBean->id}".
+                $GLOBALS['log']->debug("syncLinkedProfiles: The account related to profile with ID {$profileBean->id}".
                     " is not yet synchronized with eInsight. Account ID: {$account->id}");
             }
         }

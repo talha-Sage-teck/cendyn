@@ -8,7 +8,7 @@ function matchPMSProfiles() {
     $getMatchCriteriaQuery = "SELECT * FROM `config` WHERE `category`='MySettings' AND `name`='MatchCriteriaConfig'";
     $result = $db->query($getMatchCriteriaQuery, true);
     if ($result->num_rows <= 0) {
-        $GLOBALS['log']->fatal('matchPMSProfiles --> : Did not found MatchCriteriaConfig');
+        $GLOBALS['log']->debug('matchPMSProfiles --> : Did not found MatchCriteriaConfig');
         return true;
     }
 
@@ -16,7 +16,7 @@ function matchPMSProfiles() {
     $record = $db->fetchByAssoc($result);
     $settings = unserialize(base64_decode($record['value']))['criteria'];
 
-    $GLOBALS['log']->fatal('$settings : ' . print_r($settings, 1));
+    $GLOBALS['log']->debug('$settings : ' . print_r($settings, 1));
 }
 
 matchPMSProfiles();
