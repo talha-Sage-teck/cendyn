@@ -46,6 +46,9 @@ import {
 } from 'core';
 import {take} from 'rxjs/operators';
 import {isFalse} from 'common';
+import {
+    AccountListComponent, AccountRecordComponent
+} from '../../../../../extensions/custom-ext/app/src/customExt';
 
 @Injectable()
 export class AppInit {
@@ -109,51 +112,100 @@ export class AppInit {
 
                     Object.keys(configRoutes).forEach(routeName => {
                         if (configRoutes[routeName].index) {
-                            routes.push({
-                                path: routeName,
-                                component: ListComponent,
-                                canActivate: [AuthGuard],
-                                runGuardsAndResolvers: 'always',
-                                resolve: {
-                                    metadata: BaseModuleResolver
-                                },
-                                data: {
-                                    reuseRoute: false,
-                                    checkSession: true,
-                                    module: routeName
-                                }
-                            });
-                            routes.push({
-                                path: routeName + '/index',
-                                component: ListComponent,
-                                canActivate: [AuthGuard],
-                                runGuardsAndResolvers: 'always',
-                                resolve: {
-                                    metadata: BaseModuleResolver
-                                },
-                                data: {
-                                    reuseRoute: false,
-                                    checkSession: true,
-                                    module: routeName
-                                }
-                            });
+                            if (routeName.toLowerCase() === "accounts") {
+                                routes.push({
+                                    path: routeName,
+                                    component: AccountListComponent,
+                                    canActivate: [AuthGuard],
+                                    runGuardsAndResolvers: 'always',
+                                    resolve: {
+                                        metadata: BaseModuleResolver
+                                    },
+                                    data: {
+                                        reuseRoute: false,
+                                        checkSession: true,
+                                        module: routeName
+                                    }
+                                });
+                                routes.push({
+                                    path: routeName + '/index',
+                                    component: AccountListComponent,
+                                    canActivate: [AuthGuard],
+                                    runGuardsAndResolvers: 'always',
+                                    resolve: {
+                                        metadata: BaseModuleResolver
+                                    },
+                                    data: {
+                                        reuseRoute: false,
+                                        checkSession: true,
+                                        module: routeName
+                                    }
+                                });
+                            }
+                            else {
+                                routes.push({
+                                    path: routeName,
+                                    component: ListComponent,
+                                    canActivate: [AuthGuard],
+                                    runGuardsAndResolvers: 'always',
+                                    resolve: {
+                                        metadata: BaseModuleResolver
+                                    },
+                                    data: {
+                                        reuseRoute: false,
+                                        checkSession: true,
+                                        module: routeName
+                                    }
+                                });
+                                routes.push({
+                                    path: routeName + '/index',
+                                    component: ListComponent,
+                                    canActivate: [AuthGuard],
+                                    runGuardsAndResolvers: 'always',
+                                    resolve: {
+                                        metadata: BaseModuleResolver
+                                    },
+                                    data: {
+                                        reuseRoute: false,
+                                        checkSession: true,
+                                        module: routeName
+                                    }
+                                });
+                            }
                         }
-
                         if (configRoutes[routeName].list) {
-                            routes.push({
-                                path: routeName + '/list',
-                                component: ListComponent,
-                                canActivate: [AuthGuard],
-                                runGuardsAndResolvers: 'always',
-                                resolve: {
-                                    metadata: BaseModuleResolver
-                                },
-                                data: {
-                                    reuseRoute: false,
-                                    checkSession: true,
-                                    module: routeName
-                                }
-                            });
+                            if(routeName.toLowerCase() === "accounts") {
+                                routes.push({
+                                    path: routeName + '/list',
+                                    component: AccountListComponent,
+                                    canActivate: [AuthGuard],
+                                    runGuardsAndResolvers: 'always',
+                                    resolve: {
+                                        metadata: BaseModuleResolver
+                                    },
+                                    data: {
+                                        reuseRoute: false,
+                                        checkSession: true,
+                                        module: routeName
+                                    }
+                                });
+                            }
+                            else {
+                                routes.push({
+                                    path: routeName + '/list',
+                                    component: ListComponent,
+                                    canActivate: [AuthGuard],
+                                    runGuardsAndResolvers: 'always',
+                                    resolve: {
+                                        metadata: BaseModuleResolver
+                                    },
+                                    data: {
+                                        reuseRoute: false,
+                                        checkSession: true,
+                                        module: routeName
+                                    }
+                                });
+                            }
                         }
 
                         if (!isFalse(configRoutes[routeName].create) && !isFalse(configRoutes[routeName].record)) {
@@ -193,21 +245,40 @@ export class AppInit {
                         }
 
                         if (configRoutes[routeName].record) {
-                            routes.push({
-                                path: routeName + '/record/:record',
-                                component: RecordComponent,
-                                canActivate: [AuthGuard],
-                                runGuardsAndResolvers: 'always',
-                                resolve: {
-                                    view: BaseModuleResolver,
-                                    metadata: BaseRecordResolver
-                                },
-                                data: {
-                                    reuseRoute: false,
-                                    checkSession: true,
-                                    module: routeName
-                                }
-                            });
+                            if(routeName.toLowerCase() === "accounts") {
+                                routes.push({
+                                    path: routeName + '/record/:record',
+                                    component: AccountRecordComponent,
+                                    canActivate: [AuthGuard],
+                                    runGuardsAndResolvers: 'always',
+                                    resolve: {
+                                        view: BaseModuleResolver,
+                                        metadata: BaseRecordResolver
+                                    },
+                                    data: {
+                                        reuseRoute: false,
+                                        checkSession: true,
+                                        module: routeName
+                                    }
+                                });
+                            }
+                            else {
+                                routes.push({
+                                    path: routeName + '/record/:record',
+                                    component: RecordComponent,
+                                    canActivate: [AuthGuard],
+                                    runGuardsAndResolvers: 'always',
+                                    resolve: {
+                                        view: BaseModuleResolver,
+                                        metadata: BaseRecordResolver
+                                    },
+                                    data: {
+                                        reuseRoute: false,
+                                        checkSession: true,
+                                        module: routeName
+                                    }
+                                });
+                            }
                             routes.push({
                                 path: routeName + '/edit/:record',
                                 component: RecordComponent,

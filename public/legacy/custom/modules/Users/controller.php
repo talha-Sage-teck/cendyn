@@ -76,7 +76,7 @@ class CustomUsersController extends UsersController {
                 $deleteQ = "UPDATE user_preferences SET contents = '{$data}' WHERE category='Home' AND deleted=0 AND assigned_user_id='{$row['assigned_user_id']}'";
                 $dresultQ = $db->query($deleteQ);
                 if (!$dresultQ)
-                    $GLOBALS['log']->fatal("Error updating dashboard tabs for user with ID: {$row['assigned_user_id']}");
+                    $GLOBALS['log']->debug("Error updating dashboard tabs for user with ID: {$row['assigned_user_id']}");
             }
         }
     }
@@ -115,7 +115,7 @@ class CustomUsersController extends UsersController {
                 $deleteQ = "UPDATE user_preferences SET contents = '{$data}' WHERE category='Home' AND deleted=0 AND assigned_user_id='{$row['assigned_user_id']}'";
                 $dresultQ = $db->query($deleteQ);
                 if (!$dresultQ)
-                    $GLOBALS['log']->fatal("Error updating dashboard tabs for user with ID: {$row['assigned_user_id']}");
+                    $GLOBALS['log']->debug("Error updating dashboard tabs for user with ID: {$row['assigned_user_id']}");
             }
         }
     }
@@ -247,7 +247,7 @@ class CustomUsersController extends UsersController {
             }
             $updatePreferenceResult = $db->query($updatePreferenceQuery);
             if (!$updatePreferenceResult)
-                $GLOBALS['log']->fatal("Error inserting dashboard tabs for user with ID: " . $user);
+                $GLOBALS['log']->debug("Error inserting dashboard tabs for user with ID: " . $user);
         }
 
         //UPDATE ADMIN TO MAKE SURE ID'S ARE MAINTAINED
@@ -265,7 +265,7 @@ class CustomUsersController extends UsersController {
             $updateAdminQuery = "UPDATE user_preferences SET contents='{$data}' WHERE assigned_user_id = '1' AND deleted=0 AND category='Home'";
             $updateAdminResult = $db->query($updateAdminQuery);
             if (!$updateAdminResult)
-                $GLOBALS['log']->fatal("Error updating dashboard tabs for super admin");
+                $GLOBALS['log']->debug("Error updating dashboard tabs for super admin");
         }
 
         SugarApplication::redirect("index.php?module=Administration&action=index");

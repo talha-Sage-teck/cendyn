@@ -33,6 +33,41 @@ array (
       4 => 'account_id',
     ),
   ),
+  'TITLE' => 
+  array (
+    'width' => '15%',
+    'label' => 'LBL_LIST_TITLE',
+    'default' => true,
+  ),
+  'ACCOUNT_NAME' => 
+  array (
+    'width' => '34%',
+    'label' => 'LBL_LIST_ACCOUNT_NAME',
+    'module' => 'Accounts',
+    'id' => 'ACCOUNT_ID',
+    'link' => true,
+    'contextMenu' => 
+    array (
+      'objectType' => 'sugarAccount',
+      'metaData' => 
+      array (
+        'return_module' => 'Contacts',
+        'return_action' => 'ListView',
+        'module' => 'Accounts',
+        'parent_id' => '{$ACCOUNT_ID}',
+        'parent_name' => '{$ACCOUNT_NAME}',
+        'account_id' => '{$ACCOUNT_ID}',
+        'account_name' => '{$ACCOUNT_NAME}',
+      ),
+    ),
+    'default' => true,
+    'sortable' => true,
+    'ACLTag' => 'ACCOUNT',
+    'related_fields' => 
+    array (
+      0 => 'account_id',
+    ),
+  ),
   'PRIMARY_ADDRESS_CITY' => 
   array (
     'width' => '15%',
@@ -58,6 +93,14 @@ array (
     'sortable' => false,
     'link' => true,
     'customCode' => '{$EMAIL1_LINK}',
+    'default' => true,
+  ),
+  'ASSIGNED_USER_NAME' => 
+  array (
+    'width' => '10%',
+    'label' => 'LBL_LIST_ASSIGNED_USER',
+    'module' => 'Employees',
+    'id' => 'ASSIGNED_USER_ID',
     'default' => true,
   ),
   'DEPARTMENT' => 
@@ -146,54 +189,11 @@ array (
     'label' => 'LBL_ALT_ADDRESS_POSTALCODE',
     'default' => false,
   ),
-  'TITLE' => 
-  array (
-    'width' => '15%',
-    'label' => 'LBL_LIST_TITLE',
-    'default' => false,
-  ),
   'DATE_ENTERED' => 
   array (
     'width' => '10%',
     'label' => 'LBL_DATE_ENTERED',
     'default' => false,
-  ),
-  'ASSIGNED_USER_NAME' => 
-  array (
-    'width' => '10%',
-    'label' => 'LBL_LIST_ASSIGNED_USER',
-    'module' => 'Employees',
-    'id' => 'ASSIGNED_USER_ID',
-    'default' => false,
-  ),
-  'ACCOUNT_NAME' => 
-  array (
-    'width' => '34%',
-    'label' => 'LBL_LIST_ACCOUNT_NAME',
-    'module' => 'Accounts',
-    'id' => 'ACCOUNT_ID',
-    'link' => true,
-    'contextMenu' => 
-    array (
-      'objectType' => 'sugarAccount',
-      'metaData' => 
-      array (
-        'return_module' => 'Contacts',
-        'return_action' => 'ListView',
-        'module' => 'Accounts',
-        'parent_id' => '{$ACCOUNT_ID}',
-        'parent_name' => '{$ACCOUNT_NAME}',
-        'account_id' => '{$ACCOUNT_ID}',
-        'account_name' => '{$ACCOUNT_NAME}',
-      ),
-    ),
-    'default' => false,
-    'sortable' => true,
-    'ACLTag' => 'ACCOUNT',
-    'related_fields' => 
-    array (
-      0 => 'account_id',
-    ),
   ),
   'CREATED_BY_NAME' => 
   array (

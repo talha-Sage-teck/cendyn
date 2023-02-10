@@ -182,3 +182,27 @@ $dictionary["AOS_Contracts"]["fields"]["room_nights"] = array(
     'min' => false,
     'max' => false,
 );
+
+$dictionary["AOS_Contracts"]["fields"]["name"]["importable"] = 'true';
+
+$dictionary["AOS_Contracts"]["fields"]["sales_rep_code"] = array(
+    'name' => 'sales_rep_code',
+    'vname' => 'LBL_SALES_REP_CODE',
+    'inline_edit' => '1',
+    'required' => false,
+    'type' => 'varchar',
+    'massupdate' => '0',
+    'default' => NULL,
+    'no_default' => false,
+    'comments' => '',
+    'help' => '',
+    'importable' => 'true',
+    'duplicate_merge' => 'disabled',
+    'duplicate_merge_dom_value' => '0',
+    'audited' => false,
+    'reportable' => true,
+    'unified_search' => false,
+    'merge_filter' => 'disabled',
+    'len' => '255',
+    'size' => '20',
+);

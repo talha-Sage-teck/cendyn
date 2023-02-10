@@ -52,7 +52,7 @@ array (
         array (
           0 =>
           array (
-            'name' => 'acc',
+            'name' => 'account_name',
             'studio' => 'visible',
             'label' => 'LBL_ACC',
           ),

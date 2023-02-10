@@ -1,21 +1,6 @@
 <?php
 $listViewDefs ['Tasks'] = 
 array (
-  'B2BACTIVITYID' =>
-  array (
-    'type' => 'int',
-    'default' => true,
-    'label' => 'LBL_B2BACTIVITYID',
-    'width' => '8%',
-  ),
-  'TYPE' =>
-  array (
-    'type' => 'enum',
-    'default' => true,
-    'studio' => 'visible',
-    'label' => 'LBL_TYPE',
-    'width' => '8%',
-  ),
   'NAME' => 
   array (
     'width' => '10%',
@@ -38,18 +23,6 @@ array (
     'link' => false,
     'default' => true,
   ),
-  'SET_COMPLETE' => 
-  array (
-    'width' => '1%',
-    'label' => 'LBL_LIST_CLOSE',
-    'link' => true,
-    'sortable' => false,
-    'default' => true,
-    'related_fields' => 
-    array (
-      0 => 'status',
-    ),
-  ),
   'CONTACT_NAME' => 
   array (
     'width' => '15%',
@@ -71,20 +44,28 @@ array (
     'link' => false,
     'default' => true,
   ),
-  'RESULT' =>
-  array (
-    'type' => 'enum',
-    'default' => true,
-    'studio' => 'visible',
-    'label' => 'LBL_RESULT',
-    'width' => '8%',
-  ),
   'PRIORITY' => 
   array (
     'type' => 'enum',
     'default' => true,
     'label' => 'LBL_PRIORITY',
     'width' => '10%',
+  ),
+  'TYPE' => 
+  array (
+    'type' => 'enum',
+    'default' => true,
+    'studio' => 'visible',
+    'label' => 'LBL_TYPE',
+    'width' => '8%',
+  ),
+  'ASSIGNED_USER_NAME' => 
+  array (
+    'width' => '2%',
+    'label' => 'LBL_LIST_ASSIGNED_TO_NAME',
+    'module' => 'Employees',
+    'id' => 'ASSIGNED_USER_ID',
+    'default' => true,
   ),
   'DATE_START' => 
   array (
@@ -117,26 +98,45 @@ array (
     'link' => false,
     'default' => false,
   ),
-  'ASSIGNED_USER_NAME' => 
-  array (
-    'width' => '2%',
-    'label' => 'LBL_LIST_ASSIGNED_TO_NAME',
-    'module' => 'Employees',
-    'id' => 'ASSIGNED_USER_ID',
-    'default' => false,
-  ),
   'DATE_ENTERED' => 
   array (
     'width' => '10%',
     'label' => 'LBL_DATE_ENTERED',
     'default' => false,
   ),
-  'SUBJECT' =>
+  'SUBJECT' => 
   array (
     'type' => 'varchar',
     'default' => false,
     'label' => 'LBL_SUBJECT',
     'width' => '20%',
+  ),
+  'RESULT' => 
+  array (
+    'type' => 'enum',
+    'default' => false,
+    'studio' => 'visible',
+    'label' => 'LBL_RESULT',
+    'width' => '8%',
+  ),
+  'SET_COMPLETE' => 
+  array (
+    'width' => '1%',
+    'label' => 'LBL_LIST_CLOSE',
+    'link' => true,
+    'sortable' => false,
+    'default' => false,
+    'related_fields' => 
+    array (
+      0 => 'status',
+    ),
+  ),
+  'B2BACTIVITYID' => 
+  array (
+    'type' => 'int',
+    'default' => false,
+    'label' => 'LBL_B2BACTIVITYID',
+    'width' => '8%',
   ),
 );
 ;

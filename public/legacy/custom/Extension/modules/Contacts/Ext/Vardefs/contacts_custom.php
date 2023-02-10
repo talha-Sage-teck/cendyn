@@ -224,11 +224,10 @@ $dictionary["Contact"]["fields"]["priority"] = array(
     'dependency' => false,
 );
 $dictionary["Contact"]["fields"]["sales_rep_code"] = array(
-    'inline_edit' => '1',
-    'labelValue' => 'sales_rep_code',
-    'required' => false,
     'name' => 'sales_rep_code',
     'vname' => 'LBL_SALES_REP_CODE',
+    'inline_edit' => '1',
+    'required' => false,
     'type' => 'varchar',
     'massupdate' => '0',
     'default' => '',

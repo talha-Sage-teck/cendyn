@@ -129,7 +129,7 @@ class UsersLogicHooks {
             $updatePreferenceQuery = "UPDATE user_preferences SET contents='{$data}' WHERE assigned_user_id = '{$bean->id}' AND category='Home' AND deleted=0";
             $updatePreferenceResult = $db->query($updatePreferenceQuery);
             if(!$updatePreferenceResult)
-                $GLOBALS['log']->fatal("After Login: Error updating dashboard tabs for user with ID: " . $bean->id);
+                $GLOBALS['log']->debug("After Login: Error updating dashboard tabs for user with ID: " . $bean->id);
         }
     }
 }

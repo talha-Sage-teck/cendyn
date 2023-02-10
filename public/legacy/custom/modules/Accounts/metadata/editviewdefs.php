@@ -33,7 +33,7 @@ array (
         array (
           'file' => 'modules/Accounts/Account.js',
         ),
-        1 =>
+        1 => 
         array (
           'file' => 'custom/modules/Accounts/js/custom.js',
         ),
@@ -76,32 +76,32 @@ array (
             'label' => 'LBL_PRIORITY',
           ),
         ),
-        1 =>
+        1 => 
         array (
-          0 =>
+          0 => 
           array (
             'name' => 'b2b_account_no',
             'label' => 'LBL_B2B_ACCOUNT_NO',
-            'type' => 'readonly', /*** Never editable */
+            'type' => 'readonly',
           ),
           1 => '',
         ),
-        2 =>
+        2 => 
         array (
-          0 => /*** added accountbasetype and refactored the array such that accountbasetype and account_type fields are next to each other  */
+          0 => 
           array (
             'name' => 'account_base_type',
             'studio' => 'visible',
             'label' => 'LBL_ACCOUNT_BASE_TYPE',
           ),
-          1 =>
+          1 => 
           array (
             'name' => 'account_type',
             'studio' => 'visible',
             'label' => 'LBL_TYPE',
           ),
         ),
-        3 =>
+        3 => 
         array (
           0 => 
           array (
@@ -114,7 +114,7 @@ array (
             'label' => 'LBL_ASSIGNED_TO',
           ),
         ),
-        4 =>
+        4 => 
         array (
           0 => 
           array (
@@ -129,7 +129,7 @@ array (
             'label' => 'LBL_BLACK_LIST_REASON',
           ),
         ),
-        5 =>
+        5 => 
         array (
           0 => 
           array (
@@ -139,7 +139,7 @@ array (
           ),
           1 => 'industry',
         ),
-        6 =>
+        6 => 
         array (
           0 => 
           array (
@@ -160,7 +160,7 @@ array (
             'label' => 'LBL_DESCRIPTION',
           ),
         ),
-        7 =>
+        7 => 
         array (
           0 => 
           array (
@@ -172,6 +172,11 @@ array (
             'name' => 'phone_fax',
             'label' => 'LBL_FAX',
           ),
+        ),
+        8 => 
+        array (
+          0 => 'parent_name',
+          1 => '',
         ),
       ),
       'LBL_PANEL_ADVANCED' => 

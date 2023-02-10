@@ -1,26 +1,14 @@
 <?php
 $dictionary['Opportunity']['fields']['cb2b_hotels_id'] = array (
-    'inline_edit' => 1,
-    'required' => false,
     'name' => 'cb2b_hotels_id',
     'vname' => 'LBL_ASSOCIATE_CB2B_HOTELS_ID',
     'type' => 'varchar',
-    'massupdate' => '0',
     'source' => 'non-db',
     'default' => NULL,
     'no_default' => false,
-    'comments' => '',
-    'help' => '',
-    'importable' => 'true',
-    'duplicate_merge' => 'disabled',
-    'duplicate_merge_dom_value' => '0',
     'audited' => false,
-    'reportable' => false,
-    'unified_search' => false,
-    'merge_filter' => 'disabled',
     'len' => '1000',
     'size' => '20',
-    'id' => 'Opportunitycb2b_hotels_id_c',
 );
 $dictionary['Opportunity']['fields']['associate_hotels_opportunity'] = array (
     'inline_edit' => '0',

@@ -33,7 +33,7 @@ function getAccountById($accountID) {
     curl_setopt_array($curl, $object);
     $response = curl_exec($curl);
     if (curl_errno($curl)) {
-        $GLOBALS['log']->fatal('CURL ERROR -> : ' . print_r(curl_error($curl), 1));
+        $GLOBALS['log']->debug('CURL ERROR -> : ' . print_r(curl_error($curl), 1));
     }
     curl_close($curl);
     return json_decode($response);
@@ -169,7 +169,7 @@ function syncAccountsDataService() {
                 }
                 break;
             default:
-                $GLOBALS['log']->fatal("syncAccountsDataService: Unexpected sync flag value in scheduler.");
+                $GLOBALS['log']->debug("syncAccountsDataService: Unexpected sync flag value in scheduler.");
                 return true;
         }
 

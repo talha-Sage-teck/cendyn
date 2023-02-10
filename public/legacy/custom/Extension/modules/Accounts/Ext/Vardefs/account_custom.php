@@ -294,11 +294,10 @@ $dictionary["Account"]["fields"]["priority"] = array(
 );
 
 $dictionary["Account"]["fields"]["sales_rep_code"] = array(
-    'inline_edit' => '1',
-    'labelValue' => 'SRep',
-    'required' => false,
     'name' => 'sales_rep_code',
     'vname' => 'LBL_SALES_REP_CODE',
+    'inline_edit' => '1',
+    'required' => false,
     'type' => 'varchar',
     'massupdate' => '0',
     'default' => NULL,

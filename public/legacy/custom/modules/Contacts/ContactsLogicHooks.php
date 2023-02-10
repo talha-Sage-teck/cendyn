@@ -131,7 +131,7 @@ class ContactsLogicHooks
 VALUES('{$guid}', '{$bean->id}', '{$now}', '{$bean->assigned_user_id}', 'email1', 'varchar', '{$beforeValue}', '{$afterValue}')";
                 $insertAuditResult = $db->query($insertAuditQuery);
                 if (!$insertAuditResult) {
-                    $GLOBALS['log']->fatal("addEmailsToAudit: Contacts Logic Hook. Error adding audit row.");
+                    $GLOBALS['log']->debug("addEmailsToAudit: Contacts Logic Hook. Error adding audit row.");
                 }
             }
         }

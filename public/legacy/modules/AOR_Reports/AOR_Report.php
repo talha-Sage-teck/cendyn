@@ -651,7 +651,7 @@ class AOR_Report extends Basic
                 $total_rows = $assoc['c'];
             }
         }
-        
+
         $html = '<div class="list-view-rounded-corners">';
         $html.='<table id="report_table_'.$tableIdentifier.$group_value.'" width="100%" border="0" class="list view table-responsive aor_reports">';
 
@@ -1628,7 +1628,13 @@ class AOR_Report extends Basic
                             break;
 
                         case 'Date':
-                            $params = unserialize(base64_decode($condition->value));
+                            if(gettype($condition->value)=='string'){
+                                $params = unserialize(base64_decode($condition->value));
+
+                            }
+                            else{
+                                $params=false;
+                            }
 
                             // Fix for issue #1272 - AOR_Report module cannot update Date type parameter.
                             if ($params == false) {
@@ -1907,7 +1913,17 @@ class AOR_Report extends Basic
                             }
                         } else {
                             if (!$where_set) {
-                                $query['where'][] = ($tiltLogicOp ? '' : ($condition->logic_op ? $condition->logic_op . ' ' : 'AND ')) . $field . ' ' . $aor_sql_operator_list[$condition->operator] . ' ' . $value;
+                                if(empty($condition->value)&&$condition->operator=='Not_Equal_To'){
+                                    $query['where'][] = ($tiltLogicOp ? '' : ($condition->logic_op ? $condition->logic_op . ' ' : 'AND ')) . $field . ' ' . 'is not null';
+
+                                }
+                                elseif(empty($condition->value)&&$condition->operator=='Equal_To'){
+                                    $query['where'][] = ($tiltLogicOp ? '' : ($condition->logic_op ? $condition->logic_op . ' ' : 'AND ')) . $field . ' ' . 'is null)';
+
+                                }
+                                else{
+                                    $query['where'][] = ($tiltLogicOp ? '' : ($condition->logic_op ? $condition->logic_op . ' ' : 'AND ')) . $field . ' ' . $aor_sql_operator_list[$condition->operator] . ' ' . $value;
+                                }
                             }
                         }
                     }

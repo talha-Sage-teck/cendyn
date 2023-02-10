@@ -131,9 +131,9 @@ array (
           ),
           1 => 
           array (
-            'name' => 'results',
+            'name' => 'result',
             'studio' => 'visible',
-            'label' => 'LBL_RESULTS',
+            'label' => 'LBL_RESULT',
           ),
         ),
         2 => 
