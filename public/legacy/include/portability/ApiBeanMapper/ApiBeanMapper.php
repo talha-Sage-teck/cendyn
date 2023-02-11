@@ -127,11 +127,6 @@ class ApiBeanMapper
                 continue;
             }
 
-            if($this->isMultiRelateField($definition)) {
-                $this->addMultiRelateFieldToArray($bean, $definition, $arr, $field);
-                continue;
-            }
-
             if ($this->isLinkField($definition)) {
                 continue;
             }
@@ -209,16 +204,6 @@ class ApiBeanMapper
     {
         return isset($definition['type']) && $definition['type'] === 'relate';
     }
-
-    /**
-     * @param $definition
-     * @return bool
-     */
-    protected function isMultiRelateField($definition): bool
-    {
-        return isset($definition['type']) && $definition['type'] === 'multirelate';
-    }
-
 
     /**
      * @param $definition
@@ -314,41 +299,6 @@ class ApiBeanMapper
      * @param $field
      */
     protected function addRelateFieldToArray(SugarBean $bean, $definition, array &$arr, $field): void
-    {
-        $fieldRName = $definition['rname'] ?? 'name';
-        $idName = $definition['id_name'] ?? '';
-        $source = $definition['source'] ?? '';
-        $idDefinition = $definition[$idName] ?? [];
-        $groupingField = $field;
-
-        if ($source !== 'non-db') {
-            $this->setValue($bean, $field, $arr, $definition);
-
-            return;
-        }
-
-        if ($idName === $field) {
-            $this->setValue($bean, $field, $arr, $definition);
-
-            return;
-        }
-
-        $arr[$groupingField] = $arr[$groupingField] ?? [];
-        $this->setValue($bean, $field, $arr[$groupingField], $definition, $fieldRName);
-
-        if (isset($bean->$idName)) {
-            $idFieldRName = $idDefinition['rname'] ?? 'id';
-            $this->setValue($bean, $idName, $arr[$groupingField], $definition, $idFieldRName);
-        }
-    }
-
-    /**
-     * @param SugarBean $bean
-     * @param $definition
-     * @param array $arr
-     * @param $field
-     */
-    protected function addMultiRelateFieldToArray(SugarBean $bean, $definition, array &$arr, $field): void
     {
         $fieldRName = $definition['rname'] ?? 'name';
         $idName = $definition['id_name'] ?? '';

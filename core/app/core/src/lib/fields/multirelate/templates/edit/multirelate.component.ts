@@ -39,6 +39,7 @@ import {TagModel} from "ngx-chips/core/accessor";
 import {FieldLogicManager} from '../../../field-logic/field-logic.manager';
 import {EMPTY, Observable, of} from "rxjs";
 import {catchError, map, tap} from "rxjs/operators";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 @Component({
     selector: 'scrm-multirelate-edit',
@@ -65,6 +66,7 @@ export class MultiRelateEditFieldComponent extends BaseRelateComponent {
      * @param {object} logic
      */
     constructor(
+        private http: HttpClient,
         protected languages: LanguageStore,
         protected typeFormatter: DataTypeFormatter,
         protected relateService: MultiRelateService,
@@ -83,40 +85,58 @@ export class MultiRelateEditFieldComponent extends BaseRelateComponent {
         } as ButtonInterface;
     }
 
+    getMultiRelatedIds = async(): Promise<string>  => {
+        let headers = new HttpHeaders();
+        headers.set('Content-Type', 'application/json; charset=utf-8');
+        return await new Promise((resolve, reject) => {
+            this.http.get(location.origin + location.pathname +
+                'legacy/index.php?entryPoint=getMultiRelatedIds&id=' +
+                this.record.id + '&module=' + this.record.module + '&field=' + this.field.definition.name,
+                {headers: headers, responseType: 'text'})
+                .subscribe(data => {
+                    resolve(data);
+                }, error => {
+                    reject(error);
+                });
+        });
+    }
+
     /**
      * On init handler
      */
     ngOnInit(): void {
         super.ngOnInit();
-        if(!this.field.valueList)
-            this.field.valueList = [];
+        (async() => {
+            if(!this.field.valueList)
+                this.field.valueList = [];
 
-        if(!this.field.valueObjectArray)
-            this.field.valueObjectArray = [];
+            if(!this.field.valueObjectArray)
+                this.field.valueObjectArray = [];
 
-        const values = (this.field.value && this.field.criteria && this.field.criteria.values) || [];
+            const values = (this.field.value && this.field.criteria && this.field.criteria.values) || [];
 
-        if (values.length > 0) {
-            this.field.valueList = values;
-            this.selectedTags = values;
-        }
-
-        const valueObjectArray = (this.field && this.field.valueObjectArray) || [];
-
-        if(this.field.value && typeof this.field.value !== "undefined") {
-            let ids = this.field.value['id'].split(', ');
-            let names = this.field.value['name'].split(', ');
-            for (let i = 0; i < ids.length; ++i) {
-                valueObjectArray.push({id: ids[i], name: names[i]});
-                this.field.valueList.push(names[i]);
+            if (values.length > 0) {
+                this.field.valueList = values;
+                this.selectedTags = values;
             }
-        }
 
-        if (valueObjectArray.length > 0) {
-            this.field.valueObjectArray = deepClone(valueObjectArray);
-            this.selectedTags = deepClone(valueObjectArray);
-        }
-        this.init();
+            const valueObjectArray = (this.field && this.field.valueObjectArray) || [];
+
+            if(this.field.value && typeof this.field.value !== "undefined") {
+                let ids = (await this.getMultiRelatedIds()).split(', ');
+                let names = this.field.value.split(', ');
+                for (let i = 0; i < ids.length; ++i) {
+                    valueObjectArray.push({id: ids[i], name: names[i]});
+                    this.field.valueList.push(names[i]);
+                }
+            }
+
+            if (valueObjectArray.length > 0) {
+                this.field.valueObjectArray = deepClone(valueObjectArray);
+                this.selectedTags = deepClone(valueObjectArray);
+            }
+            this.init();
+        })();
     }
 
     protected init(): void {
