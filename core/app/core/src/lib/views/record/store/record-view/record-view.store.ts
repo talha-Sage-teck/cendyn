@@ -348,10 +348,9 @@ export class RecordViewStore extends ViewStore implements StateStore {
                     ...this.internalState,
                     loading: false
                 });
-
                 //Custom CB2B_PMSProfiles -> Accounts and Opportunities -> Hotels subpanel refresh onload code
                 if(this.getModuleName().toLowerCase() === "cb2b_pmsprofiles" ||
-                   this.getModuleName().toLowerCase() === "opportunities")
+                    this.getModuleName().toLowerCase() === "opportunities")
                     window.location.reload();
             })
         );

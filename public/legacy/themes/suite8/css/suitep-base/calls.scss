@@ -68,4 +68,14 @@
         border-top-left-radius: 0;
         border-top-right-radius: 0;
     }
+    li#tab-actions {
+        input[type=submit] {
+            padding-left: 1em;
+        }
+    }
+    @media (min-width: 751px) and (max-width:1200px) {
+        .module-title-text {
+            margin-bottom: 2em;
+        }
+    }
 }

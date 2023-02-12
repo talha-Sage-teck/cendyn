@@ -31,6 +31,7 @@ use ApiPlatform\Core\Exception\ItemNotFoundException;
 use App\Currency\LegacyHandler\CurrencyHandler;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
+use App\Engine\Model\Feedback;
 use App\Install\LegacyHandler\InstallHandler;
 use App\Module\Service\ModuleNameMapperInterface;
 use App\Process\Service\ActionNameMapperInterface;
@@ -38,6 +39,7 @@ use App\Routes\LegacyHandler\ClassicViewRoutingExclusionsHandler;
 use App\Routes\Service\NavigationProviderInterface;
 use App\SystemConfig\Entity\SystemConfig;
 use App\SystemConfig\Service\SystemConfigProviderInterface;
+use Exception;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderInterface
@@ -98,6 +100,8 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
      * @param array $listViewLineActionsLimits
      * @param array $uiConfigs
      * @param array $extensions
+     * @param array $logoutConfig
+     * @param array $sessionExpiredConfig
      * @param SessionInterface $session
      * @param NavigationProviderInterface $navigation
      */
@@ -124,6 +128,8 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         array $listViewLineActionsLimits,
         array $uiConfigs,
         array $extensions,
+        array $logoutConfig,
+        array $sessionExpiredConfig,
         SessionInterface $session,
         NavigationProviderInterface $navigation
     ) {
@@ -150,6 +156,13 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         $this->injectedSystemConfigs['listview_line_actions_limits'] = $listViewLineActionsLimits;
         $this->injectedSystemConfigs['ui'] = $uiConfigs;
         $this->injectedSystemConfigs['extensions'] = $extensions;
+
+        $logoutConfig = $logoutConfig ?? [];
+        $this->injectedSystemConfigs['logout'] = $logoutConfig;
+
+        $sessionExpiredConfig = $sessionExpiredConfig ?? [];
+        $this->injectedSystemConfigs['session-expired'] = $sessionExpiredConfig;
+
         $this->mappers = $mappers;
         $this->systemConfigKeyMap = $systemConfigKeyMap;
         $this->currencyHandler = $currencyHandler;
@@ -162,6 +175,72 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
     public function getHandlerKey(): string
     {
         return self::HANDLER_KEY;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getConfigs(): ?array
+    {
+        $this->init();
+
+        $config = $this->getLegacyConfig($this->legacyDir);
+
+        $this->close();
+
+        return $config;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getConfigDefaults(): ?array
+    {
+        $this->init();
+
+        try {
+            $defaults = get_sugar_config_defaults();
+        } catch (Exception $exception) {
+            return null;
+        }
+
+        $this->close();
+
+        return $defaults;
+    }
+
+    /**
+     * Get system config
+     * @param array $config
+     * @return Feedback
+     */
+    public function updateSystemConfig(array $config): Feedback
+    {
+        $this->init();
+
+        /* @noinspection PhpIncludeInspection */
+        require_once 'include/portability/System/Config/ConfigHandler.php';
+
+        $feedback = new Feedback();
+
+        $handler = new \ConfigHandler();
+
+        $feedback->setSuccess(true);
+        $feedback->setMessages(['Updated system config']);
+
+        try {
+            $handler->updateConfig($config);
+
+        } catch (Exception $exception) {
+            $feedback->setSuccess(false);
+            $feedback->setMessages(['Unable to update config']);
+            $feedback->setDebug([$exception->getMessage(), $exception->getTraceAsString()]);
+        }
+
+
+        $this->close();
+
+        return $feedback;
     }
 
     /**

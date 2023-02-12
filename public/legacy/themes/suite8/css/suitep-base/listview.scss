@@ -86,12 +86,12 @@ tr#pagination {
 
 .list #pagination td .paginationTable .paginationActionButtons {
   background-color: $list-view-toolbar-bg;
-  padding: 0.4em 0 0;
+  padding: 0.35em 0 0;
 }
 
 .list #pagination td .paginationTable .paginationChangeButtons {
   background-color: $list-view-toolbar-bg;
-  padding: 0.4em 0 0;
+  padding: 0.35em 0 0;
 }
 
 .list #pagination td .paginationTable .pageNumbers {
@@ -99,7 +99,7 @@ tr#pagination {
   font-weight: bold;
   color: $list-view-pagination-color;
   padding: 0 8px 0 8px;
-  margin: 0 0 0 0;
+  margin: -2px 0 0 0;
 }
 
 #listViewStartButton_top {
@@ -177,6 +177,7 @@ tr#pagination {
 
 #listViewEndButton_top {
   margin-left: 2px;
+  margin-right: 0.2em;
 }
 
 #listViewEndButton_bottom {
@@ -1590,10 +1591,8 @@ div#search_form > .advanced input.button:hover {
 .paginationTable .list-view-pagination-button {
   background-color: $transparent-color;
   color: $list-view-button-color;
-  margin: 0 2px 0 2px;
+  margin: 0 0 0 2px;
   padding: 0;
-  line-height: 26px;
-  height: 26px;
   width: 24px;
   border-color: $transparent-color;
 }
@@ -1992,9 +1991,9 @@ ul.clickMenu.selectmenu.SugarActionMenu.listViewLinkButton > li.desktopOnly > a.
   ul.clickMenu.selectmenu.SugarActionMenu.listViewLinkButton > li > a.glyphicon-remove {
     background-color: $navbar-alert-count-bg;
     padding: 0;
-    position: absolute;
-    right: -8px;
-    top: -5px;
+    float: right;
+    margin-right: -12px;
+    margin-top: -7px;
   }
 
 }
@@ -3040,7 +3039,7 @@ table.subpanel-table li.sugar_action_button {
 
 @-moz-document url-prefix() {
   #selectLinkTop li.sugar_action_button {
-    padding-left: 7px;
+    padding-left: 0;
   }
 }
 
@@ -3053,7 +3052,7 @@ table.subpanel-table li.sugar_action_button {
 
 @-moz-document url-prefix() {
   #selectLinkBottom li.sugar_action_button {
-    padding-left: 7px;
+    padding-left: 0;
   }
 }
 
@@ -3622,5 +3621,34 @@ ul.clickMenu > li > span.searchAppliedAlert {
 
   .selected-actions-label-text {
     display: inline-block;
+  }
+}
+
+//Legacy Listview Bottom Buttons Styling - Global fix
+.view-action-index {
+  .listViewButtons {
+    .button {
+      background-color: $nepal-grey;
+      font-size: 13px;
+      font-weight: 700;
+      height: 2.2em;
+      line-height: 16px;
+      padding: .3em 1em;
+      text-transform: capitalize;
+      margin: .2em;
+      &:hover {
+          background: $pale-blue;
+      }
+    }
+  }
+}
+
+//Legacy Listview Bottom dropdown styling- Global fix
+#mass_update_table {
+  select {
+    background: url($select-edit-background-url) no-repeat right;
+    background-size: 25px 11px;
+    border-color: $bright-grey;
+    max-width: 100%;
   }
 }

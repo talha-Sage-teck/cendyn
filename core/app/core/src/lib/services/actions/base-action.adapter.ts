@@ -62,7 +62,7 @@ export abstract class BaseActionsAdapter<D extends ActionData> implements Action
         protected confirmation: ConfirmationModalService,
         protected language: LanguageStore,
         protected selectModalService: SelectModalService,
-        protected metadata: MetadataStore,
+        protected metadata: MetadataStore
     ) {
     }
 
@@ -81,7 +81,7 @@ export abstract class BaseActionsAdapter<D extends ActionData> implements Action
      * @param action
      * @param context
      */
-    runAction = async(action: Action, context: ActionContext = null): Promise<void> => {
+    runAction(action: Action, context: ActionContext = null): void {
         const params = (action && action.params) || {} as { [key: string]: any };
         const displayConfirmation = params.displayConfirmation || false;
         const confirmationLabel = params.confirmationLabel || '';
@@ -89,14 +89,7 @@ export abstract class BaseActionsAdapter<D extends ActionData> implements Action
         const selectModal = action.params && action.params.selectModal;
         const selectModule = selectModal && selectModal.module;
 
-        // This code block is only here to inhibit the processing in case a user tries to convert a profile to account
-        // that already has a related account
-        let checkRelatedAccount = true;
-        if(params.checkRelatedAccount)
-            checkRelatedAccount = !context.record.attributes.accounts_cb2b_pmsprofiles_1accounts_ida ||
-            context.record.attributes.accounts_cb2b_pmsprofiles_1accounts_ida.trim().length == 0;
-
-        if (displayConfirmation && checkRelatedAccount) {
+        if (displayConfirmation) {
             this.confirmation.showModal(confirmationLabel, () => {
                 if (!selectModule) {
                     this.callAction(action, context);

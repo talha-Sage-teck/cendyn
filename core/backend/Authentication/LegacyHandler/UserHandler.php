@@ -30,6 +30,7 @@ namespace App\Authentication\LegacyHandler;
 
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
+use App\Module\Users\Entity\User;
 use App\SystemConfig\Service\SystemConfigProviderInterface;
 use App\UserPreferences\Service\UserPreferencesProviderInterface;
 use SugarBean;
@@ -176,5 +177,130 @@ class UserHandler extends LegacyHandler
         }
 
         return $language ?? '';
+    }
+
+    /**
+     * Create user
+     * @param string $name
+     * @param array $fields
+     * @return SugarBean|null
+     */
+    public function createUser(string $name, array $fields): ?SugarBean
+    {
+        $this->init();
+        $this->startLegacyApp();
+
+        /* @noinspection PhpIncludeInspection */
+        require_once 'portability/User/CreateUser.php';
+
+        $service = new \CreateUser();
+        $user = $service->create($name, $fields);
+
+        $this->close();
+
+        return $user;
+    }
+
+    /**
+     * Create external auth user
+     * @param string $name
+     * @param array $fields
+     * @return SugarBean|null
+     */
+    public function createExternalAuthUser(string $name, array $fields): ?SugarBean
+    {
+        $this->init();
+
+        /* @noinspection PhpIncludeInspection */
+        require_once 'include/portability/User/CreateUser.php';
+
+        $service = new \CreateUser();
+        $user = $service->createExternalAuthUser($name, $fields);
+
+        $this->close();
+
+        return $user;
+    }
+
+    /**
+     * Check if user exists
+     * @param string $name
+     * @return bool
+     */
+    public function userExists(string $name): bool
+    {
+        $this->init();
+
+        /* @noinspection PhpIncludeInspection */
+        require_once 'include/portability/User/CreateUser.php';
+
+        $service = new \CreateUser();
+        $exists = $service->userExists($name);
+
+        $this->close();
+
+        return $exists;
+    }
+
+    /**
+     * Map user bean to user entity
+     * @param SugarBean $legacyUser
+     * @return User
+     */
+    public function mapUser(SugarBean $legacyUser): User
+    {
+        $this->init();
+
+        /* @noinspection PhpIncludeInspection */
+        require_once 'include/portability/Services/DateTime/DateFormatService.php';
+
+        $formatter = new \DateFormatService();
+
+        /** @var \User $legacyUser */
+        $entityUser = new User();
+        $entityUser->setId($legacyUser->id);
+        $entityUser->setSystemGeneratedPassword($legacyUser->system_generated_password);
+        $entityUser->setPwdLastChanged($legacyUser->pwd_last_changed);
+        $entityUser->setAuthenticateId($legacyUser->authenticate_id);
+        $entityUser->setSugarLogin($legacyUser->sugar_login);
+        $entityUser->setFirstName($legacyUser->first_name);
+        $entityUser->setLastName($legacyUser->last_name);
+        $entityUser->setIsAdmin($legacyUser->is_admin);
+        $entityUser->setExternalAuthOnly($legacyUser->external_auth_only);
+        $entityUser->setReceiveNotifications($legacyUser->receive_notifications);
+        $entityUser->setDescription($legacyUser->description);
+        $entityUser->setDateEntered($formatter->toDateTime($legacyUser->date_entered));
+        $entityUser->setDateModified($formatter->toDateTime($legacyUser->date_modified));
+        $entityUser->setModifiedUserId($legacyUser->modified_user_id);
+        $entityUser->setCreatedBy($legacyUser->created_by);
+        $entityUser->setTitle($legacyUser->title);
+        $entityUser->setPhoto($legacyUser->photo);
+        $entityUser->setDepartment($legacyUser->department);
+        $entityUser->setPhoneHome($legacyUser->phone_home);
+        $entityUser->setPhoneMobile($legacyUser->phone_mobile);
+        $entityUser->setPhoneWork($legacyUser->phone_work);
+        $entityUser->setPhoneOther($legacyUser->phone_other);
+        $entityUser->setPhoneFax($legacyUser->phone_fax);
+        $entityUser->setStatus($legacyUser->status);
+        $entityUser->setAddressStreet($legacyUser->address_street);
+        $entityUser->setAddressCity($legacyUser->address_city);
+        $entityUser->setAddressState($legacyUser->address_state);
+        $entityUser->setAddressCountry($legacyUser->address_country);
+        $entityUser->setAddressPostalcode($legacyUser->address_postalcode);
+        $entityUser->setDeleted($legacyUser->deleted);
+        $entityUser->setPortalOnly($legacyUser->portal_only);
+        $entityUser->setShowOnEmployees($legacyUser->show_on_employees);
+        $entityUser->setEmployeeStatus($legacyUser->employee_status);
+        $entityUser->setMessengerId($legacyUser->messenger_id);
+        $entityUser->setMessengerType($legacyUser->messenger_type);
+        $entityUser->setReportsToId($legacyUser->reports_to_id);
+        $entityUser->setFactorAuth($legacyUser->factor_auth);
+        $entityUser->setFactorAuthInterface($legacyUser->factor_auth_interface);
+        $entityUser->setUserHash($legacyUser->user_hash);
+        $entityUser->setUserName($legacyUser->user_name);
+
+        $this->close();
+
+        return $entityUser;
     }
 }

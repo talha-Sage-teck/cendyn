@@ -55,6 +55,10 @@ services:
       $subpanelLineActions: '%module.subpanel.line_actions%'
       $subpanelTopActions: '%module.subpanel.top_actions%'
       $subpanelTopButtons: '%module.subpanel.top_buttons%'
+      $ldapAutoCreateExtraFieldsMap: '%ldap.autocreate.extra_fields_map%'
+      $samlAutoCreateAttributesMap: '%saml.autocreate.attributes_map%'
+      $logoutConfig: '%auth.logout%'
+      $sessionExpiredConfig: '%auth.session-expired%'
   _instanceof:
     App\Process\Service\ProcessHandlerInterface:
       tags: [ 'app.process.handler' ]
@@ -79,6 +83,8 @@ services:
       shared: false
     App\Install\Service\Upgrade\UpgradeStepInterface:
       tags: [ 'app.upgrade.step' ]
+    App\Install\Service\LegacyMigration\LegacyMigrationStepInterface:
+      tags: [ 'app.legacy.migration.step' ]
     App\Install\Service\Installation\InstallStepInterface:
       tags: [ 'app.install.step' ]
     App\ViewDefinitions\Service\MassUpdateDefinitionMapperInterface:
@@ -98,7 +104,7 @@ services:
   # this creates a service per class whose id is the fully-qualified class name
   App\Extension\:
     resource: '../extensions/*'
-    exclude: '../extensions/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+    exclude: '../extensions/**/{config,DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
 
   # controllers are imported separately to make sure services can be injected
   # as action arguments even if you don't extend any base controller class
@@ -134,6 +140,25 @@ services:
   App\Engine\Service\Extensions\ExtensionAssetCacheWarmupDecorator:
     decorates: 'cache_warmer'
 
+  security.authenticator.json_login:
+    class: App\Security\AppJsonLoginAuthenticator
+    abstract: true
+    arguments:
+      - '@security.http_utils'
+      - !abstract user provider
+      - !abstract authentication success handler
+      - !abstract authentication failure handler
+      - !abstract options
+      - '@?property_accessor'
+
+  security.listener.json_login_ldap.main:
+    class: App\Security\Ldap\AppCheckLdapCredentialsListener
+    tags:
+      - name: 'kernel.event_subscriber'
+        dispatcher: security.event_dispatcher.main
+    arguments:
+      - '@security.ldap_locator'
+
   App\Security\LegacySessionLogoutHandler:
     tags:
       - name: 'kernel.event_listener'
@@ -153,7 +178,8 @@ services:
   App\Security\CSRFCookieListener:
     tags: [ { name: kernel.event_listener, event: kernel.response, method: onKernelResponse } ]
     arguments:
-      $routes: [ '^/' ]
+      $routes:
+        - path: '(/login$|/$|/logout$|/session-status|/auth/logout|/auth/login|/auth/session-status)'
       $cookieName: 'XSRF-TOKEN'
       $cookieExpire: 0
       $cookiePath: /
@@ -163,7 +189,8 @@ services:
   App\Security\CSRFValidationListener:
     tags: [ { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 12 } ]
     arguments:
-      $routes: [ ]
+      $routes:
+        - path: '/api'
       $headerName: 'X-XSRF-TOKEN'
 
   App\Engine\Service\FolderSync\FolderComparator:
@@ -215,6 +242,18 @@ services:
       - !tagged { tag: 'app.upgrade.step' }
       - '@monolog.logger.upgrade'
 
+  App\Install\Service\Upgrade\UpgradeFinalizeHandler:
+    # inject all services tagged with app.upgrade.step as first argument
+    arguments:
+      - !tagged { tag: 'app.upgrade.step' }
+      - '@monolog.logger.upgrade'
+
+  App\Install\Service\LegacyMigration\LegacyMigrationHandler:
+    # inject all services tagged with app.legacy.migration.step as first argument
+    arguments:
+      - !tagged { tag: 'app.legacy.migration.step' }
+      - '@monolog.logger.upgrade'
+
   App\Install\Service\Installation\InstallStepHandler:
     # inject all services tagged with app.install.step as first argument
     arguments:
@@ -231,13 +270,20 @@ services:
     arguments:
       - !tagged { tag: 'massupdate.definition.mapper' }
 
+  App\Security\Ldap\AppLdapUserProviderProxy:
+    $ldapUserProvider: '@security.user.provider.concrete.ldap_users'
+    $entityUserProvider: '@security.user.provider.concrete.app_user_provider'
+
+  saml_user_factory:
+    alias: App\Security\Saml\AppSamlUserFactory
+    public: true
+
   legacy.route.handler:
     alias: App\Routes\Service\LegacyRouteHandler
     public: true
 
   App\Process\Service\ActionNameMapperInterface: '@App\Engine\LegacyHandler\ActionNameMapperHandler'
   App\Process\Service\BaseActionDefinitionProviderInterface: '@App\Process\Service\BaseActionDefinitionProvider'
-  App\Process\Service\LegacyModuleNameResolverInterface: '@App\Process\Service\LegacyModuleNameResolver'
   App\Process\Service\BulkActionDefinitionProviderInterface: '@App\Process\Service\BulkActionDefinitionProvider'
   App\FieldDefinitions\Service\FieldDefinitionsProviderInterface: '@App\FieldDefinitions\LegacyHandler\FieldDefinitionsHandler'
   App\Filters\Service\FilterDefinitionProviderInterface: '@App\Filters\Service\FilterDefinitionProvider'
@@ -252,9 +298,19 @@ services:
   App\Data\Service\RecordListProviderInterface: '@App\Data\LegacyHandler\RecordListHandler'
   App\Data\Service\RecordProviderInterface: '@App\Data\LegacyHandler\RecordHandler'
   App\Routes\Service\RouteConverterInterface: '@App\Routes\LegacyHandler\RouteConverterHandler'
-  App\Statistics\SubpanelDefault: '@App\Statistics\LegacyHandler\SubpanelDefault'
   App\ViewDefinitions\Service\SubPanelDefinitionProviderInterface: '@App\ViewDefinitions\LegacyHandler\SubPanelDefinitionHandler'
+
   App\SystemConfig\Service\SystemConfigProviderInterface: '@App\SystemConfig\LegacyHandler\SystemConfigHandler'
+  app.system-configs:
+    alias: App\SystemConfig\Service\SystemConfigProviderInterface
+    public: true
+
+  app.version.provider:
+    alias: 'shivas_versioning.provider.version'
+    public: true
+
+  Symfony\Component\Security\Http\Logout\LogoutUrlGenerator: '@security.logout_url_generator'
+
   App\UserPreferences\Service\UserPreferencesProviderInterface: '@App\UserPreferences\LegacyHandler\UserPreferenceHandler'
   App\ViewDefinitions\Service\ViewDefinitionsProviderInterface: '@App\ViewDefinitions\LegacyHandler\ViewDefinitionsHandler'
   App\Engine\Service\FolderSync\FolderComparatorInterface: '@App\Engine\Service\FolderSync\FolderComparator'

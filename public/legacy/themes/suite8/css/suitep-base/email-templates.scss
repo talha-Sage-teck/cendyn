@@ -1,13 +1,17 @@
 /* Email Templates */
 
 .view-module-EmailTemplates {
+    @-moz-document url-prefix() {        
+        label.button {
+            padding: 0.54em 1em!important;
+        }             
+    }
     .moduleTitle {
         border-bottom: 1px solid lightgrey;
     }
     .action-buttons {
         position: absolute;
         right: 0;
-        margin-top: -3.3em;
     }
     .mandatory-txt {
         padding-top: 0.5em;
@@ -41,9 +45,25 @@
     }
     table.edit {
         border-radius: 10px;
-    }
+    }    
     #upload_div {
         margin-top: 1em;
+        .button {
+            background-color: $nepal-grey;
+            border-radius: 0.2em;
+            font-weight: bold;
+            height: 2.2em;
+            line-height: 1em;
+            letter-spacing: 0.05em;
+            padding: 0.54em 1em;
+            text-transform: capitalize;
+            margin-top: 1em;
+            margin-right: 0.5em;
+            display: inline;
+            &:hover {
+                background: $pale-blue;
+            }           
+        }       
     }
     #add_doc {
         background-color: $nepal-grey;

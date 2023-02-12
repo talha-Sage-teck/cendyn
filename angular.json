@@ -71,12 +71,11 @@
 							"node_modules/tinymce/plugins/paste/plugin.min.js",
 							"node_modules/tinymce/plugins/toc/plugin.min.js",
 							"node_modules/tinymce/themes/silver/theme.min.js",
-							"node_modules/tinymce/themes/mobile/theme.min.js",
-							"./node_modules/hammerjs/hammer.min.js"
+							"node_modules/tinymce/themes/mobile/theme.min.js"
 						],
 						"styles": [
 							"node_modules/bootstrap-css-only/css/bootstrap.min.css",
-							"core/app/shell/src/themes/cendyn/css/style.scss",
+							"core/app/shell/src/themes/cendyn/css/style.scss"
 						],
 						"stylePreprocessorOptions": {
 							"includePaths": [
@@ -183,9 +182,9 @@
 						"karmaConfig": "core/app/shell/karma.conf.js",
 						"styles": [
 							"node_modules/bootstrap-css-only/css/bootstrap.min.css",
-							"core/app/shell/src/themes/cendyn/css/style.scss",
+							"core/app/shell/src/themes/cendyn/css/style.scss"
 						],
-						"scripts": [ "./node_modules/hammerjs/hammer.min.js"],
+						"scripts": [],
 						"assets": [
 							"core/app/shell/src/themes"
 						],
@@ -317,28 +316,28 @@
 					"strict": true
 				}
 			},
-			"root": "extensions/custom-ext/app",
-			"sourceRoot": "extensions/custom-ext/app/src",
+			"root": "extensions/custom_ext/app",
+			"sourceRoot": "extensions/custom_ext/app/src",
 			"prefix": "app",
 			"architect": {
 				"build": {
 					"builder": "ngx-build-plus:browser",
 					"options": {
-						"outputPath": "public/extensions/custom-ext",
-						"index": "extensions/custom-ext/app/src/index.html",
-						"main": "extensions/custom-ext/app/src/main.ts",
-						"polyfills": "extensions/custom-ext/app/src/polyfills.ts",
-						"tsConfig": "extensions/custom-ext/app/tsconfig.app.json",
+						"outputPath": "public/extensions/custom_ext",
+						"index": "extensions/custom_ext/app/src/index.html",
+						"main": "extensions/custom_ext/app/src/main.ts",
+						"polyfills": "extensions/custom_ext/app/src/polyfills.ts",
+						"tsConfig": "extensions/custom_ext/app/tsconfig.app.json",
 						"inlineStyleLanguage": "scss",
 						"assets": [
-							"extensions/custom-ext/app/src/favicon.ico",
-							"extensions/custom-ext/app/src/assets"
+							"extensions/custom_ext/app/src/favicon.ico",
+							"extensions/custom_ext/app/src/assets"
 						],
 						"styles": [
-							"extensions/custom-ext/app/src/styles.scss"
+							"extensions/custom_ext/app/src/styles.scss"
 						],
 						"scripts": [],
-						"extraWebpackConfig": "extensions/custom-ext/app/webpack.config.js",
+						"extraWebpackConfig": "extensions/custom_ext/app/webpack.config.js",
 						"commonChunk": false,
 						"namedChunks": true,
 						"sourceMap": true,
@@ -346,6 +345,20 @@
 					},
 					"configurations": {
 						"production": {
+							"fileReplacements": [
+								{
+									"replace": "extensions/custom_ext/app/src/environments/environment.ts",
+									"with": "extensions/custom_ext/app/src/environments/environment.prod.ts"
+								}
+							],
+							"outputHashing": "all",
+							"extraWebpackConfig": "extensions/custom_ext/app/webpack.prod.config.js",
+							"optimization": true,
+							"sourceMap": false,
+							"namedChunks": true,
+							"extractLicenses": true,
+							"vendorChunk": false,
+							"buildOptimizer": true,
 							"budgets": [
 								{
 									"type": "initial",
@@ -357,22 +370,8 @@
 									"maximumWarning": "6kb",
 									"maximumError": "10kb"
 								}
-							],
-							"fileReplacements": [
-								{
-									"replace": "extensions/custom-ext/app/src/environments/environment.ts",
-									"with": "extensions/custom-ext/app/src/environments/environment.prod.ts"
-								}
-							],
-							"outputHashing": "all",
-							"extraWebpackConfig": "extensions/custom-ext/app/webpack.prod.config.js",
-							"optimization": true,
-							"sourceMap": false,
-							"namedChunks": true,
-							"extractLicenses": true,
-							"vendorChunk": false,
-							"buildOptimizer": true,
-						},
+							]
+						}
 					},
 					"defaultConfiguration": "production"
 				},
@@ -381,7 +380,7 @@
 					"configurations": {
 						"production": {
 							"browserTarget": "customExt:build:production",
-							"extraWebpackConfig": "extensions/custom-ext/app/webpack.prod.config.js"
+							"extraWebpackConfig": "extensions/custom_ext/app/webpack.prod.config.js"
 						},
 						"development": {
 							"browserTarget": "customExt:build:development"
@@ -390,30 +389,30 @@
 					"defaultConfiguration": "development",
 					"options": {
 						"port": 3333,
-						"extraWebpackConfig": "extensions/custom-ext/app/webpack.config.js"
+						"extraWebpackConfig": "extensions/custom_ext/app/webpack.config.js"
 					}
 				},
 				"extract-i18n": {
 					"builder": "ngx-build-plus:extract-i18n",
 					"options": {
 						"browserTarget": "customExt:build",
-						"extraWebpackConfig": "extensions/custom-ext/app/webpack.config.js"
+						"extraWebpackConfig": "extensions/custom_ext/app/webpack.config.js"
 					}
 				},
 				"test": {
 					"builder": "@angular-devkit/build-angular:karma",
 					"options": {
-						"main": "extensions/custom-ext/app/src/test.ts",
-						"polyfills": "extensions/custom-ext/app/src/polyfills.ts",
-						"tsConfig": "extensions/custom-ext/app/tsconfig.spec.json",
-						"karmaConfig": "extensions/custom-ext/app/karma.conf.js",
+						"main": "extensions/custom_ext/app/src/test.ts",
+						"polyfills": "extensions/custom_ext/app/src/polyfills.ts",
+						"tsConfig": "extensions/custom_ext/app/tsconfig.spec.json",
+						"karmaConfig": "extensions/custom_ext/app/karma.conf.js",
 						"inlineStyleLanguage": "scss",
 						"assets": [
-							"extensions/custom-ext/app/src/favicon.ico",
-							"extensions/custom-ext/app/src/assets"
+							"extensions/custom_ext/app/src/favicon.ico",
+							"extensions/custom_ext/app/src/assets"
 						],
 						"styles": [
-							"extensions/custom-ext/app/src/styles.scss"
+							"extensions/custom_ext/app/src/styles.scss"
 						],
 						"scripts": []
 					}

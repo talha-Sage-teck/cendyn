@@ -64,6 +64,27 @@ parameters:
         inbound-email:
             Setup_Email:
                 icon: email
+            CreatePersonal:
+                icon: plus
+            CreateGroup:
+                icon: plus
+            CreateBounce:
+                icon: plus
+        external-oauth-provider:
+            CreatePersonal:
+                icon: plus
+            CreateGroup:
+                icon: plus
+        external-oauth-connection:
+            CreatePersonal:
+                icon: plus
+            CreateGroup:
+                icon: plus
+        outbound-email-accounts:
+            CreatePersonal:
+                icon: plus
+            CreateGroup:
+                icon: plus
         schedulers:
             Schedulers:
                 icon: view
@@ -89,6 +110,12 @@ parameters:
         acl-roles:
             Role_Management:
                 icon: view
+            Security_Groups:
+                icon: view
+                actionLabelKey: LBL_SECURITYGROUPS
+            List_By_User:
+                icon: view
+                actionLabelKey: LIST_ROLES_BY_USER
         connectors:
             icon_Connectors:
                 icon: view
@@ -140,6 +167,7 @@ parameters:
                 icon: plus
             Security_Groups:
                 icon: view
+                actionLabelKey: LBL_SECURITYGROUPS
             Role_Management:
                 icon: view
             Security_Suite_Settings:

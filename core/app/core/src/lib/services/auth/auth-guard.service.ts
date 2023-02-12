@@ -25,7 +25,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, CanActivate, Router, UrlTree} from '@angular/router';
+import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {forkJoin, Observable, of} from 'rxjs';
 import {catchError, map, take, tap} from 'rxjs/operators';
 import {MessageService} from '../message/message.service';
@@ -36,6 +36,7 @@ import {AsyncActionInput, AsyncActionService} from '../process/processes/async-a
 import {AppStateStore} from '../../store/app-state/app-state.store';
 import {RouteConverter, RouteInfo} from '../navigation/route-converter/route-converter.service';
 import {isEmptyString} from 'common';
+import {SystemConfigStore} from '../../store/system-config/system-config.store';
 
 @Injectable({
     providedIn: 'root'
@@ -48,13 +49,14 @@ export class AuthGuard implements CanActivate {
         protected preferences: UserPreferenceStore,
         protected asyncActionService: AsyncActionService,
         protected appState: AppStateStore,
-        protected routeConverter: RouteConverter
+        protected routeConverter: RouteConverter,
+        protected configs: SystemConfigStore
     ) {
     }
 
-    canActivate(route: ActivatedRouteSnapshot):
-    Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-        return this.authorizeUser(route);
+    canActivate(route: ActivatedRouteSnapshot, snapshot: RouterStateSnapshot):
+        Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+        return this.authorizeUser(route, snapshot);
     }
 
     /**
@@ -62,22 +64,23 @@ export class AuthGuard implements CanActivate {
      *
      * @returns {object} Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree
      * @param {ActivatedRouteSnapshot} route information about the current route
+     * @param snapshot
      */
-    protected authorizeUser(route: ActivatedRouteSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    protected authorizeUser(route: ActivatedRouteSnapshot, snapshot: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
         // Note: this session and acl are not always booleans
         return forkJoin({
-            session: this.authorizeUserSession(route),
+            session: this.authorizeUserSession(route, snapshot),
             acl: this.authorizeUserACL(route)
         }).pipe(map(({session, acl}) => {
 
-            if (session instanceof UrlTree) {
-                return session;
+                if (session instanceof UrlTree) {
+                    return session;
+                }
+                if (acl instanceof UrlTree) {
+                    return acl;
+                }
+                return session && acl;
             }
-            if (acl instanceof UrlTree) {
-                return acl;
-            }
-            return session && acl;
-        }
         ));
     }
 
@@ -88,7 +91,7 @@ export class AuthGuard implements CanActivate {
      * @param {ActivatedRouteSnapshot} activatedRoute information about the current route
      */
     protected authorizeUserACL(activatedRoute: ActivatedRouteSnapshot):
-    Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+        Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
         const routeInfo: RouteInfo = this.routeConverter.parseRouteURL(activatedRoute.url);
 
@@ -129,7 +132,7 @@ export class AuthGuard implements CanActivate {
 
                     const currentUrlTree: UrlTree = this.router.parseUrl(this.router.url);
 
-                    if(this.routeConverter.isClassicViewRoute(currentUrlTree)){
+                    if (this.routeConverter.isClassicViewRoute(currentUrlTree)) {
                         return currentUrlTree;
                     }
 
@@ -145,16 +148,19 @@ export class AuthGuard implements CanActivate {
      *
      * @returns {object} Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree
      * @param {ActivatedRouteSnapshot} route information about the current route
+     * @param snapshot
      */
-    protected authorizeUserSession(route: ActivatedRouteSnapshot):
-    Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    protected authorizeUserSession(route: ActivatedRouteSnapshot, snapshot: RouterStateSnapshot):
+        Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
         if (this.authService.isUserLoggedIn.value && route.data.checkSession !== true) {
             return of(true);
         }
 
-        const loginUrl = 'Login';
-        const loginUrlTree: UrlTree = this.router.parseUrl(loginUrl);
+        let sessionExpiredUrl = this.authService.getSessionExpiredRoute();
+        const redirect = this.authService.sessionExpiredRedirect();
+
+        const sessionExpiredUrlTree: UrlTree = this.router.parseUrl(sessionExpiredUrl);
 
         return this.authService.fetchSessionStatus()
             .pipe(
@@ -169,13 +175,25 @@ export class AuthGuard implements CanActivate {
                         this.authService.setCurrentUser(user);
                         return true;
                     }
+                    this.appState.setPreLoginUrl(snapshot.url);
                     this.authService.resetState();
+
+                    if (redirect) {
+                        this.authService.handleSessionExpiredRedirect();
+                        return false;
+                    }
+
                     // Re-direct to login
-                    return loginUrlTree;
+                    return sessionExpiredUrlTree;
                 }),
                 catchError(() => {
+                    if (redirect) {
+                        this.authService.handleSessionExpiredRedirect();
+                        return of(false);
+                    }
+
                     this.authService.logout('LBL_SESSION_EXPIRED', false);
-                    return of(loginUrlTree);
+                    return of(sessionExpiredUrlTree);
                 }),
                 tap((result: boolean | UrlTree) => {
                     if (result === true) {

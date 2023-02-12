@@ -141,13 +141,49 @@ class SugarAuthenticate
     }
 
     /**
+     * Initialize user session post authentication
+     *
+     * @param string $username
+     * @return bool
+     */
+    public function initUserSession(string $username): bool
+    {
+        global $mod_strings;
+
+        unset($_SESSION['login_error']);
+
+        /** @var User $user */
+        $user = BeanFactory::newBean('Users');
+        $userId= $user->retrieve_user_id($username);
+        $user->retrieve($userId);
+
+        $_SESSION['login_error']='';
+        $_SESSION['waiting_error']='';
+        $_SESSION['hasExpiredPassword']='0';
+
+        $isLoaded = $this->userAuthenticate->loadUserOnSession($userId);
+
+        if ($isLoaded === false) {
+            return false;
+        }
+
+        // now that user is authenticated, reset loginfailed
+        if ($user->getPreference('loginfailed') !== '' && $user->getPreference('loginfailed') !== 0) {
+            $user->setPreference('loginfailed', '0');
+            $user->savePreferencesToDB();
+        }
+
+        return $this->postLoginAuthenticate();
+    }
+
+    /**
      * Once a user is authenticated on login this function will be called. Populate the session with what is needed and log anything that needs to be logged
      *
      */
     public function postLoginAuthenticate()
     {
         global $reset_language_on_default_user, $sugar_config;
-        
+
         //just do a little house cleaning here
         unset($_SESSION['login_password']);
         unset($_SESSION['login_error']);
@@ -218,9 +254,6 @@ class SugarAuthenticate
         }
         return $authenticated;
     }
-
-
-
 
     /**
      * Called after a session is authenticated - if this returns false the sessionAuthenticate will return false and destroy the session
@@ -317,6 +350,101 @@ class SugarAuthenticate
 
         $GLOBALS['log']->debug('Current user is: ' . $GLOBALS['current_user']->user_name);
 
+        return true;
+    }
+
+    /**
+     * Check if the session is valid
+     *
+     * @return bool
+     */
+    public function checkSession(): bool
+    {
+        $authenticated = false;
+
+        if (isset($_SESSION['authenticated_user_id'])) {
+            $GLOBALS['log']->debug("We have an authenticated user id: ".$_SESSION["authenticated_user_id"]);
+
+            $authenticated = $this->postCheckSession();
+        }
+
+        if ($authenticated) {
+            $authenticated = $this->checkIP();
+        }
+
+        return $authenticated;
+    }
+
+    /**
+     * @return bool
+     */
+    public function postCheckSession(): bool
+    {
+        global $sugar_config;
+
+        $_SESSION['userTime']['last'] = time();
+        $user_unique_key = $_SESSION['unique_key'] ?? '';
+        $server_unique_key = $sugar_config['unique_key'] ?? '';
+
+        //CHECK IF USER IS CROSSING SITES
+        if (($user_unique_key !== $server_unique_key) && (!isset($_SESSION['login_error']))) {
+            $GLOBALS['log']->debug('Destroying Session User has crossed Sites');
+            session_destroy();
+            return false;
+        }
+
+        if (!$this->userAuthenticate->loadUserOnSession($_SESSION['authenticated_user_id'])) {
+            $GLOBALS['log']->debug('Current user session does not exist redirecting to login');
+            session_destroy();
+            return false;
+        }
+
+        $GLOBALS['log']->debug('Current user is: ' . $GLOBALS['current_user']->user_name);
+
+        return true;
+    }
+
+    /**
+     * Check IP address
+     * @return bool
+     */
+    public function checkIP(): bool
+    {
+        global $sugar_config;
+        // grab client ip address
+        $clientIP = query_client_ip();
+        $classCheck = 0;
+        // check to see if config entry is present, if not, verify client ip
+        if (!isset($sugar_config['verify_client_ip']) || $sugar_config['verify_client_ip'] == true) {
+            // check to see if we've got a current ip address in $_SESSION
+            // and check to see if the session has been hijacked by a foreign ip
+            if (isset($_SESSION["ipaddress"])) {
+                $session_parts = explode(".", $_SESSION["ipaddress"]);
+                $client_parts = explode(".", $clientIP);
+                if (count($session_parts) < 4) {
+                    $classCheck = 0;
+                } else {
+                    // match class C IP addresses
+                    for ($i = 0; $i < 3; $i ++) {
+                        if ($session_parts[$i] == $client_parts[$i]) {
+                            $classCheck = 1;
+                            continue;
+                        }
+
+                        $classCheck = 0;
+                        break;
+                    }
+                }
+                // we have a different IP address
+                if ($_SESSION["ipaddress"] !== $clientIP && empty($classCheck)) {
+                    $GLOBALS['log']->fatal("IP Address mismatch: SESSION IP: {$_SESSION['ipaddress']} CLIENT IP: {$clientIP}");
+                    session_destroy();
+                    return false;
+                }
+            } else {
+                $_SESSION["ipaddress"] = $clientIP;
+            }
+        }
         return true;
     }
 

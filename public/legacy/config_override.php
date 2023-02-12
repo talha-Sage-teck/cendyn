@@ -1,6 +1,5 @@
 <?php
-
-/* * *CONFIGURATOR** */
+/***CONFIGURATOR***/
 $sugar_config['default_export_charset'] = 'ISO-8859-1';
 $sugar_config['dbconfigoption']['collation'] = 'utf8_general_ci';
 $sugar_config['addAjaxBannedModules'][0] = 'AOK_Knowledge_Base_Categories';
@@ -53,4 +52,5 @@ $sugar_config['EINSIGHT_API_KEY'] = '09F26AA0-007D-4193-8D96-941171BCE9D6';
 $sugar_config['EINSIGHT_API_VERSION'] = '1';
 $sugar_config['EINSIGHT_API_COMPANY_ID'] = '10017';
 $sugar_config['SUPER_ADMIN_ID'] = '1';
+$sugar_config['system_name'] = 'B2B Sales';
 /***CONFIGURATOR***/

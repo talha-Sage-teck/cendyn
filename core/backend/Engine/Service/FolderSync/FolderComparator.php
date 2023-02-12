@@ -49,6 +49,16 @@ class FolderComparator implements FolderComparatorInterface
     /**
      * @var string[]
      */
+    protected $toKeepIgnore = [];
+
+    /**
+     * @var bool[]
+     */
+    protected $toKeepIgnoreKeys = [];
+
+    /**
+     * @var string[]
+     */
     protected $toExpand = [];
 
     /**
@@ -107,15 +117,18 @@ class FolderComparator implements FolderComparatorInterface
         string $basePath = ''
     ): void {
         $origin = $this->newFinder($originPath)->files();
+        $destination = $this->newDestinationFinder($destinationPath);
+        $destination->files();
 
         if (!$origin->hasResults()) {
+            if ($destination->hasResults()) {
+                $this->addEntriesToRemove($destination, $manifest, $basePath);
+            }
+
             return;
         }
 
         $this->addEntriesToCopy($origin, $manifest, $basePath);
-
-        $destination = $this->newDestinationFinder($destinationPath);
-        $destination->files();
 
         if (!$destination->hasResults()) {
             return;
@@ -132,6 +145,7 @@ class FolderComparator implements FolderComparatorInterface
     protected function newFinder(string $filePath): Finder
     {
         $finder = new Finder();
+        $finder->ignoreDotFiles(false);
         $finder->depth('== 0')->in($filePath);
 
         return $finder;
@@ -216,10 +230,11 @@ class FolderComparator implements FolderComparatorInterface
                 continue;
             }
 
-            if (empty($manifest[$pathFromBase]) &&
-                !$this->isToKeep($pathFromBase) &&
-                !$this->isToKeep($basePath)
-            ) {
+            if ($this->isToKeepPath($basePath, $pathFromBase)) {
+                continue;
+            }
+
+            if (empty($manifest[$pathFromBase])) {
                 $manifest[$pathFromBase] = $this->newManifestEntry($pathFromBase, 'delete', $entry->getType());
             }
         }
@@ -237,7 +252,6 @@ class FolderComparator implements FolderComparatorInterface
     /**
      * Set files to keep
      * @param array $toKeep
-     * @return array
      */
     public function setToKeep(array $toKeep): void
     {
@@ -258,6 +272,39 @@ class FolderComparator implements FolderComparatorInterface
         return $this->toKeepKeys;
     }
 
+
+    /**
+     * Get Files to always look at origin, even if to keep
+     * @return array
+     */
+    public function getToKeepIgnore(): array
+    {
+        return $this->toKeepIgnore;
+    }
+
+    /**
+     * Set to keepIgnore
+     * @param array $toKeepIgnore
+     */
+    public function setToKeepIgnore(array $toKeepIgnore): void
+    {
+        $this->toKeepIgnore = $toKeepIgnore;
+        $this->toKeepIgnoreKeys = [];
+
+        foreach ($this->toKeepIgnore as $item) {
+            $this->toKeepIgnoreKeys[$item] = true;
+        }
+    }
+
+    /**
+     * Get Files to always look at origin, even if to keep
+     * @return array
+     */
+    protected function getToKeepIgnoreKeys(): array
+    {
+        return $this->toKeepIgnoreKeys;
+    }
+
     /**
      * Add folder directories
      * @param string $originPath
@@ -273,15 +320,18 @@ class FolderComparator implements FolderComparatorInterface
     ): void {
         $origin = $this->newFinder($originPath);
         $origin->directories();
+        $destination = $this->newDestinationFinder($destinationPath);
+        $destination->directories();
 
         if (!$origin->hasResults()) {
+            if ($destination->hasResults()) {
+                $this->addEntriesToRemove($destination, $manifest, $basePath);
+            }
+
             return;
         }
 
         $this->addEntriesToCopy($origin, $manifest, $basePath);
-
-        $destination = $this->newDestinationFinder($destinationPath);
-        $destination->directories();
 
         if (!$destination->hasResults()) {
             return;
@@ -384,6 +434,16 @@ class FolderComparator implements FolderComparatorInterface
     }
 
     /**
+     * Check if path is to ignore toKeep
+     * @param string $path
+     * @return bool
+     */
+    protected function isToKeepIgnore(string $path): bool
+    {
+        return !empty($this->getToKeepIgnoreKeys()[$path]);
+    }
+
+    /**
      * Check if path is to expand
      * @param string $path
      * @return bool
@@ -391,5 +451,19 @@ class FolderComparator implements FolderComparatorInterface
     protected function isToExpand(string $path): bool
     {
         return !empty($this->getPathsToExpandKeys()[$path]);
+    }
+
+    /**
+     * @param $basePath
+     * @param string $pathFromBase
+     * @return bool
+     */
+    protected function isToKeepPath($basePath, string $pathFromBase): bool
+    {
+        if ($this->isToKeepIgnore($pathFromBase)) {
+            return false;
+        }
+
+        return $this->isToKeep($pathFromBase) || $this->isToKeep($basePath);
     }
 }

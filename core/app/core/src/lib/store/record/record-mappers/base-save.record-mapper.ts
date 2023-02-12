@@ -41,21 +41,6 @@ export class BaseSaveRecordMapper implements RecordMapper {
                 return;
             }
 
-            if (type === 'multirelate' && source === 'non-db' && idName === fieldName) {
-                record.attributes[fieldName] = field.value;
-                return;
-            }
-
-            if (type === 'multirelate' && source === 'non-db' && rname !== '' && field.valueObjectArray) {
-                var ids = [];
-                field.valueObjectArray.forEach((obj) => {
-                    ids.push(obj.id);
-                });
-                record.attributes[fieldName] = field.valueObjectArray;
-                record.attributes[idName] = ids.join(', ');
-                return;
-            }
-
             if (field.valueObject) {
                 record.attributes[fieldName] = field.valueObject;
                 return;

@@ -651,7 +651,7 @@ class AOR_Report extends Basic
                 $total_rows = $assoc['c'];
             }
         }
-
+        
         $html = '<div class="list-view-rounded-corners">';
         $html.='<table id="report_table_'.$tableIdentifier.$group_value.'" width="100%" border="0" class="list view table-responsive aor_reports">';
 
@@ -1427,29 +1427,10 @@ class AOR_Report extends Basic
     {
         $tempTableName = $module->table_name;
         $module->table_name = $alias;
-        $where = '';
-        if ($module->bean_implements('ACL') && ACLController::requireOwner($module->module_dir, 'list')) {
-            global $current_user;
-            $owner_where = $module->getOwnerWhere($current_user->id);
-            $where = ' AND ' . $owner_where;
+        $where = $module->buildAccessWhere('list');
+        if (!empty($where)) {
+            $where = ' AND ' . $where;
         }
-
-        if (file_exists('modules/SecurityGroups/SecurityGroup.php')) {
-            /* BEGIN - SECURITY GROUPS */
-            if ($module->bean_implements('ACL') && ACLController::requireSecurityGroup($module->module_dir, 'list')) {
-                require_once('modules/SecurityGroups/SecurityGroup.php');
-                global $current_user;
-                $owner_where = $module->getOwnerWhere($current_user->id);
-                $group_where = SecurityGroup::getGroupWhere($alias, $module->module_dir, $current_user->id);
-                if (!empty($owner_where)) {
-                    $where .= " AND (" . $owner_where . " or " . $group_where . ") ";
-                } else {
-                    $where .= ' AND ' . $group_where;
-                }
-            }
-            /* END - SECURITY GROUPS */
-        }
-
         $module->table_name = $tempTableName;
 
         return $where;
@@ -1628,13 +1609,7 @@ class AOR_Report extends Basic
                             break;
 
                         case 'Date':
-                            if(gettype($condition->value)=='string'){
-                                $params = unserialize(base64_decode($condition->value));
-
-                            }
-                            else{
-                                $params=false;
-                            }
+                            $params = unserialize(base64_decode($condition->value));
 
                             // Fix for issue #1272 - AOR_Report module cannot update Date type parameter.
                             if ($params == false) {
@@ -1913,17 +1888,7 @@ class AOR_Report extends Basic
                             }
                         } else {
                             if (!$where_set) {
-                                if(empty($condition->value)&&$condition->operator=='Not_Equal_To'){
-                                    $query['where'][] = ($tiltLogicOp ? '' : ($condition->logic_op ? $condition->logic_op . ' ' : 'AND ')) . $field . ' ' . 'is not null';
-
-                                }
-                                elseif(empty($condition->value)&&$condition->operator=='Equal_To'){
-                                    $query['where'][] = ($tiltLogicOp ? '' : ($condition->logic_op ? $condition->logic_op . ' ' : 'AND ')) . $field . ' ' . 'is null)';
-
-                                }
-                                else{
-                                    $query['where'][] = ($tiltLogicOp ? '' : ($condition->logic_op ? $condition->logic_op . ' ' : 'AND ')) . $field . ' ' . $aor_sql_operator_list[$condition->operator] . ' ' . $value;
-                                }
+                                $query['where'][] = ($tiltLogicOp ? '' : ($condition->logic_op ? $condition->logic_op . ' ' : 'AND ')) . $field . ' ' . $aor_sql_operator_list[$condition->operator] . ' ' . $value;
                             }
                         }
                     }

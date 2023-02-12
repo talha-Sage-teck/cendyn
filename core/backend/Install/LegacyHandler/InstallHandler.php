@@ -175,6 +175,8 @@ class InstallHandler extends LegacyHandler
         $errorLevelStored = error_reporting();
         error_reporting(0);
 
+        $this->runLegacyEntryPoint();
+
         /* @noinspection PhpIncludeInspection */
         require_once 'include/portability/InstallValidation/InstallValidation.php';
 
@@ -339,5 +341,14 @@ class InstallHandler extends LegacyHandler
     public function isInstallerLocked(): bool
     {
         return $this->isAppInstallerLocked($this->legacyDir);
+    }
+
+    /**
+     * Load legacy config
+     * @return array|null is locked
+     */
+    public function loadLegacyConfig(): ?array
+    {
+        return $this->getLegacyConfig($this->legacyDir);
     }
 }

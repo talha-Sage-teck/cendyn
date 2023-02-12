@@ -314,6 +314,66 @@ class Employee extends Person
             }
         }
 
+        if (!$this->hasSaveAccess()) {
+            throw new RuntimeException('Not authorized');
+        }
+
+        // If the current user is not an admin, reset the admin flag to the original value.
+        $this->setIsAdmin();
+
         return parent::save($check_notify);
+    }
+
+    /**
+     * Check if current user can save the current employee record
+     * @return bool
+     */
+    protected function hasSaveAccess(): bool
+    {
+        global $current_user;
+
+        if (empty($this->id)) {
+            return true;
+        }
+
+        if (empty($current_user->id)) {
+            return false;
+        }
+
+        $sameUser = $current_user->id === $this->id;
+
+        return $sameUser || is_admin($current_user);
+    }
+
+    /**
+     * Reset is_admin if current user is not an admin user
+     * @return void
+     */
+    protected function setIsAdmin(): void
+    {
+        global $current_user;
+
+        if (!isset($this->is_admin)) {
+            return;
+        }
+
+        $originalIsAdminValue = $this->is_admin ?? false;
+        if ($this->isUpdate() && isset($this->fetched_row['is_admin'])) {
+            $originalIsAdminValue = isTrue($this->fetched_row['is_admin'] ?? false);
+        }
+
+        $currentUserReloaded = BeanFactory::getReloadedBean('Users', $current_user->id);
+        if (!is_admin($currentUserReloaded)) {
+            $this->is_admin = $originalIsAdminValue;
+        }
+
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isUpdate(): bool
+    {
+        return !empty($this->id) && !$this->new_with_id;
     }
 }

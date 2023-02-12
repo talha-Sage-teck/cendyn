@@ -24,121 +24,153 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import { APP_INITIALIZER, NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {HTTP_INTERCEPTORS, HttpClientModule, HttpClientXsrfModule} from '@angular/common/http';
 
-import { Apollo } from 'apollo-angular';
-import { HttpLink } from 'apollo-angular/http';
-import { ApolloLink, InMemoryCache } from '@apollo/client/core';
-import { onError } from '@apollo/link-error';
-import { FetchPolicy } from '@apollo/client/core/watchQueryOptions';
+import {Apollo} from 'apollo-angular';
+import {HttpLink} from 'apollo-angular/http';
+import {ApolloLink, InMemoryCache} from '@apollo/client/core';
+import {onError} from '@apollo/link-error';
+import {FetchPolicy} from '@apollo/client/core/watchQueryOptions';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
 
-import { AppStateStore, AuthService, ClassicViewUiModule, ColumnChooserModule, CreateRecordModule, ErrorInterceptor, FilterUiModule, FooterUiModule, FullPageSpinnerModule, ImageModule, InstallViewModule, ListContainerModule, ListHeaderModule, ListModule, MessageModalModule, MessageUiModule, ModuleTitleModule, NavbarUiModule, RecordListModalModule, RecordModule, TableModule, } from 'core';
+import {
+    AppStateStore,
+    AuthService,
+    BaseRouteService,
+    ClassicViewUiModule,
+    ColumnChooserModule,
+    CreateRecordModule,
+    ErrorInterceptor,
+    FilterUiModule,
+    FooterUiModule,
+    FullPageSpinnerModule,
+    ImageModule,
+    InstallViewModule,
+    ListContainerModule,
+    ListHeaderModule,
+    ListModule,
+    MessageModalModule,
+    MessageUiModule,
+    ModuleTitleModule,
+    NavbarUiModule,
+    RecordListModalModule,
+    RecordModule,
+    TableModule
+} from 'core';
 
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
-import { environment } from '../environments/environment';
-import { RouteReuseStrategy } from '@angular/router';
-import { AppRouteReuseStrategy } from './app-router-reuse-strategy';
-import { BnNgIdleService } from 'bn-ng-idle';
-import { AppInit } from '@app/app-initializer';
-import { GraphQLError } from 'graphql';
-import { AngularSvgIconModule } from 'angular-svg-icon';
+import {environment} from '../environments/environment';
+import {RouteReuseStrategy} from '@angular/router';
+import {AppRouteReuseStrategy} from './app-router-reuse-strategy';
+import {BnNgIdleService} from 'bn-ng-idle';
+import {AppInit} from '@app/app-initializer';
+import {GraphQLError} from 'graphql';
+import {AngularSvgIconModule} from 'angular-svg-icon';
 
 export const initializeApp = (appInitService: AppInit) => (): Promise<any> => appInitService.init();
 
 @NgModule({
-	declarations: [
-		AppComponent,
-	],
-	imports: [
-		BrowserModule,
-		HttpClientModule,
-		AppRoutingModule,
-		FooterUiModule,
-		NavbarUiModule,
-		MessageUiModule,
-		ClassicViewUiModule,
-		FilterUiModule,
-		ListModule,
-		RecordModule,
-		CreateRecordModule,
-		InstallViewModule,
-		TableModule,
-		ModuleTitleModule,
-		ListHeaderModule,
-		ListContainerModule,
-		ColumnChooserModule,
-		AngularSvgIconModule.forRoot(),
-		ImageModule,
-		BrowserAnimationsModule,
-		NgbModule,
-		FullPageSpinnerModule,
-		MessageModalModule,
-		RecordListModalModule
-	],
-	providers: [
-		{ provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-		{ provide: RouteReuseStrategy, useClass: AppRouteReuseStrategy },
-		BnNgIdleService,
-		AppInit,
-		{
-			provide: APP_INITIALIZER,
-			useFactory: initializeApp,
-			multi: true,
-			deps: [AppInit]
-		}
-	],
-	bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+    ],
+    imports: [
+        BrowserModule,
+        HttpClientModule,
+        HttpClientXsrfModule,
+        AppRoutingModule,
+        FooterUiModule,
+        NavbarUiModule,
+        MessageUiModule,
+        ClassicViewUiModule,
+        FilterUiModule,
+        ListModule,
+        RecordModule,
+        CreateRecordModule,
+        InstallViewModule,
+        TableModule,
+        ModuleTitleModule,
+        ListHeaderModule,
+        ListContainerModule,
+        ColumnChooserModule,
+        AngularSvgIconModule.forRoot(),
+        ImageModule,
+        BrowserAnimationsModule,
+        NgbModule,
+        FullPageSpinnerModule,
+        MessageModalModule,
+        RecordListModalModule
+    ],
+    providers: [
+        {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+        {provide: RouteReuseStrategy, useClass: AppRouteReuseStrategy},
+        BnNgIdleService,
+        AppInit,
+        {
+            provide: APP_INITIALIZER,
+            useFactory: initializeApp,
+            multi: true,
+            deps: [AppInit]
+        }
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule {
-	constructor(apollo: Apollo, httpLink: HttpLink, protected auth: AuthService, protected appStore: AppStateStore) {
+    constructor(apollo: Apollo, httpLink: HttpLink, protected auth: AuthService, protected appStore: AppStateStore, protected baseRoute: BaseRouteService) {
 
-		const defaultOptions = {
-			watchQuery: {
-				fetchPolicy: 'no-cache' as FetchPolicy
-			},
-			query: {
-				fetchPolicy: 'no-cache' as FetchPolicy
-			},
-		};
+        const defaultOptions = {
+            watchQuery: {
+                fetchPolicy: 'no-cache' as FetchPolicy
+            },
+            query: {
+                fetchPolicy: 'no-cache' as FetchPolicy
+            },
+        };
 
-		const http = httpLink.create({
-			uri: environment.graphqlApiUrl,
-			withCredentials: true
-		});
+        let fullPath = environment.graphqlApiUrl;
+        fullPath = this.baseRoute.calculateRoute(fullPath);
+        const http = httpLink.create({
+            uri: fullPath,
+            withCredentials: true
+        });
 
-		const logoutLink = onError((err) => {
-			if (err.graphQLErrors && err.graphQLErrors.length > 0) {
-				err.graphQLErrors.forEach((value: GraphQLError) => {
-					if (this.auth.isUserLoggedIn.value === true && value.message.includes('Access Denied')) {
-						auth.logout('LBL_SESSION_EXPIRED');
-					}
-				});
-			}
-		});
+        const logoutLink = onError((err) => {
 
-		const middleware = new ApolloLink((operation, forward) => {
-			appStore.addActiveRequest();
-			return forward(operation);
-		});
+            const networkError = (err.networkError ?? null) as any
+            if (networkError !== null && networkError.status === 403 && networkError.error.detail === 'Invalid CSRF token') {
+                auth.handleInvalidSession('LBL_SESSION_EXPIRED');
+            }
 
-		const afterware = new ApolloLink((operation, forward) => {
-			return forward(operation).map(response => {
-				appStore.removeActiveRequest();
-				return response;
-			});
-		});
+            if (err.graphQLErrors && err.graphQLErrors.length > 0) {
+                err.graphQLErrors.forEach((value: GraphQLError) => {
+                    if (this.auth.isUserLoggedIn.value === true && value.message.includes('Access Denied')) {
+                        auth.handleInvalidSession('LBL_SESSION_EXPIRED');
+                    }
+                });
+            }
+        });
 
-		apollo.create({
-			defaultOptions,
-			link: ApolloLink.from([middleware, afterware, logoutLink.concat(http)]),
-			cache: new InMemoryCache()
-		});
-	}
+        const middleware = new ApolloLink((operation, forward) => {
+            appStore.addActiveRequest();
+            return forward(operation);
+        });
+
+        const afterware = new ApolloLink((operation, forward) => {
+            return forward(operation).map(response => {
+                appStore.removeActiveRequest();
+                return response;
+            });
+        });
+
+        apollo.create({
+            defaultOptions,
+            link: ApolloLink.from([middleware, afterware, logoutLink.concat(http)]),
+            cache: new InMemoryCache()
+        });
+    }
 }

@@ -101,12 +101,8 @@ import {TinymceDetailFieldModule} from './tinymce/templates/detail/tinymce.modul
 import {TinymceEditFieldModule} from './tinymce/templates/edit/tinymce.module';
 import {TinymceDetailFieldComponent} from './tinymce/templates/detail/tinymce.component';
 import {TinymceEditFieldComponent} from './tinymce/templates/edit/tinymce.component';
-import {MultiRelateDetailFieldsModule} from "./multirelate/templates/detail/multirelate.module";
-import {MultiRelateEditFieldModule} from "./multirelate/templates/edit/multirelate.module";
-import {MultiRelateFilterFieldModule} from "./multirelate/templates/filter/multirelate.module";
-import {MultiRelateDetailFieldComponent} from "./multirelate/templates/detail/multirelate.component";
-import {MultiRelateEditFieldComponent} from "./multirelate/templates/edit/multirelate.component";
-import {MultiRelateFilterFieldComponent} from "./multirelate/templates/filter/multirelate.component";
+import {IconListFieldModule} from "./icon/templates/detail/icon.module";
+import {IconDetailFieldComponent} from "./icon/templates/detail/icon.component";
 
 export const baseFieldModules = [
     VarcharDetailFieldModule,
@@ -115,6 +111,7 @@ export const baseFieldModules = [
     PasswordDetailFieldModule,
     PasswordEditFieldModule,
     IntDetailFieldModule,
+    IconListFieldModule,
     FloatDetailFieldModule,
     PhoneDetailFieldModule,
     DateDetailFieldModule,
@@ -146,10 +143,7 @@ export const baseFieldModules = [
     BooleanFilterFieldModule,
     HtmlDetailFieldModule,
     TinymceDetailFieldModule,
-    TinymceEditFieldModule,
-    MultiRelateDetailFieldsModule,
-    MultiRelateEditFieldModule,
-    MultiRelateFilterFieldModule,
+    TinymceEditFieldModule
 ];
 export const baseFieldComponents = [
     VarcharDetailFieldComponent,
@@ -167,6 +161,7 @@ export const baseFieldComponents = [
     DateTimeEditFieldComponent,
     DateTimeFilterFieldComponent,
     UrlDetailFieldComponent,
+    IconDetailFieldComponent,
     CurrencyDetailFieldComponent,
     EmailListFieldsComponent,
     TextDetailFieldComponent,
@@ -189,10 +184,7 @@ export const baseFieldComponents = [
     BooleanFilterFieldComponent,
     HtmlDetailFieldComponent,
     TinymceDetailFieldComponent,
-    TinymceEditFieldComponent,
-    MultiRelateDetailFieldComponent,
-    MultiRelateEditFieldComponent,
-    MultiRelateFilterFieldComponent,
+    TinymceEditFieldComponent
 ];
 
 export const baseViewFieldsMap: FieldComponentMap = {
@@ -221,6 +213,9 @@ export const baseViewFieldsMap: FieldComponentMap = {
     'datetime.filter': DateFilterFieldComponent,
     'url.list': UrlDetailFieldComponent,
     'url.detail': UrlDetailFieldComponent,
+    'icon.detail': IconDetailFieldComponent,
+    'icon.edit': IconDetailFieldComponent,
+    'icon.list': IconDetailFieldComponent,
     'link.list': UrlDetailFieldComponent,
     'link.detail': UrlDetailFieldComponent,
     'currency.list': CurrencyDetailFieldComponent,
@@ -265,10 +260,5 @@ export const baseViewFieldsMap: FieldComponentMap = {
     'bool.edit': BooleanEditFieldComponent,
     'bool.filter': BooleanFilterFieldComponent,
     'html.detail': TinymceDetailFieldComponent,
-    'html.edit': TinymceEditFieldComponent,
-    'multirelate.list': MultiRelateDetailFieldComponent,
-    'multirelate.edit': MultiRelateEditFieldComponent,
-    'multirelate.detail': MultiRelateDetailFieldComponent,
-    'multirelate.filter': MultiRelateFilterFieldComponent,
-
+    'html.edit': TinymceEditFieldComponent
 };

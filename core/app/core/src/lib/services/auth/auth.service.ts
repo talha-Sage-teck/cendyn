@@ -29,7 +29,7 @@ import {Router} from '@angular/router';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import {BehaviorSubject, Observable, Subscription, throwError} from 'rxjs';
 import {catchError, distinctUntilChanged, filter, finalize, take} from 'rxjs/operators';
-import {isEmptyString, User} from 'common';
+import {isEmptyString, isTrue, User} from 'common';
 import {MessageService} from '../message/message.service';
 import {StateManager} from '../../store/state-manager';
 import {LanguageStore} from '../../store/language/language.store';
@@ -37,6 +37,7 @@ import {BnNgIdleService} from 'bn-ng-idle';
 import {AppStateStore} from '../../store/app-state/app-state.store';
 import {LocalStorageService} from '../local-storage/local-storage.service';
 import {SystemConfigStore} from '../../store/system-config/system-config.store';
+import {BaseRouteService} from "../base-route/base-route.service";
 
 export interface SessionStatus {
     appStatus?: AppStatus;
@@ -71,7 +72,8 @@ export class AuthService {
         protected bnIdle: BnNgIdleService,
         protected appStateStore: AppStateStore,
         protected localStorage: LocalStorageService,
-        protected configs: SystemConfigStore
+        protected configs: SystemConfigStore,
+        protected baseRoute: BaseRouteService
     ) {
         this.currentUser$ = this.currentUserSubject.asObservable().pipe(distinctUntilChanged());
     }
@@ -95,8 +97,9 @@ export class AuthService {
         onSuccess: (response: string) => void,
         onError: (error: HttpErrorResponse) => void
     ): Subscription {
-        const loginUrl = 'login';
-
+        let loginUrl = 'login';
+        loginUrl = this.baseRoute.appendNativeAuth(loginUrl);
+        loginUrl = this.baseRoute.calculateRoute(loginUrl);
         const headers = new HttpHeaders({
             'Content-Type': 'application/json',
         });
@@ -109,6 +112,11 @@ export class AuthService {
             },
             {headers}
         ).subscribe((response: any) => {
+
+            if (this.baseRoute.isNativeAuth()) {
+                window.location.href = this.baseRoute.removeNativeAuth();
+            }
+
             this.appStateStore.updateInitialAppLoading(true);
             onSuccess(response);
             this.isUserLoggedIn.next(true);
@@ -146,20 +154,28 @@ export class AuthService {
     public logout(messageKey = 'LBL_LOGOUT_SUCCESS', redirect = true): void {
         this.appStateStore.updateLoading('logout', true, false);
 
-        const logoutUrl = 'logout';
+        const logoutConfig = this.configs.getConfigValue('logout') ?? [];
+        let logoutUrl = (logoutConfig?.path ?? 'logout') as string;
+        const redirectLogout = isTrue(logoutConfig?.redirect ?? false);
+
+        if (this.baseRoute.isNativeAuth()) {
+            logoutUrl = this.baseRoute.getNativeOutLogoutUrl();
+        }
+
+        logoutUrl = this.baseRoute.calculateRoute(logoutUrl);
         const body = new HttpParams();
 
         const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
 
         if (this.appStateStore.getActiveRequests() < 1) {
-            this.callLogout(logoutUrl, body, headers, redirect, messageKey);
+            this.callLogout(logoutUrl, body, headers, redirect, messageKey, redirectLogout);
         } else {
             this.appStateStore.activeRequests$.pipe(
                 filter(value => value < 1),
                 take(1)
             ).subscribe(
                 () => {
-                    this.callLogout(logoutUrl, body, headers, redirect, messageKey);
+                    this.callLogout(logoutUrl, body, headers, redirect, messageKey, redirectLogout);
                 }
             )
         }
@@ -172,10 +188,23 @@ export class AuthService {
      * @param headers
      * @param redirect
      * @param messageKey
+     * @param redirectLogout
      * @protected
      */
-    protected callLogout(logoutUrl: string, body: HttpParams, headers: HttpHeaders, redirect: boolean, messageKey: string) {
+    protected callLogout(
+        logoutUrl: string,
+        body: HttpParams,
+        headers: HttpHeaders,
+        redirect: boolean,
+        messageKey: string,
+        redirectLogout: boolean
+    ) {
         this.resetState();
+
+        if (redirectLogout) {
+            window.location.href = logoutUrl;
+            return;
+        }
         this.http.post(logoutUrl, body.toString(), {headers, responseType: 'text'})
             .pipe(
                 take(1),
@@ -231,9 +260,51 @@ export class AuthService {
      */
     public fetchSessionStatus(): Observable<SessionStatus> {
 
-        const Url = 'session-status';
+        let url = 'session-status';
+        url = this.baseRoute.appendNativeAuth(url);
+        url = this.baseRoute.calculateRoute(url);
         const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
 
-        return this.http.get(Url, {headers});
+        return this.http.get(url, {headers});
+    }
+
+    /**
+     * Get route for session expired handling
+     * @return string
+     */
+    public getSessionExpiredRoute(): string {
+        const sessionExpiredConfig = this.configs.getConfigValue('session-expired') ?? [];
+        return (sessionExpiredConfig?.path ?? 'Login') as string;
+    }
+
+    /**
+     * Handle invalid session on request
+     * @return boolean
+     */
+    public handleInvalidSession(message: string): void {
+        const redirect = this.sessionExpiredRedirect()
+
+        if (redirect) {
+            this.handleSessionExpiredRedirect();
+            return;
+        }
+
+        this.logout(message);
+    }
+
+    /**
+     * Redirect to route configured for session expiry
+     */
+    public handleSessionExpiredRedirect(): void {
+        window.location.href = this.getSessionExpiredRoute();
+    }
+
+    /**
+     * Is to re-direct on session expiry
+     * @return boolean
+     */
+    public sessionExpiredRedirect(): boolean {
+        const sessionExpiredConfig = this.configs.getConfigValue('session-expired') ?? [];
+        return isTrue(sessionExpiredConfig?.redirect ?? false);
     }
 }

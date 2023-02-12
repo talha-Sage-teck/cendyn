@@ -206,6 +206,9 @@ function make_sugar_config(&$sugar_config)
             'php3',
             'php4',
             'php5',
+            'php6',
+            'php7',
+            'php8',
             'pl',
             'cgi',
             'py',
@@ -277,6 +280,7 @@ function make_sugar_config(&$sugar_config)
             'min_cron_interval' => 30, // minimal interval between cron jobs
         ),
         'strict_id_validation' => false,
+        'legacy_email_behaviour' => false,
     );
 }
 
@@ -318,6 +322,7 @@ function get_sugar_config_defaults(): array
         'calculate_response_time' => true,
         'create_default_user' => false,
         'chartEngine' => 'Jit',
+        'system_name' => 'SuiteCRM',
         'date_formats' => [
             'Y-m-d' => '2010-12-23',
             'm-d-Y' => '12-23-2010',
@@ -469,6 +474,9 @@ function get_sugar_config_defaults(): array
             'php3',
             'php4',
             'php5',
+            'php6',
+            'php7',
+            'php8',
             'pl',
             'cgi',
             'py',
@@ -486,7 +494,8 @@ function get_sugar_config_defaults(): array
             'png',
             'jpg',
             'jpeg',
-            'svg'
+            'svg',
+            'bmp'
         ],
         'allowed_preview' => [
             'pdf',
@@ -496,6 +505,13 @@ function get_sugar_config_defaults(): array
             'jpg'
         ],
         'upload_maxsize' => 30000000,
+        'allowed_preview' => [
+            'pdf',
+            'gif',
+            'png',
+            'jpeg',
+            'jpg'
+        ],
         'import_max_execution_time' => 3600,
 //	'use_php_code_json' => returnPhpJsonStatus(),
         'verify_client_ip' => true,
@@ -563,13 +579,14 @@ function get_sugar_config_defaults(): array
             'enable' => true,
             'gc_probability' => 1,
             'gc_divisor' => 100,
-        ]
+        ],
+        'legacy_email_behaviour' => false,
     ];
 
     if (!is_object($locale)) {
         $locale = new Localization();
     }
-    
+
     $sugar_config_defaults = sugarArrayMerge($locale->getLocaleConfigDefaults(), $sugar_config_defaults);
 
     return $sugar_config_defaults;
@@ -878,6 +895,27 @@ function get_user_name($id)
     $a = $db->fetchByAssoc($r);
 
     return (empty($a)) ? '' : $a['user_name'];
+}
+
+/**
+ * Get currently authenticated user
+ * @return User
+ */
+function get_authenticated_user(): ?User {
+    $authenticatedUserId = $_SESSION['authenticated_user_id'] ?? '';
+
+    if (empty($authenticatedUserId)){
+        return null;
+    }
+
+    /** @var User $authenticatedUser */
+    $authenticatedUser = BeanFactory::getBean('Users', $authenticatedUserId);
+
+    if (empty($authenticatedUser)) {
+        return null;
+    }
+
+    return $authenticatedUser;
 }
 
 //TODO Update to use global cache
@@ -1392,7 +1430,7 @@ function return_module_language($language, $module, $refresh = false)
     global $currentModule;
 
     // Jenny - Bug 8119: Need to check if $module is not empty
-    if (empty($module)) {
+    if (empty($module) || !isAllowedModuleName($module)) {
         $GLOBALS['log']->warn('Variable module is not in return_module_language, see more info: debug_backtrace()');
 
         return array();
@@ -1956,8 +1994,8 @@ function get_select_options_with_id_separate_key($label_list, $key_list, $select
         // the system is evaluating $selected_key == 0 || '' to true.  Be very careful when changing this.  Test all cases.
         // The bug was only happening with one of the users in the drop down.  It was being replaced by none.
         if (
-                ($option_key != '' && $selected_key == $option_key) || (
-                    $option_key == '' && (($selected_key == '' && !$massupdate) || $selected_key == '__SugarMassUpdateClearField__')
+                ($option_key !== '' && $selected_key === $option_key) || (
+                    $option_key === '' && (($selected_key === '' && !$massupdate) || $selected_key === '__SugarMassUpdateClearField__')
                 ) || (is_array($selected_key) && in_array($option_key, $selected_key))
         ) {
             $selected_string = 'selected ';
@@ -3207,24 +3245,10 @@ function get_bean_select_array(
 
         $query .= " {$focus->table_name}.deleted=0";
 
-        /* BEGIN - SECURITY GROUPS */
-        global $current_user, $sugar_config;
-        if ($focus->module_dir == 'Users' && !is_admin($current_user) && isset($sugar_config['securitysuite_filter_user_list']) && $sugar_config['securitysuite_filter_user_list'] == true
-        ) {
-            require_once 'modules/SecurityGroups/SecurityGroup.php';
-            $group_where = SecurityGroup::getGroupUsersWhere($current_user->id);
-            $query .= ' AND (' . $group_where . ') ';
-        } elseif ($focus->bean_implements('ACL') && ACLController::requireSecurityGroup($focus->module_dir, 'list')) {
-            require_once 'modules/SecurityGroups/SecurityGroup.php';
-            $owner_where = $focus->getOwnerWhere($current_user->id);
-            $group_where = SecurityGroup::getGroupWhere($focus->table_name, $focus->module_dir, $current_user->id);
-            if (!empty($owner_where)) {
-                $query .= ' AND (' . $owner_where . ' or ' . $group_where . ') ';
-            } else {
-                $query .= ' AND ' . $group_where;
-            }
+        $accessWhere = $focus->buildAccessWhere('list');
+        if (!empty($accessWhere)) {
+            $query .= ' AND ' . $accessWhere;
         }
-        /* END - SECURITY GROUPS */
 
         if ($order_by != '') {
             $query .= " order by {$focus->table_name}.{$order_by}";
@@ -5163,6 +5187,27 @@ function filterInboundEmailPopSelection($protocol)
 }
 
 /**
+ * Get Inbound Email protocols
+ *
+ * @return array
+ */
+function getInboundEmailProtocols(): array
+{
+    global $app_list_strings, $sugar_config;
+
+    $protocols = $app_list_strings['dom_email_server_type'];
+    if (!isset($sugar_config['allow_pop_inbound']) || !$sugar_config['allow_pop_inbound']) {
+        if (isset($protocols['pop3'])) {
+            unset($protocols['pop3']);
+        }
+    } else {
+        $protocols['pop3'] = 'POP3';
+    }
+
+    return $protocols;
+}
+
+/**
  * The function is used because currently we are not supporting mbstring.func_overload
  * For some user using mssql without FreeTDS, they may store multibyte charaters in varchar using latin_general collation. It cannot store so many mutilbyte characters, so we need to use strlen.
  * The varchar in MySQL, Orcale, and nvarchar in FreeTDS, we can store $length mutilbyte charaters in it. we need mb_substr to keep more info.
@@ -6084,7 +6129,7 @@ function has_valid_extension($fieldName, $name, $validExtensions)
  * @return bool
  */
 function isTrue($value): bool {
-    return $value === true || $value === 'true' || $value === 1;
+    return $value === true || $value === 'true' || $value === 1 || $value === '1' || $value === 'on';
 }
 
 /**
@@ -6093,7 +6138,7 @@ function isTrue($value): bool {
  * @return bool
  */
 function isFalse($value): bool {
-    return $value === false || $value === 'false' || $value === 0;
+    return $value === false || $value === 'false' || $value === 0 || $value === '0';
 }
 
 /**
@@ -6109,4 +6154,65 @@ function get_id_validation_pattern(): string {
     }
 
     return $pattern;
+}
+
+/**
+ * Check if user has group and action acls defined
+ * @param string $module
+ * @param string $action
+ * @return bool
+ */
+function has_group_action_acls_defined(string $module, string $action): bool
+{
+    global $current_user;
+
+    $hasGroupActionAcls = true;
+
+    $groups = SecurityGroup::getUserSecurityGroups($current_user->id);
+    $hasGroups = !empty($groups);
+
+    $aclActions = ACLAction::getUserActions($current_user->id, false, $module, 'module', $action);
+    $isDefaultListACL = !empty($aclActions['isDefault']) && isTrue($aclActions['isDefault']);
+
+    if (!$hasGroups) {
+        $hasGroupActionAcls = false;
+    }
+
+    if ($isDefaultListACL) {
+        $hasGroupActionAcls = false;
+    }
+
+    return $hasGroupActionAcls;
+}
+
+/**
+ * Check if is value is smtp in a case-insensitive way
+ * @param $value
+ * @return bool
+ */
+function isSmtp($value): bool {
+    if (empty($value) || !is_string($value)) {
+        return false;
+    }
+
+    return strtolower($value)  === 'smtp';
+}
+
+/**
+ * Check if is string is an allowed module name
+ * @param string $value
+ * @return bool
+ */
+function isAllowedModuleName(string $value): bool {
+    if (empty($value)) {
+        return false;
+    }
+
+    $result = preg_match("/^[\w\-\_\.]+$/", $value);
+
+    if (!empty($result)) {
+        return true;
+    }
+
+    return false;
 }

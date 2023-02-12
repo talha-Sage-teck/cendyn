@@ -37,6 +37,8 @@ import {LanguageStore, LanguageStringMap} from '../../../../store/language/langu
 import {MessageService} from '../../../../services/message/message.service';
 import {Process} from '../../../../services/process/process.service';
 import {StringMap} from 'common';
+import {HttpErrorResponse} from '@angular/common/http';
+import {AppStateStore} from "../../../../store/app-state/app-state.store";
 
 
 @Component({
@@ -95,7 +97,8 @@ export class LoginUiComponent implements OnInit {
         protected message: MessageService,
         protected configs: SystemConfigStore,
         protected languageStore: LanguageStore,
-        protected recoverPasswordService: RecoverPasswordService
+        protected recoverPasswordService: RecoverPasswordService,
+        protected appState: AppStateStore
     ) {
         this.loading = false;
         this.hidden = false;
@@ -178,19 +181,50 @@ export class LoginUiComponent implements OnInit {
             .subscribe(() => {
                 if (result && result.redirect) {
                     this.router.navigate([result.redirect]).then();
-                } else {
-                    const defaultModule = this.configs.getHomePage();
-                    this.router.navigate(['/' + defaultModule]).then();
+                    return;
                 }
+
+                if (this.appState.getPreLoginUrl()) {
+                    this.router.navigateByUrl(this.appState.getPreLoginUrl()).then(() => {
+                        this.appState.setPreLoginUrl('');
+                    });
+                    return;
+                }
+
+                const defaultModule = this.configs.getHomePage();
+                this.router.navigate(['/' + defaultModule]).then();
             });
 
         return;
     }
 
-    onLoginError(): void {
+    onLoginError(httpError: HttpErrorResponse): void {
         this.loading = false;
         this.message.log('Login failed');
-        this.message.addDangerMessage('Login credentials incorrect, please try again.');
+
+        const defaultMessage = 'Login credentials incorrect, please try again.';
+        const defaultTooManyFailedMessage = 'Too many failed login attempts, please try again later.';
+        let message = this.languageStore.getFieldLabel('LOGIN_INCORRECT');
+
+        const errorMessage = httpError?.error?.error ?? '';
+
+        if (errorMessage === 'Too many failed login attempts, please try again in 1 minute.') {
+            message = this.getTooManyFailedMessage(defaultTooManyFailedMessage);
+        }
+
+        if (!message) {
+            message = defaultMessage
+        }
+        this.message.addDangerMessage(message);
+    }
+
+    protected getTooManyFailedMessage(defaultTooManyFailedMessage: string): string {
+        let tooManyFailedMessage = this.languageStore.getFieldLabel('LOGIN_TOO_MANY_FAILED');
+
+        if (!tooManyFailedMessage) {
+            tooManyFailedMessage = defaultTooManyFailedMessage;
+        }
+        return tooManyFailedMessage;
     }
 
     protected setCurrentLanguage(): void {

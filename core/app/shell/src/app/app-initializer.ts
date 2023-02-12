@@ -25,7 +25,7 @@
  */
 
 import {Injectable, Injector} from '@angular/core';
-import {Router} from '@angular/router';
+import {Route, Router} from '@angular/router';
 import {
     AppStateStore,
     AuthGuard,
@@ -42,14 +42,17 @@ import {
     LoginAuthGuard,
     LoginUiComponent,
     RecordComponent,
-    SystemConfigStore
+    SystemConfigStore,
+    SystemNameService,
+    BaseRouteService,
+    LogoutComponent
 } from 'core';
 import {take} from 'rxjs/operators';
 import {isFalse} from 'common';
 import {
-    AccountListComponent, AccountRecordComponent
-} from '../../../../../extensions/custom-ext/app/src/customExt';
-
+    AccountListComponent,
+    AccountRecordComponent
+} from "../../../../../extensions/custom_ext/app/src/customExt";
 @Injectable()
 export class AppInit {
 
@@ -58,7 +61,9 @@ export class AppInit {
         protected systemConfigStore: SystemConfigStore,
         protected appStore: AppStateStore,
         protected injector: Injector,
-        protected extensionLoader: ExtensionLoader
+        protected extensionLoader: ExtensionLoader,
+        protected systemNameService: SystemNameService,
+        protected baseRoute: BaseRouteService
     ) {
     }
 
@@ -68,10 +73,40 @@ export class AppInit {
         return new Promise<void>((resolve) => {
             this.systemConfigStore.load().subscribe(() => {
                 this.appStore.init();
-
+                const systemName = this.systemConfigStore.getConfigValue('system_name');
+                this.systemNameService.setSystemName(systemName);
                 this.extensionLoader.load(this.injector).pipe(take(1)).subscribe(() => {
                     const routes = this.router.config;
                     const configRoutes = this.systemConfigStore.getConfigValue('module_routing');
+
+                    let loggedOutConfig = {
+                        path: 'logged-out',
+                        component: LogoutComponent,
+                        runGuardsAndResolvers: 'always',
+                        resolve: {
+                            metadata: BaseMetadataResolver
+                        },
+                        data: {
+                            reuseRoute: false,
+                            load: {
+                                navigation: false,
+                                preferences: false,
+                                languageStrings: ['appStrings']
+                            }
+                        }
+                    } as Route;
+
+                    if (this.baseRoute.isLoggedOutPath()) {
+                        loggedOutConfig.path = '';
+                        routes.push(loggedOutConfig);
+                        routes.push({
+                            path: '**',
+                            redirectTo: ''
+                        });
+                        this.router.resetConfig(routes);
+                        resolve();
+                        return;
+                    }
 
                     routes.push({
                         path: 'Login',
@@ -109,6 +144,8 @@ export class AppInit {
                             }
                         }
                     });
+
+                    routes.push(loggedOutConfig);
 
                     Object.keys(configRoutes).forEach(routeName => {
                         if (configRoutes[routeName].index) {
@@ -173,6 +210,7 @@ export class AppInit {
                                 });
                             }
                         }
+
                         if (configRoutes[routeName].list) {
                             if(routeName.toLowerCase() === "accounts") {
                                 routes.push({
@@ -242,6 +280,26 @@ export class AppInit {
                                     mode: 'create'
                                 }
                             });
+
+                            if (!isFalse(configRoutes[routeName].duplicate)) {
+                                routes.push({
+                                    path: routeName + '/duplicate/:record',
+                                    component: CreateRecordComponent,
+                                    canActivate: [AuthGuard],
+                                    runGuardsAndResolvers: 'always',
+                                    resolve: {
+                                        view: BaseModuleResolver,
+                                        metadata: BaseRecordResolver
+                                    },
+                                    data: {
+                                        reuseRoute: false,
+                                        checkSession: true,
+                                        module: routeName,
+                                        mode: 'create',
+                                        duplicate: true
+                                    }
+                                });
+                            }
                         }
 
                         if (configRoutes[routeName].record) {
@@ -295,21 +353,40 @@ export class AppInit {
                                     mode: 'edit'
                                 }
                             });
-                            routes.push({
-                                path: routeName + '/detail/:record',
-                                component: RecordComponent,
-                                canActivate: [AuthGuard],
-                                runGuardsAndResolvers: 'always',
-                                resolve: {
-                                    view: BaseModuleResolver,
-                                    metadata: BaseRecordResolver
-                                },
-                                data: {
-                                    reuseRoute: false,
-                                    checkSession: true,
-                                    module: routeName
-                                }
-                            });
+                            if(routeName.toLowerCase() === "accounts") {
+                                routes.push({
+                                    path: routeName + '/detail/:record',
+                                    component: AccountRecordComponent,
+                                    canActivate: [AuthGuard],
+                                    runGuardsAndResolvers: 'always',
+                                    resolve: {
+                                        view: BaseModuleResolver,
+                                        metadata: BaseRecordResolver
+                                    },
+                                    data: {
+                                        reuseRoute: false,
+                                        checkSession: true,
+                                        module: routeName
+                                    }
+                                });
+                            }
+                            else {
+                                routes.push({
+                                    path: routeName + '/detail/:record',
+                                    component: RecordComponent,
+                                    canActivate: [AuthGuard],
+                                    runGuardsAndResolvers: 'always',
+                                    resolve: {
+                                        view: BaseModuleResolver,
+                                        metadata: BaseRecordResolver
+                                    },
+                                    data: {
+                                        reuseRoute: false,
+                                        checkSession: true,
+                                        module: routeName
+                                    }
+                                });
+                            }
                         }
                     });
 

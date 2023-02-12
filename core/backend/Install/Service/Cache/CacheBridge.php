@@ -82,6 +82,10 @@ class CacheBridge
         return $feedback;
     }
 
+    /**
+     * Clear php cache
+     * @return void
+     */
     protected function clearPhpCache(): void
     {
         if (function_exists('opcache_reset')) {
@@ -92,4 +96,5 @@ class CacheBridge
             apcu_clear_cache();
         }
     }
+
 }

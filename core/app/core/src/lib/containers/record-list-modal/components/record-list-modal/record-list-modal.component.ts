@@ -59,14 +59,14 @@ export class RecordListModalComponent implements OnInit, OnDestroy {
     @Input() titleKey = '';
     @Input() module: string;
     @Input() parentModule: string;
+    @Input() multiSelect: boolean = false;
+    @Input() multiSelectButtonLabel = 'LBL_SAVE';
     @Input() adapter: RecordListModalTableAdapterInterface = null;
     @Input() filterAdapter: ModalRecordFilterAdapter = null;
-    @Input() multiselect: boolean = false;
 
     loading$: Observable<boolean>;
-    select: boolean = false;
+
     closeButton: ButtonInterface;
-    selectButton: ButtonInterface;
     tableConfig: TableConfig;
     filterConfig: FilterConfig;
     store: RecordListModalStore;
@@ -93,22 +93,6 @@ export class RecordListModalComponent implements OnInit, OnDestroy {
             }
         } as ButtonInterface;
 
-        this.selectButton = {
-            klass: ['btn', 'btn-outline-dark', 'btn-sm'],
-            onClick: (): void => {
-                this.subs.push(this.store.recordList.selection$.pipe(distinctUntilChanged()).subscribe(selection => {
-                    if (!selection || !selection.selected || Object.keys(selection.selected).length < 1) {
-                        return;
-                    }
-                    this.activeModal.close({
-                        selection,
-                        records: this.store.recordList.records
-                    } as RecordListModalResult);
-
-                }));
-            }
-        } as ButtonInterface;
-
         this.init();
     }
 
@@ -129,17 +113,31 @@ export class RecordListModalComponent implements OnInit, OnDestroy {
         return this.maxColumnCalculator.getMaxColumns(of(true));
     }
 
+    linkSelectedRecords(): void {
+        this.activeModal.close({
+            selection: this.store.recordList.selection,
+            records: this.store.recordList.records
+        } as RecordListModalResult);
+    }
+
+    buildSelectButton(): ButtonInterface {
+        return {
+            klass: ['btn', 'btn-primary', 'btn-sm'],
+            onClick: () => {
+                this.linkSelectedRecords();
+            },
+            labelKey: this.multiSelectButtonLabel
+        } as ButtonInterface;
+    }
+
+
     protected initTableAdapter(): void {
         if (this.adapter === null) {
             this.adapter = new ModalRecordListTableAdapter();
         }
 
-        this.tableConfig = this.adapter.getTable(this.store);
+        this.tableConfig = this.adapter.getTable(this.store, this.multiSelect);
         this.tableConfig.maxColumns$ = this.getMaxColumns();
-        if(this.multiselect) {
-            this.tableConfig.selection = this.store.recordList;
-            this.tableConfig.selection$ = this.store.recordList.selection$;
-        }
     }
 
     protected initFilterAdapters(): void {
@@ -154,18 +152,13 @@ export class RecordListModalComponent implements OnInit, OnDestroy {
         this.store.init(this.module, this.parentModule ?? '');
         this.loading$ = this.store.metadataLoading$;
 
-        if(!this.multiselect) {
-            this.subs.push(this.store.recordList.selection$.pipe(distinctUntilChanged(), skip(1)).subscribe(selection => {
+        this.subs.push(this.store.linkClicked$.pipe(distinctUntilChanged(), skip(1)).subscribe(clicked => {
+            if (!clicked){
+                return;
+            }
 
-                if (!selection || !selection.selected || Object.keys(selection.selected).length < 1) {
-                    return;
-                }
+            this.linkSelectedRecords();
 
-                this.activeModal.close({
-                    selection,
-                    records: this.store.recordList.records
-                } as RecordListModalResult);
-            }));
-        }
+        }));
     }
 }

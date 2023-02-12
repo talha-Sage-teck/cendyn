@@ -27,13 +27,13 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {BaseWidgetComponent} from '../../../widgets/base-widget.model';
 import {SingleValueStatisticsStore} from '../../../../store/single-value-statistics/single-value-statistics.store';
-import {SingleValueStatisticsStoreFactory} from '../../../../store/single-value-statistics/single-value-statistics.store.factory';
+import {
+    SingleValueStatisticsStoreFactory
+} from '../../../../store/single-value-statistics/single-value-statistics.store.factory';
 import {map, take} from 'rxjs/operators';
 import {LanguageStore, LanguageStringMap} from '../../../../store/language/language.store';
 import {combineLatest, Observable, Subscription} from 'rxjs';
-import {StatisticsQuery} from 'common';
-import {ViewContext} from 'common';
-import {SingleValueStatisticsState} from 'common';
+import {SingleValueStatisticsState, StatisticsQuery, ViewContext} from 'common';
 
 interface StatisticsTopWidgetState {
     statistics: { [key: string]: SingleValueStatisticsState };
@@ -43,6 +43,8 @@ interface StatisticsTopWidgetState {
 interface StatisticsEntry {
     labelKey: string;
     endLabelKey?: string;
+    hideValueIfEmpty?: boolean;
+    hideIfEmpty?: boolean;
     type: string;
     store: SingleValueStatisticsStore;
 }
@@ -106,6 +108,7 @@ export class StatisticsTopWidgetComponent extends BaseWidgetComponent implements
             this.statistics[statistic.type] = {
                 labelKey: statistic.labelKey || '',
                 endLabelKey: statistic.endLabelKey || '',
+                hideValueIfEmpty: statistic.hideValueIfEmpty || false,
                 type: statistic.type,
                 store: this.factory.create()
             };
@@ -188,6 +191,47 @@ export class StatisticsTopWidgetComponent extends BaseWidgetComponent implements
         this.subs.forEach(sub => sub.unsubscribe());
     }
 
+    /**
+     * Check if statistics should be hidden
+     * @param stats
+     * @param item
+     */
+    shouldHide(stats: SingleValueStatisticsState, item: StatisticsEntry) {
+        return this.hasLoaded(stats) && this.isValueEmpty(stats) && item.hideIfEmpty === true;
+    }
+
+    /**
+     * Check if statistics have been loaded
+     * @param stats
+     */
+    hasLoaded(stats: SingleValueStatisticsState): boolean {
+        return !stats.loading;
+    }
+
+    /**
+     * Check if value is empty
+     * @param stats
+     */
+    isValueEmpty(stats: SingleValueStatisticsState) {
+        const emptyValue = stats?.statistic?.metadata?.emptyValueString ?? null;
+        if (emptyValue !== null) {
+            return true;
+        }
+
+        const value = stats?.field?.value ?? null;
+
+        if (value) {
+            return false;
+        }
+
+        return emptyValue === value;
+    }
+
+    /**
+     * Get metadata entry for statistic
+     * @param stat
+     * @param name
+     */
     getMetadataEntry(stat: SingleValueStatisticsState, name: string): string {
         const value = stat.statistic.metadata && stat.statistic.metadata[name];
         if (value !== null && typeof value !== 'undefined') {
@@ -197,12 +241,14 @@ export class StatisticsTopWidgetComponent extends BaseWidgetComponent implements
         return this.statistics[stat.query.key][name];
     }
 
+    /**
+     * Get label value
+     * @param key
+     */
     getLabel(key: string): string {
         const context = this.context || {} as ViewContext;
         const module = context.module || '';
 
         return this.language.getFieldLabel(key, module);
     }
-
-
 }

@@ -41,7 +41,8 @@ class LegacyPostUpgrade implements UpgradeStepInterface
     use ProcessStepTrait;
 
     public const HANDLER_KEY = 'legacy-post-upgrade';
-    public const POSITION = 800;
+    public const POSITION = 700;
+    public const STAGE = 'upgrade-finalize';
 
     /**
      * @var PostUpgradeHandler
@@ -71,6 +72,14 @@ class LegacyPostUpgrade implements UpgradeStepInterface
     public function getOrder(): int
     {
         return self::POSITION;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getStage(): string
+    {
+        return self::STAGE;
     }
 
     /**

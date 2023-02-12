@@ -3652,6 +3652,7 @@ SUGAR.savedViews = function () {
         }
         // Firefox needs this to be set after all the option nodes are created.
         document.getElementById('orderBySelect').selectedIndex = selectedIndex;
+
       };
       SUGAR.tabChooser.movementCallback(document.getElementById('display_tabs_td').getElementsByTagName('select')[0]);
 
@@ -3668,6 +3669,25 @@ SUGAR.savedViews = function () {
       // handle direction
       if (SUGAR.savedViews.selectedSortOrder == 'DESC') document.getElementById('sort_order_desc_radio').checked = true;
       else document.getElementById('sort_order_asc_radio').checked = true;
+      var sortableColumnsCount = 0;
+
+      var columnDefs = SUGAR.savedViews.columnsMeta;
+      if(columnDefs && typeof columnDefs === 'object' && Object.keys(columnDefs))  {
+        Object.keys(columnDefs).forEach(function (columnKey) {
+          var column = columnDefs[columnKey];
+          if (!column || !column.sortable) {
+            return;
+          }
+
+          if (column.sortable === true) {
+            sortableColumnsCount++;
+          }
+        })
+      }
+
+      if (sortableColumnsCount < 1 ) {
+        $('.saved-search-sort-column-config-row').hide();
+      }
     }
   };
 }();

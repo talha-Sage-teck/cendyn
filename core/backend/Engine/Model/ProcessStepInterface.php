@@ -27,6 +27,7 @@
 
 namespace App\Engine\Model;
 
+use App\Engine\Service\ProcessSteps\ProcessStepAlert;
 use Psr\Log\LoggerInterface;
 
 interface ProcessStepInterface
@@ -56,6 +57,13 @@ interface ProcessStepInterface
      * @return Feedback
      */
     public function run(array &$context): Feedback;
+
+    /**
+     * Get Alert
+     * @param array $context
+     * @return ProcessStepAlert|null
+     */
+    public function getAlert(array &$context): ?ProcessStepAlert;
 
     /**
      * @return LoggerInterface|null

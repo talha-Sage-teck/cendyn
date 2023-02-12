@@ -1,8 +1,14 @@
 .view-module-AOR_Reports {
-    .action_buttons{
-        margin-top: -1em;
-        top: -2.5em;
-    }
+    @media (max-width: 750px) {
+        #EditView_tabs {
+            clear: both;
+        }
+    }  
+    #EditView {
+        .buttons {
+            top: -0.8em;
+        }
+    }   
     .panel {
         margin-top: 0;
     }

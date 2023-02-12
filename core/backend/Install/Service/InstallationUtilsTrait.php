@@ -62,4 +62,23 @@ trait InstallationUtilsTrait
 
         return $installerLocked;
     }
+
+    /**
+     * Get Legacy Config
+     * @param $legacyDir
+     * @return array|null is locked
+     */
+    public function getLegacyConfig($legacyDir): ?array
+    {
+        $sugarConfigFile = $legacyDir . '/config.php';
+
+        if (is_file($sugarConfigFile)) {
+            $sugar_config = [];
+            include $sugarConfigFile;
+
+            return $sugar_config;
+        }
+
+        return null;
+    }
 }
