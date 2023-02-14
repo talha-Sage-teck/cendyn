@@ -7,4 +7,5 @@ export interface AccountRow {
     b2b_account: string;
     iata: string;
     ind: number;
+    marked: number;
 };

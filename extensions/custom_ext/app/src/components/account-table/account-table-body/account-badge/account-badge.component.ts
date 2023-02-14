@@ -55,7 +55,7 @@ export class AccountBadgeComponent implements OnInit {
             }, error => reject(error));
       });
 
-      if(typeof this.subAccounts === "object" && this.subAccounts.length > 0)
+      if(typeof this.subAccounts === "object" && this.subAccounts.length > 1)
         isParent = true;
 
       // if there are subaccounts and no parent, it means it is master

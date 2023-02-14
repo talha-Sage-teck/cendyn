@@ -29,12 +29,12 @@
                             </th>
                         </ng-container>
                     </tr>
-                    <tr *ngFor="let record of dataSource">
+                    <tr [ngStyle]="record.marked === 1 && {'background-color': '#f2f2f2', 'border-left': '3px solid #276ecd'}" *ngFor="let record of dataSource">
                         <ng-container *ngFor="let column of keys">
                                 <td *ngIf="column==='name'"
                                     [colSpan]="4"
                                     [style.padding-left]="10+((record.ind)*15)+'px'">
-                                    <a target="_blank" href="#/accounts/record/{{record['id']}}">{{record[column]}}</a>
+                                    <a [ngStyle]="{'font-weight':record.marked === 1 ? 800 : 700}" target="_blank" href="#/accounts/record/{{record['id']}}">{{record[column]}}</a>
                                 </td>
                                 <td *ngIf="column!=='name'">
                                     {{record[column]}}

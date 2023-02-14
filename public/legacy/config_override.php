@@ -53,4 +53,5 @@ $sugar_config['EINSIGHT_API_VERSION'] = '1';
 $sugar_config['EINSIGHT_API_COMPANY_ID'] = '10017';
 $sugar_config['SUPER_ADMIN_ID'] = '1';
 $sugar_config['system_name'] = 'B2B Sales';
+$sugar_config['account_max_children_depth'] = 8;
 /***CONFIGURATOR***/

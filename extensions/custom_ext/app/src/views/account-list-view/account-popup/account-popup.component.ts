@@ -35,10 +35,8 @@ export class AccountPopupComponent implements OnInit, OnDestroy {
       }
     } as ButtonInterface;
     this.titleKey = "Close";
-    console.log(this.accounts);
     ACCOUNTS_DATA = this.makeDataSource(this.accounts);
     this.dataSource = ACCOUNTS_DATA;
-    console.log(this.dataSource);
   }
 
   makeDataSource(accounts): any {
@@ -52,7 +50,8 @@ export class AccountPopupComponent implements OnInit, OnDestroy {
         country: account['billing_address_country'],
         b2b_account: account['b2b_account_no'],
         iata: account['iata'],
-        ind: account['ind']
+        ind: account['ind'],
+        marked: account['marked']
       };
       arr.push(obj);
     });
