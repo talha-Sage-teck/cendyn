@@ -37,6 +37,7 @@ import {
     SortingSelection
 } from 'common';
 import {FieldManager, LoadingBuffer, LoadingBufferFactory, SortDirectionDataSource, TableConfig} from "core";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 interface TableViewModel {
     columns: ColumnDefinition[];
@@ -58,8 +59,10 @@ export class AccountTableBodyComponent implements OnInit, OnDestroy {
     vm$: Observable<TableViewModel>;
     protected loadingBuffer: LoadingBuffer;
     protected subs: Subscription[] = [];
+    accounts: object[];
 
     constructor(
+        private http: HttpClient,
         protected fieldManager: FieldManager,
         protected loadingBufferFactory: LoadingBufferFactory
     ) {
@@ -67,9 +70,9 @@ export class AccountTableBodyComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        (async() => {
         const selection$ = this.config.selection$ || of(null).pipe(shareReplay(1));
         let loading$ = this.initLoading();
-
         this.vm$ = combineLatest([
             this.config.columns,
             selection$,
@@ -102,6 +105,17 @@ export class AccountTableBodyComponent implements OnInit, OnDestroy {
                 const selected = selection && selection.selected || {};
                 const selectionStatus = selection && selection.status || SelectionStatus.NONE;
 
+                let ids = this.getIds(records);
+                let headers = new HttpHeaders();
+                headers.set('Content-Type', 'application/json; charset=utf-8');
+                new Promise((resolve, reject) => {
+                    this.http.get(location.origin + location.pathname +
+                        'legacy/index.php?entryPoint=getSubAccounts&records=' + ids, {headers: headers, responseType: 'text'})
+                        .subscribe(data => {
+                            this.accounts = JSON.parse(data);
+                        }, error => reject(error));
+                });
+
                 return {
                     columns,
                     selection,
@@ -112,7 +126,16 @@ export class AccountTableBodyComponent implements OnInit, OnDestroy {
                     loading
                 };
             })
-        );
+        ).pipe();
+        })();
+    }
+
+    getIds(records: readonly Record[]): string {
+        let ids = [];
+        records.forEach((record) => {
+            ids.push(record.id);
+        });
+        return ids.join(',');
     }
 
     ngOnDestroy() {
