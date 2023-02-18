@@ -60,6 +60,7 @@ export class AccountTableBodyComponent implements OnInit, OnDestroy {
     protected loadingBuffer: LoadingBuffer;
     protected subs: Subscription[] = [];
     accounts: object[];
+    callSent: boolean = false;
 
     constructor(
         private http: HttpClient,
@@ -104,18 +105,21 @@ export class AccountTableBodyComponent implements OnInit, OnDestroy {
 
                 const selected = selection && selection.selected || {};
                 const selectionStatus = selection && selection.status || SelectionStatus.NONE;
-
-                let ids = this.getIds(records);
-                let headers = new HttpHeaders();
-                headers.set('Content-Type', 'application/json; charset=utf-8');
-                new Promise((resolve, reject) => {
-                    this.http.get(location.origin + location.pathname +
-                        'legacy/index.php?entryPoint=getSubAccounts&records=' + ids, {headers: headers, responseType: 'text'})
-                        .subscribe(data => {
-                            this.accounts = JSON.parse(data);
-                        }, error => reject(error));
-                });
-
+                if(!this.callSent) {
+                    this.callSent = true;
+                    let headers = new HttpHeaders();
+                    headers.set('Content-Type', 'application/json; charset=utf-8');
+                    new Promise((resolve, reject) => {
+                        this.http.get(location.origin + location.pathname +
+                            'legacy/index.php?entryPoint=getSubAccounts&records=', {
+                            headers: headers,
+                            responseType: 'text'
+                        })
+                            .subscribe(data => {
+                                this.accounts = JSON.parse(data);
+                            }, error => reject(error));
+                    });
+                }
                 return {
                     columns,
                     selection,

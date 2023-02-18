@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {ColumnDefinition, Record} from 'common';
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {AccountPopupComponent} from "../../../../views/account-list-view/account-popup/account-popup.component";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 @Component({
   selector: 'scrm-account-badge',
@@ -11,7 +12,7 @@ import {AccountPopupComponent} from "../../../../views/account-list-view/account
 export class AccountBadgeComponent implements OnInit {
 
   @Input("record") record: Record;
-  @Input("data") data: any[];
+  @Input("data") data: any[] = null;
   @Input("column") column: ColumnDefinition = null;
   @Input("fontSize") fontSize: number = 10;
   @Input("height") height: number = 20;
@@ -22,7 +23,8 @@ export class AccountBadgeComponent implements OnInit {
   maxDepth: number;
 
   constructor(
-      protected modalService: NgbModal,
+      private http: HttpClient,
+      protected modalService: NgbModal
   ) { }
 
   ngOnInit(): void {
@@ -31,6 +33,20 @@ export class AccountBadgeComponent implements OnInit {
         this.isNameColumn = this.checkNameColumn();
       else
         this.isNameColumn = true;
+
+      if(!this.data) {
+        let headers = new HttpHeaders();
+        headers.set('Content-Type', 'application/json; charset=utf-8');
+        this.data = await new Promise((resolve, reject) => {
+          this.http.get(location.origin + location.pathname +
+            'legacy/index.php?entryPoint=getSubAccounts', {
+            headers: headers,
+            responseType: 'text'
+          }).subscribe(data => {
+            resolve(JSON.parse(data));
+          }, error => reject(error));
+        });
+      }
       this.isParent = await this.checkIfParent();
     })();
   }
@@ -104,9 +120,10 @@ export class AccountBadgeComponent implements OnInit {
     return isParent;
   }
 
-  showHierarchy(): void {
+  showHierarchy(marked: string): void {
     if(this.column) {
       const modal = this.modalService.open(AccountPopupComponent, {size: 'xl', scrollable: true});
+      modal.componentInstance.marked = marked;
       modal.componentInstance.parent = this.record;
       modal.componentInstance.accounts = this.subAccounts;
       modal.componentInstance.accountName = this.record.attributes.name;

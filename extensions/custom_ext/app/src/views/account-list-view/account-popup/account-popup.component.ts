@@ -15,6 +15,7 @@ export class AccountPopupComponent implements OnInit, OnDestroy {
   @Input("accounts") accounts: any[];
   @Input("parent") parent: Record;
   @Input("accountName") accountName: string;
+  @Input("marked") marked: string = "";
   titleKey: string;
   closeButton: ButtonInterface;
   keys: string[] = ['name', 'account_base_type', 'city', 'country', 'b2b_account', 'iata'];

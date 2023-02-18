@@ -1,4 +1,4 @@
-<div (click)="showHierarchy()" *ngIf="isNameColumn && isParent" [style.height]="height+'px'" [style.line-height]="height+'px'" class="badge">
+<div (click)="showHierarchy(record.id)" *ngIf="isNameColumn && isParent" [style.height]="height+'px'" [style.line-height]="height+'px'" class="badge">
     <span [style.font-size]="fontSize+'px'">
         {{content}}
     </span>

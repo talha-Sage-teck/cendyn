@@ -73,21 +73,21 @@ function makeDatabase($databaseResult): array
 }
 
 global $db, $sugar_config;
-$recordIds = $_REQUEST['records'];
+//$recordIds = $_REQUEST['records'];
 $databaseQuery = "SELECT id, name, account_base_type, billing_address_city, billing_address_country, b2b_account_no, iata, parent_id FROM accounts WHERE deleted = 0";
 $databaseResult = $db->query($databaseQuery);
 list($database, $children) = makeDatabase($databaseResult);
-$recordIdsArr = explode(',', $recordIds);
-$records = [];
-foreach ($recordIdsArr as $recordId) {
-    $records[$recordId] = $database[$recordId];
-}
+//$recordIdsArr = explode(',', $recordIds);
+//$records = [];
+//foreach ($recordIdsArr as $recordId) {
+//    $records[$recordId] = $database[$recordId];
+//}
 //$master = backTraverse($database, $account);
 //$data = makeTree($database, $children, $master, $account['id']);
 $data = array(
     'accounts' => $database,
     'children' => $children,
     'max_depth' =>  $sugar_config['account_max_children_depth'],
-    'records' => $records
+//    'records' => $records
 );
 echo json_encode($data, JSON_NUMERIC_CHECK);
