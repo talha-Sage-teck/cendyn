@@ -16,6 +16,7 @@ export class AccountBadgeComponent implements OnInit {
   @Input("column") column: ColumnDefinition = null;
   @Input("fontSize") fontSize: number = 10;
   @Input("height") height: number = 20;
+  @Input("listView") listView: boolean = false;
   content: string;
   isNameColumn: boolean;
   isParent: boolean;
@@ -34,7 +35,7 @@ export class AccountBadgeComponent implements OnInit {
       else
         this.isNameColumn = true;
 
-      if(!this.data) {
+      if(!this.listView) {
         let headers = new HttpHeaders();
         headers.set('Content-Type', 'application/json; charset=utf-8');
         this.data = await new Promise((resolve, reject) => {

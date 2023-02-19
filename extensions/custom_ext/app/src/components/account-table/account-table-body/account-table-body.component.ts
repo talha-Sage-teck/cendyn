@@ -111,7 +111,7 @@ export class AccountTableBodyComponent implements OnInit, OnDestroy {
                     headers.set('Content-Type', 'application/json; charset=utf-8');
                     new Promise((resolve, reject) => {
                         this.http.get(location.origin + location.pathname +
-                            'legacy/index.php?entryPoint=getSubAccounts&records=', {
+                            'legacy/index.php?entryPoint=getSubAccounts', {
                             headers: headers,
                             responseType: 'text'
                         })
