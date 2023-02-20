@@ -103,7 +103,7 @@ export class AccountBadgeComponent implements OnInit {
 
   checkIfParent = async(): Promise<boolean> => {
     let isParent = false;
-    if(this.isNameColumn) {
+    if(this.isNameColumn && this.data['max_depth']) {
 
       // get sub-accounts array
       this.maxDepth = this.data['max_depth'];

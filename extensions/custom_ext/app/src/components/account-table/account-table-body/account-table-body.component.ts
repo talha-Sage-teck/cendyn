@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {combineLatest, Observable, of, Subscription} from 'rxjs';
 import {map, shareReplay} from 'rxjs/operators';
 import {
@@ -53,14 +53,14 @@ interface TableViewModel {
     selector: 'scrm-account-table-body',
     templateUrl: 'account-table-body.component.html',
 })
-export class AccountTableBodyComponent implements OnInit, OnDestroy {
+export class AccountTableBodyComponent implements OnInit, OnDestroy, AfterViewInit {
     @Input() config: TableConfig;
     maxColumns = 4;
     vm$: Observable<TableViewModel>;
     protected loadingBuffer: LoadingBuffer;
     protected subs: Subscription[] = [];
-    accounts: object[];
-    callSent: boolean = false;
+    accounts: object[] = [];
+    records: readonly Record[] = [];
 
     constructor(
         private http: HttpClient,
@@ -105,21 +105,7 @@ export class AccountTableBodyComponent implements OnInit, OnDestroy {
 
                 const selected = selection && selection.selected || {};
                 const selectionStatus = selection && selection.status || SelectionStatus.NONE;
-                if(!this.callSent) {
-                    this.callSent = true;
-                    let headers = new HttpHeaders();
-                    headers.set('Content-Type', 'application/json; charset=utf-8');
-                    new Promise((resolve, reject) => {
-                        this.http.get(location.origin + location.pathname +
-                            'legacy/index.php?entryPoint=getSubAccounts', {
-                            headers: headers,
-                            responseType: 'text'
-                        })
-                            .subscribe(data => {
-                                this.accounts = JSON.parse(data);
-                            }, error => reject(error));
-                    });
-                }
+                this.records = records;
                 return {
                     columns,
                     selection,
@@ -130,8 +116,25 @@ export class AccountTableBodyComponent implements OnInit, OnDestroy {
                     loading
                 };
             })
-        ).pipe();
+        );
         })();
+    }
+
+    ngAfterViewInit(): void {
+        if(this.records) {
+            let headers = new HttpHeaders();
+            headers.set('Content-Type', 'application/json; charset=utf-8');
+            new Promise((resolve, reject) => {
+                this.http.get(location.origin + location.pathname +
+                    'legacy/index.php?entryPoint=getSubAccounts', {
+                    headers: headers,
+                    responseType: 'text'
+                })
+                    .subscribe(data => {
+                        this.accounts = JSON.parse(data);
+                    }, error => reject(error));
+            });
+        }
     }
 
     getIds(records: readonly Record[]): string {
