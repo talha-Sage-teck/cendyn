@@ -61,6 +61,7 @@ export class AccountTableBodyComponent implements OnInit, OnDestroy, AfterViewIn
     protected subs: Subscription[] = [];
     accounts: object[] = [];
     records: readonly Record[] = [];
+    _reload: boolean = true;
 
     constructor(
         private http: HttpClient,
@@ -132,9 +133,15 @@ export class AccountTableBodyComponent implements OnInit, OnDestroy, AfterViewIn
                 })
                     .subscribe(data => {
                         this.accounts = JSON.parse(data);
+                        this.reload();
                     }, error => reject(error));
             });
         }
+    }
+
+    private reload() {
+        setTimeout(() => this._reload = false);
+        setTimeout(() => this._reload = true);
     }
 
     getIds(records: readonly Record[]): string {
