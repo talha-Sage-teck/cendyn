@@ -123,7 +123,7 @@ export class AccountBadgeComponent implements OnInit, AfterViewInit {
       this.subAccounts = this.makeTree(this.data['accounts'], this.data['children'], master, this.record.id);
       let children = this.makeTree(this.data['accounts'], this.data['children'], this.data['accounts'][this.record.id], this.record.id);
       // if there are subaccounts and no parent, it means it is master
-      if (children.length > 0 && this.record.attributes.parent_id.trim() == "" || this.record.attributes.parent_id == null) {
+      if (children.length > 1 && this.record.attributes.parent_id.trim() == "" || this.record.attributes.parent_id == null) {
         this.content = "Master";
         this.showBadge = true;
       } else if (children.length > 1 && this.record.attributes.parent_id && this.record.attributes.parent_id.trim() !== "") {

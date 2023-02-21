@@ -42,9 +42,9 @@
                         </ng-container>
                     </tr>
                 </table>
-            </ng-container>
-            <ng-container *ngIf="loading">
-                <scrm-loading-spinner [overlay]="true"></scrm-loading-spinner>
+                <ng-container *ngIf="loading">
+                    <app-full-page-spinner></app-full-page-spinner>
+                </ng-container>
             </ng-container>
         </div>
     </div>
