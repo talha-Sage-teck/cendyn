@@ -30,7 +30,14 @@ import {CommonModule} from '@angular/common';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 import {CdkTableModule} from '@angular/cdk/table';
 import {AccountTableBodyComponent} from "./account-table-body.component";
-import {FieldModule, LabelModule, LineActionModule, LoadingSpinnerModule, SortButtonModule} from "core";
+import {
+    FieldModule,
+    FullPageSpinnerModule,
+    LabelModule,
+    LineActionModule,
+    LoadingSpinnerModule,
+    SortButtonModule
+} from "core";
 import { AccountBadgeComponent } from './account-badge/account-badge.component';
 
 @NgModule({
@@ -44,7 +51,8 @@ import { AccountBadgeComponent } from './account-badge/account-badge.component';
         SortButtonModule,
         LineActionModule,
         LoadingSpinnerModule,
-        LabelModule
+        LabelModule,
+        FullPageSpinnerModule
     ]
 })
 export class AccountTableBodyModule {

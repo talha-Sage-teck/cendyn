@@ -27,8 +27,8 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {
-    FieldModule,
-    ListHeaderModule, ModalModule
+    FieldModule, FullPageSpinnerModule,
+    ListHeaderModule, LoadingSpinnerModule, ModalModule
 } from 'core';
 import {AccountListComponent} from "./account-list.component";
 import {AccountListContainerModule} from "./account-list-container/account-list-container.module";
@@ -49,7 +49,9 @@ import {CdkTableModule} from "@angular/cdk/table";
         AccountListContainerModule,
         FieldModule,
         CdkTableModule,
-        ModalModule
+        ModalModule,
+        LoadingSpinnerModule,
+        FullPageSpinnerModule
     ],
 })
 export class AccountListModule {

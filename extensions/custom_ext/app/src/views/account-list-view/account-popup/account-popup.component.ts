@@ -3,8 +3,6 @@ import {ButtonInterface, ModalCloseFeedBack, Record} from 'common';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {AccountRow} from "./accounts.model";
 
-var ACCOUNTS_DATA: AccountRow[] = [];
-
 @Component({
   selector: 'scrm-account-popup',
   templateUrl: './account-popup.component.html',
@@ -20,8 +18,8 @@ export class AccountPopupComponent implements OnInit, OnDestroy {
   closeButton: ButtonInterface;
   keys: string[] = ['name', 'account_base_type', 'city', 'country', 'b2b_account', 'iata'];
   displayedColumns: object = {name: 'Name', account_base_type: 'Base Type', city: 'City', country: 'Country', b2b_account: 'Account', iata: 'IATA'};
-  dataSource: AccountRow[];
-
+  dataSource$: Promise<AccountRow[]>;
+  loading: boolean = true;
   constructor(
       public activeModal: NgbActiveModal
   ) { }
@@ -36,11 +34,10 @@ export class AccountPopupComponent implements OnInit, OnDestroy {
       }
     } as ButtonInterface;
     this.titleKey = "Close";
-    ACCOUNTS_DATA = this.makeDataSource(this.accounts);
-    this.dataSource = ACCOUNTS_DATA;
+    this.dataSource$ = this.makeDataSource(this.accounts);
   }
 
-  makeDataSource(accounts): any {
+  makeDataSource = async(accounts): Promise<AccountRow[]> => {
     let arr: AccountRow[] = [];
     accounts.forEach((account) => {
       let obj = {
@@ -56,10 +53,11 @@ export class AccountPopupComponent implements OnInit, OnDestroy {
       };
       arr.push(obj);
     });
+    this.loading = false;
     return arr;
   }
 
   ngOnDestroy(): void {
-    ACCOUNTS_DATA = [];
+    this.dataSource$ = null;
   }
 }

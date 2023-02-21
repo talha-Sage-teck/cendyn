@@ -11,9 +11,9 @@
                 <h4>{{accountName}}'s Hierarchy</h4>
             </div>
             <br />
-            <ng-container *ngIf="accounts">
+            <ng-container *ngIf="(dataSource$ | async) as dataSource">
                 <table aria-describedby="table-body"
-                       class="list-view-table striped-table table">
+                       class="list-view-table striped-table table" *ngIf="dataSource">
                     <tr>
                         <ng-container *ngFor="let column of keys">
                             <th *ngIf="column==='name'"
@@ -42,6 +42,9 @@
                         </ng-container>
                     </tr>
                 </table>
+            </ng-container>
+            <ng-container *ngIf="loading">
+                <app-full-page-spinner></app-full-page-spinner>
             </ng-container>
         </div>
     </div>

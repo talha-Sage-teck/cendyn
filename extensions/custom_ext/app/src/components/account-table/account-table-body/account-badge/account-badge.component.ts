@@ -19,9 +19,10 @@ export class AccountBadgeComponent implements OnInit {
   @Input("listView") listView: boolean = false;
   content: string;
   isNameColumn: boolean;
-  isParent: boolean;
+  showBadge: boolean;
   subAccounts: any[];
   maxDepth: number;
+  loading: boolean = false;
 
   constructor(
       private http: HttpClient,
@@ -48,7 +49,7 @@ export class AccountBadgeComponent implements OnInit {
           }, error => reject(error));
         });
       }
-      this.isParent = await this.checkIfParent();
+      await this.init();
     })();
   }
 
@@ -74,7 +75,7 @@ export class AccountBadgeComponent implements OnInit {
   }
 
   makeTree(database, children, account, marked, data = [], index = 0) {
-    if(account) {
+    if(account && typeof account === "object") {
       if(account['id']) {
         if(account['id'] == marked)
           account['marked'] = 1;
@@ -101,33 +102,41 @@ export class AccountBadgeComponent implements OnInit {
     }
   }
 
-  checkIfParent = async(): Promise<boolean> => {
-    let isParent = false;
+  init = async(): Promise<void> => {
     if(this.isNameColumn && this.data['max_depth']) {
 
       // get sub-accounts array
       this.maxDepth = this.data['max_depth'];
       let master = this.backTraverse(this.data['accounts'], this.data['accounts'][this.record.id]);
       this.subAccounts = this.makeTree(this.data['accounts'], this.data['children'], master, this.record.id);
-      if(typeof this.subAccounts === "object" && this.subAccounts.length > 1)
-        isParent = true;
-
+      let children = this.makeTree(this.data['accounts'], this.data['children'], this.data['accounts'][this.record.id], this.record.id);
       // if there are subaccounts and no parent, it means it is master
-      if (isParent && this.record.attributes.parent_id.trim() == "")
+      if (this.record.attributes.parent_id.trim() == "" || this.record.attributes.parent_id == null) {
         this.content = "Master";
-      else if(isParent && this.record.attributes.parent_id.trim() !== "")
+        this.showBadge = true;
+      } else if (children.length > 1 && this.record.attributes.parent_id && this.record.attributes.parent_id.trim() !== "") {
         this.content = "Parent";
+        this.showBadge = true;
+      } else if (children.length == 1 && this.record.attributes.parent_id && this.record.attributes.parent_id.trim() !== "") {
+        this.content = "Sub-Account";
+        this.showBadge = true;
+      } else {
+        this.showBadge = false;
+      }
     }
-    return isParent;
   }
 
   showHierarchy(marked: string): void {
     if(this.column) {
+      this.loading = true;
       const modal = this.modalService.open(AccountPopupComponent, {size: 'xl', scrollable: true});
       modal.componentInstance.marked = marked;
       modal.componentInstance.parent = this.record;
       modal.componentInstance.accounts = this.subAccounts;
       modal.componentInstance.accountName = this.record.attributes.name;
+      modal.shown.pipe().subscribe((value) => {
+        this.loading = false;
+      });
     }
     else {
       // slide to subpanel
