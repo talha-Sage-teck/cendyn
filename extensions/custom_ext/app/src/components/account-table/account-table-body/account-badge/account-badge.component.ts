@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
 import {ColumnDefinition, Record} from 'common';
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {AccountPopupComponent} from "../../../../views/account-list-view/account-popup/account-popup.component";
@@ -9,7 +9,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
   templateUrl: './account-badge.component.html',
   styleUrls: ['./account-badge.component.scss']
 })
-export class AccountBadgeComponent implements OnInit {
+export class AccountBadgeComponent implements OnInit, AfterViewInit {
 
   @Input("record") record: Record;
   @Input("data") data: any[] = null;
@@ -23,6 +23,7 @@ export class AccountBadgeComponent implements OnInit {
   subAccounts: any[];
   maxDepth: number;
   loading: boolean = false;
+  _reload: boolean = true;
 
   constructor(
       private http: HttpClient,
@@ -30,27 +31,38 @@ export class AccountBadgeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    (async() => {
       if(this.column)
         this.isNameColumn = this.checkNameColumn();
       else
         this.isNameColumn = true;
+  }
 
-      if(!this.listView) {
-        let headers = new HttpHeaders();
-        headers.set('Content-Type', 'application/json; charset=utf-8');
-        this.data = await new Promise((resolve, reject) => {
-          this.http.get(location.origin + location.pathname +
+  ngAfterViewInit() {
+    if (!this.listView) {
+      let headers = new HttpHeaders();
+      headers.set('Content-Type', 'application/json; charset=utf-8');
+      new Promise((resolve, reject) => {
+        this.http.get(location.origin + location.pathname +
             'legacy/index.php?entryPoint=getSubAccounts', {
-            headers: headers,
-            responseType: 'text'
-          }).subscribe(data => {
-            resolve(JSON.parse(data));
-          }, error => reject(error));
-        });
-      }
-      await this.init();
-    })();
+          headers: headers,
+          responseType: 'text'
+        }).subscribe(data => {
+          this.data = JSON.parse(data);
+          this.init().then(() => {
+            this.reload();
+          });
+        }, error => reject(error));
+      });
+    }
+    else
+      this.init().then(() => {
+        this.reload();
+      });
+  }
+
+  private reload() {
+    setTimeout(() => this._reload = false);
+    setTimeout(() => this._reload = true);
   }
 
   checkNameColumn(): boolean {
@@ -111,7 +123,7 @@ export class AccountBadgeComponent implements OnInit {
       this.subAccounts = this.makeTree(this.data['accounts'], this.data['children'], master, this.record.id);
       let children = this.makeTree(this.data['accounts'], this.data['children'], this.data['accounts'][this.record.id], this.record.id);
       // if there are subaccounts and no parent, it means it is master
-      if (this.record.attributes.parent_id.trim() == "" || this.record.attributes.parent_id == null) {
+      if (children.length > 0 && this.record.attributes.parent_id.trim() == "" || this.record.attributes.parent_id == null) {
         this.content = "Master";
         this.showBadge = true;
       } else if (children.length > 1 && this.record.attributes.parent_id && this.record.attributes.parent_id.trim() !== "") {

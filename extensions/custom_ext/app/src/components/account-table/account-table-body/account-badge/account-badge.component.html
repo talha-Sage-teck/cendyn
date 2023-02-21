@@ -1,4 +1,4 @@
-<div (click)="showHierarchy(record.id)" *ngIf="isNameColumn && showBadge" [style.height]="height+'px'" [style.line-height]="height+'px'" class="badge">
+<div (click)="showHierarchy(record.id)" *ngIf="_reload && isNameColumn && showBadge" [style.height]="height+'px'" [style.line-height]="height+'px'" class="badge">
     <span [style.font-size]="fontSize+'px'">
         {{content}}
     </span>

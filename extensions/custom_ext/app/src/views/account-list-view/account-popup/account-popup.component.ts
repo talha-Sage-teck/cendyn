@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ButtonInterface, ModalCloseFeedBack, Record} from 'common';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {AccountRow} from "./accounts.model";
@@ -8,7 +8,7 @@ import {AccountRow} from "./accounts.model";
   templateUrl: './account-popup.component.html',
   styleUrls: ['./account-popup.component.scss']
 })
-export class AccountPopupComponent implements OnInit, OnDestroy {
+export class AccountPopupComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input("accounts") accounts: any[];
   @Input("parent") parent: Record;
@@ -34,6 +34,9 @@ export class AccountPopupComponent implements OnInit, OnDestroy {
       }
     } as ButtonInterface;
     this.titleKey = "Close";
+  }
+
+  ngAfterViewInit(): void {
     this.dataSource$ = this.makeDataSource(this.accounts);
   }
 
