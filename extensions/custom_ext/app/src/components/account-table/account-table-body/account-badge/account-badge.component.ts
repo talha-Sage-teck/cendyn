@@ -69,12 +69,12 @@ export class AccountBadgeComponent implements OnInit, AfterViewInit {
     return this.column.name.toLowerCase() === "name";
   }
 
-  backTraverse(database: any[], account: any, depth = 0) {
+  backTraverse(account: any, depth = 0) {
     if(account) {
       if (account['parent_id'] && account['parent_id'].trim() !== "") {
-        let master = database[account['parent_id']];
+        let master = this.data['accounts'][account['parent_id']];
         if(depth < this.maxDepth)
-          return this.backTraverse(database, master, depth + 1);
+          return this.backTraverse(master, depth + 1);
         else
           return master;
       }
@@ -86,19 +86,21 @@ export class AccountBadgeComponent implements OnInit, AfterViewInit {
     return account;
   }
 
-  makeTree(database, children, account, marked, data = [], index = 0) {
+  makeTree(account, marked, data = [], index = 0) {
     if(account && typeof account === "object") {
       if(account['id']) {
-        if(account['id'] == marked)
+        if(account['id'] == marked) {
           account['marked'] = 1;
-        else
+        }
+        else {
           account['marked'] = 0;
-        account["ind"] = index;
+        }
+        account['ind'] = index;
         data.push(account);
-        if(children[account['id']] && children[account['id']].length > 0 && index < this.maxDepth) {
-          children[account['id']].forEach((child) => {
+        if(this.data['children'][account['id']] && this.data['children'][account['id']].length > 0 && index < this.maxDepth) {
+          this.data['children'][account['id']].forEach((child) => {
             if (child)
-              data = this.makeTree(database, children, database[child], marked, data, index + 1);
+              data = this.makeTree(this.data['accounts'][child], marked, data, index + 1);
           });
           return data;
         }
@@ -119,9 +121,9 @@ export class AccountBadgeComponent implements OnInit, AfterViewInit {
 
       // get sub-accounts array
       this.maxDepth = this.data['max_depth'];
-      let master = this.backTraverse(this.data['accounts'], this.data['accounts'][this.record.id]);
-      this.subAccounts = this.makeTree(this.data['accounts'], this.data['children'], master, this.record.id);
-      let children = this.makeTree(this.data['accounts'], this.data['children'], this.data['accounts'][this.record.id], this.record.id);
+      let master = this.backTraverse(this.data['accounts'][this.record.id]);
+      this.subAccounts = this.makeTree(master, this.record.id);
+      let children = this.makeTree(this.data['accounts'][this.record.id], this.record.id);
       // if there are subaccounts and no parent, it means it is master
       if (children.length > 1 && this.record.attributes.parent_id.trim() == "" || this.record.attributes.parent_id == null) {
         this.content = "Master";

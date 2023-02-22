@@ -40,6 +40,12 @@ export class AccountPopupComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dataSource$ = this.makeDataSource(this.accounts);
   }
 
+  decodeHtml(html) {
+    let txt = document.createElement("textarea");
+    txt.innerHTML = html;
+    return txt.value;
+  }
+
   makeDataSource = async(accounts): Promise<AccountRow[]> => {
     let arr: AccountRow[] = [];
     accounts.forEach((account) => {

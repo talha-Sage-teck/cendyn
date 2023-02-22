@@ -17,7 +17,7 @@
                     <tr>
                         <ng-container *ngFor="let column of keys">
                             <th *ngIf="column==='name'"
-                                [colSpan]="4"
+                                [colSpan]="5"
                                 scope="col"
                                 class="primary-table-header">
                                 {{displayedColumns[column]}}
@@ -32,9 +32,9 @@
                     <tr [ngStyle]="record.id === marked && {'background-color': '#f2f2f2', 'border-left': '3px solid #276ecd'}" *ngFor="let record of dataSource">
                         <ng-container *ngFor="let column of keys">
                                 <td *ngIf="column==='name'"
-                                    [colSpan]="4"
+                                    [colSpan]="5"
                                     [style.padding-left]="10+((record.ind)*15)+'px'">
-                                    <a [ngStyle]="{'font-weight':record.id === marked ? 800 : 700}" target="_blank" href="#/accounts/record/{{record['id']}}">{{record[column]}}</a>
+                                    <a [ngStyle]="{'font-weight':record.id === marked ? 800 : 700}" target="_blank" href="#/accounts/record/{{record['id']}}">{{decodeHtml(record[column])}}</a>
                                 </td>
                                 <td *ngIf="column!=='name'">
                                     {{record[column]}}
