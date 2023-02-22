@@ -37,7 +37,7 @@
                                     <a [ngStyle]="{'font-weight':record.id === marked ? 800 : 700}" target="_blank" href="#/accounts/record/{{record['id']}}">{{decodeHtml(record[column])}}</a>
                                 </td>
                                 <td *ngIf="column!=='name'">
-                                    {{record[column]}}
+                                    {{decodeHtml(record[column])}}
                                 </td>
                         </ng-container>
                     </tr>
