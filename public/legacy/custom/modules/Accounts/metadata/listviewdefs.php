@@ -39,14 +39,6 @@ array (
     'label' => 'LBL_PRIORITY',
     'width' => '10%',
   ),
-  'ACCOUNT_LEVEL' =>
-  array (
-    'type' => 'enum',
-    'default' => true,
-    'studio' => 'visible',
-    'label' => 'LBL_ACCOUNT_LEVEL',
-    'width' => '10%',
-  ),
   'BILLING_ADDRESS_CITY' =>
   array (
     'width' => '10%',
