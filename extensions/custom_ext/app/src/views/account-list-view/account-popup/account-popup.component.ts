@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ButtonInterface, ModalCloseFeedBack, Record} from 'common';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {AccountRow} from "./accounts.model";
@@ -20,8 +20,11 @@ export class AccountPopupComponent implements OnInit, AfterViewInit, OnDestroy {
   displayedColumns: object = {name: 'Name', account_base_type: 'Base Type', city: 'City', country: 'Country', b2b_account: 'Account', iata: 'IATA'};
   dataSource$: Promise<AccountRow[]>;
   loading: boolean = true;
+  showCount: number = 500;
+
   constructor(
-      public activeModal: NgbActiveModal
+      public activeModal: NgbActiveModal,
+      // private changeDetector: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -38,6 +41,19 @@ export class AccountPopupComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.dataSource$ = this.makeDataSource(this.accounts);
+  }
+
+  addItems(number: number) {
+    setTimeout(() => this.loading = true);
+    if(number > 0)
+      this.showCount += number;
+    else
+      this.showCount = -1;
+  }
+
+  onContentPrinted() {
+    setTimeout(() => this.loading = false);
+//    this.changeDetector.detectChanges();
   }
 
   decodeHtml(html) {
@@ -62,7 +78,7 @@ export class AccountPopupComponent implements OnInit, AfterViewInit, OnDestroy {
       };
       arr.push(obj);
     });
-    this.loading = false;
+    setTimeout(() => this.loading = false);
     return arr;
   }
 

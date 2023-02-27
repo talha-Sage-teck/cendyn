@@ -29,7 +29,7 @@
                             </th>
                         </ng-container>
                     </tr>
-                    <tr [ngStyle]="record.id === marked && {'background-color': '#f2f2f2', 'border-left': '3px solid #276ecd'}" *ngFor="let record of dataSource">
+                    <tr [ngStyle]="record.id === marked && {'background-color': '#f2f2f2', 'border-left': '3px solid #276ecd'}" *ngFor="let record of dataSource | slice: 0: (showCount > 0) ? showCount : dataSource.length; let last = last">
                         <ng-container *ngFor="let column of keys">
                                 <td *ngIf="column==='name'"
                                     [colSpan]="5"
@@ -40,8 +40,18 @@
                                     {{decodeHtml(record[column])}}
                                 </td>
                         </ng-container>
+                        <ng-container *ngIf="last && loading">
+                            {{ onContentPrinted() }}
+                        </ng-container>
                     </tr>
                 </table>
+                <div [ngStyle]="{'padding': '10px', 'margin': 'auto', 'font-size': '1em'}">
+                    Show more
+                    <a href="javascript:" (click)="addItems(200);">200</a> |
+                    <a href="javascript:" (click)="addItems(500);">500</a> |
+                    <a href="javascript:" (click)="addItems(1000)">1000</a> |
+                    <a href="javascript:" (click)="addItems(0);">All</a>
+                </div>
                 <ng-container *ngIf="loading">
                     <app-full-page-spinner></app-full-page-spinner>
                 </ng-container>
