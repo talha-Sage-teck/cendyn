@@ -38,7 +38,6 @@ import {
     ExtensionLoader,
     InstallAuthGuard,
     InstallViewComponent,
-    ListComponent,
     LoginAuthGuard,
     LoginUiComponent,
     RecordComponent,
@@ -50,7 +49,7 @@ import {
 import {take} from 'rxjs/operators';
 import {isFalse} from 'common';
 import {
-    AccountListComponent,
+    OverrideListComponent,
     AccountRecordComponent
 } from "../../../../../extensions/custom_ext/app/src/customExt";
 @Injectable()
@@ -149,101 +148,51 @@ export class AppInit {
 
                     Object.keys(configRoutes).forEach(routeName => {
                         if (configRoutes[routeName].index) {
-                            if (routeName.toLowerCase() === "accounts") {
-                                routes.push({
-                                    path: routeName,
-                                    component: AccountListComponent,
-                                    canActivate: [AuthGuard],
-                                    runGuardsAndResolvers: 'always',
-                                    resolve: {
-                                        metadata: BaseModuleResolver
-                                    },
-                                    data: {
-                                        reuseRoute: false,
-                                        checkSession: true,
-                                        module: routeName
-                                    }
-                                });
-                                routes.push({
-                                    path: routeName + '/index',
-                                    component: AccountListComponent,
-                                    canActivate: [AuthGuard],
-                                    runGuardsAndResolvers: 'always',
-                                    resolve: {
-                                        metadata: BaseModuleResolver
-                                    },
-                                    data: {
-                                        reuseRoute: false,
-                                        checkSession: true,
-                                        module: routeName
-                                    }
-                                });
-                            }
-                            else {
-                                routes.push({
-                                    path: routeName,
-                                    component: ListComponent,
-                                    canActivate: [AuthGuard],
-                                    runGuardsAndResolvers: 'always',
-                                    resolve: {
-                                        metadata: BaseModuleResolver
-                                    },
-                                    data: {
-                                        reuseRoute: false,
-                                        checkSession: true,
-                                        module: routeName
-                                    }
-                                });
-                                routes.push({
-                                    path: routeName + '/index',
-                                    component: ListComponent,
-                                    canActivate: [AuthGuard],
-                                    runGuardsAndResolvers: 'always',
-                                    resolve: {
-                                        metadata: BaseModuleResolver
-                                    },
-                                    data: {
-                                        reuseRoute: false,
-                                        checkSession: true,
-                                        module: routeName
-                                    }
-                                });
-                            }
+                            routes.push({
+                                path: routeName,
+                                component: OverrideListComponent,
+                                canActivate: [AuthGuard],
+                                runGuardsAndResolvers: 'always',
+                                resolve: {
+                                    metadata: BaseModuleResolver
+                                },
+                                data: {
+                                    reuseRoute: false,
+                                    checkSession: true,
+                                    module: routeName
+                                }
+                            });
+                            routes.push({
+                                path: routeName + '/index',
+                                component: OverrideListComponent,
+                                canActivate: [AuthGuard],
+                                runGuardsAndResolvers: 'always',
+                                resolve: {
+                                    metadata: BaseModuleResolver
+                                },
+                                data: {
+                                    reuseRoute: false,
+                                    checkSession: true,
+                                    module: routeName
+                                }
+                            });
                         }
 
                         if (configRoutes[routeName].list) {
-                            if(routeName.toLowerCase() === "accounts") {
-                                routes.push({
-                                    path: routeName + '/list',
-                                    component: AccountListComponent,
-                                    canActivate: [AuthGuard],
-                                    runGuardsAndResolvers: 'always',
-                                    resolve: {
-                                        metadata: BaseModuleResolver
-                                    },
-                                    data: {
-                                        reuseRoute: false,
-                                        checkSession: true,
-                                        module: routeName
-                                    }
-                                });
-                            }
-                            else {
-                                routes.push({
-                                    path: routeName + '/list',
-                                    component: ListComponent,
-                                    canActivate: [AuthGuard],
-                                    runGuardsAndResolvers: 'always',
-                                    resolve: {
-                                        metadata: BaseModuleResolver
-                                    },
-                                    data: {
-                                        reuseRoute: false,
-                                        checkSession: true,
-                                        module: routeName
-                                    }
-                                });
-                            }
+                            routes.push({
+                                path: routeName + '/list',
+                                component: OverrideListComponent,
+                                canActivate: [AuthGuard],
+                                runGuardsAndResolvers: 'always',
+                                resolve: {
+                                    metadata: BaseModuleResolver
+                                },
+                                data: {
+                                    reuseRoute: false,
+                                    checkSession: true,
+                                    module: routeName
+                                }
+                            });
                         }
 
                         if (!isFalse(configRoutes[routeName].create) && !isFalse(configRoutes[routeName].record)) {

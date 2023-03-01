@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
 import {ColumnDefinition, Record} from 'common';
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {AccountPopupComponent} from "../../../../views/account-list-view/account-popup/account-popup.component";
+import {AccountPopupComponent} from "../../../../views/override-list-view/account-popup/account-popup.component";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 @Component({

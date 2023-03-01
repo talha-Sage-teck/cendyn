@@ -48,12 +48,12 @@ export interface ListContainerState {
 }
 
 @Component({
-    selector: 'scrm-account-list-container',
-    templateUrl: 'account-list-container.component.html',
+    selector: 'scrm-override-list-container',
+    templateUrl: 'override-list-container.component.html',
     providers: [TableAdapter, MaxColumnsCalculator, ListViewSidebarWidgetAdapter],
 })
 
-export class AccountListContainerComponent implements OnInit {
+export class OverrideListContainerComponent implements OnInit {
     @Input() module;
     screen: ScreenSize = ScreenSize.Medium;
     maxColumns = 5;

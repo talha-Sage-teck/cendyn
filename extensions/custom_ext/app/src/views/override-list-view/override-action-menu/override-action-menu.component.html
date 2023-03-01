@@ -25,27 +25,6 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
-<!-- Start List View Container Section -->
-
-<div *ngIf="(vm$ | async) as vm" class="list-view-container container-fluid pt-2">
-    <div class="row">
-        <div [ngClass]="{ 'col-lg-12': !getDisplayWidgets() }" class="col-lg-9">
-            <scrm-account-table [config]="tableConfig"></scrm-account-table>
-        </div>
-
-        <ng-container *ngIf="vm.sidebarWidgetConfig.widgetsEnabled">
-            <div [style.display]="getDisplay(!!(vm.sidebarWidgetConfig.show && vm.sidebarWidgetConfig.widgets))"
-                 class="col-lg-3 list-widget-container pl-0">
-                <div *ngFor="let widget of vm.sidebarWidgetConfig.widgets" class="mb-3">
-                    <scrm-sidebar-widget [config]="widget"
-                                         [context]="getViewContext()"
-                                         [context$]="store.context$"
-                                         [type]="widget.type">
-                    </scrm-sidebar-widget>
-                </div>
-            </div>
-        </ng-container>
-    </div>
+<div class="list-view-actions float-right" *ngIf="(vm$ | async) as vm">
+    <scrm-button-group [config$]="config$"></scrm-button-group>
 </div>
-
-<!-- End List View Container Section -->
