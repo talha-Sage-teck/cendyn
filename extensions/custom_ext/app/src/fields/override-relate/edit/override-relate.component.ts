@@ -109,6 +109,12 @@ export class OverrideRelateEditFieldComponent extends BaseRelateComponent {
         if (idFieldName && this.record && this.record.fields && this.record.fields[idFieldName]) {
             this.idField = this.record.fields[idFieldName];
         }
+
+        if (!this.field.value || this.field.value.trim() === "") {
+            this.setValue('', '');
+            this.field.formControl.markAsDirty();
+            this.selectedValues = [];
+        }
     }
 
     getUnrelatedProfiles = async(): Promise<number> => {
