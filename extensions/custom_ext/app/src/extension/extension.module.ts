@@ -20,8 +20,9 @@ import {OverrideRelateEditFieldComponent} from "../fields/override-relate/edit/o
 import {OverrideRelateEditFieldModule} from "../fields/override-relate/edit/override-relate.module";
 import {RecordMapperRegistry} from "common";
 import {MultiRelateSaveRecordMapper} from "../store/record-mappers/multirelate-save.record-mapper";
+import {OverrideEnumEditFieldComponent} from "../fields/override-enum/edit/override-enum.component";
+import {OverrideEnumEditFieldModule} from "../fields/override-enum/edit/override-enum.module";
 import {OverrideListHeaderModule} from "../views/override-list-view/override-list-header/override-list-header.module";
-
 @NgModule({
     declarations: [],
     imports: [
@@ -39,6 +40,7 @@ import {OverrideListHeaderModule} from "../views/override-list-view/override-lis
         MultiRelateFilterFieldModule,
         MultiselectRecordListModalModule,
         OverrideRelateEditFieldModule,
+        OverrideEnumEditFieldModule
     ],
     providers: []
 })
@@ -53,6 +55,7 @@ export class ExtensionModule {
         fieldRegistry.register('default', 'multirelate', 'edit', MultiRelateEditFieldComponent);
         fieldRegistry.register('default', 'multirelate', 'filter', MultiRelateFilterFieldComponent);
         fieldRegistry.register('default', 'relate', 'edit', OverrideRelateEditFieldComponent);
+        fieldRegistry.register('default', 'enum', 'edit', OverrideEnumEditFieldComponent);
         sidebarWidgetRegistry.register('default', 'account-tree', AccountTreeSidebarWidgetComponent);
         recordMapperRegistry.register('default', 'multirelate', new MultiRelateSaveRecordMapper);
     }
