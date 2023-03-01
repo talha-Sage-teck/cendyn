@@ -24,39 +24,25 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Observable, Subscription} from 'rxjs';
-import {
-    ListViewModel,
-    ListViewStore
-} from 'core';
-import {AppStateStore} from 'core';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {AngularSvgIconModule} from 'angular-svg-icon';
+import {OverrideListHeaderComponent} from "./override-list-header.component";
+import {ListFilterModule, ModuleTitleModule, RecordPanelModule, SettingsMenuModule} from "core";
+import {OverrideActionMenuModule} from "../override-action-menu/override-action-menu.module";
 
-@Component({
-    selector: 'scrm-account-list',
-    templateUrl: './account-list.component.html',
-    styleUrls: [],
-    providers: [ListViewStore]
+@NgModule({
+    declarations: [OverrideListHeaderComponent],
+    exports: [OverrideListHeaderComponent],
+    imports: [
+        CommonModule,
+        ModuleTitleModule,
+        OverrideActionMenuModule,
+        SettingsMenuModule,
+        AngularSvgIconModule,
+        ListFilterModule,
+        RecordPanelModule
+    ]
 })
-export class AccountListComponent implements OnInit, OnDestroy {
-    listSub: Subscription;
-
-    vm$: Observable<ListViewModel> = null;
-
-    constructor(protected appState: AppStateStore, protected listStore: ListViewStore) {
-
-    }
-
-    ngOnInit(): void {
-        this.listSub = this.listStore.init(this.appState.getModule()).subscribe();
-        this.vm$ = this.listStore.vm$;
-    }
-
-    ngOnDestroy(): void {
-        if (this.listSub) {
-            this.listSub.unsubscribe();
-        }
-
-        this.listStore.destroy();
-    }
+export class OverrideListHeaderModule {
 }

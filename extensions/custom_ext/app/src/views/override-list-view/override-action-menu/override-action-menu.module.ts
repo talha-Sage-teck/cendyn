@@ -26,33 +26,21 @@
 
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {
-    FieldModule, FullPageSpinnerModule,
-    ListHeaderModule, LoadingSpinnerModule, ModalModule
-} from 'core';
-import {AccountListComponent} from "./account-list.component";
-import {AccountListContainerModule} from "./account-list-container/account-list-container.module";
-import { AccountPopupComponent } from './account-popup/account-popup.component';
-import {CdkTableModule} from "@angular/cdk/table";
+import {AngularSvgIconModule} from 'angular-svg-icon';
+
+import {OverrideActionMenuComponent} from './override-action-menu.component';
+import {ButtonGroupModule, ButtonModule, ModalModule} from "core";
 
 @NgModule({
-    declarations: [
-        AccountListComponent,
-        AccountPopupComponent,
-    ],
-    exports: [
-        AccountListComponent,
-    ],
+    declarations: [OverrideActionMenuComponent],
+    exports: [OverrideActionMenuComponent],
     imports: [
         CommonModule,
-        ListHeaderModule,
-        AccountListContainerModule,
-        FieldModule,
-        CdkTableModule,
         ModalModule,
-        LoadingSpinnerModule,
-        FullPageSpinnerModule
-    ],
+        ButtonModule,
+        AngularSvgIconModule,
+        ButtonGroupModule
+    ]
 })
-export class AccountListModule {
+export class OverrideActionMenuModule {
 }

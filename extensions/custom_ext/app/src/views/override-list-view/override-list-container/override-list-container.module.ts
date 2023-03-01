@@ -27,20 +27,21 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {AngularSvgIconModule} from 'angular-svg-icon';
-import {AccountListContainerComponent} from "./account-list-container.component";
-import {SidebarWidgetModule, WidgetPanelModule} from "core";
+import {OverrideListContainerComponent} from "./override-list-container.component";
+import {SidebarWidgetModule, TableModule, WidgetPanelModule} from "core";
 import {AccountTableModule} from "../../../components/account-table/account-table.module";
 
 @NgModule({
-    declarations: [AccountListContainerComponent],
-    exports: [AccountListContainerComponent],
+    declarations: [OverrideListContainerComponent],
+    exports: [OverrideListContainerComponent],
     imports: [
         CommonModule,
         AccountTableModule,
+        TableModule,
         WidgetPanelModule,
         AngularSvgIconModule,
         SidebarWidgetModule
     ]
 })
-export class AccountListContainerModule {
+export class OverrideListContainerModule {
 }
