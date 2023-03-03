@@ -8,7 +8,7 @@ import {OverrideListModule} from "../views/override-list-view/override-list.modu
 import {OverrideListContainerModule} from "../views/override-list-view/override-list-container/override-list-container.module";
 import {AccountTableModule} from "../components/account-table/account-table.module";
 import {AccountTableBodyModule} from "../components/account-table/account-table-body/account-table-body.module";
-import {AccountRecordModule} from "../views/account-record-view/account-record.module";
+import {OverrideRecordModule} from "../views/override-record-view/override-record.module";
 import {MultiRelateEditFieldModule} from "../fields/multirelate/templates/edit/multirelate.module";
 import {MultiRelateDetailFieldsModule} from "../fields/multirelate/templates/detail/multirelate.module";
 import {MultiRelateFilterFieldModule} from "../fields/multirelate/templates/filter/multirelate.module";
@@ -23,6 +23,7 @@ import {MultiRelateSaveRecordMapper} from "../store/record-mappers/multirelate-s
 import {OverrideEnumEditFieldComponent} from "../fields/override-enum/edit/override-enum.component";
 import {OverrideEnumEditFieldModule} from "../fields/override-enum/edit/override-enum.module";
 import {OverrideListHeaderModule} from "../views/override-list-view/override-list-header/override-list-header.module";
+import {OverrideCreateRecordModule} from "../views/override-create-view/override-create-record.module";
 @NgModule({
     declarations: [],
     imports: [
@@ -34,13 +35,14 @@ import {OverrideListHeaderModule} from "../views/override-list-view/override-lis
         OverrideListModule,
         AccountTableBodyModule,
         AccountTableModule,
-        AccountRecordModule,
+        OverrideRecordModule,
         MultiRelateEditFieldModule,
         MultiRelateDetailFieldsModule,
         MultiRelateFilterFieldModule,
         MultiselectRecordListModalModule,
         OverrideRelateEditFieldModule,
-        OverrideEnumEditFieldModule
+        OverrideEnumEditFieldModule,
+        OverrideCreateRecordModule
     ],
     providers: []
 })

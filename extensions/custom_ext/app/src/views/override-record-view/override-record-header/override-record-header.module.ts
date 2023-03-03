@@ -24,53 +24,28 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ViewMode} from 'common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {OverrideRecordHeaderComponent} from './override-record-header.component';
 import {
-    RecordViewStore,
-    RecordViewModel,
-    AppStateStore,
+    ModuleTitleModule,
+    DynamicLabelModule,
+    ActionGroupMenuModule,
+    FavoriteToggleModule
 } from 'core';
-import {ActivatedRoute, Params} from "@angular/router";
-import {Observable, Subscription} from "rxjs";
+import {AccountTableBodyModule} from "../../../components/account-table/account-table-body/account-table-body.module";
 
-@Component({
-    selector: 'scrm-account-record',
-    templateUrl: './account-record.component.html',
-    styleUrls: [],
-    providers: [RecordViewStore]
+@NgModule({
+    declarations: [OverrideRecordHeaderComponent],
+    exports: [OverrideRecordHeaderComponent],
+    imports: [
+        CommonModule,
+        ModuleTitleModule,
+        DynamicLabelModule,
+        ActionGroupMenuModule,
+        FavoriteToggleModule,
+        AccountTableBodyModule
+    ]
 })
-export class AccountRecordComponent implements OnInit, OnDestroy {
-    recordSub: Subscription;
-    vm$: Observable<RecordViewModel> = null;
-    showStatusBar = false;
-
-    constructor(
-        protected appState: AppStateStore,
-        protected recordStore: RecordViewStore,
-        private route: ActivatedRoute
-    ) {
-    }
-
-    ngOnInit(): void {
-        let mode = 'detail' as ViewMode;
-        const data = (this.route.snapshot && this.route.snapshot.data) || {};
-
-        if (data.mode) {
-            mode = data.mode;
-        }
-
-        const params = (this.route.snapshot && this.route.snapshot.queryParams) || {} as Params;
-
-        this.recordSub = this.recordStore.init(this.appState.getModule(), this.route.snapshot.params.record, mode, params).subscribe();
-        this.vm$ = this.recordStore.vm$;
-    }
-
-    ngOnDestroy(): void {
-        if (this.recordSub) {
-            this.recordSub.unsubscribe();
-        }
-
-        this.recordStore.destroy();
-    }
+export class OverrideRecordHeaderModule {
 }

@@ -34,13 +34,11 @@ import {
     BaseRecordResolver,
     ClassicViewResolver,
     ClassicViewUiComponent,
-    CreateRecordComponent,
     ExtensionLoader,
     InstallAuthGuard,
     InstallViewComponent,
     LoginAuthGuard,
     LoginUiComponent,
-    RecordComponent,
     SystemConfigStore,
     SystemNameService,
     BaseRouteService,
@@ -49,8 +47,9 @@ import {
 import {take} from 'rxjs/operators';
 import {isFalse} from 'common';
 import {
+    OverrideCreateRecordComponent,
     OverrideListComponent,
-    AccountRecordComponent
+    OverrideRecordComponent
 } from "../../../../../extensions/custom_ext/app/src/customExt";
 @Injectable()
 export class AppInit {
@@ -198,7 +197,7 @@ export class AppInit {
                         if (!isFalse(configRoutes[routeName].create) && !isFalse(configRoutes[routeName].record)) {
                             routes.push({
                                 path: routeName + '/create',
-                                component: CreateRecordComponent,
+                                component: OverrideCreateRecordComponent,
                                 canActivate: [AuthGuard],
                                 runGuardsAndResolvers: 'always',
                                 resolve: {
@@ -215,7 +214,7 @@ export class AppInit {
 
                             routes.push({
                                 path: routeName + '/edit',
-                                component: CreateRecordComponent,
+                                component: OverrideCreateRecordComponent,
                                 canActivate: [AuthGuard],
                                 runGuardsAndResolvers: 'always',
                                 resolve: {
@@ -233,7 +232,7 @@ export class AppInit {
                             if (!isFalse(configRoutes[routeName].duplicate)) {
                                 routes.push({
                                     path: routeName + '/duplicate/:record',
-                                    component: CreateRecordComponent,
+                                    component: OverrideCreateRecordComponent,
                                     canActivate: [AuthGuard],
                                     runGuardsAndResolvers: 'always',
                                     resolve: {
@@ -252,43 +251,24 @@ export class AppInit {
                         }
 
                         if (configRoutes[routeName].record) {
-                            if(routeName.toLowerCase() === "accounts") {
-                                routes.push({
-                                    path: routeName + '/record/:record',
-                                    component: AccountRecordComponent,
-                                    canActivate: [AuthGuard],
-                                    runGuardsAndResolvers: 'always',
-                                    resolve: {
-                                        view: BaseModuleResolver,
-                                        metadata: BaseRecordResolver
-                                    },
-                                    data: {
-                                        reuseRoute: false,
-                                        checkSession: true,
-                                        module: routeName
-                                    }
-                                });
-                            }
-                            else {
-                                routes.push({
-                                    path: routeName + '/record/:record',
-                                    component: RecordComponent,
-                                    canActivate: [AuthGuard],
-                                    runGuardsAndResolvers: 'always',
-                                    resolve: {
-                                        view: BaseModuleResolver,
-                                        metadata: BaseRecordResolver
-                                    },
-                                    data: {
-                                        reuseRoute: false,
-                                        checkSession: true,
-                                        module: routeName
-                                    }
-                                });
-                            }
+                            routes.push({
+                                path: routeName + '/record/:record',
+                                component: OverrideRecordComponent,
+                                canActivate: [AuthGuard],
+                                runGuardsAndResolvers: 'always',
+                                resolve: {
+                                    view: BaseModuleResolver,
+                                    metadata: BaseRecordResolver
+                                },
+                                data: {
+                                    reuseRoute: false,
+                                    checkSession: true,
+                                    module: routeName
+                                }
+                            });
                             routes.push({
                                 path: routeName + '/edit/:record',
-                                component: RecordComponent,
+                                component: OverrideRecordComponent,
                                 canActivate: [AuthGuard],
                                 runGuardsAndResolvers: 'always',
                                 resolve: {
@@ -302,40 +282,21 @@ export class AppInit {
                                     mode: 'edit'
                                 }
                             });
-                            if(routeName.toLowerCase() === "accounts") {
-                                routes.push({
-                                    path: routeName + '/detail/:record',
-                                    component: AccountRecordComponent,
-                                    canActivate: [AuthGuard],
-                                    runGuardsAndResolvers: 'always',
-                                    resolve: {
-                                        view: BaseModuleResolver,
-                                        metadata: BaseRecordResolver
-                                    },
-                                    data: {
-                                        reuseRoute: false,
-                                        checkSession: true,
-                                        module: routeName
-                                    }
-                                });
-                            }
-                            else {
-                                routes.push({
-                                    path: routeName + '/detail/:record',
-                                    component: RecordComponent,
-                                    canActivate: [AuthGuard],
-                                    runGuardsAndResolvers: 'always',
-                                    resolve: {
-                                        view: BaseModuleResolver,
-                                        metadata: BaseRecordResolver
-                                    },
-                                    data: {
-                                        reuseRoute: false,
-                                        checkSession: true,
-                                        module: routeName
-                                    }
-                                });
-                            }
+                            routes.push({
+                                path: routeName + '/detail/:record',
+                                component: OverrideRecordComponent,
+                                canActivate: [AuthGuard],
+                                runGuardsAndResolvers: 'always',
+                                resolve: {
+                                    view: BaseModuleResolver,
+                                    metadata: BaseRecordResolver
+                                },
+                                data: {
+                                    reuseRoute: false,
+                                    checkSession: true,
+                                    module: routeName
+                                }
+                            });
                         }
                     });
 
