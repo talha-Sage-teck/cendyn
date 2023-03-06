@@ -24,28 +24,45 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {AccountRecordComponent} from './account-record.component';
-import {
-    RecordContainerModule,
-    FieldModule,
-    StatusBarModule,
-    SubpanelModule
-} from 'core';
-import {AccountRecordHeaderModule} from "./account-record-header/account-record-header.module";
-
-@NgModule({
-    declarations: [AccountRecordComponent],
-    exports: [AccountRecordComponent],
-    imports: [
-        CommonModule,
-        FieldModule,
-        RecordContainerModule,
-        AccountRecordHeaderModule,
-        StatusBarModule,
-        SubpanelModule
-    ],
+import {Injectable} from '@angular/core';
+import {ViewMode} from 'common';
+import {take} from 'rxjs/operators';
+import {OverrideRecordActionData, OverrideRecordActionHandler} from '../record.action';
+import {MessageService, ModuleNavigation} from 'core';
+@Injectable({
+    providedIn: 'root'
 })
-export class AccountRecordModule {
+export class RecordSaveNewAction extends OverrideRecordActionHandler {
+
+    key = 'saveNew';
+    modes = ['create' as ViewMode];
+
+    constructor(
+        protected message: MessageService,
+        protected navigation: ModuleNavigation
+    ) {
+        super();
+    }
+
+    run(data: OverrideRecordActionData): void {
+        data.store.recordStore.validate().pipe(take(1)).subscribe(valid => {
+            if (valid) {
+                data.store.save().pipe(take(1)).subscribe(
+                    record => {
+                        const store = data.store;
+                        const params = store.params;
+                        const moduleName = store.getModuleName();
+                        this.navigation.navigateBack(record, moduleName, params);
+                    }
+                );
+                return;
+            }
+
+            this.message.addWarningMessageByKey('LBL_VALIDATION_ERRORS');
+        });
+    }
+
+    shouldDisplay(data: OverrideRecordActionData): boolean {
+        return true;
+    }
 }

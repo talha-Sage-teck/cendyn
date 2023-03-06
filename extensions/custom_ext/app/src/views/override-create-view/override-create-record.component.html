@@ -25,13 +25,14 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
+
 <!-- Start Record View Section -->
-<div class="record-view" *ngIf="(vm$ | async) as vm">
-    <scrm-account-record-header></scrm-account-record-header>
+<div *ngIf="(vm$ | async) as vm" class="record-view">
+    <scrm-override-record-header></scrm-override-record-header>
     <div class="record-view-hr-container">
         <hr class="record-view-hr">
     </div>
     <scrm-status-bar *ngIf="showStatusBar"></scrm-status-bar>
-    <scrm-record-container></scrm-record-container>
+    <scrm-override-record-container></scrm-override-record-container>
 </div>
 <!-- End Record View Section -->

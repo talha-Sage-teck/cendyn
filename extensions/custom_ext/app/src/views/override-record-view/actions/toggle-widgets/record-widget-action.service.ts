@@ -24,28 +24,31 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {AccountRecordHeaderComponent} from './account-record-header.component';
-import {
-    ModuleTitleModule,
-    DynamicLabelModule,
-    ActionGroupMenuModule,
-    FavoriteToggleModule
-} from 'core';
-import {AccountTableBodyModule} from "../../../components/account-table/account-table-body/account-table-body.module";
+import {Injectable} from '@angular/core';
+import {ViewMode} from 'common';
+import {OverrideRecordActionData, OverrideRecordActionHandler} from '../record.action';
 
-@NgModule({
-    declarations: [AccountRecordHeaderComponent],
-    exports: [AccountRecordHeaderComponent],
-    imports: [
-        CommonModule,
-        ModuleTitleModule,
-        DynamicLabelModule,
-        ActionGroupMenuModule,
-        FavoriteToggleModule,
-        AccountTableBodyModule
-    ]
+@Injectable({
+    providedIn: 'root'
 })
-export class AccountRecordHeaderModule {
+export class RecordToggleWidgetsAction extends OverrideRecordActionHandler {
+
+    key = 'toggle-widgets';
+    modes = ['detail' as ViewMode, 'edit' as ViewMode];
+
+    constructor() {
+        super();
+    }
+
+    run(data: OverrideRecordActionData): void {
+        data.store.showSidebarWidgets = !data.store.showSidebarWidgets;
+    }
+
+    shouldDisplay(data: OverrideRecordActionData): boolean {
+        return data.store.widgets;
+    }
+
+    getStatus(data: OverrideRecordActionData): string {
+        return data.store.showSidebarWidgets ? 'active' : '';
+    }
 }

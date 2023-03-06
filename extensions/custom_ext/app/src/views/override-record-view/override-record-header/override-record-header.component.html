@@ -78,7 +78,7 @@
                                             [labelKey]="getSummaryTemplate()">
                         </scrm-dynamic-label>
                         <div class="pl-1 d-flex align-items-top">
-                            <scrm-account-badge [height]="30" [fontSize]="15" [record]="record"></scrm-account-badge>
+                            <scrm-account-badge *ngIf="record.module.toLowerCase() === 'accounts'" [height]="30" [fontSize]="15" [record]="record"></scrm-account-badge>
                         </div>
                         <div *ngIf="record && record.fields && mode !== 'create'" class="pl-1 d-flex align-items-top">
                             <scrm-favorite-toggle [record]="record"></scrm-favorite-toggle>

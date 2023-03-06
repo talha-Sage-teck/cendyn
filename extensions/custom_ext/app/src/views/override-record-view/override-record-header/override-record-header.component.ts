@@ -28,14 +28,16 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {ActionContext, Record, ViewMode} from 'common';
-import {RecordActionsAdapter, RecordViewStore, ModuleNavigation} from 'core';
+import {ModuleNavigation} from 'core';
+import {CustomRecordViewStore} from "../store/custom-record-view.store";
+import {OverrideRecordActionsAdapter} from "../adapters/override-actions.adapter";
 
 @Component({
-    selector: 'scrm-account-record-header',
-    templateUrl: 'account-record-header.component.html',
-    providers: [RecordActionsAdapter]
+    selector: 'scrm-override-record-header',
+    templateUrl: 'override-record-header.component.html',
+    providers: [OverrideRecordActionsAdapter]
 })
-export class AccountRecordHeaderComponent implements OnInit, OnDestroy {
+export class OverrideRecordHeaderComponent implements OnInit, OnDestroy {
 
     record: Record;
     displayResponsiveTable = false;
@@ -45,8 +47,8 @@ export class AccountRecordHeaderComponent implements OnInit, OnDestroy {
     protected subs: Subscription[] = [];
 
     constructor(
-        public actionsAdapter: RecordActionsAdapter,
-        protected recordViewStore: RecordViewStore,
+        public actionsAdapter: OverrideRecordActionsAdapter,
+        protected recordViewStore: CustomRecordViewStore,
         protected moduleNavigation: ModuleNavigation
     ) {
     }

@@ -40,31 +40,33 @@ import {
     ViewMode
 } from 'common';
 import {catchError, distinctUntilChanged, finalize, map, take, tap} from 'rxjs/operators';
-import {RecordViewData, RecordViewModel, RecordViewState} from './record-view.store.model';
-import {NavigationStore} from '../../../../store/navigation/navigation.store';
-import {StateStore} from '../../../../store/state';
-import {RecordSaveGQL} from '../../../../store/record/graphql/api.record.save';
-import {LanguageStore} from '../../../../store/language/language.store';
-import {ModuleNavigation} from '../../../../services/navigation/module-navigation/module-navigation.service';
 import {
-    Metadata,
+    ViewStore,
+    RecordViewState,
+    StateStore,
+    RecordViewModel,
+    SubpanelStoreMap,
+    RecordStore,
+    RecordViewData,
+    RecordFetchGQL,
+    RecordSaveGQL,
+    AppStateStore,
+    LanguageStore,
+    NavigationStore,
+    ModuleNavigation,
     MetadataStore,
+    LocalStorageService,
+    MessageService,
+    SubpanelStoreFactory,
+    RecordManager,
+    StatisticsBatch,
+    RecordStoreFactory,
+    UserPreferenceStore,
     RecordViewMetadata,
+    Metadata,
     SummaryTemplates
-} from '../../../../store/metadata/metadata.store.service';
-import {MessageService} from '../../../../services/message/message.service';
-import {SubpanelStoreMap} from '../../../../containers/subpanel/store/subpanel/subpanel.store';
-import {AppStateStore} from '../../../../store/app-state/app-state.store';
-import {RecordManager} from '../../../../services/record/record.manager';
-import {RecordStore} from '../../../../store/record/record.store';
-import {LocalStorageService} from '../../../../services/local-storage/local-storage.service';
-import {SubpanelStoreFactory} from '../../../../containers/subpanel/store/subpanel/subpanel.store.factory';
-import {ViewStore} from '../../../../store/view/view.store';
-import {RecordFetchGQL} from '../../../../store/record/graphql/api.record.get';
-import {Params} from '@angular/router';
-import {StatisticsBatch} from '../../../../store/statistics/statistics-batch.service';
-import {RecordStoreFactory} from '../../../../store/record/record.store.factory';
-import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
+} from 'core';
+import {Params} from "@angular/router";
 
 const initialState: RecordViewState = {
     module: '',
@@ -83,7 +85,7 @@ const initialState: RecordViewState = {
 };
 
 @Injectable()
-export class RecordViewStore extends ViewStore implements StateStore {
+export class CustomRecordViewStore extends ViewStore implements StateStore {
 
     /**
      * Public long-lived observable streams
@@ -348,6 +350,10 @@ export class RecordViewStore extends ViewStore implements StateStore {
                     ...this.internalState,
                     loading: false
                 });
+                //Custom CB2B_PMSProfiles -> Accounts and Opportunities -> Hotels subpanel refresh onload code
+                if(this.getModuleName().toLowerCase() === "cb2b_pmsprofiles" ||
+                    this.getModuleName().toLowerCase() === "opportunities")
+                    window.location.reload();
             })
         );
     }
