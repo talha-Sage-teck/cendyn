@@ -20,11 +20,16 @@ array (
           'field' => '30',
         ),
       ),
-      'includes' =>
+      'form' =>
       array(
+        'enctype' => 'multipart/form-data',
+//        'headerTpl' => 'modules/AOS_Products/tpls/EditViewHeader.tpl',
+      ),
+      'includes' =>
+      array (
         0 =>
         array (
-         'file' => 'custom/modules/AOS_Contracts/js/AOS_Contracts.js',
+          'file' => 'custom/modules/AOS_Contracts/js/AOS_Contracts.js',
         ),
       ),
       'useTabs' => false,
@@ -32,6 +37,16 @@ array (
       'tabDefs' =>
       array (
         'DEFAULT' =>
+        array (
+          'newTab' => false,
+          'panelDefault' => 'expanded',
+        ),
+        'LBL_EDITVIEW_PANEL3' =>
+        array (
+          'newTab' => false,
+          'panelDefault' => 'expanded',
+        ),
+        'LBL_EDITVIEW_PANEL2' =>
         array (
           'newTab' => false,
           'panelDefault' => 'expanded',
@@ -146,7 +161,229 @@ array (
         7 =>
         array (
           0 => 'description',
-          1 => 'associate_hotels_contracts',
+          1 => '',
+        ),
+        8 =>
+        array (
+          0 => 'associate_hotels_contracts',
+          1 => '',
+        ),
+      ),
+      'lbl_editview_panel3' =>
+      array (
+        0 =>
+        array (
+          0 =>
+          array (
+            'name' => 'rate',
+            'studio' => 'visible',
+            'label' => 'LBL_RATE',
+          ),
+          1 => '',
+        ),
+        1 =>
+        array (
+          0 =>
+          array (
+            'name' => 'eg_effective_date',
+            'label' => 'LBL_EG_EFFECTIVE_DATE',
+          ),
+          1 =>
+          array (
+            'name' => 'eg_signed_date',
+            'label' => 'LBL_EG_SIGNED_DATE',
+          ),
+        ),
+        2 =>
+        array (
+          0 =>
+          array (
+            'name' => 'eg_reactivated_date',
+            'label' => 'LBL_EG_REACTIVATED_DATE',
+          ),
+          1 =>
+          array (
+            'name' => 'eg_termination_date',
+            'label' => 'LBL_EG_TERMINATION_DATE',
+          ),
+        ),
+        3 =>
+        array (
+          0 =>
+          array (
+            'name' => 'eg_new_date',
+            'label' => 'LBL_EG_NEW_DATE',
+          ),
+          1 =>
+          array (
+            'name' => 'eg_new_signed_date',
+            'label' => 'LBL_EG_NEW_SIGNED_DATE',
+          ),
+        ),
+        4 =>
+        array (
+          0 =>
+          array (
+            'name' => 'category',
+            'studio' => 'visible',
+            'label' => 'LBL_CATEGORY',
+          ),
+          1 =>
+          array (
+            'name' => 'category_option_1',
+            'label' => 'LBL_CATEGORY_OPTION_1',
+          ),
+        ),
+        5 =>
+        array (
+          0 => '',
+          1 =>
+          array (
+            'name' => 'category_option_2',
+            'label' => 'LBL_CATEGORY_OPTION_2',
+          ),
+        ),
+        6 =>
+        array (
+          0 => '',
+          1 =>
+          array (
+            'name' => 'category_option_3',
+            'label' => 'LBL_CATEGORY_OPTION_3',
+          ),
+        ),
+        7 =>
+        array (
+          0 => '',
+          1 =>
+          array (
+            'name' => 'category_option_4',
+            'label' => 'LBL_CATEGORY_OPTION_4',
+          ),
+        ),
+      ),
+      'lbl_editview_panel2' =>
+      array (
+        0 =>
+        array (
+          0 =>
+          array (
+            'name' => 'brochure_contribution_start_date',
+            'label' => 'LBL_BROCHURE_CONTRIBUTION_START_DATE',
+          ),
+          1 =>
+          array (
+            'name' => 'brochure_contribution_end_date',
+            'label' => 'LBL_BROCHURE_CONTRIBUTION_END_DATE',
+          ),
+        ),
+        1 =>
+        array (
+          0 =>
+          array (
+            'name' => 'brochure_contribution_date_of_issue',
+            'label' => 'LBL_BROCHURE_CONTRIBUTION_DATE_OF_ISSUE',
+          ),
+          1 =>
+          array (
+            'name' => 'brochure_contribution_effective_date',
+            'label' => 'LBL_BROCHURE_CONTRIBUTION_EFFECTIVE_DATE',
+          ),
+        ),
+        2 =>
+        array (
+          0 =>
+          array (
+            'name' => 'agreement_type',
+            'studio' => 'visible',
+            'label' => 'LBL_AGREEMENT_TYPE',
+          ),
+          1 =>
+          array (
+            'name' => 'revision_1_date',
+            'label' => 'LBL_REVISION_1_DATE',
+          ),
+        ),
+        3 =>
+        array (
+          0 =>
+          array (
+            'name' => 'special_information',
+            'label' => 'LBL_SPECIAL_INFORMATION',
+          ),
+          1 =>
+          array (
+            'name' => 'revision_1',
+            'label' => 'LBL_REVISION_1',
+          ),
+        ),
+        4 =>
+        array (
+          0 =>
+          array (
+            'name' => 'name_of_brochure',
+            'label' => 'LBL_NAME_OF_BROCHURE',
+          ),
+          1 =>
+          array (
+            'name' => 'revision_2_date',
+            'label' => 'LBL_REVISION_2_DATE',
+          ),
+        ),
+        5 =>
+        array (
+          0 =>
+          array (
+            'name' => 'coverage',
+            'label' => 'LBL_COVERAGE',
+          ),
+          1 =>
+          array (
+            'name' => 'revision_2',
+            'label' => 'LBL_REVISION_2',
+          ),
+        ),
+        6 =>
+        array (
+          0 => '',
+          1 =>
+          array (
+            'name' => 'revision_3_date',
+            'label' => 'LBL_REVISION_3_DATE',
+          ),
+        ),
+        7 =>
+        array (
+          0 => '',
+          1 =>
+          array (
+            'name' => 'revision_3',
+            'label' => 'LBL_REVISION_3',
+          ),
+        ),
+        8 =>
+        array (
+          0 =>
+          array (
+            'name' => 'attachment',
+            'comment' => 'File name associated with the note (attachment)',
+            'label' => 'LBL_ATTACHMENT',
+            'customCode' => '{$ATTACHMENT}',
+          ),
+          1 =>
+          array (
+            'name' => 'revision_4_date',
+            'label' => 'LBL_REVISION_4_DATE',
+          ),
+        ),
+        9 =>
+        array (
+          0 => '',
+          1 =>
+          array (
+            'name' => 'revision_4',
+            'label' => 'LBL_REVISION_4',
+          ),
         ),
       ),
       'lbl_line_items' =>
