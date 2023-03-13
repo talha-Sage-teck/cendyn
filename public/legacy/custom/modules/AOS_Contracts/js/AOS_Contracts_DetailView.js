@@ -1,35 +1,3 @@
-function loadSQS() {
-    sqs_objects['EditView_associate_hotels_contracts_sqs'] = {
-        "form": "EditView",
-        "method": "query",
-        "modules": [
-            "CB2B_Hotels"
-        ],
-        "group": "or",
-        "field_list": [
-            "name",
-            "id"
-        ],
-        "populate_list": [
-            "associate_hotels_contracts_sqs",
-            "cb2b_hotels_id_sqs"
-        ],
-        "required_list": [],
-        "conditions": [
-            {
-                "name": "name",
-                "op": "like_custom",
-                "end": "%",
-                "value": ""
-            }
-        ],
-        "order": "name",
-        "limit": "30",
-        "no_match_text": "No Match"
-    };
-    QSCallbacksArray['EditView_associate_hotels_contracts_sqs'] = multirelate_callback_function;
-}
-
 Element.prototype.insertChildAtIndex = function(child, index) {
     if (!index) index = 0
     if (index >= this.children.length) {
@@ -58,9 +26,9 @@ function populate_conditional_fields() {
 function configure(target) {
     let panel_content = document.getElementsByClassName("panel-content")[0];
     let associated_hotels = document.querySelector('[data-field=associate_hotels_contracts]').parentElement;
-    let contracted = panel_content.children[1];
-    let brochure = panel_content.children[2];
-    switch (target.options[target.selectedIndex].value) {
+    let contracted = panel_content.children[0];
+    let brochure = panel_content.children[1];
+    switch (target.value) {
         case "EGC":
             contracted.style.display = "block";
             brochure.style.display = "none";
@@ -81,24 +49,13 @@ function configure(target) {
     }
 }
 
-function transformEditView() {
+function transformDetailView() {
     let contract_type = document.getElementById('contract_type');
-    contract_type.addEventListener('change', (event) => {
-        configure(event.target);
-    });
     configure(contract_type);
 }
 
 function init() {
-    transformEditView();
-    loadSQS();
-}
-
-function deleteAttachment()
-{
-    document.getElementById('new_attachment').style.display = 'block';
-    document.getElementById('old_attachment').style.display = 'none';
-    document.getElementById('deleteAttachment').value = '1';
+    transformDetailView();
 }
 
 YAHOO.util.Event.onDOMReady(init);

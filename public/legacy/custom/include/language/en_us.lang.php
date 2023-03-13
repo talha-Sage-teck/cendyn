@@ -161,15 +161,6 @@ $app_list_strings['account_industry_codes_list']=array (
   'TOU' => 'Tourist Board',
   'LFD' => 'Luxury Food  & Drink',
 );
-$app_list_strings['contract_status_list']=array (
-  'C' => 'Contracted',
-  'D' => 'Declined',
-  'E' => 'Expired',
-  'L' => 'Lost',
-  'P' => 'Pending',
-  'R' => 'Re-activated',
-  'T' => 'Terminated',
-);
 $app_list_strings['activity_results_list']=array (
   '' => '',
   'FUP' => 'Follow up',
@@ -676,10 +667,27 @@ $app_list_strings['b2bcurrency_list']=array (
   'PHP' => 'PHP',
   'UNK' => 'Unknown',
 );
-
+$app_list_strings['agreement_type']=array (
+  '' => '',
+  'AAG' => 'Aman Agreement',
+  'PAG' => 'Partner Agreement',
+);
+$app_list_strings['rate_list']=array (
+  '' => '',
+  20 => '20%',
+  25 => '25%',
+);
+$app_list_strings['category_list']=array (
+  '' => '',
+  'OPT_1' => 'Option 1',
+  'OPT_2' => 'Option 2',
+  'OPT_3' => 'Option 3',
+  'OPT_4' => 'Option 4',
+);
 $app_list_strings['contract_type_list']=array (
   '' => '',
   'ALL' => 'Allotments',
+  'EGC' => 'EG Contract',
   'BRO' => 'Broschure Contribution',
   'COA' => 'Connectivity Agreements',
   'COM' => 'Commission Agreement',
@@ -691,4 +699,15 @@ $app_list_strings['contract_type_list']=array (
   'LEI' => 'Leisure Contract',
   'MIC' => 'MICE Contract',
   'OTH' => 'Other Agreements',
+);
+
+$app_list_strings['contract_status_list']=array (
+  'A' => 'Active',
+  'C' => 'Contracted',
+  'D' => 'Declined',
+  'E' => 'Expired',
+  'L' => 'Lost',
+  'P' => 'Pending',
+  'R' => 'Re-activated',
+  'T' => 'Terminated',
 );
