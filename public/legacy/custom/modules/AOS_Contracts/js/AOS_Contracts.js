@@ -94,7 +94,7 @@ function init() {
     loadSQS();
 }
 
-function deleteAttachment()
+function deleteAttachmentF()
 {
     document.getElementById('new_attachment').style.display = 'block';
     document.getElementById('old_attachment').style.display = 'none';

@@ -32,7 +32,7 @@ class AOS_ContractsViewEdit extends ViewEdit
         }
         $html .= '\'><input type=\'hidden\' id=\'deleteAttachment\' name=\'deleteAttachment\' value=\'0\'>
 		' . $temp . '<input type=\'hidden\' name=\'old_attach\' value=\'' . $image . '\'/>
-		<input type=\'button\' class=\'button\' value=\'' . $app_strings['LBL_REMOVE'] . '\' onclick=\'deleteAttachment();\' >
+		<input type=\'button\' class=\'button\' value=\'' . $app_strings['LBL_REMOVE'] . '\' onclick=\'deleteAttachmentF();\' >
 		</span>';
 
         $this->ss->assign('ATTACHMENT', $html);

@@ -24,14 +24,14 @@ array (
           ),
         ),
       ),
-       'includes' =>
+      'includes' =>
+      array (
+        0 =>
         array (
-            0 =>
-            array (
-                'file' => 'custom/modules/AOS_Contracts/js/AOS_Contracts_DetailView.js',
-            ),
+          'file' => 'custom/modules/AOS_Contracts/js/AOS_Contracts_DetailView.js',
         ),
-        'maxColumns' => '2',
+      ),
+      'maxColumns' => '2',
       'widths' =>
       array (
         0 =>
@@ -183,9 +183,8 @@ array (
         array (
           0 =>
           array (
-            'name' => 'rate',
-            'studio' => 'visible',
-            'label' => 'LBL_RATE',
+            'name' => 'eg_termination_date',
+            'label' => 'LBL_EG_TERMINATION_DATE',
           ),
           1 => '',
         ),
@@ -206,19 +205,6 @@ array (
         array (
           0 =>
           array (
-            'name' => 'eg_reactivated_date',
-            'label' => 'LBL_EG_REACTIVATED_DATE',
-          ),
-          1 =>
-          array (
-            'name' => 'eg_termination_date',
-            'label' => 'LBL_EG_TERMINATION_DATE',
-          ),
-        ),
-        3 =>
-        array (
-          0 =>
-          array (
             'name' => 'eg_new_date',
             'label' => 'LBL_EG_NEW_DATE',
           ),
@@ -228,14 +214,24 @@ array (
             'label' => 'LBL_EG_NEW_SIGNED_DATE',
           ),
         ),
-        4 =>
+        3 =>
         array (
           0 =>
+          array (
+            'name' => 'rate',
+            'studio' => 'visible',
+            'label' => 'LBL_RATE',
+          ),
+          1 =>
           array (
             'name' => 'category',
             'studio' => 'visible',
             'label' => 'LBL_CATEGORY',
           ),
+        ),
+        4 =>
+        array (
+          0 => '',
           1 =>
           array (
             'name' => 'category_option_1',
@@ -376,7 +372,7 @@ array (
             'name' => 'attachment',
             'comment' => 'File name associated with the note (attachment)',
             'label' => 'LBL_ATTACHMENT',
-            'customCode' => '<img src="{$fields.attachment.value}"/>',
+            'customCode' => '<a href="{$fields.attachment.value}">Attachment</a>',
           ),
           1 =>
           array (
