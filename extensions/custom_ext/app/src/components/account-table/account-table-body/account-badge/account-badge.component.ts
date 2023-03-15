@@ -56,7 +56,7 @@ export class AccountBadgeComponent implements OnInit, AfterViewInit {
     }
     else
       this.init().then(() => {
-        this.reload();
+//        this.reload();
       });
   }
 
