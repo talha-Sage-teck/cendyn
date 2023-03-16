@@ -8,6 +8,7 @@ $dictionary["AOS_Contracts"]["fields"]["eg_effective_date"] = array (
     'enable_range_search' => true,
     'options' => 'date_range_search_dom',
     'inline_edit' => false,
+    'studio' => 'visible',
 );
 
 $dictionary["AOS_Contracts"]["fields"]["eg_termination_date"] = array (
@@ -17,6 +18,7 @@ $dictionary["AOS_Contracts"]["fields"]["eg_termination_date"] = array (
     'enable_range_search' => true,
     'options' => 'date_range_search_dom',
     'inline_edit' => false,
+    'studio' => 'visible',
 );
 
 $dictionary["AOS_Contracts"]["fields"]["eg_signed_date"] = array (
@@ -26,6 +28,7 @@ $dictionary["AOS_Contracts"]["fields"]["eg_signed_date"] = array (
     'enable_range_search' => true,
     'options' => 'date_range_search_dom',
     'inline_edit' => false,
+    'studio' => 'visible',
 );
 
 $dictionary["AOS_Contracts"]["fields"]["eg_reactivated_date"] = array (
@@ -35,6 +38,7 @@ $dictionary["AOS_Contracts"]["fields"]["eg_reactivated_date"] = array (
     'enable_range_search' => true,
     'options' => 'date_range_search_dom',
     'inline_edit' => false,
+    'studio' => 'visible',
 );
 
 $dictionary["AOS_Contracts"]["fields"]["eg_new_signed_date"] = array (
@@ -44,6 +48,7 @@ $dictionary["AOS_Contracts"]["fields"]["eg_new_signed_date"] = array (
     'enable_range_search' => true,
     'options' => 'date_range_search_dom',
     'inline_edit' => false,
+    'studio' => 'visible',
 );
 
 $dictionary["AOS_Contracts"]["fields"]["eg_new_date"] = array (
@@ -53,6 +58,7 @@ $dictionary["AOS_Contracts"]["fields"]["eg_new_date"] = array (
     'enable_range_search' => true,
     'options' => 'date_range_search_dom',
     'inline_edit' => false,
+    'studio' => 'visible',
 );
 
 $dictionary["AOS_Contracts"]["fields"]["revision_4_date"] = array (
@@ -62,6 +68,7 @@ $dictionary["AOS_Contracts"]["fields"]["revision_4_date"] = array (
     'enable_range_search' => true,
     'options' => 'date_range_search_dom',
     'inline_edit' => false,
+    'studio' => 'visible',
 );
 
 $dictionary["AOS_Contracts"]["fields"]["rate"] = array(
@@ -122,6 +129,7 @@ $dictionary["AOS_Contracts"]["fields"]["category_option_1"] = array (
     'merge_filter' => 'disabled',
     'len' => '255',
     'size' => '20',
+    'studio' => 'visible',
 );
 
 $dictionary["AOS_Contracts"]["fields"]["category_option_2"] = array (
@@ -144,6 +152,7 @@ $dictionary["AOS_Contracts"]["fields"]["category_option_2"] = array (
     'merge_filter' => 'disabled',
     'len' => '255',
     'size' => '20',
+    'studio' => 'visible',
 );
 
 $dictionary["AOS_Contracts"]["fields"]["category_option_3"] = array (
@@ -166,6 +175,7 @@ $dictionary["AOS_Contracts"]["fields"]["category_option_3"] = array (
     'merge_filter' => 'disabled',
     'len' => '255',
     'size' => '20',
+    'studio' => 'visible',
 );
 
 $dictionary["AOS_Contracts"]["fields"]["category_option_4"] = array (
@@ -188,6 +198,7 @@ $dictionary["AOS_Contracts"]["fields"]["category_option_4"] = array (
     'merge_filter' => 'disabled',
     'len' => '255',
     'size' => '20',
+    'studio' => 'visible',
 );
 
 $dictionary["AOS_Contracts"]["fields"]["attachment"] = array (
@@ -197,6 +208,7 @@ $dictionary["AOS_Contracts"]["fields"]["attachment"] = array (
     'len' => '255',
     'reportable' => true,
     'comment' => 'File name associated with the note (attachment)',
+    'studio' => 'visible',
 );
 
 //Brochure Contributions
@@ -208,6 +220,7 @@ $dictionary["AOS_Contracts"]["fields"]["brochure_contribution_start_date"] = arr
     'enable_range_search' => true,
     'options' => 'date_range_search_dom',
     'inline_edit' => false,
+    'studio' => 'visible',
 );
 
 $dictionary["AOS_Contracts"]["fields"]["brochure_contribution_end_date"] = array (
@@ -217,6 +230,7 @@ $dictionary["AOS_Contracts"]["fields"]["brochure_contribution_end_date"] = array
     'enable_range_search' => true,
     'options' => 'date_range_search_dom',
     'inline_edit' => false,
+    'studio' => 'visible',
 );
 
 $dictionary["AOS_Contracts"]["fields"]["brochure_contribution_date_of_issue"] = array (
@@ -226,6 +240,7 @@ $dictionary["AOS_Contracts"]["fields"]["brochure_contribution_date_of_issue"] = 
     'enable_range_search' => true,
     'options' => 'date_range_search_dom',
     'inline_edit' => false,
+    'studio' => 'visible',
 );
 
 $dictionary["AOS_Contracts"]["fields"]["brochure_contribution_effective_date"] = array (
@@ -235,6 +250,7 @@ $dictionary["AOS_Contracts"]["fields"]["brochure_contribution_effective_date"] =
     'enable_range_search' => true,
     'options' => 'date_range_search_dom',
     'inline_edit' => false,
+    'studio' => 'visible',
 );
 
 $dictionary["AOS_Contracts"]["fields"]["agreement_type"] = array(
@@ -274,6 +290,7 @@ $dictionary["AOS_Contracts"]["fields"]["special_information"] = array (
     'merge_filter' => 'disabled',
     'len' => '255',
     'size' => '20',
+    'studio' => 'visible',
 );
 
 $dictionary["AOS_Contracts"]["fields"]["name_of_brochure"] = array (
@@ -294,6 +311,7 @@ $dictionary["AOS_Contracts"]["fields"]["name_of_brochure"] = array (
     'merge_filter' => 'disabled',
     'len' => '255',
     'size' => '20',
+    'studio' => 'visible',
 );
 
 $dictionary["AOS_Contracts"]["fields"]["coverage"] = array (
@@ -313,6 +331,7 @@ $dictionary["AOS_Contracts"]["fields"]["coverage"] = array (
     'unified_search' => false,
     'merge_filter' => 'disabled',
     'len' => '255',
+    'studio' => 'visible',
     'size' => '20',
 );
 
@@ -334,6 +353,7 @@ $dictionary["AOS_Contracts"]["fields"]["revision_1"] = array (
     'merge_filter' => 'disabled',
     'len' => '255',
     'size' => '20',
+    'studio' => 'visible',
 );
 
 $dictionary["AOS_Contracts"]["fields"]["revision_2"] = array (
@@ -353,6 +373,7 @@ $dictionary["AOS_Contracts"]["fields"]["revision_2"] = array (
     'unified_search' => false,
     'merge_filter' => 'disabled',
     'len' => '255',
+    'studio' => 'visible',
     'size' => '20',
 );
 
@@ -374,6 +395,7 @@ $dictionary["AOS_Contracts"]["fields"]["revision_3"] = array (
     'merge_filter' => 'disabled',
     'len' => '255',
     'size' => '20',
+    'studio' => 'visible',
 );
 
 $dictionary["AOS_Contracts"]["fields"]["revision_4"] = array (
@@ -394,6 +416,7 @@ $dictionary["AOS_Contracts"]["fields"]["revision_4"] = array (
     'merge_filter' => 'disabled',
     'len' => '255',
     'size' => '20',
+    'studio' => 'visible',
 );
 
 $dictionary["AOS_Contracts"]["fields"]["revision_1_date"] = array (
@@ -403,6 +426,7 @@ $dictionary["AOS_Contracts"]["fields"]["revision_1_date"] = array (
     'enable_range_search' => true,
     'options' => 'date_range_search_dom',
     'inline_edit' => false,
+    'studio' => 'visible',
 );
 
 $dictionary["AOS_Contracts"]["fields"]["revision_2_date"] = array (
@@ -412,6 +436,7 @@ $dictionary["AOS_Contracts"]["fields"]["revision_2_date"] = array (
     'enable_range_search' => true,
     'options' => 'date_range_search_dom',
     'inline_edit' => false,
+    'studio' => 'visible',
 );
 
 $dictionary["AOS_Contracts"]["fields"]["revision_3_date"] = array (
@@ -421,6 +446,7 @@ $dictionary["AOS_Contracts"]["fields"]["revision_3_date"] = array (
     'enable_range_search' => true,
     'options' => 'date_range_search_dom',
     'inline_edit' => false,
+    'studio' => 'visible',
 );
 
 $dictionary["AOS_Contracts"]["fields"]["revision_4_date"] = array (
@@ -430,4 +456,5 @@ $dictionary["AOS_Contracts"]["fields"]["revision_4_date"] = array (
     'enable_range_search' => true,
     'options' => 'date_range_search_dom',
     'inline_edit' => false,
+    'studio' => 'visible',
 );

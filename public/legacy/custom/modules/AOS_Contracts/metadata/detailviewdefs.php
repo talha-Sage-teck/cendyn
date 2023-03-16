@@ -272,14 +272,10 @@ array (
         array (
           0 =>
           array (
-            'name' => 'brochure_contribution_start_date',
-            'label' => 'LBL_BROCHURE_CONTRIBUTION_START_DATE',
-          ),
-          1 =>
-          array (
             'name' => 'brochure_contribution_end_date',
             'label' => 'LBL_BROCHURE_CONTRIBUTION_END_DATE',
           ),
+          1 => ''
         ),
         1 =>
         array (
