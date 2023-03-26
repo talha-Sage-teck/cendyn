@@ -27,6 +27,6 @@ function loadSQS() {
         "limit": "30",
         "no_match_text": "No Match",
     };
-    QSCallbacksArray['EditView_associate_hotels_quotes_sqs'] = multirelate_callback_function;
+    // QSCallbacksArray['EditView_associate_hotels_quotes_sqs'] = multirelate_callback_function;
 }
 YAHOO.util.Event.onDOMReady(loadSQS);

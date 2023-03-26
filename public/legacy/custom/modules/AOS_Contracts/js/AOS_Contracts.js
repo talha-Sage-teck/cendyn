@@ -27,7 +27,7 @@ function loadSQS() {
         "limit": "30",
         "no_match_text": "No Match"
     };
-    QSCallbacksArray['EditView_associate_hotels_contracts_sqs'] = multirelate_callback_function;
+    // QSCallbacksArray['EditView_associate_hotels_contracts_sqs'] = multirelate_callback_function;
 }
 
 Element.prototype.insertChildAtIndex = function(child, index) {

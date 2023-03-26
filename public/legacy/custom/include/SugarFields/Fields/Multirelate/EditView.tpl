@@ -128,6 +128,7 @@ function removeChip(id) {ldelim}
         document.querySelector('[name={{$idname}}]').value = namesArr.join(', ');
     {rdelim}
 {rdelim}
+
 function plantChips() {ldelim}
     let ids = document.querySelector('[name={{sugarvar key='id_name'}}]').value;
     let names = document.querySelector('[name={{$idname}}]').value;
@@ -136,13 +137,44 @@ function plantChips() {ldelim}
     let target = document.querySelector('[id=chips_{{$idname}}]');
     target.innerHTML = "";
     for(let i = 0; i < idsArr.length; ++i) {ldelim}
-    if(idsArr[i].trim() !== '' || namesArr[i].trim() !== '')
-        target.innerHTML += "<div class=\"chip\"><span class=\"chip-content\">" + namesArr[i] + "</span><span class=\"closebtn\" onclick=\"this.parentElement.style.display='none'; removeChip('" + idsArr[i] + "');\">&times;</span></div>";
+        if(idsArr[i].trim() !== '' || namesArr[i].trim() !== '')
+            target.innerHTML += "<div class=\"chip\"><span class=\"chip-content\">" + namesArr[i] + "</span><span class=\"closebtn\" onclick=\"this.parentElement.style.display='none'; removeChip('" + idsArr[i] + "');\">&times;</span></div>";
+    {rdelim}
+{rdelim}
+
+function setChangeListener() {ldelim}
+    {*let opts = document.querySelectorAll('#EditView_{{$idname}}_sqs_results li');*}
+    {*opts.forEach(function(el) {ldelim}*}
+    {*    el.addEventListener("click", function(e) {ldelim}*}
+    {*        multirelate_callback_function(e);*}
+    {*    {rdelim});*}
+    {*{rdelim});*}
+    let el = document.getElementById("{{sugarvar key='id_name'}}_sqs");
+    el.addEventListener("change", function(e) {ldelim}
+        multirelate_callback_function(e);
+    {rdelim});
+{rdelim}
+
+function waitForIframe() {ldelim}
+    let iframe = window.parent.document.getElementsByTagName('IFRAME')[0];
+    let iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+    if (iframeDoc.readyState === 'complete') {ldelim}
+        setChangeListener();
+        let el = document.getElementById("{{sugarvar key='id_name'}}_sqs");
+        const observer = new MutationObserver((mutations) => {ldelim}
+            mutations.forEach(mutation => {ldelim}
+                if (mutation.type === 'attributes' && mutation.attributeName === 'value') {ldelim}
+                    el.dispatchEvent(new Event('change'));
+                {rdelim}
+            {rdelim});
+        {rdelim});
+        observer.observe(el, {ldelim} attributes: true {rdelim});
     {rdelim}
 {rdelim}
 
 function init() {ldelim}
     plantChips();
+    setTimeout(waitForIframe, 500);
 {rdelim}
 
 YAHOO.util.Event.onDOMReady(init);
