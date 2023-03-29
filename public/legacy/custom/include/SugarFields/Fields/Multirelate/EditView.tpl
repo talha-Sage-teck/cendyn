@@ -100,6 +100,7 @@ function multirelate_callback_function(e) {ldelim}
         document.querySelector('[name={{$idname}}]').value = namesArr.join(', ');
         plantChips();
         document.querySelector('[name={{sugarvar key='id_name'}}_sqs]').value = "";
+        document.querySelector('[name={{$idname}}_sqs]').value = "";
     {rdelim}
 {rdelim}
 </script>
