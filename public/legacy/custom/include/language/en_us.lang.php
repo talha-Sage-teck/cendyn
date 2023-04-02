@@ -711,3 +711,6 @@ $app_list_strings['contract_status_list']=array (
   'R' => 'Re-activated',
   'T' => 'Terminated',
 );
+$app_list_strings['lost_reason_list']=array (
+  '' => '',
+);
