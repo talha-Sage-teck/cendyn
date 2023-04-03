@@ -16,6 +16,7 @@ $dictionary["Opportunity"]["fields"]["lost_reason"] = array(
     'size' => '20',
     'options' => 'lost_reason_list',
     'studio' => 'visible',
+    'display' => 'none',
     'logic' => [
         'display' => [
             'key' => 'displayType',
@@ -24,20 +25,21 @@ $dictionary["Opportunity"]["fields"]["lost_reason"] = array(
                 'fieldDependencies' => [
                     'sales_stage',
                 ],
-                'targetDisplayType' => 'none',
+                'targetDisplayType' => 'block',
                 'activeOnFields' =>  [
                     'sales_stage' => [
-                        null,
-                        '',
-                        'Closed Won',
-                        'Negotiation/Review',
-                        'Proposal/Price Quote',
-                        'Perception Analysis',
-                        'Id. Decision Makers',
-                        'Value Proposition',
-                        'Needs Analysis',
-                        'Qualification',
-                        'Prospecting'
+                        'Closed Lost'
+//                        null,
+//                        '',
+//                        'Closed Won',
+//                        'Negotiation/Review',
+//                        'Proposal/Price Quote',
+//                        'Perception Analysis',
+//                        'Id. Decision Makers',
+//                        'Value Proposition',
+//                        'Needs Analysis',
+//                        'Qualification',
+//                        'Prospecting'
                     ]
                 ]
             ]
