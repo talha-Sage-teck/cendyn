@@ -195,7 +195,7 @@ array (
         5 => 
         array (
           0 => 'probability',
-          1 => 'campaign_name',
+          1 => '',
         ),
         6 => 
         array (

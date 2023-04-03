@@ -714,3 +714,10 @@ $app_list_strings['contract_status_list']=array (
 $app_list_strings['lost_reason_list']=array (
   '' => '',
 );
+
+$app_list_strings ['emailTemplates_type_custom_list'] = array(
+    '' => '',
+    'email' => 'Email',
+    'event' => 'Event',
+    'system' => 'System'
+);

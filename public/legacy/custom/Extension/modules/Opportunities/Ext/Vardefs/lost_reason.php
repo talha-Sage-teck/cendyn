@@ -27,6 +27,8 @@ $dictionary["Opportunity"]["fields"]["lost_reason"] = array(
                 'targetDisplayType' => 'none',
                 'activeOnFields' =>  [
                     'sales_stage' => [
+                        null,
+                        '',
                         'Closed Won',
                         'Negotiation/Review',
                         'Proposal/Price Quote',
