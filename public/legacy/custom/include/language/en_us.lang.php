@@ -711,11 +711,12 @@ $app_list_strings['contract_status_list']=array (
   'R' => 'Re-activated',
   'T' => 'Terminated',
 );
+
 $app_list_strings['lost_reason_list']=array (
   '' => '',
-  'test1' => 'Test 1',
-  'test2' => 'Test 2',
-  'test3' => 'Test 3'
+  'Closed Lost_test1' => 'Test 1',
+  'Closed Lost_test2' => 'Test 2',
+  'Closed_Lost_E_test3' => 'Test 3'
 );
 
 $app_list_strings['emailTemplates_type_list']=array (
@@ -723,12 +724,16 @@ $app_list_strings['emailTemplates_type_list']=array (
   'email' => 'Email',
   'event' => 'Event',
 );
+
 $app_list_strings['emailTemplates_type_list_no_workflow']=array (
   '' => '',
   'email' => 'Email',
   'event' => 'Event',
   'system' => 'System',
 );
+
 $app_list_strings['emailTemplates_type_list_campaigns']=array (
   '' => '',
 );
+
+$app_list_strings['sales_stage_dom']['Closed_Lost_E'] = "Closed Lost (Extended)";

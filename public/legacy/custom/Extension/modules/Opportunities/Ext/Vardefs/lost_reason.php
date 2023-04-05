@@ -4,7 +4,7 @@ $dictionary["Opportunity"]["fields"]["lost_reason"] = array(
     'required' => false,
     'name' => 'lost_reason',
     'vname' => 'LBL_LOST_REASON',
-    'type' => 'enum',
+    'type' => 'dynamicenum',
     'importable' => 'true',
     'duplicate_merge' => 'disabled',
     'duplicate_merge_dom_value' => '0',
@@ -17,6 +17,7 @@ $dictionary["Opportunity"]["fields"]["lost_reason"] = array(
     'options' => 'lost_reason_list',
     'studio' => 'visible',
     'display' => 'none',
+    'parentenum' => 'sales_stage',
     'logic' => [
         'display' => [
             'key' => 'displayType',
@@ -28,18 +29,8 @@ $dictionary["Opportunity"]["fields"]["lost_reason"] = array(
                 'targetDisplayType' => 'block',
                 'activeOnFields' =>  [
                     'sales_stage' => [
-                        'Closed Lost'
-//                        null,
-//                        '',
-//                        'Closed Won',
-//                        'Negotiation/Review',
-//                        'Proposal/Price Quote',
-//                        'Perception Analysis',
-//                        'Id. Decision Makers',
-//                        'Value Proposition',
-//                        'Needs Analysis',
-//                        'Qualification',
-//                        'Prospecting'
+                        'Closed Lost',
+                        'Closed_Lost_E'
                     ]
                 ]
             ]
@@ -52,7 +43,7 @@ $dictionary["Opportunity"]["fields"]["lost_reason"] = array(
                     'sales_stage',
                 ],
                 'activeOnFields' =>  [
-                    'sales_stage' => ['Closed Lost']
+                    'sales_stage' => ['Closed Lost', 'Closed_Lost_E']
                 ]
             ]
         ]
