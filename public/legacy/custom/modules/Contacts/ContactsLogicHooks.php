@@ -46,6 +46,44 @@ class ContactsLogicHooks
         $bean->save();
     }
 
+    private function updateEmailRow($email, $donotemail, $donotemail_date, $donotemail_source) {
+        global $db;
+        $email_caps = trim(strtoupper($email));
+        $findQ = "SELECT * FROM email_addresses WHERE email_address_caps='$email_caps' AND deleted = 0";
+        $result = $db->query($findQ);
+        if($result->num_rows > 0) {
+            $updateQ = "UPDATE email_addresses SET `donotemail`='$donotemail', `donotemail_date`='$donotemail_date', `donotemail_source`='$donotemail_source' WHERE email_address_caps='$email_caps'";
+            if(!$db->query($updateQ)) {
+               $GLOBALS['log']->fatal("Error updating email flags for email: $email");
+            }
+        }
+    }
+
+    public function populateImportedEmails($bean, $events, $args) {
+        /**
+         * For primary emails there is no prefix, for all other emails; property is followed by email number/prefix
+         */
+
+        if($bean->in_import) {
+            $donotemail = $bean->donotemail;
+            $donotemail_date = $bean->donotemail_date;
+            $donotemail_source = $bean->donotemail_source;
+            $this->updateEmailRow($bean->email1, $donotemail, $donotemail_date, $donotemail_source);
+            for ($i = 2; $i <= 10; $i++) {
+                $email = 'email' . $i;
+                if (isset($bean->$email) && !empty($bean->$email)) {
+                    $dne = $email . '_donotemail';
+                    $dne_date = $email . '_donotemail_date';
+                    $dne_source = $email . '_donotemail_source';
+                    $donotemail = (isset($bean->$dne)) ? $bean->$dne : 0;
+                    $donotemail_date = (isset($bean->$dne_date)) ? $bean->$dne_date : null;
+                    $donotemail_source = (isset($bean->$dne_source)) ? $bean->$dne_source : null;
+                    $this->updateEmailRow($bean->$email, $donotemail, $donotemail_date, $donotemail_source);
+                }
+            }
+        }
+    }
+
     private function makeStringFromEmailsArray($emails): string {
         $str = "";
         $emails = (array) $emails;

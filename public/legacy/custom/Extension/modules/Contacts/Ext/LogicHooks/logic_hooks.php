@@ -38,3 +38,11 @@ $hook_array['before_save'][] = Array(
     'ContactsLogicHooks',
     'addEmailsToAudit'
 );
+
+$hook_array['after_save'][] = Array(
+    44,
+    'Populate imported emails',
+    'custom/modules/Contacts/ContactsLogicHooks.php',
+    'ContactsLogicHooks',
+    'populateImportedEmails'
+);
