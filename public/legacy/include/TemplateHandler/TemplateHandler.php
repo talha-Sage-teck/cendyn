@@ -178,6 +178,15 @@ class TemplateHandler
             if ($mod === 'aCase') {
                 $mod = 'Case';
             }
+            else if($mod === 'Override_AOS_Contracts') {
+                $mod = 'AOS_Contracts';
+            }
+            else if($mod === 'CustomContact') {
+                $mod = 'Contact';
+            }
+            else if($mod === 'CustomTask') {
+                $mod = 'Task';
+            }
 
             $defs = isset($dictionary[$mod]['fields']) ? $dictionary[$mod]['fields'] : [];
             $defs2 = array();
