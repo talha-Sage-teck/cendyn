@@ -129,10 +129,10 @@ export class AccountBadgeComponent implements OnInit, AfterViewInit {
       if (children.length > 1 && this.record.attributes.parent_id.trim() == "" || this.record.attributes.parent_id == null) {
         this.content = "Master";
         this.showBadge = true;
-      } else if (children.length > 1 && this.record.attributes.parent_id && this.record.attributes.parent_id.trim() !== "") {
+      } else if (children.length > 1 && this.record.attributes.parent_id && this.record.attributes.parent_id.trim() !== "" && this.data['accounts'][this.record.attributes.parent_id]) {
         this.content = "Parent";
         this.showBadge = true;
-      } else if (children.length == 1 && this.record.attributes.parent_id && this.record.attributes.parent_id.trim() !== "") {
+      } else if (children.length == 1 && this.record.attributes.parent_id && this.record.attributes.parent_id.trim() !== "" && this.data['accounts'][this.record.attributes.parent_id]) {
         this.content = "Sub-Account";
         this.showBadge = true;
       } else {
