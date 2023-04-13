@@ -74,7 +74,9 @@ export class AccountBadgeComponent implements OnInit, AfterViewInit {
       let p_id = account['parent_id'] ? account['parent_id'].toString() : null;
       if (p_id && p_id.trim() !== "") {
         let master = this.data['accounts'][account['parent_id']];
-        if(depth < this.maxDepth)
+        if(!master)
+          return account;
+        else if(depth < this.maxDepth)
           return this.backTraverse(master, depth + 1);
         else
           return master;
