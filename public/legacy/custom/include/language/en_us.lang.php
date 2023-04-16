@@ -688,7 +688,7 @@ $app_list_strings['contract_type_list']=array (
   '' => '',
   'ALL' => 'Allotments',
   'EGC' => 'EG Contract',
-  'BRO' => 'Broschure Contribution',
+  'BRO' => 'Brochure Contribution',
   'COA' => 'Connectivity Agreements',
   'COM' => 'Commission Agreement',
   'CON' => 'Consortia Contracts',
@@ -737,3 +737,28 @@ $app_list_strings['emailTemplates_type_list_campaigns']=array (
 );
 
 $app_list_strings['sales_stage_dom']['Closed_Lost_E'] = "Closed Lost (Extended)";
+
+$app_list_strings['resort_type_list']=array (
+    '' => '',
+    'static' => 'Static',
+    'dynamic' => 'Dynamic',
+);
+
+$app_list_strings['commission_list']=array (
+    '' => '',
+    '10' => '10%',
+    '15' => '15%',
+    '20' => '20%',
+);
+
+$app_list_strings['value_additions_list']=array (
+    '' => '',
+    'yes' => 'Yes',
+    'no' => 'No',
+);
+
+$app_list_strings['nett_rate_list']=array (
+    '' => '',
+    'test1' => 'Test 1',
+    'test2' => 'Test 2'
+);

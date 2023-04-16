@@ -1,35 +1,35 @@
 <?php
+$dictionary["AOS_Contracts"]["fields"]["effective_date"] = array (
+    'name' => 'effective_date',
+    'vname' => 'LBL_EFFECTIVE_DATE',
+    'type' => 'datetime',
+    'enable_range_search' => true,
+    'options' => 'date_range_search_dom',
+    'inline_edit' => false,
+    'studio' => 'visible',
+);
+
+$dictionary["AOS_Contracts"]["fields"]["termination_date"] = array (
+    'name' => 'termination_date',
+    'vname' => 'LBL_TERMINATION_DATE',
+    'type' => 'datetime',
+    'enable_range_search' => true,
+    'options' => 'date_range_search_dom',
+    'inline_edit' => false,
+    'studio' => 'visible',
+);
+
+$dictionary["AOS_Contracts"]["fields"]["signed_date"] = array (
+    'name' => 'signed_date',
+    'vname' => 'LBL_SIGNED_DATE',
+    'type' => 'datetime',
+    'enable_range_search' => true,
+    'options' => 'date_range_search_dom',
+    'inline_edit' => false,
+    'studio' => 'visible',
+);
+
 //EG CONTRACTS
-
-$dictionary["AOS_Contracts"]["fields"]["eg_effective_date"] = array (
-    'name' => 'eg_effective_date',
-    'vname' => 'LBL_EG_EFFECTIVE_DATE',
-    'type' => 'datetime',
-    'enable_range_search' => true,
-    'options' => 'date_range_search_dom',
-    'inline_edit' => false,
-    'studio' => 'visible',
-);
-
-$dictionary["AOS_Contracts"]["fields"]["eg_termination_date"] = array (
-    'name' => 'eg_termination_date',
-    'vname' => 'LBL_EG_TERMINATION_DATE',
-    'type' => 'datetime',
-    'enable_range_search' => true,
-    'options' => 'date_range_search_dom',
-    'inline_edit' => false,
-    'studio' => 'visible',
-);
-
-$dictionary["AOS_Contracts"]["fields"]["eg_signed_date"] = array (
-    'name' => 'eg_signed_date',
-    'vname' => 'LBL_EG_SIGNED_DATE',
-    'type' => 'datetime',
-    'enable_range_search' => true,
-    'options' => 'date_range_search_dom',
-    'inline_edit' => false,
-    'studio' => 'visible',
-);
 
 $dictionary["AOS_Contracts"]["fields"]["eg_reactivated_date"] = array (
     'name' => 'eg_reactivated_date',
@@ -54,16 +54,6 @@ $dictionary["AOS_Contracts"]["fields"]["eg_new_signed_date"] = array (
 $dictionary["AOS_Contracts"]["fields"]["eg_new_date"] = array (
     'name' => 'eg_new_date',
     'vname' => 'LBL_EG_NEW_DATE',
-    'type' => 'datetime',
-    'enable_range_search' => true,
-    'options' => 'date_range_search_dom',
-    'inline_edit' => false,
-    'studio' => 'visible',
-);
-
-$dictionary["AOS_Contracts"]["fields"]["revision_4_date"] = array (
-    'name' => 'revision_4_date',
-    'vname' => 'LBL_REVISION_4_DATE',
     'type' => 'datetime',
     'enable_range_search' => true,
     'options' => 'date_range_search_dom',
@@ -211,11 +201,26 @@ $dictionary["AOS_Contracts"]["fields"]["attachment"] = array (
     'studio' => 'visible',
 );
 
+$dictionary["AOS_Contracts"]["fields"]["resort_type"] = array(
+    'name' => 'resort_type',
+    'vname' => 'LBL_RESORT_TYPE',
+    'type' => 'enum',
+    'massupdate' => 0,
+    'importable' => 'true',
+    'audited' => false,
+    'reportable' => true,
+    'len' => 100,
+    'size' => '20',
+    'options' => 'resort_type_list',
+    'studio' => 'visible',
+    'dependency' => false,
+);
+
 //Brochure Contributions
 
-$dictionary["AOS_Contracts"]["fields"]["brochure_contribution_start_date"] = array (
-    'name' => 'brochure_contribution_start_date',
-    'vname' => 'LBL_BROCHURE_CONTRIBUTION_START_DATE',
+$dictionary["AOS_Contracts"]["fields"]["date_start"] = array (
+    'name' => 'date_start',
+    'vname' => 'LBL_DATE_START',
     'type' => 'datetime',
     'enable_range_search' => true,
     'options' => 'date_range_search_dom',
@@ -223,9 +228,9 @@ $dictionary["AOS_Contracts"]["fields"]["brochure_contribution_start_date"] = arr
     'studio' => 'visible',
 );
 
-$dictionary["AOS_Contracts"]["fields"]["brochure_contribution_end_date"] = array (
-    'name' => 'brochure_contribution_end_date',
-    'vname' => 'LBL_BROCHURE_CONTRIBUTION_END_DATE',
+$dictionary["AOS_Contracts"]["fields"]["date_end"] = array (
+    'name' => 'date_end',
+    'vname' => 'LBL_END_DATE',
     'type' => 'datetime',
     'enable_range_search' => true,
     'options' => 'date_range_search_dom',
@@ -233,20 +238,10 @@ $dictionary["AOS_Contracts"]["fields"]["brochure_contribution_end_date"] = array
     'studio' => 'visible',
 );
 
-$dictionary["AOS_Contracts"]["fields"]["brochure_contribution_date_of_issue"] = array (
-    'name' => 'brochure_contribution_date_of_issue',
-    'vname' => 'LBL_BROCHURE_CONTRIBUTION_DATE_OF_ISSUE',
+$dictionary["AOS_Contracts"]["fields"]["date_of_issue"] = array (
+    'name' => 'date_of_issue',
+    'vname' => 'LBL_DATE_OF_ISSUE',
     'type' => 'datetimecombo',
-    'enable_range_search' => true,
-    'options' => 'date_range_search_dom',
-    'inline_edit' => false,
-    'studio' => 'visible',
-);
-
-$dictionary["AOS_Contracts"]["fields"]["brochure_contribution_effective_date"] = array (
-    'name' => 'brochure_contribution_effective_date',
-    'vname' => 'LBL_BROCHURE_CONTRIBUTION_EFFECTIVE_DATE',
-    'type' => 'datetime',
     'enable_range_search' => true,
     'options' => 'date_range_search_dom',
     'inline_edit' => false,
@@ -456,5 +451,206 @@ $dictionary["AOS_Contracts"]["fields"]["revision_4_date"] = array (
     'enable_range_search' => true,
     'options' => 'date_range_search_dom',
     'inline_edit' => false,
+    'studio' => 'visible',
+);
+
+$dictionary["AOS_Contracts"]["fields"]["agreed_barter_value"] = array (
+    'inline_edit' => '1',
+    'name' => 'agreed_barter_value',
+    'vname' => 'LBL_AGREED_BARTER_VALUE',
+    'type' => 'varchar',
+    'massupdate' => '0',
+    'importable' => 'true',
+    'duplicate_merge' => 'disabled',
+    'duplicate_merge_dom_value' => '0',
+    'audited' => false,
+    'reportable' => true,
+    'unified_search' => false,
+    'merge_filter' => 'disabled',
+    'len' => '255',
+    'size' => '20',
+    'studio' => 'visible',
+);
+
+$dictionary["AOS_Contracts"]["fields"]["number_of_rooms"] = array (
+    'inline_edit' => '1',
+    'name' => 'number_of_rooms',
+    'vname' => 'LBL_NUMBER_OF_ROOMS',
+    'type' => 'varchar',
+    'massupdate' => '0',
+    'default' => '',
+    'comments' => '',
+    'help' => '',
+    'importable' => 'true',
+    'duplicate_merge' => 'disabled',
+    'duplicate_merge_dom_value' => '0',
+    'audited' => false,
+    'reportable' => true,
+    'unified_search' => false,
+    'merge_filter' => 'disabled',
+    'len' => '255',
+    'size' => '20',
+    'studio' => 'visible',
+);
+
+$dictionary["AOS_Contracts"]["fields"]["cut_off_dates"] = array (
+    'inline_edit' => '1',
+    'name' => 'cut_off_dates',
+    'vname' => 'LBL_CUT_OFF_DATES',
+    'type' => 'varchar',
+    'massupdate' => '0',
+    'default' => '',
+    'comments' => '',
+    'help' => '',
+    'importable' => 'true',
+    'duplicate_merge' => 'disabled',
+    'duplicate_merge_dom_value' => '0',
+    'audited' => false,
+    'reportable' => true,
+    'unified_search' => false,
+    'merge_filter' => 'disabled',
+    'len' => '255',
+    'size' => '20',
+    'studio' => 'visible',
+);
+
+$dictionary["AOS_Contracts"]["fields"]["black_out_dates"] = array (
+    'inline_edit' => '1',
+    'name' => 'black_out_dates',
+    'vname' => 'LBL_BLACK_OUT_DATES',
+    'type' => 'varchar',
+    'massupdate' => '0',
+    'default' => '',
+    'comments' => '',
+    'help' => '',
+    'importable' => 'true',
+    'duplicate_merge' => 'disabled',
+    'duplicate_merge_dom_value' => '0',
+    'audited' => false,
+    'reportable' => true,
+    'unified_search' => false,
+    'merge_filter' => 'disabled',
+    'len' => '255',
+    'size' => '20',
+    'studio' => 'visible',
+);
+
+$dictionary["AOS_Contracts"]["fields"]["commission"] = array(
+    'name' => 'commission',
+    'vname' => 'LBL_COMMISSION',
+    'type' => 'enum',
+    'massupdate' => 0,
+    'comments' => '',
+    'help' => '',
+    'importable' => 'true',
+    'duplicate_merge' => 'disabled',
+    'duplicate_merge_dom_value' => '0',
+    'audited' => false,
+    'reportable' => true,
+    'len' => 100,
+    'size' => '20',
+    'options' => 'commission_list',
+    'studio' => 'visible',
+    'dependency' => false,
+);
+
+$dictionary["AOS_Contracts"]["fields"]["value_additions"] = array(
+    'name' => 'value_additions',
+    'vname' => 'LBL_VALUE_ADDITIONS',
+    'type' => 'enum',
+    'massupdate' => 0,
+    'comments' => '',
+    'help' => '',
+    'importable' => 'true',
+    'duplicate_merge' => 'disabled',
+    'duplicate_merge_dom_value' => '0',
+    'audited' => false,
+    'reportable' => true,
+    'len' => 100,
+    'size' => '20',
+    'options' => 'value_additions_list',
+    'studio' => 'visible',
+    'dependency' => false,
+);
+
+$dictionary["AOS_Contracts"]["fields"]["nett_rate"] = array(
+    'name' => 'nett_rate',
+    'vname' => 'LBL_NETT_RATE',
+    'type' => 'enum',
+    'massupdate' => 0,
+    'comments' => '',
+    'help' => '',
+    'importable' => 'true',
+    'duplicate_merge' => 'disabled',
+    'duplicate_merge_dom_value' => '0',
+    'audited' => false,
+    'reportable' => true,
+    'len' => 100,
+    'size' => '20',
+    'options' => 'nett_rate_list',
+    'studio' => 'visible',
+    'dependency' => false,
+);
+
+$dictionary["AOS_Contracts"]["fields"]["purpose"] = array (
+    'inline_edit' => '1',
+    'name' => 'purpose',
+    'vname' => 'LBL_PURPOSE',
+    'type' => 'varchar',
+    'massupdate' => '0',
+    'default' => '',
+    'comments' => '',
+    'help' => '',
+    'importable' => 'true',
+    'duplicate_merge' => 'disabled',
+    'duplicate_merge_dom_value' => '0',
+    'audited' => false,
+    'reportable' => true,
+    'unified_search' => false,
+    'merge_filter' => 'disabled',
+    'len' => '255',
+    'size' => '20',
+    'studio' => 'visible',
+);
+
+$dictionary["AOS_Contracts"]["fields"]["payment_terms"] = array (
+    'inline_edit' => '1',
+    'name' => 'payment_terms',
+    'vname' => 'LBL_PAYMENT_TERMS',
+    'type' => 'varchar',
+    'massupdate' => '0',
+    'default' => '',
+    'comments' => '',
+    'help' => '',
+    'importable' => 'true',
+    'duplicate_merge' => 'disabled',
+    'duplicate_merge_dom_value' => '0',
+    'audited' => false,
+    'reportable' => true,
+    'unified_search' => false,
+    'merge_filter' => 'disabled',
+    'len' => '255',
+    'size' => '20',
+    'studio' => 'visible',
+);
+
+$dictionary["AOS_Contracts"]["fields"]["other_information"] = array (
+    'inline_edit' => '1',
+    'name' => 'other_information',
+    'vname' => 'LBL_OTHER_INFORMATION',
+    'type' => 'varchar',
+    'massupdate' => '0',
+    'default' => '',
+    'comments' => '',
+    'help' => '',
+    'importable' => 'true',
+    'duplicate_merge' => 'disabled',
+    'duplicate_merge_dom_value' => '0',
+    'audited' => false,
+    'reportable' => true,
+    'unified_search' => false,
+    'merge_filter' => 'disabled',
+    'len' => '255',
+    'size' => '20',
     'studio' => 'visible',
 );

@@ -1,5 +1,5 @@
 <?php
-// created: 2023-03-11 00:35:07
+// created: 2023-04-16 04:03:28
 $mod_strings['LBL_B2B_EXT_ACCOUNT_NO'] = 'b2bextaccountno';
 $mod_strings['LBL_B2B_EXT_CONTRACT_ID'] = 'b2bextcontractid';
 $mod_strings['LBL_RATE_CODE'] = 'Rate Code';
@@ -16,4 +16,14 @@ $mod_strings['LBL_EDITVIEW_PANEL1'] = 'Details';
 $mod_strings['LBL_SALES_REP_CODE'] = 'Sales Rep Code';
 $mod_strings['LBL_EDITVIEW_PANEL2'] = 'Brochure Contribution';
 $mod_strings['LBL_EDITVIEW_PANEL3'] = 'Contracted Resorts';
-$mod_strings['LBL_EDITVIEW_PANEL4'] = 'New Panel 4';
+$mod_strings['LBL_EDITVIEW_PANEL4'] = 'Allotment Agreement';
+$mod_strings['LBL_DETAILVIEW_PANEL4'] = 'New Panel 4';
+$mod_strings['LBL_DETAILVIEW_PANEL5'] = 'Allotment Agreement';
+$mod_strings['LBL_DETAILVIEW_PANEL6'] = 'Consortia / Partnership Agreement';
+$mod_strings['LBL_DETAILVIEW_PANEL7'] = 'New Panel 7';
+$mod_strings['LBL_EDITVIEW_PANEL5'] = 'Consortia / Partnership Agreement';
+$mod_strings['LBL_EDITVIEW_PANEL6'] = 'Commission / Enhanced Agreement';
+$mod_strings['LBL_EDITVIEW_PANEL7'] = 'Corporate Agreement';
+$mod_strings['LBL_EDITVIEW_PANEL8'] = 'Connectivity Agreement';
+$mod_strings['LBL_EDITVIEW_PANEL9'] = 'Other Agreement';
+$mod_strings['LBL_EDITVIEW_PANEL10'] = 'DMC Contract';

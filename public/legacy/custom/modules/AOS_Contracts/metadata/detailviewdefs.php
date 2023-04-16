@@ -45,13 +45,13 @@ array (
           'field' => '30',
         ),
       ),
-      'useTabs' => true,
+      'useTabs' => false,
       'syncDetailEditViews' => true,
       'tabDefs' =>
       array (
         'DEFAULT' =>
         array (
-          'newTab' => true,
+          'newTab' => false,
           'panelDefault' => 'expanded',
         ),
         'LBL_EDITVIEW_PANEL3' =>
@@ -64,14 +64,24 @@ array (
           'newTab' => false,
           'panelDefault' => 'expanded',
         ),
-        'LBL_LINE_ITEMS' =>
+        'LBL_EDITVIEW_PANEL4' =>
         array (
-          'newTab' => true,
+          'newTab' => false,
           'panelDefault' => 'expanded',
         ),
-        'LBL_PANEL_ASSIGNMENT' =>
+        'LBL_EDITVIEW_PANEL5' =>
         array (
-          'newTab' => true,
+          'newTab' => false,
+          'panelDefault' => 'expanded',
+        ),
+        'LBL_LINE_ITEMS' =>
+        array (
+          'newTab' => false,
+          'panelDefault' => 'expanded',
+        ),
+        'LBL_EDITVIEW_PANEL1' =>
+        array (
+          'newTab' => false,
           'panelDefault' => 'expanded',
         ),
       ),
@@ -177,215 +187,612 @@ array (
           1 => '',
         ),
       ),
-      'lbl_editview_panel3' =>
-      array (
-        0 =>
-        array (
-          0 =>
-          array (
-            'name' => 'eg_termination_date',
-            'label' => 'LBL_EG_TERMINATION_DATE',
-          ),
-          1 => '',
-        ),
-        1 =>
-        array (
-          0 =>
-          array (
-            'name' => 'eg_effective_date',
-            'label' => 'LBL_EG_EFFECTIVE_DATE',
-          ),
-          1 =>
-          array (
-            'name' => 'eg_signed_date',
-            'label' => 'LBL_EG_SIGNED_DATE',
-          ),
-        ),
-        2 =>
-        array (
-          0 =>
-          array (
-            'name' => 'eg_new_date',
-            'label' => 'LBL_EG_NEW_DATE',
-          ),
-          1 =>
-          array (
-            'name' => 'eg_new_signed_date',
-            'label' => 'LBL_EG_NEW_SIGNED_DATE',
-          ),
-        ),
-        3 =>
-        array (
-          0 =>
-          array (
-            'name' => 'rate',
-            'studio' => 'visible',
-            'label' => 'LBL_RATE',
-          ),
-          1 =>
-          array (
-            'name' => 'category',
-            'studio' => 'visible',
-            'label' => 'LBL_CATEGORY',
-          ),
-        ),
-        4 =>
-        array (
-          0 => '',
-          1 =>
-          array (
-            'name' => 'category_option_1',
-            'label' => 'LBL_CATEGORY_OPTION_1',
-          ),
-        ),
-        5 =>
-        array (
-          0 => '',
-          1 =>
-          array (
-            'name' => 'category_option_2',
-            'label' => 'LBL_CATEGORY_OPTION_2',
-          ),
-        ),
-        6 =>
-        array (
-          0 => '',
-          1 =>
-          array (
-            'name' => 'category_option_3',
-            'label' => 'LBL_CATEGORY_OPTION_3',
-          ),
-        ),
-        7 =>
-        array (
-          0 => '',
-          1 =>
-          array (
-            'name' => 'category_option_4',
-            'label' => 'LBL_CATEGORY_OPTION_4',
-          ),
-        ),
-      ),
-      'lbl_editview_panel2' =>
-      array (
-        0 =>
-        array (
-          0 =>
-          array (
-            'name' => 'brochure_contribution_end_date',
-            'label' => 'LBL_BROCHURE_CONTRIBUTION_END_DATE',
-          ),
-          1 => ''
-        ),
-        1 =>
-        array (
-          0 =>
-          array (
-            'name' => 'brochure_contribution_date_of_issue',
-            'label' => 'LBL_BROCHURE_CONTRIBUTION_DATE_OF_ISSUE',
-          ),
-          1 =>
-          array (
-            'name' => 'brochure_contribution_effective_date',
-            'label' => 'LBL_BROCHURE_CONTRIBUTION_EFFECTIVE_DATE',
-          ),
-        ),
-        2 =>
-        array (
-          0 =>
-          array (
-            'name' => 'agreement_type',
-            'studio' => 'visible',
-            'label' => 'LBL_AGREEMENT_TYPE',
-          ),
-          1 =>
-          array (
-            'name' => 'revision_1_date',
-            'label' => 'LBL_REVISION_1_DATE',
-          ),
-        ),
-        3 =>
-        array (
-          0 =>
-          array (
-            'name' => 'special_information',
-            'label' => 'LBL_SPECIAL_INFORMATION',
-          ),
-          1 =>
-          array (
-            'name' => 'revision_1',
-            'label' => 'LBL_REVISION_1',
-          ),
-        ),
-        4 =>
-        array (
-          0 =>
-          array (
-            'name' => 'name_of_brochure',
-            'label' => 'LBL_NAME_OF_BROCHURE',
-          ),
-          1 =>
-          array (
-            'name' => 'revision_2_date',
-            'label' => 'LBL_REVISION_2_DATE',
-          ),
-        ),
-        5 =>
-        array (
-          0 =>
-          array (
-            'name' => 'coverage',
-            'label' => 'LBL_COVERAGE',
-          ),
-          1 =>
-          array (
-            'name' => 'revision_2',
-            'label' => 'LBL_REVISION_2',
-          ),
-        ),
-        6 =>
-        array (
-          0 => '',
-          1 =>
-          array (
-            'name' => 'revision_3_date',
-            'label' => 'LBL_REVISION_3_DATE',
-          ),
-        ),
-        7 =>
-        array (
-          0 => '',
-          1 =>
-          array (
-            'name' => 'revision_3',
-            'label' => 'LBL_REVISION_3',
-          ),
-        ),
-        8 =>
-        array (
-          0 =>
-          array (
-            'name' => 'attachment',
-            'comment' => 'File name associated with the note (attachment)',
-            'label' => 'LBL_ATTACHMENT',
-            'customCode' => '<a href="{$fields.attachment.value}">Attachment</a>',
-          ),
-          1 =>
-          array (
-            'name' => 'revision_4_date',
-            'label' => 'LBL_REVISION_4_DATE',
-          ),
-        ),
-        9 =>
-        array (
-          0 => '',
-          1 =>
-          array (
-            'name' => 'revision_4',
-            'label' => 'LBL_REVISION_4',
-          ),
-        ),
-      ),
+        'lbl_editview_panel3' =>
+            array (
+                0 =>
+                    array (
+                        0 => '',
+                        1 =>
+                            array (
+                                'name' => 'resort_type',
+                                'studio' => 'visible',
+                                'label' => 'LBL_RESORT_TYPE',
+                            ),
+                    ),
+                1 =>
+                    array (
+                        0 =>
+                            array (
+                                'name' => 'effective_date',
+                                'studio' => 'visible',
+                                'label' => 'LBL_EFFECTIVE_DATE',
+                            ),
+                        1 =>
+                            array (
+                                'name' => 'eg_new_date',
+                                'label' => 'LBL_EG_NEW_DATE',
+                            ),
+                    ),
+                2 =>
+                    array (
+                        0 =>
+                            array (
+                                'name' => 'eg_new_signed_date',
+                                'label' => 'LBL_EG_NEW_SIGNED_DATE',
+                            ),
+                        1 =>
+                            array (
+                                'name' => 'signed_date',
+                                'studio' => 'visible',
+                                'label' => 'LBL_SIGNED_DATE',
+                            ),
+                    ),
+                3 =>
+                    array (
+                        0 =>
+                            array (
+                                'name' => 'category',
+                                'studio' => 'visible',
+                                'label' => 'LBL_CATEGORY',
+                            ),
+                        1 =>
+                            array (
+                                'name' => 'termination_date',
+                                'studio' => 'visible',
+                                'label' => 'LBL_TERMINATION_DATE',
+                            ),
+                    ),
+                4 =>
+                    array (
+                        0 =>
+                            array (
+                                'name' => 'category_option_1',
+                                'label' => 'LBL_CATEGORY_OPTION_1',
+                            ),
+                        1 =>
+                            array (
+                                'name' => 'rate',
+                                'studio' => 'visible',
+                                'label' => 'LBL_RATE',
+                            ),
+                    ),
+                5 =>
+                    array (
+                        0 =>
+                            array (
+                                'name' => 'category_option_2',
+                                'label' => 'LBL_CATEGORY_OPTION_2',
+                            ),
+                        1 => '',
+                    ),
+                6 =>
+                    array (
+                        0 =>
+                            array (
+                                'name' => 'category_option_3',
+                                'label' => 'LBL_CATEGORY_OPTION_3',
+                            ),
+                        1 => '',
+                    ),
+                7 =>
+                    array (
+                        0 =>
+                            array (
+                                'name' => 'category_option_4',
+                                'label' => 'LBL_CATEGORY_OPTION_4',
+                            ),
+                    ),
+            ),
+        'lbl_editview_panel2' =>
+            array (
+                0 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                1 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                2 =>
+                    array (
+                        0 =>
+                            array (
+                                'name' => 'date_of_issue',
+                                'studio' => 'visible',
+                                'label' => 'LBL_DATE_OF_ISSUE',
+                            ),
+                        1 =>
+                            array (
+                                'name' => 'date_end',
+                                'studio' => 'visible',
+                                'label' => 'LBL_END_DATE',
+                            ),
+                    ),
+                3 =>
+                    array (
+                        0 =>
+                            array (
+                                'name' => 'agreement_type',
+                                'studio' => 'visible',
+                                'label' => 'LBL_AGREEMENT_TYPE',
+                            ),
+                        1 =>
+                            array (
+                                'name' => 'revision_1_date',
+                                'label' => 'LBL_REVISION_1_DATE',
+                            ),
+                    ),
+                4 =>
+                    array (
+                        0 =>
+                            array (
+                                'name' => 'name_of_brochure',
+                                'label' => 'LBL_NAME_OF_BROCHURE',
+                            ),
+                        1 =>
+                            array (
+                                'name' => 'revision_1',
+                                'label' => 'LBL_REVISION_1',
+                            ),
+                    ),
+                5 =>
+                    array (
+                        0 =>
+                            array (
+                                'name' => 'coverage',
+                                'label' => 'LBL_COVERAGE',
+                            ),
+                        1 =>
+                            array (
+                                'name' => 'revision_2_date',
+                                'label' => 'LBL_REVISION_2_DATE',
+                            ),
+                    ),
+                6 =>
+                    array (
+                        0 =>
+                            array (
+                                'name' => 'agreed_barter_value',
+                                'studio' => 'visible',
+                                'label' => 'LBL_AGREED_BARTER_VALUE',
+                            ),
+                        1 =>
+                            array (
+                                'name' => 'revision_2',
+                                'label' => 'LBL_REVISION_2',
+                            ),
+                    ),
+                7 =>
+                    array (
+                        0 =>
+                            array (
+                                'name' => 'attachment',
+                                'comment' => 'File name associated with the note (attachment)',
+                                'label' => 'LBL_ATTACHMENT',
+                                'customCode' => '<a href="{$fields.attachment.value}">Attachment</a>',
+                            ),
+                        1 =>
+                            array (
+                                'name' => 'revision_3_date',
+                                'label' => 'LBL_REVISION_3_DATE',
+                            ),
+                    ),
+                8 =>
+                    array (
+                        0 => '',
+                        1 =>
+                            array (
+                                'name' => 'revision_3',
+                                'label' => 'LBL_REVISION_3',
+                            ),
+                    ),
+                9 =>
+                    array (
+                        0 => '',
+                        1 =>
+                            array (
+                                'name' => 'revision_4_date',
+                                'label' => 'LBL_REVISION_4_DATE',
+                            ),
+                    ),
+                10 =>
+                    array (
+                        0 => '',
+                        1 =>
+                            array (
+                                'name' => 'revision_4',
+                                'label' => 'LBL_REVISION_4',
+                            ),
+                    ),
+            ),
+        'lbl_editview_panel4' =>
+            array (
+                0 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                1 =>
+                    array (
+                        0 =>
+                            array (
+                                'name' => 'number_of_rooms',
+                                'studio' => 'visible',
+                                'label' => 'LBL_NUMBER_OF_ROOMS',
+                            ),
+                        1 => '',
+                    ),
+                2 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                3 =>
+                    array (
+                        0 =>
+                            array (
+                                'name' => 'cut_off_dates',
+                                'studio' => 'visible',
+                                'label' => 'LBL_CUT_OFF_DATES',
+                            ),
+                        1 => '',
+                    ),
+                4 =>
+                    array (
+                        0 =>
+                            array (
+                                'name' => 'black_out_dates',
+                                'studio' => 'visible',
+                                'label' => 'LBL_BLACK_OUT_DATES',
+                            ),
+                        1 => '',
+                    ),
+                5 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                6 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                7 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                8 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                9 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                10 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                11 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+            ),
+        'lbl_editview_panel5' =>
+            array (
+                0 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                1 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                2 =>
+                    array (
+                        0 =>
+                            array (
+                                'name' => 'commission',
+                                'studio' => 'visible',
+                                'label' => 'LBL_COMMISSION',
+                            ),
+                        1 =>
+                            array (
+                                'name' => 'value_additions',
+                                'studio' => 'visible',
+                                'label' => 'LBL_VALUE_ADDITIONS',
+                            ),
+                    ),
+                3 =>
+                    array (
+                        0 =>
+                            array (
+                                'name' => 'special_information',
+                                'studio' => 'visible',
+                                'label' => 'LBL_SPECIAL_INFORMATION',
+                            ),
+                        1 => '',
+                    ),
+            ),
+        'lbl_editview_panel6' =>
+            array (
+                0 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                1 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                2 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                3 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                4 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+            ),
+        'lbl_editview_panel7' =>
+            array (
+                0 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                1 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                2 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                3 =>
+                    array (
+                        0 =>
+                            array (
+                                'name' => 'purpose',
+                                'studio' => 'visible',
+                                'label' => 'LBL_PURPOSE',
+                            ),
+                        1 => '',
+                    ),
+                4 =>
+                    array (
+                        0 => '',
+                        1 =>
+                            array (
+                                'name' => 'other_information',
+                                'studio' => 'visible',
+                                'label' => 'LBL_OTHER_INFORMATION',
+                            ),
+                    ),
+                5 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                6 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                7 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                8 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                9 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                10 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                11 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                12 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+            ),
+        'lbl_editview_panel8' =>
+            array (
+                0 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                1 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                2 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                3 =>
+                    array (
+                        0 =>
+                            array (
+                                'name' => 'payment_terms',
+                                'studio' => 'visible',
+                                'label' => 'LBL_PAYMENT_TERMS',
+                            ),
+                        1 => '',
+                    ),
+            ),
+        'lbl_editview_panel9' =>
+            array (
+                0 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                1 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                2 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                3 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                4 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                5 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                6 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                7 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                8 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                9 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                10 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                11 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                12 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+            ),
+        'lbl_editview_panel10' =>
+            array (
+                0 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                1 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                2 =>
+                    array (
+                        0 =>
+                            array (
+                                'name' => 'nett_rate',
+                                'studio' => 'visible',
+                                'label' => 'LBL_NETT_RATE',
+                            ),
+                        1 => '',
+                    ),
+                3 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                4 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                5 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                6 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                7 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                8 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                9 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                10 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+                11 =>
+                    array (
+                        0 => '',
+                        1 => '',
+                    ),
+            ),
       'lbl_line_items' =>
       array (
         0 =>
@@ -408,7 +815,6 @@ array (
         2 =>
         array (
           0 => '',
-          1 => '',
         ),
         3 =>
         array (
@@ -467,20 +873,19 @@ array (
           ),
         ),
       ),
-      'LBL_PANEL_ASSIGNMENT' =>
+      'lbl_editview_panel1' =>
       array (
         0 =>
         array (
           0 =>
           array (
-            'name' => 'date_entered',
-            'customCode' => '{$fields.date_entered.value} {$APP.LBL_BY} {$fields.created_by_name.value}',
+            'name' => 'room_nights',
+            'label' => 'LBL_ROOM_NIGHTS',
           ),
           1 =>
           array (
-            'name' => 'date_modified',
-            'label' => 'LBL_DATE_MODIFIED',
-            'customCode' => '{$fields.date_modified.value} {$APP.LBL_BY} {$fields.modified_by_name.value}',
+            'name' => 'rate_code',
+            'label' => 'LBL_RATE_CODE',
           ),
         ),
       ),
