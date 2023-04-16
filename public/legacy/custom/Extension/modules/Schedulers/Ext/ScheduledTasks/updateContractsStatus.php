@@ -19,7 +19,7 @@ $job_strings[] = 'updateContractsStatus';
 function updateContractsStatus() {
     global $db;
 
-    $query = "UPDATE aos_contracts SET status='E' WHERE deleted = 0 AND status != 'E' AND date_end IS NOT NULL AND date_end != '' AND date_end <= NOW()";
+    $query = "UPDATE aos_contracts SET status='E' WHERE deleted = 0 AND status != 'E' AND date_end IS NOT NULL AND date_end <= NOW()";
     if(!$db->query($query))
         $GLOBALS['log']->fatal("MYSQL Error: Could not update contracts' status in scheduler.");
 
