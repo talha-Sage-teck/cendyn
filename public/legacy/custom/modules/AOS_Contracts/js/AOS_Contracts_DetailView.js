@@ -63,7 +63,7 @@ function handleReusableFields(panel, panelNum) {
             dom_row.innerHTML = "<div class=\"col-xs-12 col-sm-6 edit-view-row-item edit-view-bordered\" data-field>" +
                 "<div class=\"edit-dotted-border\"></div>" +
                 "</div>";
-        else if(presets.length === 1 && presets[0] === row.indexOf(row.filter(Boolean)[0])) {
+        else if(presets.length === 1 && row.filter(Boolean).length === 1 && presets[0] === row.indexOf(row.filter(Boolean)[0])) {
             let ind = row.indexOf(row.filter(Boolean)[0]);
             let fill = "<div class=\"col-xs-12 col-sm-6 edit-view-row-item edit-view-bordered\" data-field>" +
                 "<div class=\"edit-dotted-border\"></div>" +
@@ -347,7 +347,7 @@ var mapping = [ //Dynamic Panels
         ['', 'signed_date'],
         ['black_out_dates', 'revision_1_date'],
         ['special_information', 'revision_1'],
-        ['', 'revision_2_date'],
+        ['attachment', 'revision_2_date'],
         ['', 'revision_2'],
         ['', 'revision_3_date'],
         ['', 'revision_3'],
