@@ -69,14 +69,16 @@ function handleReusableFields(panel, panelNum) {
                 let fill = "<div class=\"col-xs-12 col-sm-6 edit-view-row-item edit-view-bordered\" data-field>" +
                     "<div class=\"edit-dotted-border\"></div>" +
                     "</div>";
-                dom_row.innerHTML = ind === 1 ? fill + dom_row.innerHTML : dom_row.innerHTML + fill;
+                let fill_pos = ind === 1 ? 'afterbegin' : 'beforeend';
+                dom_row.insertAdjacentHTML(fill_pos, fill);
             }
 
             row.forEach((field, fieldNum) => {
                 if (field.trim().length === 0)
                     return;
                 let fieldDOM = document.querySelector("[data-field=" + CSS.escape(field) + "]");
-                dom_row.insertChildAtIndex(fieldDOM, fieldNum);
+                if(!fieldDOM.isSameNode(dom_row.children[fieldNum]))
+                    dom_row.insertChildAtIndex(fieldDOM, fieldNum);
             });
         }
     });
