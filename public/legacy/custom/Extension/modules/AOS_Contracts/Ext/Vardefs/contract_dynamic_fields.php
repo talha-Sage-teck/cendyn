@@ -5,7 +5,7 @@ $dictionary["AOS_Contracts"]["fields"]["effective_date"] = array (
     'type' => 'datetime',
     'enable_range_search' => true,
     'options' => 'date_range_search_dom',
-    'inline_edit' => false,
+    'inline_edit' => true,
     'studio' => 'visible',
 );
 
@@ -15,7 +15,7 @@ $dictionary["AOS_Contracts"]["fields"]["termination_date"] = array (
     'type' => 'datetime',
     'enable_range_search' => true,
     'options' => 'date_range_search_dom',
-    'inline_edit' => false,
+    'inline_edit' => true,
     'studio' => 'visible',
 );
 
@@ -25,7 +25,7 @@ $dictionary["AOS_Contracts"]["fields"]["signed_date"] = array (
     'type' => 'datetime',
     'enable_range_search' => true,
     'options' => 'date_range_search_dom',
-    'inline_edit' => false,
+    'inline_edit' => true,
     'studio' => 'visible',
 );
 
@@ -37,7 +37,7 @@ $dictionary["AOS_Contracts"]["fields"]["eg_reactivated_date"] = array (
     'type' => 'datetime',
     'enable_range_search' => true,
     'options' => 'date_range_search_dom',
-    'inline_edit' => false,
+    'inline_edit' => true,
     'studio' => 'visible',
 );
 
@@ -47,7 +47,7 @@ $dictionary["AOS_Contracts"]["fields"]["eg_new_signed_date"] = array (
     'type' => 'datetime',
     'enable_range_search' => true,
     'options' => 'date_range_search_dom',
-    'inline_edit' => false,
+    'inline_edit' => true,
     'studio' => 'visible',
 );
 
@@ -57,7 +57,7 @@ $dictionary["AOS_Contracts"]["fields"]["eg_new_date"] = array (
     'type' => 'datetime',
     'enable_range_search' => true,
     'options' => 'date_range_search_dom',
-    'inline_edit' => false,
+    'inline_edit' => true,
     'studio' => 'visible',
 );
 
@@ -224,7 +224,7 @@ $dictionary["AOS_Contracts"]["fields"]["date_start"] = array (
     'type' => 'datetime',
     'enable_range_search' => true,
     'options' => 'date_range_search_dom',
-    'inline_edit' => false,
+    'inline_edit' => true,
     'studio' => 'visible',
 );
 
@@ -234,7 +234,7 @@ $dictionary["AOS_Contracts"]["fields"]["date_end"] = array (
     'type' => 'datetime',
     'enable_range_search' => true,
     'options' => 'date_range_search_dom',
-    'inline_edit' => false,
+    'inline_edit' => true,
     'studio' => 'visible',
 );
 
@@ -244,7 +244,7 @@ $dictionary["AOS_Contracts"]["fields"]["date_of_issue"] = array (
     'type' => 'datetimecombo',
     'enable_range_search' => true,
     'options' => 'date_range_search_dom',
-    'inline_edit' => false,
+    'inline_edit' => true,
     'studio' => 'visible',
 );
 
@@ -420,7 +420,7 @@ $dictionary["AOS_Contracts"]["fields"]["revision_1_date"] = array (
     'type' => 'datetime',
     'enable_range_search' => true,
     'options' => 'date_range_search_dom',
-    'inline_edit' => false,
+    'inline_edit' => true,
     'studio' => 'visible',
 );
 
@@ -430,7 +430,7 @@ $dictionary["AOS_Contracts"]["fields"]["revision_2_date"] = array (
     'type' => 'datetime',
     'enable_range_search' => true,
     'options' => 'date_range_search_dom',
-    'inline_edit' => false,
+    'inline_edit' => true,
     'studio' => 'visible',
 );
 
@@ -440,7 +440,7 @@ $dictionary["AOS_Contracts"]["fields"]["revision_3_date"] = array (
     'type' => 'datetime',
     'enable_range_search' => true,
     'options' => 'date_range_search_dom',
-    'inline_edit' => false,
+    'inline_edit' => true,
     'studio' => 'visible',
 );
 
@@ -450,7 +450,7 @@ $dictionary["AOS_Contracts"]["fields"]["revision_4_date"] = array (
     'type' => 'datetime',
     'enable_range_search' => true,
     'options' => 'date_range_search_dom',
-    'inline_edit' => false,
+    'inline_edit' => true,
     'studio' => 'visible',
 );
 

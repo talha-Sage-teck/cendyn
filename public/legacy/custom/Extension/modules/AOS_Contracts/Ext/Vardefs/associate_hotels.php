@@ -23,7 +23,7 @@ $dictionary['AOS_Contracts']['fields']['cb2b_hotels_id'] = array (
     'id' => 'AOS_Contractscb2b_hotels_id_c',
 );
 $dictionary['AOS_Contracts']['fields']['associate_hotels_contracts'] = array (
-    'inline_edit' => '1',
+    'inline_edit' => '0',
     'labelValue' => 'Associate Hotels',
     'required' => false,
     'source' => 'non-db',
