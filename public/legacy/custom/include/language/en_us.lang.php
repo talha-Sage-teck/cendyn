@@ -759,6 +759,7 @@ $app_list_strings['value_additions_list']=array (
 
 $app_list_strings['nett_rate_list']=array (
     '' => '',
-    'test1' => 'Test 1',
-    'test2' => 'Test 2'
+    '10' => '10%',
+    '15' => '15%',
+    '20' => '20%',
 );
