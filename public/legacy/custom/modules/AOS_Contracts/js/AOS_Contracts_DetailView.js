@@ -51,32 +51,34 @@ function handleReusableFields(panel, panelNum) {
     // insert fields
     mapping[panelNum + 1].forEach((row, rowNum) => {
         let dom_row = panel.children[1].children[0].children[rowNum];
-        let fillers = findFillers(dom_row);
-        let presets = getFieldsInRow(dom_row);
-        if(fillers.length > 0) { //position greater than 1 means many fillers
-            for (let p = fillers.length - 1; p >= 0; --p)
-                dom_row.removeChild(dom_row.children[fillers[p]]);
-        }
+        if(dom_row) {
+            let fillers = findFillers(dom_row);
+            let presets = getFieldsInRow(dom_row);
+            if (fillers.length > 0) { //position greater than 1 means many fillers
+                for (let p = fillers.length - 1; p >= 0; --p)
+                    dom_row.removeChild(dom_row.children[fillers[p]]);
+            }
 
-        // if there is exactly one field in a row, add a filler
-        if(presets.length === 0 && row.filter(Boolean).length < 2)
-            dom_row.innerHTML = "<div class=\"col-xs-12 col-sm-6 edit-view-row-item edit-view-bordered\" data-field>" +
-                "<div class=\"edit-dotted-border\"></div>" +
-                "</div>";
-        else if(presets.length === 1 && row.filter(Boolean).length === 1 && presets[0] === row.indexOf(row.filter(Boolean)[0])) {
-            let ind = row.indexOf(row.filter(Boolean)[0]);
-            let fill = "<div class=\"col-xs-12 col-sm-6 edit-view-row-item edit-view-bordered\" data-field>" +
-                "<div class=\"edit-dotted-border\"></div>" +
-                "</div>";
-            dom_row.innerHTML = ind === 1 ? fill + dom_row.innerHTML : dom_row.innerHTML + fill;
-        }
+            // if there is exactly one field in a row, add a filler
+            if (presets.length === 0 && row.filter(Boolean).length < 2)
+                dom_row.innerHTML = "<div class=\"col-xs-12 col-sm-6 edit-view-row-item edit-view-bordered\" data-field>" +
+                    "<div class=\"edit-dotted-border\"></div>" +
+                    "</div>";
+            else if (presets.length === 1 && row.filter(Boolean).length === 1 && presets[0] === row.indexOf(row.filter(Boolean)[0])) {
+                let ind = row.indexOf(row.filter(Boolean)[0]);
+                let fill = "<div class=\"col-xs-12 col-sm-6 edit-view-row-item edit-view-bordered\" data-field>" +
+                    "<div class=\"edit-dotted-border\"></div>" +
+                    "</div>";
+                dom_row.innerHTML = ind === 1 ? fill + dom_row.innerHTML : dom_row.innerHTML + fill;
+            }
 
-        row.forEach((field, fieldNum) => {
-            if(field.trim().length === 0)
-                return;
-            let fieldDOM = document.querySelector("[data-field="+ CSS.escape(field) +"]");
-            dom_row.insertChildAtIndex(fieldDOM, fieldNum);
-        });
+            row.forEach((field, fieldNum) => {
+                if (field.trim().length === 0)
+                    return;
+                let fieldDOM = document.querySelector("[data-field=" + CSS.escape(field) + "]");
+                dom_row.insertChildAtIndex(fieldDOM, fieldNum);
+            });
+        }
     });
 }
 
