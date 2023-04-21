@@ -25,7 +25,7 @@ function findFillers(row) {
     return pos;
 }
 
-function handleUnusedFields(previous_panel, current_panel) {
+function handleUnusedFields(current_panel) {
     /***
      * Hide the fields that were present in previous panel, but are not present in current panel's config.
      * These fields are those that were originally present in default panel
