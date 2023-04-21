@@ -50,6 +50,6 @@ $dictionary['AOS_Contracts']['fields']['associate_hotels_contracts'] = array (
     'rname' => 'name',
     'quicksearch' => 'enabled',
     'studio' => 'visible',
-    'relation' => 'aos_contracts_cb2b_hotels_1',
+    'relation' => 'aos_contracts_cb2b_hotels_2',
     'id' => 'AOS_Contractsassociate_hotels_contracts',
 );

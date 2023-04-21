@@ -25,6 +25,29 @@ function findFillers(row) {
     return pos;
 }
 
+function handleUnusedFields(previous_panel, current_panel) {
+    /***
+     * Hide the fields that were present in previous panel, but are not present in current panel's config.
+     * These fields are those that were originally present in default panel
+     * @Steps
+     * 1. Identify unused fields
+     * 2. Check if the unused fields should be in the default panel
+     * 3. Delete
+     */
+
+    // let active_fields = [];
+    // let current_fields = [];
+    // mapping[previous_panel].forEach((arr) => {
+    //     active_fields = active_fields.concat([...arr.filter(Boolean)]);
+    // });
+    // mapping[current_panel].forEach((arr) => {
+    //     current_fields = current_fields.concat([...arr.filter(Boolean)]);
+    // });
+    default_to_hide[current_panel + 1].forEach((field) => {
+        document.querySelector('[data-field=' + field + ']').style.display = "none";
+    });
+}
+
 function handleReusableFields(panel, panelNum) {
     /***
      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -128,7 +151,9 @@ function configure(target) {
     switch (target.value) {
         case "EGC":
             current_panel = 0;
+            handleReusableFields(default_panel, -1);
             handleReusableFields(contracted, 0);
+            handleUnusedFields(current_panel);
             populate_conditional_fields(0);
             contracted.style.display = "block";
             brochure.style.display = "none";
@@ -142,7 +167,9 @@ function configure(target) {
             break;
         case "BRO":
             current_panel = 1;
+            handleReusableFields(default_panel, -1);
             handleReusableFields(brochure, 1);
+            handleUnusedFields(current_panel);
             populate_conditional_fields(1);
             contracted.style.display = "none";
             brochure.style.display = "block";
@@ -156,7 +183,9 @@ function configure(target) {
             break;
         case "ALL":
             current_panel = 2;
+            handleReusableFields(default_panel, -1);
             handleReusableFields(allotment, 2);
+            handleUnusedFields(current_panel);
             populate_conditional_fields(2);
             contracted.style.display = "none";
             brochure.style.display = "none";
@@ -170,7 +199,9 @@ function configure(target) {
             break;
         case "CON":
             current_panel = 3;
+            handleReusableFields(default_panel, -1);
             handleReusableFields(consortia, 3);
+            handleUnusedFields(current_panel);
             populate_conditional_fields(3);
             contracted.style.display = "none";
             brochure.style.display = "none";
@@ -184,7 +215,9 @@ function configure(target) {
             break;
         case "COM":
             current_panel = 4;
+            handleReusableFields(default_panel, -1);
             handleReusableFields(commission, 4);
+            handleUnusedFields(current_panel);
             populate_conditional_fields(4);
             contracted.style.display = "none";
             brochure.style.display = "none";
@@ -198,7 +231,9 @@ function configure(target) {
             break;
         case "COR":
             current_panel = 5;
+            handleReusableFields(default_panel, -1);
             handleReusableFields(corporate, 5);
+            handleUnusedFields(current_panel);
             populate_conditional_fields(5);
             contracted.style.display = "none";
             brochure.style.display = "none";
@@ -212,7 +247,9 @@ function configure(target) {
             break;
         case "COA":
             current_panel = 6;
+            handleReusableFields(default_panel, -1);
             handleReusableFields(connectivity, 6);
+            handleUnusedFields(current_panel);
             populate_conditional_fields(6);
             contracted.style.display = "none";
             brochure.style.display = "none";
@@ -226,7 +263,9 @@ function configure(target) {
             break;
         case "OTH":
             current_panel = 7;
+            handleReusableFields(default_panel, -1);
             handleReusableFields(other, 7);
+            handleUnusedFields(current_panel);
             populate_conditional_fields(7);
             contracted.style.display = "none";
             brochure.style.display = "none";
@@ -240,7 +279,9 @@ function configure(target) {
             break;
         case "DMC":
             current_panel = 8;
+            handleReusableFields(default_panel, -1);
             handleReusableFields(dmc, 8);
+            handleUnusedFields(current_panel);
             populate_conditional_fields(8);
             contracted.style.display = "none";
             brochure.style.display = "none";
@@ -255,6 +296,7 @@ function configure(target) {
         default: //Default panel
             current_panel = -1;
             handleReusableFields(default_panel, -1);
+            // handleUnusedFields(current_panel, -1);
             populate_conditional_fields(-1);
             contracted.style.display = "none";
             brochure.style.display = "none";
@@ -293,6 +335,20 @@ var all_conditional_fields = [
     [],
     []
 ];
+
+var default_to_hide = [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    ['associate_hotels_contracts']
+];
+
 var conditions = [
     {},
     {
