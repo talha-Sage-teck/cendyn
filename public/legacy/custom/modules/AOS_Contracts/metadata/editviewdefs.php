@@ -225,22 +225,22 @@ array (
           ),
           1 => 
           array (
-            'name' => 'eg_new_date',
-            'label' => 'LBL_EG_NEW_DATE',
+            'name' => 'signed_date',
+            'studio' => 'visible',
+            'label' => 'LBL_SIGNED_DATE',
           ),
         ),
         2 => 
         array (
           0 => 
           array (
-            'name' => 'eg_new_signed_date',
-            'label' => 'LBL_EG_NEW_SIGNED_DATE',
+            'name' => 'eg_new_date',
+            'label' => 'LBL_EG_NEW_DATE',
           ),
           1 => 
           array (
-            'name' => 'signed_date',
-            'studio' => 'visible',
-            'label' => 'LBL_SIGNED_DATE',
+            'name' => 'eg_new_signed_date',
+            'label' => 'LBL_EG_NEW_SIGNED_DATE',
           ),
         ),
         3 => 
@@ -297,6 +297,7 @@ array (
             'name' => 'category_option_4',
             'label' => 'LBL_CATEGORY_OPTION_4',
           ),
+          1 => '',
         ),
       ),
       'lbl_editview_panel2' => 

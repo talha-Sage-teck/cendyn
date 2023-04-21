@@ -383,8 +383,8 @@ var mapping = [ //Dynamic Panels
     ],
     [ //Contracted Panel
         ['associate_hotels_contracts', ''],
-        ['effective_date', ''],
-        ['', 'signed_date'],
+        ['effective_date', 'signed_date'],
+        ['', ''],
         ['', 'termination_date']
     ],
     [ //Brochure Panel
