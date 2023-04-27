@@ -214,12 +214,6 @@ $app_list_strings['account_base_list']=array (
   'A' => 'Agent',
   'O' => 'Other',
 );
-
-$app_list_strings['account_status_list']=array (
-  'Active' => 'Active',
-  'In-Active' => 'In-Active',
-);
-
 $app_list_strings['account_customer_subtype_list']=array (
   133 => 'Government & Embassy',
   '6CD' => 'Airline',
@@ -762,4 +756,12 @@ $app_list_strings['nett_rate_list']=array (
     '10' => '10%',
     '15' => '15%',
     '20' => '20%',
+);
+
+$app_list_strings['account_status_list'][''] = '';
+
+$app_list_strings['account_status_list']=array (
+  '' => '',
+  'Active' => 'Active',
+  'In-Active' => 'In-Active',
 );

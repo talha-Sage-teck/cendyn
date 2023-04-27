@@ -84,7 +84,11 @@ array (
             'label' => 'LBL_B2B_ACCOUNT_NO',
             'type' => 'readonly',
           ),
-          1 => '',
+          1 => 
+          array (
+            'name' => 'status',
+            'label' => 'LBL_STATUS',
+          ),
         ),
         2 => 
         array (
