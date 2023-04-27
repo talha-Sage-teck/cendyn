@@ -665,7 +665,9 @@ $app_list_strings['agreement_type']=array (
   '' => '',
   'AAG' => 'Aman Agreement',
   'PAG' => 'Partner Agreement',
+  'APAG' => 'Aman & Partner Agreement'
 );
+
 $app_list_strings['rate_list']=array (
   '' => '',
   20 => '20%',
