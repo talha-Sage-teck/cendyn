@@ -248,6 +248,16 @@ array (
             'label' => 'LBL_MODIFIED_NAME',
           ),
         ),
+        3 => 
+        array (
+          0 => 
+          array (
+            'name' => 'event_type_c',
+            'studio' => 'visible',
+            'label' => 'LBL_EVENT_TYPE',
+          ),
+          1 => '',
+        ),
       ),
     ),
   ),

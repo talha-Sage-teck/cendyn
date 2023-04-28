@@ -64,15 +64,6 @@ $searchFields['CB2B_PMSProfiles'] = array (
     ),
     'query_type' => 'format',
     'operator' => 'subquery',
-    'subquery' => 'SELECT 
-            cb2b_pmsprofiles.id
-        FROM
-            cb2b_pmsprofiles
-            LEFT JOIN accounts_cb2b_pmsprofiles_1_c ON cb2b_pmsprofiles.id = accounts_cb2b_pmsprofiles_1_c.accounts_cb2b_pmsprofiles_1cb2b_pmsprofiles_idb
-        WHERE
-            ({0} = 0
-                AND accounts_cb2b_pmsprofiles_1_c.accounts_cb2b_pmsprofiles_1cb2b_pmsprofiles_idb IS NULL)
-                OR ({0} = 1
-                AND accounts_cb2b_pmsprofiles_1_c.accounts_cb2b_pmsprofiles_1cb2b_pmsprofiles_idb IS NOT NULL)',
+    'subquery' => 'SELECT cb2b_pmsprofiles.id FROM cb2b_pmsprofiles LEFT JOIN accounts_cb2b_pmsprofiles_1_c ON cb2b_pmsprofiles.id = accounts_cb2b_pmsprofiles_1_c.accounts_cb2b_pmsprofiles_1cb2b_pmsprofiles_idb LEFT JOIN accounts ON accounts.id = accounts_cb2b_pmsprofiles_1_c.accounts_cb2b_pmsprofiles_1accounts_ida WHERE (({0} = 0 AND ((accounts_cb2b_pmsprofiles_1_c.accounts_cb2b_pmsprofiles_1accounts_ida IS NULL OR accounts_cb2b_pmsprofiles_1_c.accounts_cb2b_pmsprofiles_1accounts_ida = "") OR accounts_cb2b_pmsprofiles_1_c.accounts_cb2b_pmsprofiles_1cb2b_pmsprofiles_idb IS NULL AND accounts.name IS NOT NULL AND accounts.name = "")) OR ({0} = 1 AND ((accounts_cb2b_pmsprofiles_1_c.accounts_cb2b_pmsprofiles_1accounts_ida IS NOT NULL AND accounts_cb2b_pmsprofiles_1_c.accounts_cb2b_pmsprofiles_1accounts_ida != "") AND accounts_cb2b_pmsprofiles_1_c.accounts_cb2b_pmsprofiles_1cb2b_pmsprofiles_idb IS NOT NULL AND accounts.name IS NOT NULL AND accounts.name != ""))) AND accounts_cb2b_pmsprofiles_1_c.deleted = 0',
   ),
 );

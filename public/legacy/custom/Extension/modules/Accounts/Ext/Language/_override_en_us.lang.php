@@ -1,6 +1,5 @@
 <?php
-
-// created: 2022-07-14 19:43:37
+// created: 2023-04-27 23:18:03
 $mod_strings['LBL_B2B_EXT_ACCOUNT_NO'] = 'Account No.';
 $mod_strings['LBL_LEVEL'] = 'Level';
 $mod_strings['LBL_TYPE'] = 'Type';
@@ -35,3 +34,5 @@ $mod_strings['LBL_BLACK_LIST'] = 'Blocked';
 $mod_strings['LBL_BLACK_LIST_REASON'] = 'Blocked Reason';
 $mod_strings['LBL_B2B_COMMISSION'] = 'Commission';
 $mod_strings['LBL_ACCOUNTS_CB2B_PMSPROFILES_1_FROM_CB2B_PMSPROFILES_TITLE'] = 'PMS Profiles';
+$mod_strings['LBL_CONSORTIA'] = 'Consortia';
+$mod_strings['LBL_INTERESTS'] = 'Interests';

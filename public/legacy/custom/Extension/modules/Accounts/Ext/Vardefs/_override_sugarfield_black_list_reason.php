@@ -1,5 +1,5 @@
 <?php
- // created: 2022-11-14 13:25:20
-$dictionary['Account']['fields']['black_list_reason']['options']='PMSProfile_type_list';
+ // created: 2023-04-20 13:20:20
+$dictionary['Account']['fields']['black_list_reason']['options']='account_blacklist_reason_list';
 
  ?>

@@ -1,5 +1,5 @@
 <?php
-// created: 2022-07-15 19:39:56
+// created: 2023-04-28 00:00:39
 $mod_strings['LBL_EDITVIEW_PANEL1'] = 'undefined 1';
 $mod_strings['LBL_EDITVIEW_PANEL2'] = 'undefined 2';
 $mod_strings['LBL_B2B_OPPORTUNITYTYPE'] = 'Opportunity';
@@ -23,3 +23,7 @@ $mod_strings['LBL_B2B_EMPLOYEE_ID'] = 'B2B Employee ID';
 $mod_strings['LBL_B2B_OPPORTUNITY_TYPE'] = 'Opportunity Type';
 $mod_strings['LBL_TYPE'] = 'Business Type';
 $mod_strings['LBL_SALES_REP_CODE'] = 'Sales Rep Code';
+$mod_strings['LBL_SALES_STAGE'] = 'Sales Stage:';
+$mod_strings['LBL_LOST_REASON'] = 'Lost Reason';
+$mod_strings['LBL_LEAD_SOURCE'] = 'Lead Source:';
+$mod_strings['LBL_EVENT_TYPE'] = 'Event Type';
