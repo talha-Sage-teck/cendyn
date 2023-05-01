@@ -5,5 +5,5 @@ $dictionary['Task']['fields']['name']['merge_filter']='disabled';
 $dictionary['Task']['fields']['name']['unified_search']=false;
 $dictionary['Task']['fields']['name']['full_text_search']=array (
 );
-
+$dictionary['Task']['fields']['name']['len'] = '255';
  ?>

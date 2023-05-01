@@ -87,7 +87,7 @@ $dictionary["Opportunity"]["fields"]["b2b_banquet_other_persons"] = array(
     'vname' => 'LBL_B2B_BANQUET_OTHER_PERSONS',
     'type' => 'varchar',
     'massupdate' => '0',
-    'default' => '0',
+    'default' => '',
     'no_default' => false,
     'comments' => '',
     'help' => '',
@@ -474,5 +474,25 @@ $dictionary["Opportunity"]["fields"]["sales_stage"]["importable"] = 'true';
 $dictionary["Opportunity"]["fields"]["account_name"]["importable"] = 'true';
 $dictionary["Opportunity"]["fields"]["amount"]["importable"] = 'true';
 $dictionary["Opportunity"]["fields"]["date_closed"]["importable"] = 'true';
+$dictionary["Opportunity"]["fields"]["name"]["importable"] = 'true';
 
+$dictionary["Opportunity"]["fields"]["b2b_status_reason"] = array(
+    'name' => 'b2b_status_reason',
+    'vname' => 'LBL_B2B_STATUS_REASON',
+    'inline_edit' => '1',
+    'required' => false,
+    'type' => 'varchar',
+    'massupdate' => '0',
+    'default' => NULL,
+    'no_default' => false,
+    'importable' => 'true',
+    'duplicate_merge' => 'disabled',
+    'duplicate_merge_dom_value' => '0',
+    'audited' => false,
+    'reportable' => true,
+    'unified_search' => false,
+    'merge_filter' => 'disabled',
+    'len' => '255',
+    'size' => '20',
+);
 

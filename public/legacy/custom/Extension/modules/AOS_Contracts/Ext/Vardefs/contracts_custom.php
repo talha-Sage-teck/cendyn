@@ -137,7 +137,7 @@ $dictionary["AOS_Contracts"]["fields"]["revenue"] = array(
     'required' => false,
     'name' => 'revenue',
     'vname' => 'LBL_REVENUE',
-    'type' => 'currency',
+    'type' => 'varchar',
     'massupdate' => '0',
     'default' => '',
     'no_default' => false,
@@ -151,9 +151,6 @@ $dictionary["AOS_Contracts"]["fields"]["revenue"] = array(
     'unified_search' => false,
     'merge_filter' => 'disabled',
     'len' => '26',
-    'size' => '20',
-    'enable_range_search' => false,
-    'precision' => 6,
 );
 
 $dictionary["AOS_Contracts"]["fields"]["room_nights"] = array(

@@ -181,8 +181,7 @@ $dictionary["Call"]["fields"]["remarks"] = array(
     'reportable' => true,
     'unified_search' => false,
     'merge_filter' => 'disabled',
-    'len' => '255',
-    'size' => '20',
+    'len' => '1020',
 );
 
 $dictionary["Call"]["fields"]["type"] = array(
@@ -231,3 +230,5 @@ $dictionary["Call"]["fields"]["sales_rep_code"] = array(
     'len' => '255',
     'size' => '20',
 );
+
+$dictionary['Call']['fields']['name']['len'] = '255';

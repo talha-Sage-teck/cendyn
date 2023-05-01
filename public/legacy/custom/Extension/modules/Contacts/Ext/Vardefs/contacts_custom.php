@@ -20,7 +20,6 @@ $dictionary["Contact"]["fields"]["b2b_account_id"] = array(
     'unified_search' => false,
     'merge_filter' => 'disabled',
     'len' => '255',
-    'size' => '20',
     'enable_range_search' => false,
     'disable_num_format' => '',
     'min' => false,
@@ -47,11 +46,6 @@ $dictionary["Contact"]["fields"]["b2b_contact_id"] = array(
     'unified_search' => false,
     'merge_filter' => 'disabled',
     'len' => '255',
-    'size' => '20',
-    'enable_range_search' => false,
-    'disable_num_format' => '',
-    'min' => false,
-    'max' => false,
 );
 $dictionary["Contact"]["fields"]["b2b_action_code"] = array(
     'inline_edit' => '1',
@@ -72,10 +66,10 @@ $dictionary["Contact"]["fields"]["b2b_action_code"] = array(
     'reportable' => true,
     'unified_search' => false,
     'merge_filter' => 'disabled',
-    'size' => '20',
     'options' => 'b2b_actioncode_c_list',
     'studio' => 'visible',
     'isMultiSelect' => true,
+    'len' => '255',
 );
 $dictionary["Contact"]["fields"]["b2b_influencer"] = array(
     'inline_edit' => '1',
@@ -85,7 +79,7 @@ $dictionary["Contact"]["fields"]["b2b_influencer"] = array(
     'vname' => 'LBL_B2B_INFLUENCER',
     'type' => 'enum',
     'massupdate' => '0',
-    'default' => 'C',
+    'default' => NULL,
     'no_default' => false,
     'comments' => '',
     'help' => '',
@@ -97,7 +91,6 @@ $dictionary["Contact"]["fields"]["b2b_influencer"] = array(
     'unified_search' => false,
     'merge_filter' => 'disabled',
     'len' => 100,
-    'size' => '20',
     'options' => 'PMSProfile_type_list',
     'studio' => 'visible',
     'dependency' => false,
@@ -121,10 +114,10 @@ $dictionary["Contact"]["fields"]["b2b_interests"] = array(
     'reportable' => true,
     'unified_search' => false,
     'merge_filter' => 'disabled',
-    'size' => '20',
     'options' => 'b2b_interests_c_list',
     'studio' => 'visible',
     'isMultiSelect' => true,
+    'len' => '255',
 );
 $dictionary["Contact"]["fields"]["b2b_is_booker"] = array(
     'inline_edit' => '1',
@@ -134,7 +127,7 @@ $dictionary["Contact"]["fields"]["b2b_is_booker"] = array(
     'vname' => 'LBL_B2B_IS_BOOKER',
     'type' => 'bool',
     'massupdate' => '0',
-    'default' => '0',
+    'default' => NULL,
     'no_default' => false,
     'comments' => '',
     'help' => '',
@@ -146,7 +139,6 @@ $dictionary["Contact"]["fields"]["b2b_is_booker"] = array(
     'unified_search' => false,
     'merge_filter' => 'disabled',
     'len' => '255',
-    'size' => '20',
 );
 $dictionary["Contact"]["fields"]["b2b_language"] = array(
     'inline_edit' => '1',
@@ -168,7 +160,6 @@ $dictionary["Contact"]["fields"]["b2b_language"] = array(
     'unified_search' => false,
     'merge_filter' => 'disabled',
     'len' => 100,
-    'size' => '20',
     'options' => 'b2b_language_c_list',
     'studio' => 'visible',
     'dependency' => NULL,
@@ -193,10 +184,7 @@ $dictionary["Contact"]["fields"]["job_code"] = array(
     'unified_search' => false,
     'merge_filter' => 'disabled',
     'len' => 100,
-    'size' => '20',
     'options' => 'contact_jobcode_list',
-    'studio' => 'visible',
-    'dependency' => false,
 );
 $dictionary["Contact"]["fields"]["priority"] = array(
     'inline_edit' => '1',
@@ -218,7 +206,6 @@ $dictionary["Contact"]["fields"]["priority"] = array(
     'unified_search' => false,
     'merge_filter' => 'disabled',
     'len' => 100,
-    'size' => '20',
     'options' => 'contact_priority_list',
     'studio' => 'visible',
     'dependency' => false,
@@ -242,5 +229,27 @@ $dictionary["Contact"]["fields"]["sales_rep_code"] = array(
     'unified_search' => false,
     'merge_filter' => 'disabled',
     'len' => '255',
-    'size' => '20',
 );
+
+$dictionary["Contact"]["fields"]["contact_role"] = array(
+    'name' => 'contact_role',
+    'vname' => 'LBL_CONTACT_ROLE',
+    'type' => 'varchar',
+    'len' => '100',
+);
+
+$dictionary["Contact"]["fields"]["greeting"] = array(
+    'name' => 'greeting',
+    'vname' => 'LBL_GREETING',
+    'type' => 'varchar',
+    'len' => '100',
+);
+
+$dictionary["Contact"]["fields"]["greetingid"] = array(
+    'name' => 'greetingid',
+    'vname' => 'LBL_GREETING_ID',
+    'type' => 'varchar',
+    'len' => '100',
+);
+
+$dictionary["Contact"]["fields"]["last_name"]["importable"] = true;

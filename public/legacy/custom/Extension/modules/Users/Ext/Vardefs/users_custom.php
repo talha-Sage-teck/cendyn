@@ -6,7 +6,7 @@ $dictionary["User"]["fields"]["b2b_employee_id"] = array(
     'required' => false,
     'name' => 'b2b_employee_id',
     'vname' => 'LBL_B2B_EMPLOYEE_ID',
-    'type' => 'int',
+    'type' => 'varchar',
     'massupdate' => '0',
     'default' => '',
     'no_default' => false,
@@ -20,11 +20,6 @@ $dictionary["User"]["fields"]["b2b_employee_id"] = array(
     'unified_search' => false,
     'merge_filter' => 'disabled',
     'len' => '255',
-    'size' => '20',
-    'enable_range_search' => false,
-    'disable_num_format' => '',
-    'min' => false,
-    'max' => false,
 );
 
 $dictionary["User"]["fields"]["b2b_hotel_id"] = array(
@@ -33,7 +28,7 @@ $dictionary["User"]["fields"]["b2b_hotel_id"] = array(
     'required' => false,
     'name' => 'b2b_hotel_id',
     'vname' => 'LBL_B2B_HOTEL_ID',
-    'type' => 'int',
+    'type' => 'varchar',
     'massupdate' => '0',
     'default' => '',
     'no_default' => false,
@@ -47,9 +42,13 @@ $dictionary["User"]["fields"]["b2b_hotel_id"] = array(
     'unified_search' => false,
     'merge_filter' => 'disabled',
     'len' => '255',
-    'size' => '20',
-    'enable_range_search' => false,
-    'disable_num_format' => '',
-    'min' => false,
-    'max' => false,
+);
+
+$dictionary["User"]["fields"]["sales_rep_id"] = array(
+    'name' => 'sales_rep_id',
+    'vname' => 'LBL_SALES_REP_ID',
+    'type' => 'varchar',
+    'len' => '255',
+    'importable' => 'true',
+    'required' => false,
 );

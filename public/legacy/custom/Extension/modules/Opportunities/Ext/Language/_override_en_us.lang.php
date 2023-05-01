@@ -27,3 +27,4 @@ $mod_strings['LBL_SALES_STAGE'] = 'Sales Stage:';
 $mod_strings['LBL_LOST_REASON'] = 'Lost Reason';
 $mod_strings['LBL_LEAD_SOURCE'] = 'Lead Source:';
 $mod_strings['LBL_EVENT_TYPE'] = 'Event Type';
+$mod_strings['LBL_B2B_STATUS_REASON'] = 'Status Reason';

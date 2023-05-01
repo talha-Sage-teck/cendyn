@@ -4,7 +4,8 @@ $dictionary["EmailAddress"]["fields"]["donotemail"] = array(
     'name' => 'donotemail',
     'vname' => 'LBL_DONOTEMAIL',
     'type' => 'bool',
-    'default' => 0,
+    'default' => '',
+    'no_default' => false,
     'importable' => 'true',
     'reportable' => true,
     'len' => '1',
@@ -14,11 +15,10 @@ $dictionary["EmailAddress"]["fields"]["donotemail_date"] = array(
     'required' => false,
     'name' => 'donotemail_date',
     'vname' => 'LBL_DONOTEMAIL_DATE',
-    'type' => 'datetime',
+    'type' => 'date',
+    'dbType' => 'varchar',
     'importable' => 'true',
     'reportable' => true,
-    'enable_range_search' => true,
-    'options' => 'date_range_search_dom'
 );
 
 $dictionary["EmailAddress"]["fields"]["donotemail_source"] = array(

@@ -199,7 +199,11 @@ array (
             'name' => 'company_signed_date',
             'label' => 'LBL_COMPANY_SIGNED_DATE',
           ),
-          1 => '',
+          1 => 
+          array (
+            'name' => 'revenue',
+            'label' => 'LBL_REVENUE',
+          ),
         ),
         7 => 
         array (

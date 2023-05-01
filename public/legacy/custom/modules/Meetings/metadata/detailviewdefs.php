@@ -161,6 +161,11 @@ array (
         6 => 
         array (
           0 => 'description',
+          1 => 
+          array (
+            'name' => 'remarks',
+            'label' => 'LBL_REMARKS',
+          ),
         ),
       ),
       'LBL_PANEL_ASSIGNMENT' => 

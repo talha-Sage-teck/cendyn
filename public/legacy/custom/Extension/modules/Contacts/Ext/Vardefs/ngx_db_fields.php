@@ -43,7 +43,7 @@ $dictionary["Contact"]["fields"]['donotemail_date'] = array (
     'name' => 'donotemail_date',
     'vname' => 'LBL_DONOTEMAIL_DATE',
     'source' => 'non-db',
-    'type' => 'datetime',
+    'type' => 'varchar',
     'massupdate' => false,
     'studio' => 'false',
 );

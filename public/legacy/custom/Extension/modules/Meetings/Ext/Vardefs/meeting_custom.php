@@ -114,8 +114,7 @@ $dictionary["Meeting"]["fields"]["remarks"] = array(
     'reportable' => true,
     'unified_search' => false,
     'merge_filter' => 'disabled',
-    'len' => '255',
-    'size' => '20',
+    'len' => '1020',
 );
 
 $dictionary["Meeting"]["fields"]["b2b_base_type"] = array(
@@ -207,3 +206,5 @@ $dictionary["Meeting"]["fields"]["sales_rep_code"] = array(
     'len' => '255',
     'size' => '20',
 );
+
+$dictionary['Meeting']['fields']['name']['len'] = '255';

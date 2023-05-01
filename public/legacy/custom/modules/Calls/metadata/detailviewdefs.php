@@ -166,6 +166,11 @@ array (
             'comment' => 'Full text of the note',
             'label' => 'LBL_DESCRIPTION',
           ),
+          1 => 
+          array (
+            'name' => 'remarks',
+            'label' => 'LBL_REMARKS',
+          ),
         ),
         5 => 
         array (
