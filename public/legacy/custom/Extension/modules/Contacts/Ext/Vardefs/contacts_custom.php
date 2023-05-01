@@ -91,7 +91,7 @@ $dictionary["Contact"]["fields"]["b2b_influencer"] = array(
     'unified_search' => false,
     'merge_filter' => 'disabled',
     'len' => 100,
-    'options' => 'PMSProfile_type_list',
+    'options' => 'b2b_influencer_list',
     'studio' => 'visible',
     'dependency' => false,
 );

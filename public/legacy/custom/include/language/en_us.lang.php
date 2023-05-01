@@ -607,9 +607,13 @@ $app_list_strings['activity_type_list'] = array(
 
 $app_strings['LBL_SUITE_DASHBOARD'] = 'USER DASHBOARD';
 
-$app_list_strings['PMSProfile_type_list'] = array(
-    'C' => 'Company',
-    'A' => 'Travel Agent',
+$app_list_strings['b2b_influencer_list'] = array(
+    'BOO' => 'Booker',
+    'FRE' => 'Freelancer',
+    'IND' => 'Independent',
+    'INF' => 'Influencer',
+    'OWN' => 'Owner',
+    'PRO' => 'Product Team',
 );
 
 $app_list_strings['black_list_reason_list'] = array(
