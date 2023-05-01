@@ -21,7 +21,7 @@ function sendDeleteLinkData($profileID, $accountID) {
         'profileId' => $profileID,
         'externalAccountId' => $accountID
     );
-    $endpoint = "https://eu02b2bapi.cendyn.com/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/" .
+    $endpoint = "{$sugar_config['EINSIGHT_API_ENDPOINT']}/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/" .
         $sugar_config['EINSIGHT_API_COMPANY_ID'] . "/b2b/B2BPMSProfilesToAccountsMapping/delete";
     $object = array(
         CURLOPT_URL => $endpoint,
@@ -61,7 +61,7 @@ function sendLinkData($profileID, $accountID, $newAccountID = null) {
     if($is_update == 1)
         $data['newExternalAccountId'] = $newAccountID;
 
-    $endpoint = "https://eu02b2bapi.cendyn.com/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/" .
+    $endpoint = "{$sugar_config['EINSIGHT_API_ENDPOINT']}/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/" .
         $sugar_config['EINSIGHT_API_COMPANY_ID'] . "/b2b/B2BPMSProfilesToAccountsMapping/" .
         (($is_update == 1) ? "update" : "add");
 

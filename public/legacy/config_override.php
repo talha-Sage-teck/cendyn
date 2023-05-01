@@ -51,6 +51,7 @@ $sugar_config['passwordsetting']['factoremailtmpl'] = '';
 $sugar_config['passwordsetting']['forgotpasswordON'] = '1';
 $sugar_config['authenticationClass'] = '';
 $sugar_config['list_max_entries_per_page'] = '20';
+$sugar_config['EINSIGHT_API_ENDPOINT'] = 'https://eu02b2bapi.cendyn.com';
 $sugar_config['EINSIGHT_API_KEY'] = '09F26AA0-007D-4193-8D96-941171BCE9D6';
 $sugar_config['EINSIGHT_API_VERSION'] = '1';
 $sugar_config['EINSIGHT_API_COMPANY_ID'] = '10017';

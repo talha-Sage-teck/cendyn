@@ -14,7 +14,7 @@ function getContactById($contactID) {
      */
     global $sugar_config;
 
-    $endpoint = "https://eu02b2bapi.cendyn.com/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/{$sugar_config['EINSIGHT_API_COMPANY_ID']}/b2b/B2BContacts/"
+    $endpoint = "{$sugar_config['EINSIGHT_API_ENDPOINT']}/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/{$sugar_config['EINSIGHT_API_COMPANY_ID']}/b2b/B2BContacts/"
         . $contactID;
     $curl = curl_init();
     $object = array(
@@ -103,7 +103,7 @@ function deleteAllAccounts($contactID) {
 
     global $sugar_config;
 
-    $endpoint = "https://eu02b2bapi.cendyn.com/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/{$sugar_config['EINSIGHT_API_COMPANY_ID']}/b2b/B2BContacts" .
+    $endpoint = "{$sugar_config['EINSIGHT_API_ENDPOINT']}/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/{$sugar_config['EINSIGHT_API_COMPANY_ID']}/b2b/B2BContacts" .
         '/deleteAllAccount/' . $contactID;
     return sendPostData($endpoint, null, 'Content-Length: 0');
 }
@@ -119,7 +119,7 @@ function addAccountsToContact($accountsArr, $contactBean) {
 
     global $sugar_config;
 
-    $endpoint = "https://eu02b2bapi.cendyn.com/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/{$sugar_config['EINSIGHT_API_COMPANY_ID']}/b2b/B2BContacts" .
+    $endpoint = "{$sugar_config['EINSIGHT_API_ENDPOINT']}/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/{$sugar_config['EINSIGHT_API_COMPANY_ID']}/b2b/B2BContacts" .
         '/insertAccount/' . $contactBean->id;
     return sendPostData($endpoint, $accountsArr);
 }
@@ -135,7 +135,7 @@ function addEmailsToContact($emailsArr, $contactBean) {
 
     global $sugar_config;
 
-    $endpoint = "https://eu02b2bapi.cendyn.com/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/{$sugar_config['EINSIGHT_API_COMPANY_ID']}/b2b/B2BContacts" .
+    $endpoint = "{$sugar_config['EINSIGHT_API_ENDPOINT']}/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/{$sugar_config['EINSIGHT_API_COMPANY_ID']}/b2b/B2BContacts" .
         '/insertEmail/' . $contactBean->id;
     return sendPostData($endpoint, $emailsArr);
 }
@@ -166,7 +166,7 @@ function deleteEmailFromContact($email, $contactBean) {
 
     global $sugar_config;
 
-    $endpoint = "https://eu02b2bapi.cendyn.com/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/{$sugar_config['EINSIGHT_API_COMPANY_ID']}/b2b/B2BContacts" .
+    $endpoint = "{$sugar_config['EINSIGHT_API_ENDPOINT']}/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/{$sugar_config['EINSIGHT_API_COMPANY_ID']}/b2b/B2BContacts" .
         '/delete/' . $contactBean->id . '/email/' . $email;
     return sendPostData($endpoint, null, 'Content-Length: 0');
 }
@@ -253,7 +253,7 @@ function deleteContact($contact_id): bool {
      */
 
     global $sugar_config;
-    $endpoint = "https://eu02b2bapi.cendyn.com/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/{$sugar_config['EINSIGHT_API_COMPANY_ID']}/b2b/B2BContacts" .
+    $endpoint = "{$sugar_config['EINSIGHT_API_ENDPOINT']}/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/{$sugar_config['EINSIGHT_API_COMPANY_ID']}/b2b/B2BContacts" .
         '/delete/' . $contact_id;
     return sendPostData($endpoint, null, 'Content-Length: 0');
 }
@@ -270,7 +270,7 @@ function sendContactData($data, $contact_id = null): bool {
      */
 
     global $sugar_config;
-    $endpoint = "https://eu02b2bapi.cendyn.com/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/{$sugar_config['EINSIGHT_API_COMPANY_ID']}/b2b/B2BContacts" .
+    $endpoint = "{$sugar_config['EINSIGHT_API_ENDPOINT']}/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/{$sugar_config['EINSIGHT_API_COMPANY_ID']}/b2b/B2BContacts" .
         (($contact_id != null) ? '/update/' . $contact_id : '/insert');
     return sendPostData($endpoint, $data);
 }
