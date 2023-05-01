@@ -84,13 +84,13 @@ function handleReusableFields(panel, panelNum) {
 
             // if there is exactly one field in a row, add a filler
             if (presets.length === 0 && row.filter(Boolean).length < 2)
-                dom_row.innerHTML = "<div class=\"col-xs-12 col-sm-6 edit-view-row-item edit-view-bordered\" data-field>" +
-                    "<div class=\"edit-dotted-border\"></div>" +
+                dom_row.innerHTML = "<div class=\"col-xs-12 col-sm-6 detail-view-row-item detail-view-bordered\" data-field>" +
+                    "<div class=\"detail-dotted-border\"></div>" +
                     "</div>";
             else if (presets.length === 1 && row.filter(Boolean).length === 1 && presets[0] === row.indexOf(row.filter(Boolean)[0])) {
                 let ind = row.indexOf(row.filter(Boolean)[0]);
-                let fill = "<div class=\"col-xs-12 col-sm-6 edit-view-row-item edit-view-bordered\" data-field>" +
-                    "<div class=\"edit-dotted-border\"></div>" +
+                let fill = "<div class=\"col-xs-12 col-sm-6 detail-view-row-item detail-view-bordered\" data-field>" +
+                    "<div class=\"detail-dotted-border\"></div>" +
                     "</div>";
                 let fill_pos = ind === 1 ? 'afterbegin' : 'beforeend';
                 dom_row.insertAdjacentHTML(fill_pos, fill);

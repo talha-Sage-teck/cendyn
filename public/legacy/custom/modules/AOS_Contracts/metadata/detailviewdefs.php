@@ -310,6 +310,7 @@ array (
             'name' => 'category_option_4',
             'label' => 'LBL_CATEGORY_OPTION_4',
           ),
+          1 => '',
         ),
       ),
       'lbl_editview_panel2' => 
