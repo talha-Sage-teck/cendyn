@@ -128,4 +128,23 @@ class AccountsLogicHook {
         $bean->skipBeforeSave = true;
         $bean->save();
     }
+
+    public function processWebsiteField($bean, $events, $args)
+    {
+        /***
+         * @Objectives:
+         * 1. Add the http:// or https:// prefix to a valid URL in website field
+         * @Conditions
+         * 1. The input URL must be valid without http:// or https://
+         */
+
+        if (!preg_match("~^(?:f|ht)tps?://~i", $bean->website)) {
+            $bean->website = "http://" . $bean->website;
+        } else {
+            $pattern = "~^(http|https)://~i";
+            if (!preg_match($pattern, $bean->website)) {
+                $bean->website = preg_replace($pattern, "http://", $bean->website);
+            }
+        }
+    }
 }

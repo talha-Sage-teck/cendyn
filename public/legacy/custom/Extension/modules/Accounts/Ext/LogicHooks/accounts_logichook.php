@@ -33,6 +33,14 @@ $hook_array['before_save'][] = Array(
     'relatePromotedAccount'
 );
 
+$hook_array['before_save'][] = Array(
+    11,
+    'Process website field',
+    'custom/modules/Accounts/AccountsLogicHook.php',
+    'AccountsLogicHook',
+    'processWebsiteField'
+);
+
 $hook_array['before_delete'][] = Array(
     44,
     'Set the ready_to_sync flag for delete and check possible relation with contacts to set the contact\'s ready_to_sync flag',
