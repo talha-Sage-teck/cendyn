@@ -451,7 +451,7 @@ $app_list_strings = array(
         'AOS_Invoices' => 'Invoice',
         'AOS_Quotes' => 'Quote',
         'AOS_Products' => 'Product',
-
+	'Users' => 'User',
     ),
 
     'record_type_display_notes' => array(
