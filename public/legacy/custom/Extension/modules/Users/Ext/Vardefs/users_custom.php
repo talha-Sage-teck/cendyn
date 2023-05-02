@@ -52,3 +52,11 @@ $dictionary["User"]["fields"]["sales_rep_id"] = array(
     'importable' => 'true',
     'required' => false,
 );
+
+$dictionary["User"]["fields"]["login_name"] = array(
+    'name' => 'login_name',
+    'vname' => 'LBL_LOGIN_NAME',
+    'dbType' => 'varchar',
+    'type' => 'varchar',
+    'len' => '255',
+);

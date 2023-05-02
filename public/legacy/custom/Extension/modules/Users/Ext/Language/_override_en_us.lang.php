@@ -7,3 +7,4 @@ $mod_strings['LBL_TITLE'] = 'Job Title';
 $mod_strings['LBL_MANAGE_PROFILE_MATCHING_CRITERIA_TITLE'] = 'PMS Profiles Matching Criteria';
 $mod_strings['LBL_SETUP_STANDARD_DASHBOARD_TITLE'] = 'Standard Dashboard Setup';
 $mod_strings['LBL_SALES_REP_ID'] = 'Sales Rep Id';
+$mod_strings['LBL_LOGIN_NAME'] = 'Login Name';
