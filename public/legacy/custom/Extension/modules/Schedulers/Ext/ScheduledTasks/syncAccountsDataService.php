@@ -113,9 +113,9 @@ function syncAccountsDataService() {
         $data = array(
             'externalAccountId' => $accountBean->id,
             'source' => 'SuiteCRM',
-            'externalParentAccountId' => '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+//            'externalParentAccountId' => '3fa85f64-5717-4562-b3fc-2c963f66afa6',
             // TBD
-//            'externalParentAccountId' => $accountBean->parent_id,
+            'externalParentAccountId' => $accountBean->parent_id,
             'accountName' => $accountBean->name,
             'accountBaseType' => $accountBean->account_base_type,
             'accountType' => $accountBean->account_type,
