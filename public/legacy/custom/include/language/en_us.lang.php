@@ -1096,7 +1096,7 @@ $app_list_strings['sales_stage_dom']=array (
   'Reserved' => 'Reserved',
   'Confirmed' => 'Confirmed',
   'Cancelled' => 'Cancelled',
-  'Closed Lost' => 'Lost',
+  'Closed_Lost' => 'Lost',
 );
 $app_list_strings['lost_reason_list']=array (
   'Act_of_god' => 'Act of God (Natural disasters surrounding the property or guest)',
@@ -1108,11 +1108,11 @@ $app_list_strings['lost_reason_list']=array (
 );
 $app_list_strings['lost_reason_list']=array (
   '' => '',
-  'Act_of_god' => 'Act of God (Natural disasters surrounding the property or guest)',
-  'Cancellation_COVID' => 'Cancellation due to COVID-19',
-  'Personal' => 'Cancelled due to personal reasons of the lead',
-  'Location' => 'Location',
-  'Postponed_COVID' => 'Postponed due to COVID-19',
+  'Closed_Lost_Act_of_god' => 'Act of God (Natural disasters surrounding the property or guest)',
+  'Closed_Lost_Cancellation_COVID' => 'Cancellation due to COVID-19',
+  'Closed_Lost_Personal' => 'Cancelled due to personal reasons of the lead',
+  'Closed_Lost_Location' => 'Location',
+  'Closed_Lost_Postponed_COVID' => 'Postponed due to COVID-19',
 );
 $app_list_strings['lead_source_dom']=array (
   '' => '',

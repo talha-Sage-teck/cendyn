@@ -1,4 +1,5 @@
 <?php
+
 $dictionary["Opportunity"]["fields"]["lost_reason"] = array(
     'inline_edit' => '1',
     'required' => false,
@@ -28,10 +29,9 @@ $dictionary["Opportunity"]["fields"]["lost_reason"] = array(
                     'sales_stage',
                 ],
                 'targetDisplayType' => 'block',
-                'activeOnFields' =>  [
+                'activeOnFields' => [
                     'sales_stage' => [
-                        'Closed Lost',
-                        'Closed_Lost_E'
+                        'Closed_Lost',
                     ]
                 ]
             ]
@@ -43,8 +43,10 @@ $dictionary["Opportunity"]["fields"]["lost_reason"] = array(
                 'fieldDependencies' => [
                     'sales_stage',
                 ],
-                'activeOnFields' =>  [
-                    'sales_stage' => ['Closed Lost', 'Closed_Lost_E']
+                'activeOnFields' => [
+                    'sales_stage' => [
+                        'Closed_Lost',
+                    ]
                 ]
             ]
         ]
