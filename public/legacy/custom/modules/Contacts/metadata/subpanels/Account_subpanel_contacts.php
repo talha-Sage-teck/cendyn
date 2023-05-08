@@ -1,5 +1,5 @@
 <?php
-// created: 2022-06-26 00:13:20
+// created: 2023-05-09 01:22:38
 $subpanel_layout['list_fields'] = array (
   'name' => 
   array (
@@ -9,13 +9,6 @@ $subpanel_layout['list_fields'] = array (
     'module' => 'Contacts',
     'width' => '43%',
     'default' => true,
-  ),
-  'priority_c' => 
-  array (
-    'type' => 'varchar',
-    'default' => true,
-    'vname' => 'LBL_PRIORITY',
-    'width' => '10%',
   ),
   'primary_address_city' => 
   array (
@@ -37,7 +30,7 @@ $subpanel_layout['list_fields'] = array (
     'vname' => 'LBL_LIST_EMAIL',
     'widget_class' => 'SubPanelEmailLink',
     'width' => '30%',
-    'sortable' => false,
+    'sortable' => true,
     'default' => true,
   ),
   'phone_work' => 
