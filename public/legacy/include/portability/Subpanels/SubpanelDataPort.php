@@ -122,6 +122,17 @@ class SubpanelDataPort
         $mappedBeans = [];
 
         foreach ($beanList as $key => $beanData) {
+            if ($beanData->module_dir == "Contacts") {
+                if ($beanData->load_relationship('email_addresses_primary')) {
+                    $relatedBeans = $beanData->email_addresses_primary->getBeans();
+                    if (count($relatedBeans) > 0) {
+                        foreach ($relatedBeans as $rel) {
+                            $beanData->email1 = $rel->email_address;
+                        }
+                    }
+                }
+            }
+            
             $this->addACLInfo($beanData, $lisData['pageData']);
             $mappedBeans[] = $this->apiBeanMapper->toApi($beanData);
         }
