@@ -332,6 +332,11 @@ array (
             'studio' => 'false',
             'label' => 'LBL_EMAIL_ADDRESS',
           ),
+            1 => 
+          array (
+            'name' => 'phone_fax',
+            'label' => 'LBL_FAX_PHONE',
+          ),
         ),
         8 => 
         array (
