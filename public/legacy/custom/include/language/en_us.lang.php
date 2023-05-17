@@ -1262,3 +1262,5 @@ $app_list_strings['b2b_interests_c_list']=array (
   'Aman_Le_Melezin' => 'Aman Le Melezin',
   'Aman_Rosa_Alpina' => 'Aman Rosa Alpina',
 );
+
+$app_strings['LBL_JJWG_MAPS_ADDRESS'] = 'Geocode Address';
