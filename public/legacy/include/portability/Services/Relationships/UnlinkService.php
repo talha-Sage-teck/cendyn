@@ -92,7 +92,10 @@ class UnlinkService
         }
 
         $ids = $bean->$linkField->get();
-        if (!in_array($linkedId, $ids, true)) {
+        // Non-Upgrade Safe Change for #506718 because, we have ids in numbers imported from Nextguest which 
+        // are not the strings 
+//        if (!in_array($linkedId, $ids, true)) {
+        if (!in_array($linkedId, $ids)) {
             return [
                 'success' => false,
                 'message' => 'LBL_NOT_LINKED'
