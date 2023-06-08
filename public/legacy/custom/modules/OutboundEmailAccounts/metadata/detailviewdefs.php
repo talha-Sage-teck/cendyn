@@ -35,7 +35,12 @@ array (
           'newTab' => false,
           'panelDefault' => 'expanded',
         ),
-        'LBL_EDITVIEW_PANEL1' => 
+        'LBL_CONNECTION_CONFIGURATION' => 
+        array (
+          'newTab' => false,
+          'panelDefault' => 'expanded',
+        ),
+        'LBL_OUTBOUND_CONFIGURATION' => 
         array (
           'newTab' => false,
           'panelDefault' => 'expanded',
@@ -69,25 +74,34 @@ array (
         2 => 
         array (
           0 => 'owner_name',
-          1 => 
-          array (
-            'name' => 'externaloauthconnection_outboundemailaccounts_1_name',
-          ),
+          1 => '',
         ),
       ),
       'lbl_connection_configuration' => 
       array (
         0 => 
         array (
+          0 => 
+          array (
+            'name' => 'auth_type',
+            'label' => 'LBL_AUTH_TYPE',
+          ),
+          1 => 
+          array (
+            'name' => 'externaloauthconnection_outboundemailaccounts_1_name',
+          ),
+        ),
+        1 => 
+        array (
           0 => 'mail_smtpserver',
           1 => 'mail_smtpauth_req',
         ),
-        1 => 
+        2 => 
         array (
           0 => 'mail_smtpssl',
           1 => 'mail_smtpuser',
         ),
-        2 => 
+        3 => 
         array (
           0 => 'mail_smtpport',
           1 => '',
