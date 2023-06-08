@@ -36,20 +36,48 @@
  * reasonably feasible for technical reasons, the Appropriate Legal Notices must
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
-function toggleAuthFields(authEnabled) {
+function toggleAuthFields(authEnabled,authType) {
   var status = 'disabled';
   if (authEnabled) {
     status = 'enabled';
   }
 
-  var fieldsPerStatus = {
-    'enabled': {
-      'mail_smtppass': true,
-    },
-    'disabled': {
-      'mail_smtppass': false,
-    },
-  };
+  if(authType=='oauth'){
+
+    var fieldsPerStatus = {
+      'enabled': {
+        'mail_smtppass': false,
+        'externaloauthconnection_outboundemailaccounts_1_name':true
+      },
+      'disabled': {
+        'mail_smtppass': false,
+        'externaloauthconnection_outboundemailaccounts_1_name':true
+
+      },
+    };
+  }
+  else{
+    var fieldsPerStatus = {
+      'enabled': {
+        'mail_smtppass': true,
+        'externaloauthconnection_outboundemailaccounts_1_name':false
+
+      },
+      'disabled': {
+        'mail_smtppass': false,
+        'externaloauthconnection_outboundemailaccounts_1_name':false
+      },
+    };
+  }
+
+  // var fieldsPerStatus = {
+  //   'enabled': {
+  //     'mail_smtppass': true,
+  //   },
+  //   'disabled': {
+  //     'mail_smtppass': false,
+  //   },
+  // };
 
   var fieldDisplay = fieldsPerStatus[status] || fieldsPerStatus.disabled;
 
@@ -65,12 +93,19 @@ function toggleAuthFields(authEnabled) {
 }
 
 $(document).ready(function () {
+  var authType = outboundEmailFields.getValue('auth_type');
   var authEnabled = outboundEmailFields.getValue('mail_smtpauth_req');
-  toggleAuthFields(authEnabled);
+  toggleAuthFields(authEnabled,authType);
 
   $('#mail_smtpauth_req').change(function () {
+    var authType = outboundEmailFields.getValue('auth_type');
     var authEnabled = outboundEmailFields.getValue('mail_smtpauth_req');
-    toggleAuthFields(authEnabled);
+    toggleAuthFields(authEnabled,authType);
+  });
+  $('#auth_type').change(function () {
+    var authType = outboundEmailFields.getValue('auth_type');
+    var authEnabled = outboundEmailFields.getValue('mail_smtpauth_req');
+    toggleAuthFields(authEnabled,authType);
   });
 });
 

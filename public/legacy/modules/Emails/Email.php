@@ -811,7 +811,9 @@ class Email extends Basic
         $fromaddress,
         $toaddress,
         $mail_sendtype = 'smtp',
-        $fromname = ''
+        $fromname = '',
+        $auth_type='',
+        $oauth_connection_id=''
     ) {
         global $current_user, $app_strings;
         $mod_strings = return_module_language($GLOBALS['current_language'], 'Emails'); //Called from EmailMan as well.
@@ -836,6 +838,30 @@ class Email extends Basic
                 $mail->Username = $smtp_username;
                 $mail->Password = $smtppassword;
             }
+            if($auth_type=='oauth'&&!empty($oauth_connection_id)){
+
+                $mail->AuthType = 'XOAUTH2';               // omit this to send using basic authentication
+                $connection=$this->getOAuthToken($oauth_connection_id);
+
+                require_once __DIR__ . '/../ExternalOAuthConnection/services/OAuthAuthorizationService.php';
+                $oAuth = new OAuthAuthorizationService();
+                $provider=$oAuth->getProvider( $connection->external_oauth_provider_id ?? '');
+
+                $providerBean = BeanFactory::getBean('ExternalOAuthProvider', $connection->external_oauth_provider_id ?? '');
+
+
+                require_once __DIR__.'/OAuth2.php';
+                $mail->setOAuth(new OAuth2([
+                    'provider' => $provider,
+                    'clientId' => $providerBean->client_id,
+                    'clientSecret' => $providerBean->client_secret,
+                    'refreshToken' => $connection->refresh_token,
+                    'userName' =>$smtp_username,
+                    'accessToken'=>$connection->access_token
+                ]));
+
+            }
+
         } else {
             $mail->Mailer = 'sendmail';
         }
@@ -2851,9 +2877,69 @@ class Email extends Basic
                 $mail->Username = $oe->mail_smtpuser;
                 $mail->Password = $oe->mail_smtppass;
             }
+
+            if($oe->auth_type=='oauth'&&!empty($oe->externaloae73fnection_ida)){
+
+                $mail->AuthType = 'XOAUTH2';               // omit this to send using basic authentication
+                $connection=$this->getOAuthToken($oe->externaloae73fnection_ida);
+
+                require_once __DIR__ . '/../ExternalOAuthConnection/services/OAuthAuthorizationService.php';
+                $oAuth = new OAuthAuthorizationService();
+                $provider=$oAuth->getProvider( $connection->external_oauth_provider_id ?? '');
+
+                $providerBean = BeanFactory::getBean('ExternalOAuthProvider', $connection->external_oauth_provider_id ?? '');
+
+
+                require_once __DIR__.'/OAuth2.php';
+                $mail->setOAuth(new OAuth2([
+                    'provider' => $provider,
+                    'clientId' => $providerBean->client_id,
+                    'clientSecret' => $providerBean->client_secret,
+                    'refreshToken' => $connection->refresh_token,
+                    'userName' =>$oe->mail_smtpuser,
+                    'accessToken'=>$connection->access_token
+                ]));
+
+            }
+
         } else {
             $mail->Mailer = "sendmail";
         }
+    }
+
+    /**
+     * Get OAuthToken. Refresh if needed
+     * @param string $oAuthConnectionId
+     * @return object|null
+     */
+    protected function getOAuthToken(string $oAuthConnectionId): ?object
+    {
+        require_once __DIR__ . '/../ExternalOAuthConnection/services/OAuthAuthorizationService.php';
+        $oAuth = new OAuthAuthorizationService();
+
+        /** @var ExternalOAuthConnection $oauthConnection */
+        $oauthConnection = BeanFactory::getBean('ExternalOAuthConnection', $oAuthConnectionId);
+        $password = $oauthConnection;
+
+        $hasExpiredFeedback = $oAuth->hasConnectionTokenExpired($oauthConnection);
+        $refreshToken = $hasExpiredFeedback['refreshToken'] ?? false;
+        if ($refreshToken === true) {
+            $refreshTokenFeedback = $oAuth->refreshConnectionToken($oauthConnection);
+
+            if ($refreshTokenFeedback['success'] === false) {
+                $message = $this->getOAuthRefreshTokenErrorMessage(
+                    $refreshTokenFeedback['reLogin'],
+                    $oauthConnection,
+                    $oAuthConnectionId
+                );
+                displayAdminError($message);
+                return null;
+            }
+
+            return $oauthConnection;
+        }
+
+        return $password;
     }
 
     /**

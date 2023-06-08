@@ -79,7 +79,10 @@ $out = $email->sendEmailTest(
     $_REQUEST['outboundtest_from_address'],
     $_REQUEST['outboundtest_to_address'],
     $_REQUEST['mail_sendtype'],
-    $_REQUEST['mail_from_name']
+    $_REQUEST['mail_from_name'],
+    $_REQUEST['mail_smtpauth'],
+    $_REQUEST['mail_smtpcon_id'],
+
 );
 
 $out = $json->encode($out);

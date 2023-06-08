@@ -502,6 +502,8 @@ HTML;
 					var smtpServer = document.getElementById('mail_smtpserver').value;
 					var smtpPort = document.getElementById('mail_smtpport').value;
 					var smtpssl  = document.getElementById('mail_smtpssl').value;
+					var smtpauth_type  = document.getElementById('auth_type').value;
+					var smtpauth_con_id  = document.getElementById('externaloae73fnection_ida').value;
 					var mailsmtpauthreq = document.getElementById('mail_smtpauth_req');
 					var mail_sendtype = 'SMTP';
                                                                 var adminNotifyFromAddress = document.getElementById('smtp_from_addr').value ? document.getElementById('smtp_from_addr').value :'$adminNotifyFromName';
@@ -514,6 +516,8 @@ HTML;
 						"mail_smtpauth_req=" + mailsmtpauthreq.checked + "&" +
 						"mail_smtpuser=" + trim(document.getElementById('mail_smtpuser').value) + "&" +
 						"mail_smtppass=" + trim(document.getElementById('mail_smtppass').value) + "&" +
+						"mail_smtpauth=" + smtpauth_type + "&" +
+						"mail_smtpcon_id=" + smtpauth_con_id + "&" +
 						"outboundtest_to_address=" + toAddress + '&' +
 						'outboundtest_from_address=' + adminNotifyFromAddress + '&' +
 						'mail_from_name=' + adminNotifyFromName;
