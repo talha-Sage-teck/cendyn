@@ -16,28 +16,44 @@ $job_strings[] = 'syncLinkedProfiles';
 
 function sendDeleteLinkData($profileID, $accountID) {
     global $sugar_config;
-    $curl = curl_init();
+
     $data = array(
         'profileId' => $profileID,
         'externalAccountId' => $accountID
     );
-    $endpoint = "{$sugar_config['EINSIGHT_API_ENDPOINT']}/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/" .
-        $sugar_config['EINSIGHT_API_COMPANY_ID'] . "/b2b/B2BPMSProfilesToAccountsMapping/delete";
-    $object = array(
-        CURLOPT_URL => $endpoint,
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => 'POST',
-        CURLOPT_POSTFIELDS => json_encode($data),
-        CURLOPT_HTTPHEADER => array(
-            'X-Api-Key: ' . $sugar_config['EINSIGHT_API_KEY'],
-            'Content-Type: application/json'
+
+    $url = "/b2b/B2BPMSProfilesToAccountsMapping/delete";
+    $curlRequest = new CurlRequest($url, [
+        'module' => 'PMSProfiles',
+        'action' => 'Delete',
+        'record_id' => $profileID,
+        'header' => array(
+
         ),
-    );
-    curl_setopt_array($curl, $object);
-    $response = curl_exec($curl);
-    curl_close($curl);
+    ]);
+
+    $response = $curlRequest->executeCurlRequest("POST", $data);
+
+//    $curl = curl_init();
+//
+//    $endpoint = "{$sugar_config['EINSIGHT_API_ENDPOINT']}/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/" .
+//        $sugar_config['EINSIGHT_API_COMPANY_ID'] . "/b2b/B2BPMSProfilesToAccountsMapping/delete";
+//    $object = array(
+//        CURLOPT_URL => $endpoint,
+//        CURLOPT_RETURNTRANSFER => true,
+//        CURLOPT_FOLLOWLOCATION => true,
+//        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+//        CURLOPT_CUSTOMREQUEST => 'POST',
+//        CURLOPT_POSTFIELDS => json_encode($data),
+//        CURLOPT_HTTPHEADER => array(
+//            'X-Api-Key: ' . $sugar_config['EINSIGHT_API_KEY'],
+//            'Content-Type: application/json'
+//        ),
+//    );
+//    curl_setopt_array($curl, $object);
+//    $response = curl_exec($curl);
+//    curl_close($curl);
+
     if($response != "") {
         $GLOBALS['log']->debug($response);
         return false;
@@ -49,7 +65,6 @@ function sendDeleteLinkData($profileID, $accountID) {
 
 function sendLinkData($profileID, $accountID, $newAccountID = null) {
     global $sugar_config;
-    $curl = curl_init();
 
     $is_update = 0;
     if($newAccountID != null)
@@ -61,25 +76,49 @@ function sendLinkData($profileID, $accountID, $newAccountID = null) {
     if($is_update == 1)
         $data['newExternalAccountId'] = $newAccountID;
 
-    $endpoint = "{$sugar_config['EINSIGHT_API_ENDPOINT']}/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/" .
-        $sugar_config['EINSIGHT_API_COMPANY_ID'] . "/b2b/B2BPMSProfilesToAccountsMapping/" .
-        (($is_update == 1) ? "update" : "add");
-
-    $object = array(
-        CURLOPT_URL => $endpoint,
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => 'POST',
-        CURLOPT_POSTFIELDS => json_encode($data),
-        CURLOPT_HTTPHEADER => array(
-            'X-Api-Key: ' . $sugar_config['EINSIGHT_API_KEY'],
-            'Content-Type: application/json'
+    $url = "/b2b/B2BPMSProfilesToAccountsMapping/" . (($is_update == 1) ? "update" : "add");
+    $curlRequest = new CurlRequest($url, [
+        'module' => 'PMSProfiles',
+        'action' => (($is_update == 1) ? "update" : "insert"),
+        'record_id' => $profileID,
+        'header' => array(
+            'Content-Length: 0'
         ),
-    );
-    curl_setopt_array($curl, $object);
-    $response = curl_exec($curl);
-    curl_close($curl);
+    ]);
+
+    $response = $curlRequest->executeCurlRequest("POST", $data);
+
+//    $curl = curl_init();
+//
+//    $is_update = 0;
+//    if($newAccountID != null)
+//        $is_update = 1;
+//    $data = array(
+//        'profileId' => $profileID,
+//        'externalAccountId' => $accountID
+//    );
+//    if($is_update == 1)
+//        $data['newExternalAccountId'] = $newAccountID;
+//
+//    $endpoint = "{$sugar_config['EINSIGHT_API_ENDPOINT']}/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/" .
+//        $sugar_config['EINSIGHT_API_COMPANY_ID'] . "/b2b/B2BPMSProfilesToAccountsMapping/" .
+//        (($is_update == 1) ? "update" : "add");
+//
+//    $object = array(
+//        CURLOPT_URL => $endpoint,
+//        CURLOPT_RETURNTRANSFER => true,
+//        CURLOPT_FOLLOWLOCATION => true,
+//        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+//        CURLOPT_CUSTOMREQUEST => 'POST',
+//        CURLOPT_POSTFIELDS => json_encode($data),
+//        CURLOPT_HTTPHEADER => array(
+//            'X-Api-Key: ' . $sugar_config['EINSIGHT_API_KEY'],
+//            'Content-Type: application/json'
+//        ),
+//    );
+//    curl_setopt_array($curl, $object);
+//    $response = curl_exec($curl);
+//    curl_close($curl);
     if($response != "") {
         $GLOBALS['log']->debug($response);
         return false;

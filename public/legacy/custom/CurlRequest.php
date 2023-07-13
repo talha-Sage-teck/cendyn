@@ -37,7 +37,7 @@ class CurlRequest {
      * @param string $context Optional context information.
      * @return bool True if the request is successful, false otherwise.
      */
-    public function executeCurlRequest($requestType, $data = null) : string {
+    public function executeCurlRequest($requestType, $data = []) : string {
         $customModuleBean = BeanFactory::newBean('CB2B_AutomatedMonitoring');
 
         $curl = curl_init();
@@ -89,6 +89,8 @@ class CurlRequest {
         $customModuleBean->reported_time = date("Y-m-d H:i:s");
         $customModuleBean->parent_id = $this->errors['parent_id'];
         $customModuleBean->parent_type = $this->errors['parent_type'];
+        $customModuleBean->schedulersjob_id = $GLOBALS["jobq"]->job->id;
+        $customModuleBean->scheduler_id = $GLOBALS["jobq"]->job->scheduler_id;
 
         $customModuleBean->save();
     }
@@ -98,7 +100,11 @@ class CurlRequest {
         if ($responseData === null || $responseData === "") {
             $name = "Url malformed";
         } else {
-            $name = $responseData['Type'] . ' ' . $responseData['Title'];
+            if(!empty($responseData['error']['code']) && $responseData['error']['code'] == 'UnsupportedApiVersion') {
+                $name = "Unsupported API version error";
+            } else {
+                $name = $responseData['Type'] . ' ' . $responseData['Title'];
+            }
         }
 
         $error = array(

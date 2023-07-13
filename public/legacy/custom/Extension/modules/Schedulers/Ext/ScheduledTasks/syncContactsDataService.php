@@ -25,7 +25,9 @@ function getContactById($contactID) {
         'record_id' => $contactID,
     ]);
 
-    return $curlRequest->executeCurlRequest("POST");
+    $response = $curlRequest->executeCurlRequest("GET");
+
+    return json_decode($response);
 
 //    $endpoint = "{$sugar_config['EINSIGHT_API_ENDPOINT']}/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/{$sugar_config['EINSIGHT_API_COMPANY_ID']}/b2b/B2BContacts/"
 //        . $contactID;
@@ -119,10 +121,10 @@ function deleteAllAccounts($contactID) {
 
     global $sugar_config;
 
-    $url = '/deleteAllAccount/' . $contactID;
+    $url = "/b2b/B2BContacts" . '/deleteAllAccount/' . $contactID;
     $curlRequest = new CurlRequest($url, [
-        'module' => 'Account',
-        'action' => 'delete',
+        'module' => 'Contacts',
+        'action' => 'Delete',
         'record_id' => $contactID,
         'header' => array(
             'Content-Length: 0'
@@ -147,13 +149,13 @@ function addAccountsToContact($accountsArr, $contactBean) {
 
     global $sugar_config;
 
-    $url = '/insertAccount/' . $contactBean->id;
+    $url = "/b2b/B2BContacts" . '/insertAccount/' . $contactBean->id;
     $curlRequest = new CurlRequest($url, [
-        'module' => 'Account',
-        'action' => 'insert',
+        'module' => 'Contacts',
+        'action' => 'Insertion',
         'record_id' => $contactBean->id,
         'header' => array(
-            'Content-Length: 0'
+
         ),
     ]);
 
@@ -175,13 +177,13 @@ function addEmailsToContact($emailsArr, $contactBean) {
 
     global $sugar_config;
 
-    $url = '/insertEmail/' . $contactBean->id;
+    $url = "/b2b/B2BContacts" . '/insertEmail/' . $contactBean->id;
     $curlRequest = new CurlRequest($url, [
         'module' => 'Contacts',
-        'action' => 'insert',
+        'action' => 'Insertion',
         'record_id' => $contactBean->id,
         'header' => array(
-            'Content-Length: 0'
+
         ),
     ]);
 
@@ -218,10 +220,10 @@ function deleteEmailFromContact($email, $contactBean) {
 
     global $sugar_config;
 
-    $url = '/delete/' . $contactBean->id . '/email/' . $email;
+    $url = "/b2b/B2BContacts" . '/delete/' . $contactBean->id . '/email/' . $email;
     $curlRequest = new CurlRequest($url, [
         'module' => 'Contacts',
-        'action' => 'delete',
+        'action' => 'Delete',
         'record_id' => $contactBean->id,
         'header' => array(
             'Content-Length: 0'
@@ -318,10 +320,10 @@ function deleteContact($contact_id): bool {
 
     global $sugar_config;
 
-    $url = '/delete/' . $contact_id;
+    $url = "/b2b/B2BContacts" . '/delete/' . $contact_id;
     $curlRequest = new CurlRequest($url, [
         'module' => 'Contacts',
-        'action' => 'delete',
+        'action' => 'Delete',
         'record_id' => $contact_id,
         'header' => array(
             'Content-Length: 0'
@@ -353,7 +355,7 @@ function sendContactData($data, $contact_id = null): bool {
         'record_id' => $contact_id,
     ]);
 
-    return $curlRequest->executeCurlRequest("POST");
+    return $curlRequest->executeCurlRequest("POST", $data);
 
 //    global $sugar_config;
 //    $endpoint = "{$sugar_config['EINSIGHT_API_ENDPOINT']}/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/{$sugar_config['EINSIGHT_API_COMPANY_ID']}/b2b/B2BContacts" .

@@ -14,29 +14,42 @@ function getAccountById($accountID) {
      */
     global $sugar_config;
 
-    $endpoint = "{$sugar_config['EINSIGHT_API_ENDPOINT']}/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/{$sugar_config['EINSIGHT_API_COMPANY_ID']}/b2b/B2BAccounts/"
-        . $accountID;
-    $curl = curl_init();
-    $object = array(
-        CURLOPT_URL => $endpoint,
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => '',
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 0,
-        CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => 'GET',
-        CURLOPT_HTTPHEADER => array(
-            'X-Api-Key: ' . $sugar_config['EINSIGHT_API_KEY'],
+    $url = "/b2b/B2BAccounts/" . $accountID;
+    $curlRequest = new CurlRequest($url, [
+        'module' => 'Accounts',
+        'action' => 'GET',
+        'record_id' => $accountID,
+        'header' => array(
+
         ),
-    );
-    curl_setopt_array($curl, $object);
-    $response = curl_exec($curl);
-    if (curl_errno($curl)) {
-        $GLOBALS['log']->debug('CURL ERROR -> : ' . print_r(curl_error($curl), 1));
-    }
-    curl_close($curl);
+    ]);
+
+    $response = $curlRequest->executeCurlRequest("GET");
     return json_decode($response);
+
+//    $endpoint = "{$sugar_config['EINSIGHT_API_ENDPOINT']}/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/{$sugar_config['EINSIGHT_API_COMPANY_ID']}/b2b/B2BAccounts/"
+//        . $accountID;
+//    $curl = curl_init();
+//    $object = array(
+//        CURLOPT_URL => $endpoint,
+//        CURLOPT_RETURNTRANSFER => true,
+//        CURLOPT_ENCODING => '',
+//        CURLOPT_MAXREDIRS => 10,
+//        CURLOPT_TIMEOUT => 0,
+//        CURLOPT_FOLLOWLOCATION => true,
+//        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+//        CURLOPT_CUSTOMREQUEST => 'GET',
+//        CURLOPT_HTTPHEADER => array(
+//            'X-Api-Key: ' . $sugar_config['EINSIGHT_API_KEY'],
+//        ),
+//    );
+//    curl_setopt_array($curl, $object);
+//    $response = curl_exec($curl);
+//    if (curl_errno($curl)) {
+//        $GLOBALS['log']->debug('CURL ERROR -> : ' . print_r(curl_error($curl), 1));
+//    }
+//    curl_close($curl);
+//    return json_decode($response);
 }
 
 function accountExists($accountID): bool {
@@ -61,9 +74,22 @@ function deleteAccount($accountID) {
      */
 
     global $sugar_config;
-    $endpoint = "{$sugar_config['EINSIGHT_API_ENDPOINT']}/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/{$sugar_config['EINSIGHT_API_COMPANY_ID']}/b2b/B2BAccounts" .
-        "/delete/" . $accountID;
-    return sendPostData($endpoint, null, 'Content-Length: 0');
+
+    $url = "/b2b/B2BAccounts" . "/delete/" . $accountID;
+    $curlRequest = new CurlRequest($url, [
+        'module' => 'Accounts',
+        'action' => 'Delete',
+        'record_id' => $accountID,
+        'header' => array(
+            'Content-Length: 0'
+        ),
+    ]);
+
+    return $curlRequest->executeCurlRequest("POST");
+
+//    $endpoint = "{$sugar_config['EINSIGHT_API_ENDPOINT']}/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/{$sugar_config['EINSIGHT_API_COMPANY_ID']}/b2b/B2BAccounts" .
+//        "/delete/" . $accountID;
+//    return sendPostData($endpoint, null, 'Content-Length: 0');
 }
 
 function addAccountData($data, $account_id = null) {
@@ -78,9 +104,22 @@ function addAccountData($data, $account_id = null) {
      */
 
     global $sugar_config;
-    $endpoint = "{$sugar_config['EINSIGHT_API_ENDPOINT']}/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/{$sugar_config['EINSIGHT_API_COMPANY_ID']}/b2b/B2BAccounts" .
-            (($account_id != null) ? '/update/' . $account_id : '');
-    return sendPostData($endpoint, $data);
+
+    $url = "/b2b/B2BAccounts" . (($account_id != null) ? '/update/' . $account_id : '');
+    $curlRequest = new CurlRequest($url, [
+        'module' => 'Accounts',
+        'action' => 'Update',
+        'record_id' => (($account_id != null) ? '/update/' . $account_id : ''),
+        'header' => array(
+
+        ),
+    ]);
+
+    return $curlRequest->executeCurlRequest("POST", $data);
+
+//    $endpoint = "{$sugar_config['EINSIGHT_API_ENDPOINT']}/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/{$sugar_config['EINSIGHT_API_COMPANY_ID']}/b2b/B2BAccounts" .
+//            (($account_id != null) ? '/update/' . $account_id : '');
+//    return sendPostData($endpoint, $data);
 }
 
 function syncAccountsDataService() {
