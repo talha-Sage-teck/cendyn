@@ -40,11 +40,20 @@ class CurlRequest {
     public function executeCurlRequest($requestType, $data = []) : string {
         $customModuleBean = BeanFactory::newBean('CB2B_AutomatedMonitoring');
 
+        if(!empty($data)) {
+            $this->header[] = "Content-Length: " . strlen($data);
+        } else {
+            $this->header[] = 'Content-Length: 0';
+        }
+
         $curl = curl_init();
 
         $object = array(
             CURLOPT_URL => $this->endpoint,
             CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => $requestType,
@@ -76,23 +85,40 @@ class CurlRequest {
     private function storeCurlRequest() {
         $customModuleBean = BeanFactory::newBean('CB2B_AutomatedMonitoring');
 
-        $customModuleBean->name = $this->errors['name'];
-        $customModuleBean->description = $this->errors['curl_error_message'];
-        $customModuleBean->related_to_module = $this->errors['related_to_module'];
-        $customModuleBean->error_status = $this->errors['error_status'];
-        $customModuleBean->api_response = $this->errors['api_response'];
-        $customModuleBean->api_url = $this->errors['endpoint'];
-        $customModuleBean->request_type = $this->errors['request_type'];
-        $customModuleBean->http_code = $this->errors['http_code'];
-        $customModuleBean->operation = $this->errors['action_type'];
-        $customModuleBean->input_data = json_encode($this->errors['input_data']);
-        $customModuleBean->reported_time = date("Y-m-d H:i:s");
-        $customModuleBean->parent_id = $this->errors['parent_id'];
-        $customModuleBean->parent_type = $this->errors['parent_type'];
-        $customModuleBean->schedulersjob_id = $GLOBALS["jobq"]->job->id;
-        $customModuleBean->scheduler_id = $GLOBALS["jobq"]->job->scheduler_id;
+        // Set the query parameters
+        $queryParams = array(
+            'schedulersjob_id' => $GLOBALS['jobq']->job->id,
+            'error_status' => 'new',
+            'related_to_module' => $this->errors['related_to_module'],
+            'name' => $this->errors['name']
+        );
 
-        $customModuleBean->save();
+        // Retrieve the record
+        $record = $customModuleBean->retrieve_by_string_fields($queryParams);
+
+        // Check if a record was found
+        if (empty($record)) {
+            $customModuleBean->name = $this->errors['name'];
+            $customModuleBean->description = $this->errors['curl_error_message'];
+            $customModuleBean->related_to_module = $this->errors['related_to_module'];
+            $customModuleBean->error_status = $this->errors['error_status'];
+            $customModuleBean->api_response = $this->errors['api_response'];
+            $customModuleBean->api_url = $this->errors['endpoint'];
+            $customModuleBean->request_type = $this->errors['request_type'];
+            $customModuleBean->http_code = $this->errors['http_code'];
+            $customModuleBean->operation = $this->errors['action_type'];
+            $customModuleBean->input_data = json_encode($this->errors['input_data']);
+            $customModuleBean->reported_time = date("Y-m-d H:i:s");
+            $customModuleBean->parent_id = $this->errors['parent_id'];
+            $customModuleBean->parent_type = $this->errors['parent_type'];
+            $customModuleBean->schedulersjob_id = $GLOBALS["jobq"]->job->id;
+            $customModuleBean->scheduler_id = $GLOBALS["jobq"]->job->scheduler_id;
+
+            $customModuleBean->save();
+        } else {
+            // No record found
+//            echo 'No record found.';
+        }
     }
 
     private function handleError($responseData, $inputData, $errorMessage, $requestType) {
@@ -103,7 +129,9 @@ class CurlRequest {
             if(!empty($responseData['error']['code']) && $responseData['error']['code'] == 'UnsupportedApiVersion') {
                 $name = "Unsupported API version error";
             } else {
-                $name = $responseData['Type'] . ' ' . $responseData['Title'];
+                $type = strtolower($responseData['Type']);
+                $title = strtolower($responseData['Title']);
+                $name = $type . ' ' . $title;
             }
         }
 
