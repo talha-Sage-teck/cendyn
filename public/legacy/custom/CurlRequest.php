@@ -91,7 +91,8 @@ class CurlRequest {
             'schedulersjob_id' => $GLOBALS['jobq']->job->id,
             'error_status' => 'new',
             'related_to_module' => $this->errors['related_to_module'],
-            'name' => $this->errors['name']
+            'name' => $this->errors['name'],
+            'deleted' => 0,
         );
 
         // Retrieve the record
