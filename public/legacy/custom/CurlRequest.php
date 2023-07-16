@@ -71,6 +71,7 @@ class CurlRequest {
         curl_close($curl);
 
         $responseData = json_decode($this->response, true);
+        $responseData = array_change_key_case($responseData, CASE_LOWER);
 
         if ($responseData['Status'] == 200 || $responseData['Status'] == 201) {
             $GLOBALS['log']->debug($this->response);
