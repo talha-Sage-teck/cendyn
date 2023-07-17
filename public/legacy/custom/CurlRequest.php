@@ -73,8 +73,10 @@ class CurlRequest {
         $responseData = json_decode($this->response, true);
         $responseData = array_change_key_case($responseData, CASE_LOWER);
 
+        $GLOBALS['log']->fetal("Custom Response: " . json_encode($responseData));
+
         if ($responseData['status'] == 200 || $responseData['status'] == 201) {
-            $GLOBALS['log']->debug($this->response);
+//            $GLOBALS['log']->debug($this->response);
         } else {
             $this->handleError($responseData, $data, $errorMessage, $requestType);
             $this->storeCurlRequest();
@@ -124,19 +126,50 @@ class CurlRequest {
     }
 
     private function handleError($responseData, $inputData, $errorMessage, $requestType) {
+        $relatedToModule = $this->context['module'];
+
         if ($responseData === null || $responseData === "") {
             $name = "Url malformed";
+            $relatedToModule = "General";
         } else {
-            if(!empty($responseData['error']['code']) && $responseData['error']['code'] == 'UnsupportedApiVersion') {
-                $name = "Unsupported API version error";
-            } else {
-                $type = $responseDataLowercase['type'];
-                $title = $responseDataLowercase['title'];
-                $name = $type . ' ' . $title;
+            $errorTitle = isset($responseData['title']) ? $responseData['title'] : '';
+            $errorEmptyValidation = 'One or more validation errors occurred.';
 
-$GLOBALS['log']->fetal("Custom Response: " . json_encode($responseData));
+            switch (true) {
+                case !empty($responseData['error']['code']) && $responseData['error']['code'] == 'UnsupportedApiVersion':
+                    $name = "Unsupported API version error";
+                    $relatedToModule = "General";
+                    break;
+                case $responseData['type'] == "AuthenticationTicket":
+                    $name = "Bad API key";
+                    $relatedToModule = "General";
+                    break;
+                case !empty($responseData['error']['id']) && $errorTitle === $errorEmptyValidation:
+                    $name = "ID by default should be set to 0";
+                    break;
+                case !empty($responseData['error']['insertdate']) && $errorTitle === $errorEmptyValidation:
+                    $name = "Date Created should not be Empty or NULL";
+                    break;
+                case strpos($errorTitle, 'No data present for Account Id') !== false || strpos($errorTitle, 'No data present for External Account Id') !== false:
+                    $name = "Record does not Exist in eInsight";
+                    break;
+                case !empty($responseData['error']['profileid']) && $errorTitle === $errorEmptyValidation:
+                    $name = "ProfileId should be the 36 char length";
+                    break;
+                case strpos($errorTitle, 'Object reference not set to an instance of an object.') !== false:
+                    $name = "Contact Email and Account Should not be empty";
+                    break;
+                case strpos($errorTitle, 'Value cannot be null. (Parameter \'source\')') !== false:
+                    $name = "Contact Account Should not be empty";
+                    break;
+                case !empty($responseData['invalidaccountids']):
+                    $name = "Invalid Accout Linked to Contact";
+                    break;
+                default:
+                    $name = $errorTitle;
             }
         }
+
 
         $error = array(
             'name' => $name,
@@ -150,7 +183,7 @@ $GLOBALS['log']->fetal("Custom Response: " . json_encode($responseData));
             'action_type' => $this->context['action'],
             'resolution' => 'resolution',
             'error_status' => 'new',
-            'related_to_module' => $this->context['module'],
+            'related_to_module' => $relatedToModule,
             'parent_id' => $this->context['record_id'],
             'parent_type' => $this->context['module'],
         );
