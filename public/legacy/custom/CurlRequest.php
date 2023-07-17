@@ -175,7 +175,7 @@ class CurlRequest {
             'name' => $name,
             'endpoint' => $this->endpoint,
             'input_data' => $inputData,
-            'http_code' => ($responseData === null || $responseData === "") ? $this->httpCode : $responseData['Status'],
+            'http_code' => ($responseData === null || $responseData === "") ? $this->httpCode : $responseData['status'],
             'api_response' => $this->response,
             'request_type' => $requestType,
             'action' => 'action',
