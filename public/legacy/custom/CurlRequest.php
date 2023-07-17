@@ -73,7 +73,7 @@ class CurlRequest {
         $responseData = json_decode($this->response, true);
         $responseData = array_change_key_case($responseData, CASE_LOWER);
 
-        if ($responseData['Status'] == 200 || $responseData['Status'] == 201) {
+        if ($responseData['status'] == 200 || $responseData['status'] == 201) {
             $GLOBALS['log']->debug($this->response);
         } else {
             $this->handleError($responseData, $data, $errorMessage, $requestType);
@@ -88,11 +88,11 @@ class CurlRequest {
 
         // Set the query parameters
         $queryParams = array(
-            'schedulersjob_id' => $GLOBALS['jobq']->job->id,
+            //'schedulersjob_id' => $GLOBALS['jobq']->job->id,
             'error_status' => 'new',
             'related_to_module' => $this->errors['related_to_module'],
             'name' => $this->errors['name'],
-            'deleted' => 0,
+            'http_code' => $this->errors['http_code'],
         );
 
         // Retrieve the record
@@ -124,16 +124,17 @@ class CurlRequest {
     }
 
     private function handleError($responseData, $inputData, $errorMessage, $requestType) {
-        // Store the error information
         if ($responseData === null || $responseData === "") {
             $name = "Url malformed";
         } else {
             if(!empty($responseData['error']['code']) && $responseData['error']['code'] == 'UnsupportedApiVersion') {
                 $name = "Unsupported API version error";
             } else {
-                $type = strtolower($responseData['Type']);
-                $title = strtolower($responseData['Title']);
+                $type = $responseDataLowercase['type'];
+                $title = $responseDataLowercase['title'];
                 $name = $type . ' ' . $title;
+
+$GLOBALS['log']->fetal("Custom Response: " . json_encode($responseData));
             }
         }
 
