@@ -11,7 +11,6 @@ class CurlRequest {
     private $context;
     private $httpCode;
     private $response;
-    private $urlDataHandler;
 
 
     // Constructor
@@ -76,7 +75,7 @@ class CurlRequest {
         $responseData = json_decode($this->response, true);
         $responseData = array_change_key_case($responseData, CASE_LOWER);
 
-        $GLOBALS['log']->fetal("Custom Response: " . json_encode($responseData));
+        $GLOBALS['log']->fetal("Custom Response: " . json_encode($this->response));
 
         if ($responseData['status'] == 200 || $responseData['status'] == 201) {
 //            $GLOBALS['log']->debug($this->response);
@@ -84,51 +83,10 @@ class CurlRequest {
             $this->handleError($responseData, $data, $errorMessage, $requestType);
             $dataHandler = new CurlDataHandler($this->errors);
             $dataHandler->storeCurlRequest();
-//            $this->storeCurlRequest();
         }
 
         return $this->response;
     }
-
-//    private function storeCurlRequest() {
-//        $customModuleBean = BeanFactory::newBean('CB2B_AutomatedMonitoring');
-//
-//        // Set the query parameters
-//        $queryParams = array(
-//            //'schedulersjob_id' => $GLOBALS['jobq']->job->id,
-//            'error_status' => 'new',
-//            'related_to_module' => $this->errors['related_to_module'],
-//            'name' => $this->errors['name'],
-//            'http_code' => $this->errors['http_code'],
-//        );
-//
-//        // Retrieve the record
-//        $record = $customModuleBean->retrieve_by_string_fields($queryParams);
-//
-//        // Check if a record was found
-//        if (empty($record)) {
-//            $customModuleBean->name = $this->errors['name'];
-//            $customModuleBean->description = $this->errors['curl_error_message'];
-//            $customModuleBean->related_to_module = $this->errors['related_to_module'];
-//            $customModuleBean->error_status = $this->errors['error_status'];
-//            $customModuleBean->api_response = $this->errors['api_response'];
-//            $customModuleBean->api_url = $this->errors['endpoint'];
-//            $customModuleBean->request_type = $this->errors['request_type'];
-//            $customModuleBean->http_code = $this->errors['http_code'];
-//            $customModuleBean->operation = $this->errors['action_type'];
-//            $customModuleBean->input_data = json_encode($this->errors['input_data']);
-//            $customModuleBean->reported_time = date("Y-m-d H:i:s");
-//            $customModuleBean->parent_id = $this->errors['parent_id'];
-//            $customModuleBean->parent_type = $this->errors['parent_type'];
-//            $customModuleBean->schedulersjob_id = $GLOBALS["jobq"]->job->id;
-//            $customModuleBean->scheduler_id = $GLOBALS["jobq"]->job->scheduler_id;
-//
-//            $customModuleBean->save();
-//        } else {
-//            // No record found
-////            echo 'No record found.';
-//        }
-//    }
 
     private function handleError($responseData, $inputData, $errorMessage, $requestType) {
         $relatedToModule = $this->context['module'];
