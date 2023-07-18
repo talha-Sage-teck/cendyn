@@ -455,13 +455,13 @@ function syncContactsDataService() {
         // Check for empty account name or assigned_user_id
         $dataHandler = new CurlDataHandler();
 
-        if (empty($accountBean->name)) {
+        if (empty($contactBean->name)) {
             $error['name'] = "Record Name Should Not be Empty";
             $error['action_type'] = ($contactBean->id != null) ? 'Update Account' : 'Create Account';
             $error['api_response'] = "Record Name Should Not be Empty";
 
             $dataHandler->storeCurlRequest($error);
-        } elseif (empty($accountBean->assigned_user_id)) {
+        } elseif (empty($contactBean->assigned_user_id)) {
             $error['name'] = "Record Assigned User Should Not be Empty";
             $error['action_type'] = ($contactBean->id != null) ? 'Update Account' : 'Create Account';
             $error['api_response'] = "Record Assigned User Should Not be Empty";
