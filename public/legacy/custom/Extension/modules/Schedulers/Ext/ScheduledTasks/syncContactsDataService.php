@@ -4,6 +4,7 @@ if (!defined('sugarEntry') || !sugarEntry)
     die('Not A Valid Entry Point');
 
 require_once('custom/CurlRequest.php');
+require_once('custom/CurlDataHandler.php');
 
 
 $job_strings[] = 'syncContactsDataService';
@@ -436,6 +437,38 @@ function syncContactsDataService() {
         //setting the last_sync_date field
         $contactBean = BeanFactory::getBean('Contacts', $contactRow['id'], [], false);
 
+        $error = array(
+            'name' => null,
+            'endpoint' => null,
+            'input_data' => null,
+            'http_code' => null,
+            'request_type' => null,
+            'curl_error_message' => null,
+            'resolution' => null,
+            'error_status' => 'new',
+            'related_to_module' => 'Contacts',
+            'parent_id' => $contactBean->id,
+            'parent_type' => "Contacts",
+            'concerned_team' => "B2B Dev Team",
+        );
+
+        // Check for empty account name or assigned_user_id
+        $dataHandler = new CurlDataHandler();
+
+        if (empty($accountBean->name)) {
+            $error['name'] = "Record Name Should Not be Empty";
+            $error['action_type'] = ($contactBean->id != null) ? 'Update Account' : 'Create Account';
+            $error['api_response'] = "Record Name Should Not be Empty";
+
+            $dataHandler->storeCurlRequest($error);
+        } elseif (empty($accountBean->assigned_user_id)) {
+            $error['name'] = "Record Assigned User Should Not be Empty";
+            $error['action_type'] = ($contactBean->id != null) ? 'Update Account' : 'Create Account';
+            $error['api_response'] = "Record Assigned User Should Not be Empty";
+
+            $dataHandler->storeCurlRequest($error);
+        }
+
         //making the data object to send to eInsight
         $data = array(
             'externalContactId' => $contactBean->id,
@@ -518,12 +551,27 @@ function syncContactsDataService() {
         $deleted = false;
         switch ($contactRow['ready_to_sync']) {
             case 1:
+                // check if account already exists
+                if(accountExists($data['externalContactId'])) {
+                    $error['name'] = "Record Already Exist";
+                    $error['action_type'] = "Create Contact";
+                    $error['api_response'] = "Record with external Contact Id: ". $data['externalContactId'] ." already exist.";
+
+                    $dataHandler->storeCurlRequest($error);
+                }
+
                 $res = sendContactData($data);
                 break;
             case 2:
                 if(contactExists($data['externalContactId']))
                     $res = sendContactData($data, $data['externalContactId']);
                 else
+                    $error['name'] = "Record Already Exist";
+                    $error['action_type'] = ($data['externalContactId'] != null) ? 'Update Contact' : 'Create Contact';
+                    $error['api_response'] = "Record with external Contact Id: ". $data['externalContactId'] ." already exist.";
+
+                    $dataHandler->storeCurlRequest($error);
+
                     $res = sendContactData($data);
                 break;
             case 3:
@@ -532,6 +580,12 @@ function syncContactsDataService() {
                 if(contactExists($data['externalContactId']))
                     $res = deleteContact($data['externalContactId']);
                 else
+                    $error['name'] = "Record does not exist";
+                    $error['action_type'] = "Delete Contact";
+                    $error['api_response'] = "Record with external Contact Id: ". $data['externalContactId'] ." does not exist.";
+
+                    $dataHandler->storeCurlRequest($error);
+
                     $res = true;
                 break;
             case 4:

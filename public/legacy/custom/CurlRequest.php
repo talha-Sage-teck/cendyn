@@ -81,8 +81,8 @@ class CurlRequest {
 //            $GLOBALS['log']->debug($this->response);
         } else {
             $this->handleError($responseData, $data, $errorMessage, $requestType);
-            $dataHandler = new CurlDataHandler($this->errors);
-            $dataHandler->storeCurlRequest();
+            $dataHandler = new CurlDataHandler();
+            $dataHandler->storeCurlRequest($this->errors);
         }
 
         return $this->response;

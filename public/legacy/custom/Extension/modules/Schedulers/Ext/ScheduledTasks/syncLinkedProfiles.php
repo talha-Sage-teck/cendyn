@@ -12,6 +12,9 @@
 if (!defined('sugarEntry') || !sugarEntry)
     die('Not A Valid Entry Point');
 
+require_once('custom/CurlRequest.php');
+require_once('custom/CurlDataHandler.php');
+
 $job_strings[] = 'syncLinkedProfiles';
 
 function sendDeleteLinkData($profileID, $accountID) {

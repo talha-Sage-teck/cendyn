@@ -3,6 +3,9 @@
 if (!defined('sugarEntry') || !sugarEntry)
     die('Not A Valid Entry Point');
 
+require_once('custom/CurlRequest.php');
+require_once('custom/CurlDataHandler.php');
+
 $job_strings[] = 'syncAccountsDataService';
 
 function getAccountById($accountID) {
@@ -147,6 +150,38 @@ function syncAccountsDataService() {
         //setting the last_sync_date field
         $accountBean = BeanFactory::getBean('Accounts', $accountRow['id'], [], false);
         $accountBean->last_sync_date = $GLOBALS['timedate']->nowDb();
+        //shoukat check here for name empty and assigned user empty
+        $error = array(
+            'name' => null,
+            'endpoint' => null,
+            'input_data' => null,
+            'http_code' => null,
+            'request_type' => null,
+            'curl_error_message' => null,
+            'resolution' => null,
+            'error_status' => 'new',
+            'related_to_module' => 'Accounts',
+            'parent_id' => $accountBean->id,
+            'parent_type' => "Accounts",
+            'concerned_team' => "B2B Dev Team",
+        );
+
+        // Check for empty account name or assigned_user_id
+        $dataHandler = new CurlDataHandler();
+
+        if (empty($accountBean->name)) {
+            $error['name'] = "Record Name Should Not be Empty";
+            $error['action_type'] = ($accountBean->id != null) ? 'Update Account' : 'Create Account';
+            $error['api_response'] = "Record Name Should Not be Empty";
+
+            $dataHandler->storeCurlRequest($error);
+        } elseif (empty($accountBean->assigned_user_id)) {
+            $error['name'] = "Record Assigned User Should Not be Empty";
+            $error['action_type'] = ($accountBean->id != null) ? 'Update Account' : 'Create Account';
+            $error['api_response'] = "Record Assigned User Should Not be Empty";
+
+            $dataHandler->storeCurlRequest($error);
+        }
 
         //making the data object to send to eInsight
         $data = array(
@@ -185,6 +220,15 @@ function syncAccountsDataService() {
         $deleted = false;
         switch ($accountRow['ready_to_sync']) {
             case 1:
+                // check if account already exists
+                if(accountExists($data['externalAccountId'])) {
+                    $error['name'] = "Record Already Exist";
+                    $error['action_type'] = "Create Account";
+                    $error['api_response'] = "Record with External Account Id: ". $data['externalAccountId'] ." already exist.";
+
+                    $dataHandler->storeCurlRequest($error);
+                }
+
                 $data['insertDate'] = $accountBean->last_sync_date;
                 $res = addAccountData($data);
                 break;
@@ -194,6 +238,13 @@ function syncAccountsDataService() {
                     $res = addAccountData($data, $data['externalAccountId']);
                 }
                 else {
+                    //shoukat log here that account should already exist
+                    $error['name'] = "Record Already Exist";
+                    $error['action_type'] = ($accountBean->id != null) ? 'Update Account' : 'Create Account';
+                    $error['api_response'] = "Record with External Account Id: ". $data['externalAccountId'] ." already exist.";
+
+                    $dataHandler->storeCurlRequest($error);
+
                     $data['insertDate'] = $accountBean->last_sync_date;
                     $res = addAccountData($data);
                 }
@@ -204,11 +255,19 @@ function syncAccountsDataService() {
                     $res = deleteAccount($data['externalAccountId']);
                 }
                 else {
+                    //shoukat account does not exist
+                    $error['name'] = "Record does not exist";
+                    $error['action_type'] = "Delete Account";
+                    $error['api_response'] = "Record with External Account Id: ". $data['externalAccountId'] ." does not exist.";
+
+                    $dataHandler->storeCurlRequest($error);
+
                     $res = true;
                 }
                 break;
             default:
                 $GLOBALS['log']->debug("syncAccountsDataService: Unexpected sync flag value in scheduler.");
+                $GLOBALS['log']->fetal("syncAccountsDataService: Unexpected sync flag value in scheduler.");
                 return true;
         }
 
