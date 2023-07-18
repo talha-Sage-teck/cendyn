@@ -40,8 +40,6 @@ class CurlRequest {
      * @return bool True if the request is successful, false otherwise.
      */
     public function executeCurlRequest($requestType, $data = []) : string {
-        $customModuleBean = BeanFactory::newBean('CB2B_AutomatedMonitoring');
-
         if(!empty($data)) {
             $this->header[] = "Content-Length: " . strlen($data);
         } else {
