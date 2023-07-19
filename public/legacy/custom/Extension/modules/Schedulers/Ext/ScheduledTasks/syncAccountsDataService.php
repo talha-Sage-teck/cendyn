@@ -20,7 +20,7 @@ function getAccountById($accountID) {
     $url = "/b2b/B2BAccounts/" . $accountID;
     $curlRequest = new CurlRequest($url, [
         'module' => 'Accounts',
-        'action' => 'GET',
+        'action' => 'Get Account',
         'record_id' => $accountID,
         'header' => array(
 
@@ -81,7 +81,7 @@ function deleteAccount($accountID) {
     $url = "/b2b/B2BAccounts" . "/delete/" . $accountID;
     $curlRequest = new CurlRequest($url, [
         'module' => 'Accounts',
-        'action' => 'Delete',
+        'action' => 'Delete Account',
         'record_id' => $accountID,
         'header' => array(
             'Content-Length: 0'
@@ -111,7 +111,7 @@ function addAccountData($data, $account_id = null) {
     $url = "/b2b/B2BAccounts" . (($account_id != null) ? '/update/' . $account_id : '');
     $curlRequest = new CurlRequest($url, [
         'module' => 'Accounts',
-        'action' => 'Update',
+        'action' => 'Update Account',
         'record_id' => (($account_id != null) ? '/update/' . $account_id : ''),
         'header' => array(
 
@@ -164,6 +164,7 @@ function syncAccountsDataService() {
             'parent_id' => $accountBean->id,
             'parent_type' => "Accounts",
             'concerned_team' => "B2B Dev Team",
+            'assigned_user_id' => 1
         );
 
         // Check for empty account name or assigned_user_id
@@ -225,6 +226,7 @@ function syncAccountsDataService() {
                     $error['name'] = "Record Already Exist";
                     $error['action_type'] = "Create Account";
                     $error['api_response'] = "Record with External Account Id: ". $data['externalAccountId'] ." already exist.";
+                    $error['assigned_user_id'] = 1;
 
                     $dataHandler->storeCurlRequest($error);
                 }
@@ -242,6 +244,7 @@ function syncAccountsDataService() {
                     $error['name'] = "Record Already Exist";
                     $error['action_type'] = ($accountBean->id != null) ? 'Update Account' : 'Create Account';
                     $error['api_response'] = "Record with External Account Id: ". $data['externalAccountId'] ." already exist.";
+                    $error['assigned_user_id'] = 1;
 
                     $dataHandler->storeCurlRequest($error);
 
@@ -259,6 +262,7 @@ function syncAccountsDataService() {
                     $error['name'] = "Record does not exist";
                     $error['action_type'] = "Delete Account";
                     $error['api_response'] = "Record with External Account Id: ". $data['externalAccountId'] ." does not exist.";
+                    $error['assigned_user_id'] = 1;
 
                     $dataHandler->storeCurlRequest($error);
 

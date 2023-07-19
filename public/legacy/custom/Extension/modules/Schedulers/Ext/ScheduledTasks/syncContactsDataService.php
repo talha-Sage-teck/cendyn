@@ -22,7 +22,7 @@ function getContactById($contactID) {
     $url = "/b2b/B2BContacts/" . $contactID;
     $curlRequest = new CurlRequest($url, [
         'module' => 'Contacts',
-        'action' => 'get',
+        'action' => 'Get Contact',
         'record_id' => $contactID,
     ]);
 
@@ -125,7 +125,7 @@ function deleteAllAccounts($contactID) {
     $url = "/b2b/B2BContacts" . '/deleteAllAccount/' . $contactID;
     $curlRequest = new CurlRequest($url, [
         'module' => 'Contacts',
-        'action' => 'Delete',
+        'action' => 'Delete Contact',
         'record_id' => $contactID,
         'header' => array(
             'Content-Length: 0'
@@ -153,7 +153,7 @@ function addAccountsToContact($accountsArr, $contactBean) {
     $url = "/b2b/B2BContacts" . '/insertAccount/' . $contactBean->id;
     $curlRequest = new CurlRequest($url, [
         'module' => 'Contacts',
-        'action' => 'Insertion',
+        'action' => 'Create Contact',
         'record_id' => $contactBean->id,
         'header' => array(
 
@@ -181,7 +181,7 @@ function addEmailsToContact($emailsArr, $contactBean) {
     $url = "/b2b/B2BContacts" . '/insertEmail/' . $contactBean->id;
     $curlRequest = new CurlRequest($url, [
         'module' => 'Contacts',
-        'action' => 'Insertion',
+        'action' => 'Create Contact',
         'record_id' => $contactBean->id,
         'header' => array(
 
@@ -224,7 +224,7 @@ function deleteEmailFromContact($email, $contactBean) {
     $url = "/b2b/B2BContacts" . '/delete/' . $contactBean->id . '/email/' . $email;
     $curlRequest = new CurlRequest($url, [
         'module' => 'Contacts',
-        'action' => 'Delete',
+        'action' => 'Delete Contact',
         'record_id' => $contactBean->id,
         'header' => array(
             'Content-Length: 0'
@@ -324,7 +324,7 @@ function deleteContact($contact_id): bool {
     $url = "/b2b/B2BContacts" . '/delete/' . $contact_id;
     $curlRequest = new CurlRequest($url, [
         'module' => 'Contacts',
-        'action' => 'Delete',
+        'action' => 'Delete Contact',
         'record_id' => $contact_id,
         'header' => array(
             'Content-Length: 0'
@@ -352,7 +352,7 @@ function sendContactData($data, $contact_id = null): bool {
     $url = "/b2b/B2BContacts" . (($contact_id != null) ? '/update/' . $contact_id : '/insert');
     $curlRequest = new CurlRequest($url, [
         'module' => 'Contacts',
-        'action' => (($contact_id != null) ? 'update' : 'insert'),
+        'action' => (($contact_id != null) ? 'Update Contact' : 'Create Contact'),
         'record_id' => $contact_id,
     ]);
 
@@ -450,6 +450,7 @@ function syncContactsDataService() {
             'parent_id' => $contactBean->id,
             'parent_type' => "Contacts",
             'concerned_team' => "B2B Dev Team",
+            'assigned_user_id' => 1
         );
 
         // Check for empty account name or assigned_user_id

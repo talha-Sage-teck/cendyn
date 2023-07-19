@@ -167,27 +167,30 @@ function autoLinkingPMSProfilesAndAccounts() {
     // Get Matching Criterias from Configuration
     $getMatchCriteriaQuery = "SELECT * FROM `config` WHERE `category`='MySettings' AND `name`='MatchCriteriaConfig'";
     $result = $db->query($getMatchCriteriaQuery, true);
-    if ($result->num_rows <= 0) {
-        $error = array(
-            'name' => "Found No Auto Linking Configuration",
-            'endpoint' => null,
-            'input_data' => null,
-            'http_code' => null,
-            'request_type' => null,
-            'curl_error_message' => null,
-            'resolution' => null,
-            'error_status' => 'new',
-            'related_to_module' => 'PMS Profile',
-            'parent_id' => null,
-            'parent_type' => "PMS Profile",
-            'concerned_team' => "B2B Dev Team",
-            'action_type' => "Auto Link PMS Profiles and Accounts",
-            'api_response' => null
-        );
+    $error = array(
+        'name' => "Found No Auto Linking Configuration",
+        'endpoint' => null,
+        'input_data' => null,
+        'http_code' => null,
+        'request_type' => null,
+        'curl_error_message' => null,
+        'error_status' => 'new',
+        'related_to_module' => 'PMS Profile',
+        'parent_id' => null,
+        'parent_type' => "PMS Profile",
+        'concerned_team' => "B2B Dev Team",
+        'action_type' => "Auto Link PMS Profiles and Accounts",
+        'api_response' => null,
+        'assigned_user_id' => 1,
+        'resolution' => '"1- Go to Administration Section. 2- Find "Manage PMS Profile Matching Criteria". 3- Setup the "PMS Profiles Matching Criteria Rules."',
+    );
 
+    // Get Matching Criterias from Configuration
+    $getMatchCriteriaQuery = "SELECT * FROM `config` WHERE `category`='MySettings' AND `name`='MatchCriteriaConfig'";
+    $result = $db->query($getMatchCriteriaQuery, true);
+    if ($result->num_rows <= 0) {
         $dataHandler = new CurlDataHandler();
         $dataHandler->storeCurlRequest($error);
-
         $sugar_config['scheduler_log'] ? $GLOBALS['log']->debug('autoLinkingPMSProfilesAndAccounts --> : Did not found MatchCriteriaConfig') : '';
         return true;
     }
@@ -196,7 +199,15 @@ function autoLinkingPMSProfilesAndAccounts() {
     $record = $db->fetchByAssoc($result);
     $settings = unserialize(base64_decode($record['value']))['criteria'];
 
+    if (!isset($settings['criteria']) || empty($settings['criteria'])) {
+        $dataHandler = new CurlDataHandler();
+        $dataHandler->storeCurlRequest($error);
+    }
+
     $sugar_config['scheduler_log'] ? $GLOBALS['log']->debug('$settings : ' . print_r($settings, 1)) : '';
+
+    $profileIds = getAllPMSProfileIds();
+//    $sugar_config['scheduler_log'] ? $GLOBALS['log']->fatal('$profileIds : ' . print_r($profileIds, 1)) : '';
 
     $profileIds = getAllPMSProfileIds();
 //    $sugar_config['scheduler_log'] ? $GLOBALS['log']->fatal('$profileIds : ' . print_r($profileIds, 1)) : '';

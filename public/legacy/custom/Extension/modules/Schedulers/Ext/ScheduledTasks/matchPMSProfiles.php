@@ -154,16 +154,17 @@ function matchPMSProfiles() {
             'http_code' => null,
             'request_type' => null,
             'curl_error_message' => null,
-            'resolution' => null,
             'error_status' => 'new',
             'related_to_module' => 'PMS Profile',
             'parent_id' => null,
             'parent_type' => "PMS Profile",
             'concerned_team' => "B2B Dev Team",
             'action_type' => "PMS Profile Matching",
-            'api_response' => null
+            'api_response' => null,
+            'assigned_user_id' => 1,
+            'resolution' => '1- Go to Administration Section. 2- Find Manage "PMS Profile Matching Criteria". 3- Setup the "PMS Profiles Matching Criteria Rules".'
         );
-        
+
         $dataHandler = new CurlDataHandler();
         $dataHandler->storeCurlRequest($error);
 

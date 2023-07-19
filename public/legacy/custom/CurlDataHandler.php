@@ -3,7 +3,6 @@
 
 class CurlDataHandler
 {
-
     public function __construct()
     {
 
@@ -19,12 +18,13 @@ class CurlDataHandler
             'related_to_module' => $error['related_to_module'],
             'name' => $error['name'],
             'http_code' => $error['http_code'],
+            'deleted' => 0
         );
 
         // Build the SQL query for the parameters with AND conditions
         $conditionClauses = array();
         foreach ($queryParams as $field => $value) {
-            if (!empty($value)) {
+            if (!empty($value) || $value === 0) {
                 $conditionClauses[] = "$field = " . $customModuleBean->db->quoted($value);
             }
         }
@@ -63,6 +63,8 @@ class CurlDataHandler
             $customModuleBean->parent_type = $error['parent_type'] ?? null;
             $customModuleBean->schedulersjob_id = $GLOBALS["jobq"]->job->id;
             $customModuleBean->scheduler_id = $GLOBALS["jobq"]->job->scheduler_id;
+            $customModuleBean->assigned_user_id = $error['assigned_user_id'] ?? null;
+            $customModuleBean->resolution = $error['resolution'] ?? null;
 
             $customModuleBean->save();
         } else {

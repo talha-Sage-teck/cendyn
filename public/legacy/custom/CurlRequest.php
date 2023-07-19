@@ -13,42 +13,53 @@ class CurlRequest {
     private $response;
 
 
-    // Constructor
+    /**
+     * Class constructor.
+     *
+     * @param string $url The URL for the specific API endpoint.
+     * @param array $context Additional context data, including the header and other information (optional).
+     */
     public function __construct($url, $context = []) {
         global $sugar_config;
 
+        // Set the server URL from the configuration.
         $this->serverUrl = $sugar_config['EINSIGHT_API_ENDPOINT'];
+
+        // Build the complete API endpoint URL.
         $this->endpoint = "{$sugar_config['EINSIGHT_API_ENDPOINT']}/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/" . $sugar_config['EINSIGHT_API_COMPANY_ID'] . $url;
 
-//        $this->endpoint = $url;
+        // Set the default headers with X-Api-Key and Content-Type.
+        $this->header = [
+            'X-Api-Key: ' . $sugar_config['EINSIGHT_API_KEY'],
+            'Content-Type: application/json'
+        ];
 
-        $this->header = $context['header'];
-        $this->header[] = 'X-Api-Key: ' . $sugar_config['EINSIGHT_API_KEY'];
-        $this->header[] = 'Content-Type: application/json';
+        // Merge any additional headers from the context data if provided.
+        if (isset($context['header']) && is_array($context['header'])) {
+            $this->header = array_merge($this->header, $context['header']);
+        }
 
+        // Store the entire context data.
         $this->context = $context;
 
-        $this->isServerDown();
+        // Check server status (if necessary) - Uncomment this line if needed.
+        // $this->isServerDown();
     }
 
     /**
-     * Executes a cURL request with the provided data and request type.
+     * Execute a cURL request and handle the response.
      *
-     * @param array $data The data to send with the request.
-     * @param string $requestType The HTTP request type (e.g., GET, POST, PUT).
-     * @param string $context Optional context information.
-     * @return bool True if the request is successful, false otherwise.
+     * @param string $requestType The HTTP request type (e.g., "GET", "POST", "PUT", etc.).
+     * @param array $data The data to be sent in the request (optional).
+     *
+     * @return string The response received from the server.
      */
     public function executeCurlRequest($requestType, $data = []) : string {
-        if(!empty($data)) {
-            $this->header[] = "Content-Length: " . strlen($data);
-        } else {
-            $this->header[] = 'Content-Length: 0';
-        }
-
+        // Initialize the cURL session.
         $curl = curl_init();
 
-        $object = array(
+        // Set cURL options.
+        $options = array(
             CURLOPT_URL => $this->endpoint,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
@@ -60,38 +71,66 @@ class CurlRequest {
             CURLOPT_HTTPHEADER => $this->header,
         );
 
-        if($data)
-            $object[CURLOPT_POSTFIELDS] = json_encode($data, JSON_NUMERIC_CHECK);
+        // If data is provided, JSON-encode it and set the "Content-Length" header.
+        if (!empty($data)) {
+            $jsonData = json_encode($data, JSON_NUMERIC_CHECK);
+            $this->header[] = "Content-Length: " . strlen($jsonData);
+            $options[CURLOPT_POSTFIELDS] = $jsonData;
+        } else {
+            // If no data is provided, set "Content-Length" to 0.
+            $this->header[] = 'Content-Length: 0';
+        }
 
-        curl_setopt_array($curl, $object);
+        // Set the cURL options.
+        curl_setopt_array($curl, $options);
+
+        // Execute the cURL request and get the response.
         $this->response = curl_exec($curl);
+
+        // Get the HTTP response code and any error message.
         $this->httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         $errorMessage = curl_error($curl);
 
+        // Close the cURL session.
         curl_close($curl);
 
+        // Decode the response JSON and convert keys to lowercase.
         $responseData = json_decode($this->response, true);
         $responseData = array_change_key_case($responseData, CASE_LOWER);
 
-        $GLOBALS['log']->fetal("Custom Response: " . json_encode($this->response));
+        // Log the response using the "fatal" log level.
+        $GLOBALS['log']->fatal("Custom Response: " . json_encode($this->response));
 
+        // Check if the response status is successful (HTTP status 200 or 201).
         if ($responseData['status'] == 200 || $responseData['status'] == 201) {
-//            $GLOBALS['log']->debug($this->response);
+            // If successful, you may optionally log the response using the "debug" log level.
+            // $GLOBALS['log']->debug($this->response);
         } else {
+            // If the response status is not successful, handle the error.
             $this->handleError($responseData, $data, $errorMessage, $requestType);
+
+            // Create a CurlDataHandler instance and store the cURL request details.
             $dataHandler = new CurlDataHandler();
             $dataHandler->storeCurlRequest($this->errors);
         }
 
+        // Return the response received from the server.
         return $this->response;
     }
 
     private function handleError($responseData, $inputData, $errorMessage, $requestType) {
         $relatedToModule = $this->context['module'];
 
+        $resolution = null;
+
         if ($responseData === null || $responseData === "") {
             $name = "Url malformed";
             $relatedToModule = "General";
+            $resolution = "Please Check EINSIGHT_API_ENDPOINT / EINSIGHT_API_VERSION / EINSIGHT_API_COMPANY_ID variables in config_override.php file. Below are the sample values.
+            \$sugar_config['EINSIGHT_API_ENDPOINT'] = 'https://eu02b2bapidev.cendyn.com';
+            \$sugar_config['EINSIGHT_API_KEY'] = '09F26AA0-007D-4193-8D96-941171BCE9D6';
+            \$sugar_config['EINSIGHT_API_VERSION'] = '1';
+            \$sugar_config['EINSIGHT_API_COMPANY_ID'] = '10014'";
         } else {
             $errorTitle = isset($responseData['title']) ? $responseData['title'] : '';
             $errorEmptyValidation = 'One or more validation errors occurred.';
@@ -100,10 +139,12 @@ class CurlRequest {
                 case !empty($responseData['error']['code']) && $responseData['error']['code'] == 'UnsupportedApiVersion':
                     $name = "Unsupported API version error";
                     $relatedToModule = "General";
+                    $resolution = "Please Check EINSIGHT_API_VERSION variable in config_override.php file. It should have the Valid API Version.";
                     break;
                 case $responseData['type'] == "AuthenticationTicket":
                     $name = "Bad API key";
                     $relatedToModule = "General";
+                    $resolution = "Please Check EINSIGHT_API_KEY variable in config_override.php file. It should have the Valid API Key setup.";
                     break;
                 case !empty($responseData['error']['id']) && $errorTitle === $errorEmptyValidation:
                     $name = "ID by default should be set to 0";
@@ -142,11 +183,12 @@ class CurlRequest {
             'action' => 'action',
             'curl_error_message' => ($this->serverStatus == 'down') ? $errorMessage : $responseData['Detail'],
             'action_type' => $this->context['action'],
-            'resolution' => 'resolution',
+            'resolution' => $resolution,
             'error_status' => 'new',
             'related_to_module' => $relatedToModule,
             'parent_id' => $this->context['record_id'],
             'parent_type' => $this->context['module'],
+            'assigned_user_id' => 1,
         );
 
         $this->addError($error);
