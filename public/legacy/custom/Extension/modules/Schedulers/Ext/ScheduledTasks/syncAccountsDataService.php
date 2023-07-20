@@ -28,6 +28,7 @@ function getAccountById($accountID) {
     ]);
 
     $response = $curlRequest->executeCurlRequest("GET");
+    $GLOBALS['log']->fatal("getAccountById Response: ". $response);
     return json_decode($response);
 
 //    $endpoint = "{$sugar_config['EINSIGHT_API_ENDPOINT']}/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/{$sugar_config['EINSIGHT_API_COMPANY_ID']}/b2b/B2BAccounts/"
