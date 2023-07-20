@@ -245,11 +245,11 @@ function syncAccountsDataService() {
                 }
                 else {
                     //shoukat log here that account should already exist
-                    $error['name'] = "Record Already Exist";
-                    $error['action_type'] = ($accountBean->id != null) ? 'Update Account' : 'Create Account';
-                    $error['api_response'] = "Record with External Account Id: ". $data['externalAccountId'] ." already exist.";
-
-                    $dataHandler->storeCurlRequest($error);
+//                    $error['name'] = "Record Does not  Exist";
+//                    $error['action_type'] = ($accountBean->id != null) ? 'Update Account' : 'Create Account';
+//                    $error['api_response'] = "Record with External Account Id: ". $data['externalAccountId'] ." already exist.";
+//
+//                    $dataHandler->storeCurlRequest($error);
 
                     $data['insertDate'] = $accountBean->last_sync_date;
                     $res = addAccountData($data);

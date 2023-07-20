@@ -449,7 +449,7 @@ function syncContactsDataService() {
             'related_to_module' => 'Contacts',
             'parent_id' => $contactBean->id,
             'parent_type' => "Contacts",
-            'concerned_team' => "B2B Dev Team",
+            'concerned_team' => "b2b_dev_team",
             'assigned_user_id' => 1
         );
 
@@ -555,7 +555,7 @@ function syncContactsDataService() {
         switch ($contactRow['ready_to_sync']) {
             case 1:
                 // check if account already exists
-                if(!accountExists($data['externalContactId'])) {
+                if(accountExists($data['externalContactId'])) {
                     $error['name'] = "Record Already Exist";
                     $error['action_type'] = "Create Contact";
                     $error['api_response'] = "Record with external Contact Id: ". $data['externalContactId'] ." already exist.";
@@ -571,11 +571,11 @@ Open the CRM Database, Search the Contact Record by ID and Update the ready_to_s
                 if(contactExists($data['externalContactId']))
                     $res = sendContactData($data, $data['externalContactId']);
                 else
-                    $error['name'] = "Record Already Exist";
-                    $error['action_type'] = ($data['externalContactId'] != null) ? 'Update Contact' : 'Create Contact';
-                    $error['api_response'] = "Record with external Contact Id: ". $data['externalContactId'] ." already exist.";
-                    $error['resolution'] = "Get the Contact Record ID and Search the Record in eInsight, make sure the same record with the ID exist.
-Open the CRM Database, Search the Contact Record by ID and Update the ready_to_sync flag to 2.";
+//                    $error['name'] = "Record Already Exist";
+//                    $error['action_type'] = ($data['externalContactId'] != null) ? 'Update Contact' : 'Create Contact';
+//                    $error['api_response'] = "Record with external Contact Id: ". $data['externalContactId'] ." already exist.";
+//                    $error['resolution'] = "Get the Contact Record ID and Search the Record in eInsight, make sure the same record with the ID exist.
+//Open the CRM Database, Search the Contact Record by ID and Update the ready_to_sync flag to 2.";
 
                     $dataHandler->storeCurlRequest($error);
 
