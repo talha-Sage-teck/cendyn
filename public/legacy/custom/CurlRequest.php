@@ -162,9 +162,18 @@ class CurlRequest {
                     'resolution' => "Get the Account Record ID and Search the Record in Database or CRM. Check <date_entered> field should not be empty for the Failed Record."
                 ],
                 [
-                    'condition' => strpos($errorTitle, 'No data present for Account Id') !== false || strpos($errorTitle, 'No data present for External Account Id') !== false,
+                    'condition' => strpos($errorTitle, 'No data present for Account Id') !== false && strpos($responseData['type'], 'System.Exception') !== false,
                     'name' => "Record does not Exist in eInsight",
                     'resolution' => "Get the Account Record ID and Search the Record in eInsight, make sure the same record with the ID does not exist. Open the CRM Database, Search the Account Record by ID and Update the ready_to_sync flag to 1."
+                ],
+                [
+                    'condition' => strpos($errorTitle, 'No data present for External Account Id') !== false && strpos($responseData['type'], 'System.Exception') !== false,
+                    'name' => "Record does not Exist in eInsight",
+                    'resolution' => "Make sure the Post B2B Accounts Service Scheduler is Active, If not then activate the Scheduler. If the issue is not resolved automatically follow the below steps.
+                                    Get the PMS Profile Record ID and Search the Record in CRM.
+                                    Get the Related Account Record ID and Search the Record in CRM Database. 
+                                    If the Related Account Record is found in the Database set the <ready_to_sync> flag to 1.
+                                    If the Related Account Record is not found in the Database, remove the PMS Profile and Account Relationship from the accounts_cb2b_pmsprofiles_1_c table.",
                 ],
                 [
                     'condition' => !empty($responseData['error']['profileid']) && $errorTitle === $errorEmptyValidation,
@@ -191,14 +200,17 @@ class CurlRequest {
                                     If the Related Account Record is not found in the Database, remove the Contact and Account Relationship from the accounts_contacts table."
                 ],
                 [
+                    'name' => 'External Account Id cannot be empty',
                     'condition' => strpos($responseData['type'], 'System.ArgumentException') !== false && strpos($responseData['title'], 'External Account Id cannot be empty'),
                     'resolution' => "Get the Account Record ID and Search the Record in Database or CRM. Check id field should not be empty for the Failed Record.",
                 ],
                 [
+                    'name' => 'Contact already exist with contact id',
                     'condition' => strpos($responseData['type'], 'System.Exception') !== false && strpos($responseData['title'], 'Contact already exist with contact id'),
                     'resolution' => "Get the Contact Record ID and Search the Record in eInsight, make sure the same record with the ID exist. Open the CRM Database, Search the Contact Record by ID and Update the ready_to_sync flag to 2.",
                 ],
                 [
+                    'name' => 'Accounts doesnot exist in Accounts table',
                     'condition' => strpos($responseData['type'], 'System.Exception') !== false && strpos($responseData['title'], 'Accounts does not exist in Accounts table'),
                     'resolution' => "Make sure the Post B2B Accounts Service Scheduler is Active, If not then activate the Scheduler. If the issue is not resolved automatically follow the below steps.
                                     Get the Contact Record ID and Search the Record in CRM.
@@ -209,7 +221,7 @@ class CurlRequest {
                 [
                     'condition' => strpos($responseData['type'], 'System.Exception') !== false && strpos($responseData['title'], 'No data present for EXternal Contact Id'),
                     'resolution' => "Open the CRM Database, Search the Contact Record by ID and Update the ready_to_sync flag to 1.",
-                    'name' => "Invalid Account Linked to PMS Profile"
+                    'name' => "No data present for EXternal Contact Id"
                 ],
                 // Add more conditions and their corresponding resolutions as needed.
                 // ...
