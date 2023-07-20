@@ -122,9 +122,11 @@ class CurlRequest {
         $relatedToModule = $this->context['module'];
 
         $resolution = null;
+        $concernedTeam = "b2b_dev_team";
 
         if ($responseData === null || $responseData === "") {
             $name = "Url malformed";
+            $concernedTeam = "it_team";
             $relatedToModule = "General";
             $resolution = "Please Check EINSIGHT_API_ENDPOINT / EINSIGHT_API_VERSION / EINSIGHT_API_COMPANY_ID variables in config_override.php file. Below are the sample values.
             \$sugar_config['EINSIGHT_API_ENDPOINT'] = 'https://eu02b2bapidev.cendyn.com';
@@ -249,6 +251,7 @@ class CurlRequest {
             'parent_id' => $this->context['record_id'],
             'parent_type' => $this->context['module'],
             'assigned_user_id' => 1,
+            'concerned_team' => $concernedTeam
         );
 
         $this->addError($error);

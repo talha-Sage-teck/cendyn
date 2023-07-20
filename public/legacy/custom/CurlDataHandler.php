@@ -71,6 +71,7 @@ class CurlDataHandler
             $customModuleBean->scheduler_id = $GLOBALS["jobq"]->job->scheduler_id;
             $customModuleBean->assigned_user_id = $error['assigned_user_id'] ?? null;
             $customModuleBean->resolution = $error['resolution'] ?? null;
+            $customModuleBean->concerned_team = $error['concerned_team'] ?? "b2b_dev_team";
 
             $customModuleBean->save();
         } else {
