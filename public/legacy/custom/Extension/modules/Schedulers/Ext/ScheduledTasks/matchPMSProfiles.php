@@ -158,7 +158,7 @@ function matchPMSProfiles() {
             'related_to_module' => 'PMS Profile',
             'parent_id' => null,
             'parent_type' => "PMS Profile",
-            'concerned_team' => "B2B Dev Team",
+            'concerned_team' => "b2b_dev_team",
             'action_type' => "PMS Profile Matching",
             'api_response' => null,
             'assigned_user_id' => 1,

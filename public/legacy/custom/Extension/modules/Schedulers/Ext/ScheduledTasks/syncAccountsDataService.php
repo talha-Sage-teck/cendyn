@@ -164,7 +164,7 @@ function syncAccountsDataService() {
             'related_to_module' => 'Accounts',
             'parent_id' => $accountBean->id,
             'parent_type' => "Accounts",
-            'concerned_team' => "B2B Dev Team",
+            'concerned_team' => "b2b_dev_team",
             'assigned_user_id' => 1
         );
 
