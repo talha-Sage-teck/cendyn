@@ -31,6 +31,12 @@ class CurlDataHandler
 
         // Build the SQL query for the 'error_status' with OR condition
         $errorStatusCondition = "(error_status = " . $customModuleBean->db->quoted('new') . " OR error_status = " . $customModuleBean->db->quoted('processed') . ")";
+
+        // Add the additional condition to the $errorStatusCondition
+        if ($error['related_to_module'] === 'Accounts' || $error['related_to_module'] === 'Contacts') {
+            $errorStatusCondition .= " AND (related_to_module = " . $customModuleBean->db->quoted('Accounts') . " OR related_to_module = " . $customModuleBean->db->quoted('Contacts') . ") AND parent_id = " . $customModuleBean->db->quoted($error['parent_id']);
+        }
+
         if (!empty($conditionClauses)) {
             $conditionClauses[] = $errorStatusCondition;
         } else {

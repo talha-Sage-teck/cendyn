@@ -99,7 +99,7 @@ class CurlRequest {
         $responseData = array_change_key_case($responseData, CASE_LOWER);
 
         // Log the response using the "fatal" log level.
-        $GLOBALS['log']->fatal("Custom Response: " . json_encode($this->response));
+        $GLOBALS['log']->fatal("Custom Response: " . $this->response);
 
         // Check if the response status is successful (HTTP status 200 or 201).
         if ($responseData['status'] == 200 || $responseData['status'] == 201) {
@@ -135,43 +135,103 @@ class CurlRequest {
             $errorTitle = isset($responseData['title']) ? $responseData['title'] : '';
             $errorEmptyValidation = 'One or more validation errors occurred.';
 
-            switch (true) {
-                case !empty($responseData['error']['code']) && $responseData['error']['code'] == 'UnsupportedApiVersion':
-                    $name = "Unsupported API version error";
-                    $relatedToModule = "General";
-                    $resolution = "Please Check EINSIGHT_API_VERSION variable in config_override.php file. It should have the Valid API Version.";
+            // Define an array that maps conditions to resolutions.
+            $resolutionMap = [
+                [
+                    'condition' => !empty($responseData['error']['code']) && $responseData['error']['code'] == 'UnsupportedApiVersion',
+                    'name' => "Unsupported API version error",
+                    'relatedToModule' => "General",
+                    'resolution' => "Please Check EINSIGHT_API_VERSION variable in config_override.php file. It should have the Valid API Version.",
+                ],
+                [
+                    'condition' => $responseData['type'] == "AuthenticationTicket",
+                    'name' => "Bad API key",
+                    'relatedToModule' => "General",
+                    'resolution' => "Please Check EINSIGHT_API_KEY variable in config_override.php file. It should have the Valid API Key setup.",
+                ],
+                [
+                    'condition' => !empty($responseData['error']['id']) && $errorTitle === $errorEmptyValidation,
+                    'name' => "ID by default should be set to 0",
+                    'resolution' => "eInsight Request Object should set the <id> parameter to 0."
+                ],
+                [
+                    'condition' => !empty($responseData['error']['insertdate']) && $errorTitle === $errorEmptyValidation,
+                    'name' => "Date Created should not be Empty or NULL",
+                    'resolution' => "Get the Account Record ID and Search the Record in Database or CRM. Check <date_entered> field should not be empty for the Failed Record."
+                ],
+                [
+                    'condition' => strpos($errorTitle, 'No data present for Account Id') !== false || strpos($errorTitle, 'No data present for External Account Id') !== false,
+                    'name' => "Record does not Exist in eInsight",
+                    'resolution' => "Get the Account Record ID and Search the Record in eInsight, make sure the same record with the ID does not exist. Open the CRM Database, Search the Account Record by ID and Update the ready_to_sync flag to 1."
+                ],
+                [
+                    'condition' => !empty($responseData['error']['profileid']) && $errorTitle === $errorEmptyValidation,
+                    'name' => "ProfileId should be the 36 char length",
+                    'resolution' => "PMS Profile ID should be 36 char long."
+                ],
+                [
+                    'condition' => strpos($errorTitle, 'Object reference not set to an instance of an object.') !== false,
+                    'name' => "Contact Email and Account Should not be empty",
+                    'resolution' => "Get the Contact Record ID and Search the Record in CRM. Check <ACCOUNT NAME> and <EMAIL ADDRESS> field should not be empty for the Failed Record."
+                ],
+                [
+                    'condition' => strpos($errorTitle, 'Value cannot be null. (Parameter \'source\')') !== false,
+                    'name' => "Contact Account Should not be empty",
+                    'resolution' => "Get the Contact Record ID and Search the Record in CRM. Check <ACCOUNT NAME> field should not be empty for the Failed Record."
+                ],
+                [
+                    'condition' => !empty($responseData['invalidaccountids']),
+                    'name' => "Invalid Account Linked to Contact",
+                    'resolution' => "Make sure the Post B2B Accounts Service Scheduler is Active, If not then activate the Scheduler. If the issue is not resolved automatically follow the below steps.
+                                    Get the Contact Record ID and Search the Record in CRM.
+                                    Get the Related Account Record ID and Search the Record in CRM Database. 
+                                    If the Related Account Record is found in the Database set the <ready_to_sync> flag to 1.
+                                    If the Related Account Record is not found in the Database, remove the Contact and Account Relationship from the accounts_contacts table."
+                ],
+                [
+                    'condition' => strpos($responseData['type'], 'System.ArgumentException') !== false && strpos($responseData['title'], 'External Account Id cannot be empty'),
+                    'resolution' => "Get the Account Record ID and Search the Record in Database or CRM. Check id field should not be empty for the Failed Record.",
+                ],
+                [
+                    'condition' => strpos($responseData['type'], 'System.Exception') !== false && strpos($responseData['title'], 'Contact already exist with contact id'),
+                    'resolution' => "Get the Contact Record ID and Search the Record in eInsight, make sure the same record with the ID exist. Open the CRM Database, Search the Contact Record by ID and Update the ready_to_sync flag to 2.",
+                ],
+                [
+                    'condition' => strpos($responseData['type'], 'System.Exception') !== false && strpos($responseData['title'], 'Accounts does not exist in Accounts table'),
+                    'resolution' => "Make sure the Post B2B Accounts Service Scheduler is Active, If not then activate the Scheduler. If the issue is not resolved automatically follow the below steps.
+                                    Get the Contact Record ID and Search the Record in CRM.
+                                    Get the Related Account Record ID and Search the Record in CRM Database. 
+                                    If the Related Account Record is found in the Database set the <ready_to_sync> flag to 1.
+                                    If the Related Account Record is not found in the Database, remove the Contact and Account Relationship from the accounts_contacts table.",
+                ],
+                [
+                    'condition' => strpos($responseData['type'], 'System.Exception') !== false && strpos($responseData['title'], 'No data present for EXternal Contact Id'),
+                    'resolution' => "Open the CRM Database, Search the Contact Record by ID and Update the ready_to_sync flag to 1.",
+                    'name' => "Invalid Account Linked to PMS Profile"
+                ],
+                // Add more conditions and their corresponding resolutions as needed.
+                // ...
+                // Default resolution
+                [
+                    'condition' => true,
+                    'name' => $errorTitle,
+                ],
+            ];
+
+            // Find the matching resolution based on the first true condition in the $resolutionMap.
+            foreach ($resolutionMap as $resolutionEntry) {
+                if ($resolutionEntry['condition']) {
+                    $name = $resolutionEntry['name'];
+                    if (isset($resolutionEntry['relatedToModule'])) {
+                        $relatedToModule = $resolutionEntry['relatedToModule'];
+                    }
+                    if (isset($resolutionEntry['resolution'])) {
+                        $resolution = $resolutionEntry['resolution'];
+                    }
                     break;
-                case $responseData['type'] == "AuthenticationTicket":
-                    $name = "Bad API key";
-                    $relatedToModule = "General";
-                    $resolution = "Please Check EINSIGHT_API_KEY variable in config_override.php file. It should have the Valid API Key setup.";
-                    break;
-                case !empty($responseData['error']['id']) && $errorTitle === $errorEmptyValidation:
-                    $name = "ID by default should be set to 0";
-                    break;
-                case !empty($responseData['error']['insertdate']) && $errorTitle === $errorEmptyValidation:
-                    $name = "Date Created should not be Empty or NULL";
-                    break;
-                case strpos($errorTitle, 'No data present for Account Id') !== false || strpos($errorTitle, 'No data present for External Account Id') !== false:
-                    $name = "Record does not Exist in eInsight";
-                    break;
-                case !empty($responseData['error']['profileid']) && $errorTitle === $errorEmptyValidation:
-                    $name = "ProfileId should be the 36 char length";
-                    break;
-                case strpos($errorTitle, 'Object reference not set to an instance of an object.') !== false:
-                    $name = "Contact Email and Account Should not be empty";
-                    break;
-                case strpos($errorTitle, 'Value cannot be null. (Parameter \'source\')') !== false:
-                    $name = "Contact Account Should not be empty";
-                    break;
-                case !empty($responseData['invalidaccountids']):
-                    $name = "Invalid Accout Linked to Contact";
-                    break;
-                default:
-                    $name = $errorTitle;
+                }
             }
         }
-
 
         $error = array(
             'name' => $name,
