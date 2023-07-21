@@ -162,7 +162,7 @@ function syncAccountsDataService() {
             'resolution' => null,
             'error_status' => 'new',
             'related_to_module' => 'Accounts',
-            'parent_id' => $accountBean->id,
+            'parent_id' => $accountRow['id'],
             'parent_type' => "Accounts",
             'concerned_team' => "b2b_dev_team",
             'assigned_user_id' => 1
@@ -225,7 +225,7 @@ function syncAccountsDataService() {
         switch ($accountRow['ready_to_sync']) {
             case 1:
                 // check if account already exists
-                if(accountExists($data['externalAccountId'])) {
+                if(!accountExists($data['externalAccountId'])) {
                     $error['name'] = "Record Already Exist";
                     $error['action_type'] = "Create Account";
                     $error['api_response'] = "Record with External Account Id: ". $data['externalAccountId'] ." already exist.";
