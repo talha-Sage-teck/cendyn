@@ -114,7 +114,7 @@ function getMatchedCriteriaString($fields) {
 //}
 
 function getExistingRelationShipIds($pmsProfileId) {
-    global $db;
+    global $db, $sugar_config;
     $returnArr = array();
     $query = "SELECT cb2b_pmsprofiles_cb2b_pmsprofiles_2cb2b_pmsprofiles_ida, cb2b_pmsprofiles_cb2b_pmsprofiles_2cb2b_pmsprofiles_idb"
             . " FROM `cb2b_pmsprofiles_cb2b_pmsprofiles_2_c` WHERE "
@@ -142,32 +142,31 @@ function matchPMSProfiles() {
     // then the Insert time (to have a greater insert timestamp)
     $deleteTime = $timedate->nowDb();
 
+    $error = array(
+        'name' => "Found No Matching Configuration",
+        'endpoint' => null,
+        'input_data' => null,
+        'http_code' => null,
+        'request_type' => null,
+        'curl_error_message' => null,
+        'error_status' => 'new',
+        'related_to_module' => 'PMS Profile',
+        'parent_id' => null,
+        'parent_type' => "PMS Profile",
+        'concerned_team' => "b2b_dev_team",
+        'action_type' => "PMS Profile Matching",
+        'api_response' => null,
+        'assigned_user_id' => 1,
+        'resolution' => '1- Go to Administration Section. 2- Find Manage "PMS Profile Matching Criteria". 3- Setup the "PMS Profiles Matching Criteria Rules".'
+    );
+
     // Get Matching Criterias from Configuration
     $getMatchCriteriaQuery = "SELECT * FROM `config` WHERE `category`='MySettings' AND `name`='MatchCriteriaConfig'";
     $result = $db->query($getMatchCriteriaQuery, true);
 
     if ($result->num_rows <= 0) {
-        $error = array(
-            'name' => "Found No Matching Configuration",
-            'endpoint' => null,
-            'input_data' => null,
-            'http_code' => null,
-            'request_type' => null,
-            'curl_error_message' => null,
-            'error_status' => 'new',
-            'related_to_module' => 'PMS Profile',
-            'parent_id' => null,
-            'parent_type' => "PMS Profile",
-            'concerned_team' => "b2b_dev_team",
-            'action_type' => "PMS Profile Matching",
-            'api_response' => null,
-            'assigned_user_id' => 1,
-            'resolution' => '1- Go to Administration Section. 2- Find Manage "PMS Profile Matching Criteria". 3- Setup the "PMS Profiles Matching Criteria Rules".'
-        );
-
         $dataHandler = new CurlDataHandler();
         $dataHandler->storeCurlRequest($error);
-
         $sugar_config['scheduler_log'] ? $GLOBALS['log']->debug('matchPMSProfiles --> : Did not found MatchCriteriaConfig') : '';
         return true;
     }
@@ -175,6 +174,11 @@ function matchPMSProfiles() {
     // Unserialize the Configurations
     $record = $db->fetchByAssoc($result);
     $settings = unserialize(base64_decode($record['value']))['criteria'];
+
+    if (!isset($settings['criteria']) || empty($settings['criteria'])) {
+        $dataHandler = new CurlDataHandler();
+        $dataHandler->storeCurlRequest($error);
+    }
 
     $sugar_config['scheduler_log'] ? $GLOBALS['log']->debug('$settings : ' . print_r($settings, 1)) : '';
 

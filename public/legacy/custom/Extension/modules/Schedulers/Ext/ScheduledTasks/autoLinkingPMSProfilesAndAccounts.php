@@ -149,6 +149,7 @@ function loadMatchingProfileAndAccountRelationship() {
 }
 
 function checkIfRelationshipAlreadyExists($pmsProfileId, $matchedAccountId, $profileAndAccountRelationshipArray) {
+    global $sugar_config;
     if (is_array($profileAndAccountRelationshipArray[$pmsProfileId])) {
         if (in_array($matchedAccountId, $profileAndAccountRelationshipArray[$pmsProfileId])) {
             return true;

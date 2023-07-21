@@ -555,7 +555,7 @@ function syncContactsDataService() {
         switch ($contactRow['ready_to_sync']) {
             case 1:
                 // check if account already exists
-                if(!accountExists($data['externalContactId'])) {
+                if(accountExists($data['externalContactId'])) {
                     $error['name'] = "Record Already Exist";
                     $error['action_type'] = "Create Contact";
                     $error['api_response'] = "Record with external Contact Id: ". $data['externalContactId'] ." already exist.";
