@@ -102,7 +102,7 @@ class CurlRequest {
         $GLOBALS['log']->fatal("Custom Response: " . $this->response);
 
         // Check if the response status is successful (HTTP status 200 or 201).
-        if ($responseData['status'] == 200 || $responseData['status'] == 201 || isset($responseData['data'])) {
+        if ($responseData['status'] == 200 || $responseData['status'] == 201 || isset($responseData['data']) || $this->httpCode) {
             // If successful, you may optionally log the response using the "debug" log level.
             // $GLOBALS['log']->debug($this->response);
         } else {
