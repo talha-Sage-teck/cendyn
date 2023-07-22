@@ -152,7 +152,7 @@ class CurlRequest {
                     'resolution' => "Please Check EINSIGHT_API_KEY variable in config_override.php file. It should have the Valid API Key setup.",
                 ],
                 [
-                    'condition' => !empty($responseData['error']['id']) && $errorTitle === $errorEmptyValidation,
+                    'condition' => !empty($responseData['errors']['id']) && $errorTitle === $errorEmptyValidation,
                     'name' => "ID by default should be set to 0",
                     'resolution' => "eInsight Request Object should set the <id> parameter to 0."
                 ],
@@ -179,6 +179,12 @@ class CurlRequest {
                     'condition' => !empty($responseData['error']['profileid']) && $errorTitle === $errorEmptyValidation,
                     'name' => "ProfileId should be the 36 char length",
                     'resolution' => "PMS Profile ID should be 36 char long."
+                ],
+                [
+                    'condition' => !empty($responseData['errors']['insertdate']),
+                    'name' => "Date Created should not be Empty or NULL",
+                    'resolution' => "Get the Account Record ID and Search the Record in Database or CRM.
+                    Check <date_entered> field should not be empty for the Failed Record."
                 ],
                 [
                     'condition' => strpos($errorTitle, 'Object reference not set to an instance of an object.') !== false,
@@ -228,7 +234,7 @@ class CurlRequest {
                 // Default resolution
                 [
                     'condition' => true,
-                    'name' => $errorTitle,
+                    'name' => ($errorTitle) ? $errorTitle : "Unknown",
                 ],
             ];
 
