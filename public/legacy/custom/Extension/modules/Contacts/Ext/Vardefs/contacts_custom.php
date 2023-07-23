@@ -253,3 +253,18 @@ $dictionary["Contact"]["fields"]["greetingid"] = array(
 );
 
 $dictionary["Contact"]["fields"]["last_name"]["importable"] = true;
+
+$dictionary["Contact"]["fields"]["status"] = array(
+    'inline_edit' => '1',
+    'labelValue' => 'Status',
+    'name' => 'status',
+    'vname' => 'LBL_STATUS',
+    'type' => 'enum',
+    'massupdate' => '0',
+    'default' => 'Active',
+    'no_default' => false,
+    'audited' => true,
+    'len' => 100,
+    'size' => '20',
+    'options' => 'contact_status_list',
+);
