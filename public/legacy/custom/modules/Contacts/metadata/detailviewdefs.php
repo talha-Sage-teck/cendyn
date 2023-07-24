@@ -332,7 +332,7 @@ array (
             'studio' => 'false',
             'label' => 'LBL_EMAIL_ADDRESS',
           ),
-            1 => 
+          1 => 
           array (
             'name' => 'phone_fax',
             'label' => 'LBL_FAX_PHONE',
@@ -368,6 +368,11 @@ array (
             'name' => 'description',
             'comment' => 'Full text of the note',
             'label' => 'LBL_DESCRIPTION',
+          ),
+          1 => 
+          array (
+            'name' => 'status',
+            'label' => 'LBL_STATUS',
           ),
         ),
       ),

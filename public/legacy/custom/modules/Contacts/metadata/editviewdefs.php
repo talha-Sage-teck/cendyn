@@ -165,6 +165,11 @@ array (
             'name' => 'email1',
             'studio' => 'false',
             'label' => 'LBL_EMAIL_ADDRESS',
+          ),            
+          1 => 
+          array (
+            'name' => 'phone_fax',
+            'label' => 'LBL_FAX_PHONE',
           ),
         ),
         8 => 
@@ -203,6 +208,11 @@ array (
           array (
             'name' => 'description',
             'label' => 'LBL_DESCRIPTION',
+          ),
+          1 => 
+          array (
+            'name' => 'status',
+            'label' => 'LBL_STATUS',
           ),
         ),
       ),

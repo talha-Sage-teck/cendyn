@@ -501,6 +501,7 @@ function syncContactsDataService() {
             'assignedUserId' => $contactBean->assigned_user_id,
             'interests' => $contactBean->b2b_interests,
             'inactive' => $contactBean->deleted,
+            'status' => $contactBean->status,
         );
 
         // don't bother extracting the data for emails and accounts if we want to delete the contact

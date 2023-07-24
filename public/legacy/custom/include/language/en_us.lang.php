@@ -212,7 +212,11 @@ $app_list_strings['account_base_list'] = array(
 );
 
 $app_list_strings['account_status_list'] = array(
-    '' => '',
+    'Active' => 'Active',
+    'In-Active' => 'In-Active',
+);
+
+$app_list_strings['contact_status_list'] = array(
     'Active' => 'Active',
     'In-Active' => 'In-Active',
 );

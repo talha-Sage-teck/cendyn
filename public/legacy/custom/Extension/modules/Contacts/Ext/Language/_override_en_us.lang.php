@@ -20,3 +20,4 @@ $mod_strings['LBL_B2B_ACTION_CODE'] = 'Action';
 $mod_strings['LBL_CONTACT_ROLE'] = 'Contact Role';
 $mod_strings['LBL_GREETING'] = 'Greeting';
 $mod_strings['LBL_GREETING_ID'] = 'Greeting ID';
+$mod_strings['LBL_STATUS'] = 'Status';

@@ -286,6 +286,10 @@ function autoLinkingPMSProfilesAndAccounts() {
         $sugar_config['scheduler_log'] ? $GLOBALS['log']->debug('$update : ' . print_r($update, 1)) : '';
     }
 
+    // Need to Fix
+    // We don't need to set the is_update_dup to -1 for all the PMS Profiles, we need to set only for those 
+    // which have been matched. Otherwise it will happen to be in the scenario as we have for Austria Trend, where 
+    // there was not Account in the System and all PMS Profiles were marked as is_update_dup (-1) on Scheduler execution.
     if (!empty($profileIds)) {
         // This will turn all the pms profiles `is_update_dup`='-1' but not those which we have set `is_update_dup`='-2'
         // because they are no longer `is_update_dup`='0'. So where clause save us
