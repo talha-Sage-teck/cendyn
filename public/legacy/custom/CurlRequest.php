@@ -102,7 +102,7 @@ class CurlRequest {
         $GLOBALS['log']->fatal("Custom Response: " . $this->response);
 
         // Check if the response status is successful (HTTP status 200 or 201).
-        if ($responseData['status'] == 200 || $responseData['status'] == 201 || isset($responseData['data']) || $this->httpCode) {
+        if ($responseData['status'] == 200 || $responseData['status'] == 201 || isset($responseData['data'])) {
             // If successful, you may optionally log the response using the "debug" log level.
             // $GLOBALS['log']->debug($this->response);
         } else {
@@ -157,7 +157,7 @@ class CurlRequest {
                     'resolution' => "eInsight Request Object should set the <id> parameter to 0."
                 ],
                 [
-                    'condition' => !empty($responseData['error']['insertdate']) && $errorTitle === $errorEmptyValidation,
+                    'condition' => !empty($responseData['errors']['insertDate']) && $errorTitle === $errorEmptyValidation,
                     'name' => "Date Created should not be Empty or NULL",
                     'resolution' => "Get the Account Record ID and Search the Record in Database or CRM. Check <date_entered> field should not be empty for the Failed Record."
                 ],
@@ -176,15 +176,9 @@ class CurlRequest {
                                     If the Related Account Record is not found in the Database, remove the PMS Profile and Account Relationship from the accounts_cb2b_pmsprofiles_1_c table.",
                 ],
                 [
-                    'condition' => !empty($responseData['error']['profileid']) && $errorTitle === $errorEmptyValidation,
+                    'condition' => !empty($responseData['error']['profileId']) && $errorTitle === $errorEmptyValidation,
                     'name' => "ProfileId should be the 36 char length",
                     'resolution' => "PMS Profile ID should be 36 char long."
-                ],
-                [
-                    'condition' => !empty($responseData['errors']['insertdate']),
-                    'name' => "Date Created should not be Empty or NULL",
-                    'resolution' => "Get the Account Record ID and Search the Record in Database or CRM.
-                    Check <date_entered> field should not be empty for the Failed Record."
                 ],
                 [
                     'condition' => strpos($errorTitle, 'Object reference not set to an instance of an object.') !== false,
