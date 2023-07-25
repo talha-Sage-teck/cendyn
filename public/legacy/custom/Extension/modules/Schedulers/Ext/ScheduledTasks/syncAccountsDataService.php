@@ -20,7 +20,7 @@ function getAccountById($accountID) {
     $url = "/b2b/B2BAccounts/" . $accountID;
     $curlRequest = new CurlRequest($url, [
         'module' => 'Accounts',
-        'action' => 'Get Account',
+        'action' => 'Create Account',
         'record_id' => $accountID,
         'header' => array(
 
@@ -59,7 +59,7 @@ function getAccountById($accountID) {
 //    return json_decode($response);
 }
 
-function accountExists($accountID): bool {
+function accountExists($accountID, $action = ""): bool {
     /***
      * Checks if account is available on eInsight
      * @Input:
@@ -67,8 +67,13 @@ function accountExists($accountID): bool {
      * @Output
      * Return true or false
      */
-    $account = getAccountById($accountID);
-    return !($account->status && $account->status != 200);
+    $account = getAccountById($accountID, $action);
+    if(isset($account->data) && isset($account->data->status)) {
+        return true;
+    } else {
+        return false;
+    }
+//    return !($account->status && $account->status != 200);
 }
 
 
@@ -181,6 +186,7 @@ function syncAccountsDataService() {
             $error['resolution'] = "Get the Account Record ID and Search the Record in Database or CRM. Check <name> field should not be empty for the Failed Record.";
 
             $dataHandler->storeCurlRequest($error);
+            continue;
         } elseif (empty($accountBean->assigned_user_id)) {
             $error['name'] = "Record Assigned User Should Not be Empty";
             $error['action_type'] = ($accountBean->id != null) ? 'Update Account' : 'Create Account';
@@ -188,6 +194,7 @@ function syncAccountsDataService() {
             $error['resolution'] = "Get the Account Record ID and Search the Record in Database or CRM. Check <assigned_user_id> field should not be empty for the Failed Record.";
 
             $dataHandler->storeCurlRequest($error);
+            continue;
         }
 
         //making the data object to send to eInsight
@@ -198,6 +205,7 @@ function syncAccountsDataService() {
             // TBD
             'externalParentAccountId' => $accountBean->parent_id,
             'accountName' => $accountBean->name,
+//            'accountName' => null,
             'accountBaseType' => $accountBean->account_base_type,
             'accountType' => $accountBean->account_type,
             'billingAddressStreet' => $accountBean->billing_address_street,
@@ -229,7 +237,7 @@ function syncAccountsDataService() {
         switch ($accountRow['ready_to_sync']) {
             case 1:
                 // check if account already exists
-                if(accountExists($data['externalAccountId'])) {
+                if(accountExists($data['externalAccountId'], "Create Account")) {
                     $error['name'] = "Record Already Exist";
                     $error['action_type'] = "Create Account";
                     $error['api_response'] = "Record with External Account Id: ". $data['externalAccountId'] ." already exist.";
@@ -237,13 +245,14 @@ function syncAccountsDataService() {
                     Open the CRM Database, Search the Account Record by ID and Update the ready_to_sync flag to 2.";
 
                     $dataHandler->storeCurlRequest($error);
+                } else {
+                    $data['insertDate'] = $accountBean->last_sync_date;
+                    $res = addAccountData($data);
                 }
 
-                $data['insertDate'] = $accountBean->last_sync_date;
-                $res = addAccountData($data);
                 break;
             case 2:
-                if(accountExists($data['externalAccountId'])) {
+                if(accountExists($data['externalAccountId'], "Update Account")) {
                     $data['id'] = $accountBean->einsight_account_id ?? 0;
                     $res = addAccountData($data, $data['externalAccountId']);
                 }
@@ -261,7 +270,7 @@ function syncAccountsDataService() {
                 break;
             case 3:
                 $deleted = true;
-                if(accountExists($data['externalAccountId'])) {
+                if(accountExists($data['externalAccountId'], "Delete Account")) {
                     $res = deleteAccount($data['externalAccountId']);
                 }
                 else {

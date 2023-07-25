@@ -166,8 +166,8 @@ function autoLinkingPMSProfilesAndAccounts() {
     global $db, $timedate, $sugar_config;
 
     // Get Matching Criterias from Configuration
-    $getMatchCriteriaQuery = "SELECT * FROM `config` WHERE `category`='MySettings' AND `name`='MatchCriteriaConfig'";
-    $result = $db->query($getMatchCriteriaQuery, true);
+//    $getMatchCriteriaQuery = "SELECT * FROM `config` WHERE `category`='MySettings' AND `name`='MatchCriteriaConfig'";
+//    $result = $db->query($getMatchCriteriaQuery, true);
     $error = array(
         'name' => "Found No Auto Linking Configuration",
         'endpoint' => null,

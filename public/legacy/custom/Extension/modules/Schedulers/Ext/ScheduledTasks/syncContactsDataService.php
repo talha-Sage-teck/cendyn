@@ -64,7 +64,12 @@ function contactExists($contactID) {
      * Return true or false
      */
     $contact = getContactById($contactID);
-    return !($contact->status && $contact->status != 200);
+    if(isset($contact->data) && isset($contact->data->status)) {
+        return true;
+    } else {
+        return false;
+    }
+//    return !($contact->status && $contact->status != 200);
 }
 
 function sendPostData($endpoint, $postData = null, $content_length = null) {
@@ -456,20 +461,22 @@ function syncContactsDataService() {
         // Check for empty account name or assigned_user_id
         $dataHandler = new CurlDataHandler();
 
-        if (empty($contactBean->name)) {
+        if (empty(trim($contactBean->name))) {
             $error['name'] = "Record Name Should Not be Empty";
             $error['action_type'] = ($contactBean->id != null) ? 'Update Account' : 'Create Account';
             $error['api_response'] = "Record Name Should Not be Empty";
             $error['resolution'] = "Get the Contact Record ID and Search the Record in Database or CRM. Check <last_name> field should not be empty for the Failed Record.";
 
             $dataHandler->storeCurlRequest($error);
-        } elseif (empty($contactBean->assigned_user_id)) {
+            continue;
+        } elseif (empty(trim($contactBean->assigned_user_id))) {
             $error['name'] = "Record Assigned User Should Not be Empty";
             $error['action_type'] = ($contactBean->id != null) ? 'Update Account' : 'Create Account';
             $error['api_response'] = "Record Assigned User Should Not be Empty";
             $error['resolution'] = "Get the Contact Record ID and Search the Record in Database or CRM. Check <assigned_user_id> field should not be empty for the Failed Record.";
 
             $dataHandler->storeCurlRequest($error);
+            continue;
         }
 
         //making the data object to send to eInsight
@@ -556,16 +563,18 @@ function syncContactsDataService() {
         switch ($contactRow['ready_to_sync']) {
             case 1:
                 // check if account already exists
-                if(accountExists($data['externalContactId'])) {
+                if(contactExists($data['externalContactId'])) {
                     $error['name'] = "Record Already Exist";
                     $error['action_type'] = "Create Contact";
                     $error['api_response'] = "Record with external Contact Id: ". $data['externalContactId'] ." already exist.";
                     $error['resolution'] = "Get the Contact Record ID and Search the Record in eInsight, make sure the same record with the ID exist. Open the CRM Database, Search the Contact Record by ID and Update the ready_to_sync flag to 2.";
 
                     $dataHandler->storeCurlRequest($error);
+                } else {
+                    $GLOBALS['log']->fatal("Data: " . json_encode($data));
+                    $res = sendContactData($data);
                 }
 
-                $res = sendContactData($data);
                 break;
             case 2:
                 if(contactExists($data['externalContactId']))
@@ -587,15 +596,14 @@ function syncContactsDataService() {
                 if(contactExists($data['externalContactId']))
                     $res = deleteContact($data['externalContactId']);
                 else
-                    $error['name'] = "Record does not exist";
+                    $error['name'] = "No data present for External Contact Id";
                     $error['action_type'] = "Delete Contact";
                     $error['api_response'] = "Record with external Contact Id: ". $data['externalContactId'] ." does not exist.";
-                    $error['resolution'] = "Get the Contact Record ID and Search the Record in eInsight, make sure the same record with the ID exist.
-Open the CRM Database, Search the Contact Record by ID and Update the ready_to_sync flag to 2.";
+                    $error['resolution'] = "Open the CRM Database, Search the Contact Record by ID and Update the ready_to_sync flag to 1.";
 
                     $dataHandler->storeCurlRequest($error);
 
-                    $res = true;
+                    //$res = true;
                 break;
             case 4:
                 if(contactExists($data['externalContactId'])) {

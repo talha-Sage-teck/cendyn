@@ -28,7 +28,7 @@ function sendDeleteLinkData($profileID, $accountID) {
     $url = "/b2b/B2BPMSProfilesToAccountsMapping/delete";
     $curlRequest = new CurlRequest($url, [
         'module' => 'PMSProfiles',
-        'action' => 'Delete',
+        'action' => 'Delete Relationship',
         'record_id' => $profileID,
         'header' => array(
 
@@ -82,7 +82,7 @@ function sendLinkData($profileID, $accountID, $newAccountID = null) {
     $url = "/b2b/B2BPMSProfilesToAccountsMapping/" . (($is_update == 1) ? "update" : "add");
     $curlRequest = new CurlRequest($url, [
         'module' => 'PMSProfiles',
-        'action' => (($is_update == 1) ? "update" : "insert"),
+        'action' => (($is_update == 1) ? "Update Relationship" : "Add Relationship"),
         'record_id' => $profileID,
         'header' => array(
             'Content-Length: 0'

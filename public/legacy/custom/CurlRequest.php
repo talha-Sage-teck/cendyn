@@ -43,7 +43,7 @@ class CurlRequest {
         $this->context = $context;
 
         // Check server status (if necessary) - Uncomment this line if needed.
-        // $this->isServerDown();
+//         $this->isServerDown();
     }
 
     /**
@@ -162,12 +162,34 @@ class CurlRequest {
                     'resolution' => "Get the Account Record ID and Search the Record in Database or CRM. Check <date_entered> field should not be empty for the Failed Record."
                 ],
                 [
-                    'condition' => strpos($errorTitle, 'No data present for Account Id') !== false && strpos($responseData['type'], 'System.Exception') !== false,
+                    'condition' => (
+                        strpos($errorTitle, 'No data present for Account Id') !== false &&
+                        strpos($responseData['type'], 'System.Exception') !== false &&
+                        $this->context['action'] != "Create Account" &&
+                        $this->context['action'] != "Create Contact"
+                    ),
                     'name' => "Record does not Exist in eInsight",
                     'resolution' => "Get the Account Record ID and Search the Record in eInsight, make sure the same record with the ID does not exist. Open the CRM Database, Search the Account Record by ID and Update the ready_to_sync flag to 1."
                 ],
                 [
-                    'condition' => strpos($errorTitle, 'No data present for External Account Id') !== false && strpos($responseData['type'], 'System.Exception') !== false,
+                    'condition' => (
+                        strpos($errorTitle, 'No data present with Suite CRM Account Id') !== false &&
+                        strpos($responseData['type'], 'System.Exception') !== false
+                    ),
+                    'name' => "Invalid Accout Linked to PMS Profile",
+                    'resolution' => "Make sure the Post B2B Accounts Service Scheduler is Active, If not then activate the Scheduler. If the issue is not resolved automatically follow the below steps.
+                                    Get the PMS Profile Record ID and Search the Record in CRM.
+                                    Get the Related Account Record ID and Search the Record in CRM Database. 
+                                    If the Related Account Record is found in the Database set the <ready_to_sync> flag to 1.
+                                    If the Related Account Record is not found in the Database, remove the PMS Profile and Account Relationship from the accounts_cb2b_pmsprofiles_1_c table."
+                ],
+                [
+                    'condition' => (
+                        strpos($errorTitle, 'No data present for External Account Id') !== false &&
+                        strpos($responseData['type'], 'System.Exception') !== false &&
+                        $this->context['action'] != "Create Account" &&
+                        $this->context['action'] != "Create Contact"
+                    ),
                     'name' => "Record does not Exist in eInsight",
                     'resolution' => "Make sure the Post B2B Accounts Service Scheduler is Active, If not then activate the Scheduler. If the issue is not resolved automatically follow the below steps.
                                     Get the PMS Profile Record ID and Search the Record in CRM.
@@ -226,10 +248,10 @@ class CurlRequest {
                 // Add more conditions and their corresponding resolutions as needed.
                 // ...
                 // Default resolution
-                [
-                    'condition' => true,
-                    'name' => ($errorTitle) ? $errorTitle : "Unknown",
-                ],
+//                [
+//                    'condition' => true,
+//                    'name' => ($errorTitle) ? $errorTitle : "Unknown",
+//                ],
             ];
 
             // Find the matching resolution based on the first true condition in the $resolutionMap.
@@ -246,6 +268,9 @@ class CurlRequest {
                 }
             }
         }
+
+        if (empty($name))
+            return;
 
         $error = array(
             'name' => $name,
