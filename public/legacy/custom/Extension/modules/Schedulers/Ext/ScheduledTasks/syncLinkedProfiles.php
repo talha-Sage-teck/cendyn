@@ -88,8 +88,9 @@ function sendLinkData($profileID, $accountID, $newAccountID = null) {
             'Content-Length: 0'
         ),
     ]);
-
+    $GLOBALS['log']->fatal("Data of PMS Profile: ". json_encode($data));
     $response = $curlRequest->executeCurlRequest("POST", $data);
+    $GLOBALS['log']->fatal("Response of PMS Profile: ". $response);
 
 //    $curl = curl_init();
 //

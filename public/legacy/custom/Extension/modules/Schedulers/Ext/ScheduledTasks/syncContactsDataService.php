@@ -55,7 +55,7 @@ function getContactById($contactID) {
 //    return json_decode($response);
 }
 
-function contactExists($contactID) {
+function contactExists($contactID, $action = "") {
     /***
      * Checks if contact is available on eInsight
      * @Input:
@@ -63,7 +63,7 @@ function contactExists($contactID) {
      * @Output
      * Return true or false
      */
-    $contact = getContactById($contactID);
+    $contact = getContactById($contactID, $action);
     if(isset($contact->data) && isset($contact->data->status)) {
         return true;
     } else {
@@ -563,7 +563,7 @@ function syncContactsDataService() {
         switch ($contactRow['ready_to_sync']) {
             case 1:
                 // check if account already exists
-                if(contactExists($data['externalContactId'])) {
+                if(contactExists($data['externalContactId'], "Create Contact")) {
                     $error['name'] = "Record Already Exist";
                     $error['action_type'] = "Create Contact";
                     $error['api_response'] = "Record with external Contact Id: ". $data['externalContactId'] ." already exist.";
@@ -577,15 +577,9 @@ function syncContactsDataService() {
 
                 break;
             case 2:
-                if(contactExists($data['externalContactId']))
+                if(contactExists($data['externalContactId'], "Create Contact"))
                     $res = sendContactData($data, $data['externalContactId']);
                 else
-//                    $error['name'] = "Record Already Exist";
-//                    $error['action_type'] = ($data['externalContactId'] != null) ? 'Update Contact' : 'Create Contact';
-//                    $error['api_response'] = "Record with external Contact Id: ". $data['externalContactId'] ." already exist.";
-//                    $error['resolution'] = "Get the Contact Record ID and Search the Record in eInsight, make sure the same record with the ID exist.
-//Open the CRM Database, Search the Contact Record by ID and Update the ready_to_sync flag to 2.";
-
                     $dataHandler->storeCurlRequest($error);
 
                     $res = sendContactData($data);
@@ -593,7 +587,7 @@ function syncContactsDataService() {
             case 3:
                 $emailSyncDone = true;
                 $deleted = true;
-                if(contactExists($data['externalContactId']))
+                if(contactExists($data['externalContactId'], "Create Contact"))
                     $res = deleteContact($data['externalContactId']);
                 else
                     $error['name'] = "No data present for External Contact Id";
@@ -602,8 +596,6 @@ function syncContactsDataService() {
                     $error['resolution'] = "Open the CRM Database, Search the Contact Record by ID and Update the ready_to_sync flag to 1.";
 
                     $dataHandler->storeCurlRequest($error);
-
-                    //$res = true;
                 break;
             case 4:
                 if(contactExists($data['externalContactId'])) {

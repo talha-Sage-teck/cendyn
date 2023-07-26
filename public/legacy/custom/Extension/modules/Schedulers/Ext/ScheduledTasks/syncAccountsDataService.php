@@ -246,7 +246,8 @@ function syncAccountsDataService() {
 
                     $dataHandler->storeCurlRequest($error);
                 } else {
-                    $data['insertDate'] = $accountBean->last_sync_date;
+//                    $data['insertDate'] = $accountBean->last_sync_date;
+                    $data['insertDate'] = "";
                     $res = addAccountData($data);
                 }
 

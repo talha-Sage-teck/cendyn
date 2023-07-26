@@ -232,8 +232,8 @@ class CurlRequest {
                     'resolution' => "Get the Contact Record ID and Search the Record in eInsight, make sure the same record with the ID exist. Open the CRM Database, Search the Contact Record by ID and Update the ready_to_sync flag to 2.",
                 ],
                 [
-                    'name' => 'Accounts doesnot exist in Accounts table',
-                    'condition' => strpos($responseData['type'], 'System.Exception') !== false && strpos($responseData['title'], 'Accounts does not exist in Accounts table'),
+                    'name' => "Invalid Account Linked to Contact",
+                    'condition' => strpos($responseData['type'], 'System.Exception') !== false && strpos($responseData['title'], 'Accounts doesnot exist in Accounts table') !== false,
                     'resolution' => "Make sure the Post B2B Accounts Service Scheduler is Active, If not then activate the Scheduler. If the issue is not resolved automatically follow the below steps.
                                     Get the Contact Record ID and Search the Record in CRM.
                                     Get the Related Account Record ID and Search the Record in CRM Database. 
@@ -269,7 +269,7 @@ class CurlRequest {
             }
         }
 
-        if (empty($name))
+        if (empty(trim($name)))
             return;
 
         $error = array(
