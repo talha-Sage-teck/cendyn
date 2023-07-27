@@ -139,6 +139,10 @@ class SubpanelTopActionDefinitionProvider extends ActionDefinitionProvider imple
         $mappedModule = $mappedButton['module'] ?? $module;
         $mappedAcls = $mappedButton['acl'] ?? [];
 
+        //SageTeck Custom Upgrade Unsafe Code
+        if($module=='CB2B_PMSProfiles'&&$widgetClass=="SubPanelTopSelectButton"){
+            $mappedAcls[0]='link';
+        }
         foreach ($mappedAcls as $aclKey) {
             if (!$this->isActionAccessible($mappedModule, $aclKey)) {
                 return [];

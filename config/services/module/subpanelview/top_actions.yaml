@@ -21,6 +21,8 @@ parameters:
           modes:
             - list
           acl:
+#SageTeck Custom Upgrade Unsafe Code
+            - view
         edit:
           key: edit
           labelKey: LBL_EDIT
