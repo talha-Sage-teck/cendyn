@@ -53,13 +53,6 @@ class SubpanelLineActionDefinitionProvider extends ActionDefinitionProvider impl
      */
     public function getActions(string $module): array
     {
-        if($module=="CB2B_PMSProfiles"){
-            $this->subpanelLineActions["default"]["actions"]["unlink"]["acl"][0]='view';
-        }
-        else{
-            $this->subpanelLineActions["default"]["actions"]["unlink"]["acl"][0]='edit';
-
-        }
         return $this->filterActions($module, $this->subpanelLineActions);
     }
 
