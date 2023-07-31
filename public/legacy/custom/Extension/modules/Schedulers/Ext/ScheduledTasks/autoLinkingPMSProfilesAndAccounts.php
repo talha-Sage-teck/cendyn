@@ -198,9 +198,9 @@ function autoLinkingPMSProfilesAndAccounts() {
 
     // Unserialize the Configurations
     $record = $db->fetchByAssoc($result);
-    $settings = unserialize(base64_decode($record['value']))['criteria'];
+    $settings = unserialize(base64_decode($record['value']));
 
-    if (!isset($settings['criteria']) || empty($settings['criteria'])) {
+    if (!isset($settings['criteria'])) {
         $dataHandler = new CurlDataHandler();
         $dataHandler->storeCurlRequest($error);
     }
