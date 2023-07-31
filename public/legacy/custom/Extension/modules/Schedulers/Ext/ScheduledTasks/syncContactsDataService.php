@@ -358,7 +358,7 @@ function sendContactData($data, $contact_id = null): bool {
     $curlRequest = new CurlRequest($url, [
         'module' => 'Contacts',
         'action' => (($contact_id != null) ? 'Update Contact' : 'Create Contact'),
-        'record_id' => $contact_id,
+        'record_id' => ($data['externalContactId']) ? $data['externalContactId'] : $contact_id,
     ]);
 
     return $curlRequest->executeCurlRequest("POST", $data);

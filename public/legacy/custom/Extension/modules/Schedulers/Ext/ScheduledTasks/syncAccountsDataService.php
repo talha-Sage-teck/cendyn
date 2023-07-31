@@ -121,7 +121,7 @@ function addAccountData($data, $account_id = null) {
     $curlRequest = new CurlRequest($url, [
         'module' => 'Accounts',
         'action' => 'Update Account',
-        'record_id' => (($account_id != null) ? '/update/' . $account_id : ''),
+        'record_id' => ($data['externalAccountId']) ? $data['externalAccountId'] : $account_id,
         'header' => array(
 
         ),
