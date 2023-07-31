@@ -198,7 +198,7 @@ class CurlRequest {
                                     If the Related Account Record is not found in the Database, remove the PMS Profile and Account Relationship from the accounts_cb2b_pmsprofiles_1_c table.",
                 ],
                 [
-                    'condition' => !empty($responseData['error']['profileId']) && $errorTitle === $errorEmptyValidation,
+                    'condition' => !empty($responseData['errors']['profileId']) && $errorTitle === $errorEmptyValidation,
                     'name' => "ProfileId should be the 36 char length",
                     'resolution' => "PMS Profile ID should be 36 char long."
                 ],

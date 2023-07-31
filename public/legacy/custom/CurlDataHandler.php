@@ -53,8 +53,8 @@ class CurlDataHandler
         $record = $customModuleBean->db->query($query, true);
 
         // If the record with "new" error_status is not found, try finding a record with "Processed" error_status
-        if ($record->num_rows === 0) {
-            $customModuleBean->name = $error['name'] ?? null;
+        if ($record->num_rows === 0 && !empty($error['name'])) {
+            $customModuleBean->name = $error['name'];
             $customModuleBean->description = $error['curl_error_message'] ?? null;
             $customModuleBean->related_to_module = $error['related_to_module'] ?? null;
             $customModuleBean->error_status = $error['error_status'] ?? null;
