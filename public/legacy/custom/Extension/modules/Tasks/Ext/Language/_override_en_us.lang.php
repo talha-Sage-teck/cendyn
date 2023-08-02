@@ -14,3 +14,4 @@ $mod_strings['LBL_SUBJECT'] = 'Subject';
 $mod_strings['LBL_RESULTS'] = 'Results';
 $mod_strings['LBL_REMARKS'] = 'Remarks';
 $mod_strings['LBL_SALES_REP_CODE'] = 'Sales Rep Code';
+$mod_strings['LBL_DATE_END'] = 'Date End';
