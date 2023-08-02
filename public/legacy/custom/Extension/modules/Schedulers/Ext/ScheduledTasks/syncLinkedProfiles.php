@@ -147,6 +147,11 @@ function getPrevAccountID($profileID) {
     }
 }
 
+// Function to check if the input string is a valid GUID format
+function is_valid_guid($guid) {
+    return preg_match('/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/', $guid);
+}
+
 function syncLinkedProfiles() {
     global $db;
     $accountRel = "accounts_cb2b_pmsprofiles_1";
@@ -155,10 +160,35 @@ function syncLinkedProfiles() {
     while($profile = $db->fetchByAssoc($selectResult)) {
         $profileBean = BeanFactory::getBean('CB2B_PMSProfiles', $profile['id']);
         $profileBean->load_relationship($accountRel);
+
+        if (!is_valid_guid($profileBean->id)) {
+            $error = array(
+                'name' => "ProfileId should be the 36 char length",
+                'endpoint' => null,
+                'input_data' => null,
+                'http_code' => null,
+                'request_type' => null,
+                'curl_error_message' => null,
+                'resolution' => null,
+                'error_status' => 'new',
+                'related_to_module' => 'CB2B_PMSProfiles',
+                'parent_id' => $profileBean->id,
+                'parent_type' => "CB2B_PMSProfiles",
+                'concerned_team' => "b2b_dev_team",
+                'assigned_user_id' => 1,
+                'action_type' => 'Add Relationship',
+                'api_response' => null
+            );
+
+            $dataHandler = new CurlDataHandler();
+            $dataHandler->storeCurlRequest($error);
+            continue;
+        }
+
         $accounts = $profileBean->$accountRel->getBeans();
         foreach($accounts as $account) {
             $res = false;
-            if($account->ready_to_sync == 0) {
+//            if($account->ready_to_sync == 0) {
                 switch($profileBean->ready_to_link) {
                     case 1:
                         $res = sendLinkData($profileBean->id, $account->id);
@@ -167,6 +197,7 @@ function syncLinkedProfiles() {
                         $res = sendLinkData($profileBean->id, getPrevAccountID($profileBean->id), $account->id);
                         break;
                     case 3:
+                        $res = sendDeleteLinkData($profileBean->id, getPrevAccountID($profileBean->id));
                         break;
                     default:
                         $GLOBALS['log']->debug("syncLinkedProfiles: Unexpected flag in scheduler");
@@ -179,19 +210,19 @@ function syncLinkedProfiles() {
                 else {
                     $GLOBALS['log']->debug("syncLinkedProfiles: Could not sync with eInsight.");
                 }
-            }
-            else {
-                $GLOBALS['log']->debug("syncLinkedProfiles: The account related to profile with ID {$profileBean->id}".
-                    " is not yet synchronized with eInsight. Account ID: {$account->id}");
-            }
+//            }
+//            else {
+//                $GLOBALS['log']->debug("syncLinkedProfiles: The account related to profile with ID {$profileBean->id}".
+//                    " is not yet synchronized with eInsight. Account ID: {$account->id}");
+//            }
         }
-        if($profileBean->ready_to_link > 0) {
-            $res = sendDeleteLinkData($profileBean->id, getPrevAccountID($profileBean->id));
-            if($res) {
-                $profileBean->ready_to_link = 0;
-                $profileBean->save();
-            }
-        }
+//        if($profileBean->ready_to_link > 0) {
+//            $res = sendDeleteLinkData($profileBean->id, getPrevAccountID($profileBean->id));
+//            if($res) {
+//                $profileBean->ready_to_link = 0;
+//                $profileBean->save();
+//            }
+//        }
     }
     return true;
 }

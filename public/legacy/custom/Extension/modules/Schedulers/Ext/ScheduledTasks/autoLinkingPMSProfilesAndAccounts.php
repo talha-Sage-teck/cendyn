@@ -178,7 +178,7 @@ function autoLinkingPMSProfilesAndAccounts() {
         'error_status' => 'new',
         'related_to_module' => 'PMS Profile',
         'parent_id' => null,
-        'parent_type' => "PMS Profile",
+        'parent_type' => "CB2B_PMSProfiles",
         'concerned_team' => "b2b_dev_team",
         'action_type' => "Auto Link PMS Profiles and Accounts",
         'api_response' => null,
