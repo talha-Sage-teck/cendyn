@@ -1,7 +1,6 @@
 <?php
 $dictionary["Account"]["fields"]["consortia"] = array (
     'inline_edit' => '1',
-    'labelValue' => 'consortia',
     'required' => false,
     'name' => 'consortia',
     'vname' => 'LBL_CONSORTIA',
@@ -18,9 +17,8 @@ $dictionary["Account"]["fields"]["consortia"] = array (
     'reportable' => true,
     'unified_search' => false,
     'merge_filter' => 'disabled',
-    'size' => '20',
+    'length' => '100',
     'options' => 'consortia_c_list',
     'studio' => 'visible',
     'isMultiSelect' => true,
-    'id' => 'Accountsconsortia',
 );
