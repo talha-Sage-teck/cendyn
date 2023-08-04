@@ -198,7 +198,7 @@ array (
         array (
           0 => 
           array (
-            'name' => 'consortia_c',
+            'name' => 'consortia',
             'studio' => 'visible',
             'label' => 'LBL_CONSORTIA',
           ),
