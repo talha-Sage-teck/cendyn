@@ -10,8 +10,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
 }
 
 require_once __DIR__ . '/../../../modules/Users/controller.php';
+require_once('custom/include/MVC/Controller/SugarController.php');
 
-class CustomUsersController extends UsersController {
+class CustomUsersController extends CustomSugarController {
 
     function action_matchCriteriaConfig() {
         if (is_admin($GLOBALS['current_user'])) {

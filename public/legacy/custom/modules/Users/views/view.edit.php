@@ -87,7 +87,7 @@ class CustomUsersViewEdit extends ViewEdit
 
     public function display()
     {
-        global $current_user, $app_list_strings, $mod_strings;
+        global $current_user, $app_list_strings, $mod_strings, $sugar_config;
 
 
         //lets set the return values
@@ -284,6 +284,40 @@ EOD
         $this->ev->process($processSpecial, $processFormName);
 
         echo $this->ev->display($this->showTitle);
+
+        if (!empty($current_user)) {
+            if ($current_user->id != $sugar_config['SUPER_ADMIN_ID'] && $current_user->customer_admin  == 1) {
+                // Hide the div element
+                echo '<script>
+                    $(document).ready(function() {
+                        $("[data-field=\'customer_admin\']").closest(".edit-view-row-item").hide();
+                    });
+                </script>';
+            } else {
+                echo '<script>
+                    $(document).ready(function() {
+                        // Initial check on page load
+                        checkUserType();
+        
+                        // Hook into the existing onchange event
+                        $("#UserType").on("change", function() {
+                            user_status_display(this);
+                            checkUserType();
+                        });
+        
+                        function checkUserType() {
+                            var selectedUserType = $("#UserType").val();
+        
+                            if (selectedUserType === "RegularUser") {
+                                $("[data-field=\'customer_admin\']").closest(".edit-view-row-item").hide();
+                            } else {
+                                $("[data-field=\'customer_admin\']").closest(".edit-view-row-item").show();
+                            }
+                        }
+                    });
+                </script>';
+            }
+        }
     }
 
 
