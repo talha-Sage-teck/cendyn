@@ -160,24 +160,24 @@ $customer_admin_group_header[] = ['LBL_STUDIO_TITLE', '', false, $admin_option_d
 $admin_option_defs_all[] = $admin_option_defs;
 
 // Administrator Management
-$admin_option_defs = [];
+//$admin_option_defs = [];
 // Changed the module from "Administration" to "Users" because this adjustment will trigger the Users module as specified in the link.
-$admin_option_defs['Users']['dashboard_config'] = array(
-    'standardDashboardConfig', // added the action name 'standardDashboardConfig', as the action name was initially empty
-    'Manage Dashboard Sharing',
-    'Configure SuiteCRM dashboard and assign tabs to Users.',
-    'index.php?module=Users&action=standardDashboardConfig'
-);
-
-
-$customer_admin_group_header[] = array(
-    'Administrator Management',
-    '',
-    false,
-    $admin_option_defs,
-    ''
-);
-$admin_option_defs_all[] = $admin_option_defs;
+//$admin_option_defs['Users']['dashboard_config'] = array(
+//    'standardDashboardConfig', // added the action name 'standardDashboardConfig', as the action name was initially empty
+//    'Manage Dashboard Sharing',
+//    'Configure SuiteCRM dashboard and assign tabs to Users.',
+//    'index.php?module=Users&action=standardDashboardConfig'
+//);
+//
+//
+//$customer_admin_group_header[] = array(
+//    'Administrator Management',
+//    '',
+//    false,
+//    $admin_option_defs,
+//    ''
+//);
+//$admin_option_defs_all[] = $admin_option_defs;
 
 $admin_option_defs = [];
 $admin_option_defs['Users']['manage_profile_matching_criteria'] = array(
