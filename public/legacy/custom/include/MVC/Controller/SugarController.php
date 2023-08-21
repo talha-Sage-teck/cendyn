@@ -17,10 +17,24 @@ class CustomSugarController extends SugarController
 
             $hasAccess = false;
 
+            // Check if $valueToCheck exists in the array
+            if (in_array($this->module, $GLOBALS['customerAdminModuleList'])) {
+                $hasAccess = true;
+            }
+
             foreach ($GLOBALS['modulesAndActions'] as $entry) {
-                if ($entry['module'] === $this->module && $entry['action'] === $this->action || $this->module == "Import"  && $_REQUEST['import_module'] != "Users") {
+                if (
+                    ($entry['module'] === $this->module && $entry['action'] === $this->action)
+                    || ($this->module == "Import" && $_REQUEST['import_module'] != "Users")
+                ) {
+                    // Access is granted if module and action match
                     $hasAccess = true;
-                    break; // Exit the loop since access is granted
+
+                    if (($this->module == 'Users' && $this->action == 'EditView' || $this->module == 'Users' && $this->action == 'DetailView') && $current_user->id != $_REQUEST['record']) {
+                        $hasAccess = false; // Deny access if it's a Users/EditView and user ID doesn't match
+                    }
+
+                    break; // Exit the loop since access is granted or denied
                 }
             }
 

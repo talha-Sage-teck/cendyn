@@ -7,6 +7,93 @@ $admin_option_defs['Administration']['index'] = [
 $admin_option_defs['Users']['EditView'] = [
     'EditView',
 ];
+$admin_option_defs['Users']['SaveTimezone'] = [
+    'SaveTimezone',
+];
+$admin_option_defs['Users']['Save'] = [
+    'Save',
+];
+$admin_option_defs['Users']['DetailView'] = [
+    'DetailView',
+];
+$admin_option_defs['Users']['resetPreferences'] = [
+    'resetPreferences',
+];
+$admin_option_defs['Users']['SubPanelViewer'] = [
+    'SubPanelViewer',
+];
+$admin_option_defs['Users']['Popup'] = [
+    'Popup',
+];
+$admin_option_defs['Users']['saveMatchCriteriaConfig'] = [
+    'saveMatchCriteriaConfig',
+];
+$admin_option_defs['Users']['standardDashboardConfig'] = [
+    'standardDashboardConfig',
+];
+$admin_option_defs['Users']['saveStandardDashboardConfig'] = [
+    'saveStandardDashboardConfig',
+];
+$admin_option_defs['ExternalOAuthProvider']['EditView'] = [
+    'EditView',
+];
+$admin_option_defs['ExternalOAuthProvider']['Save'] = [
+    'Save',
+];
+$admin_option_defs['ExternalOAuthProvider']['DetailView'] = [
+    'DetailView',
+];
+$admin_option_defs['ExternalOAuthProvider']['SubPanelViewer'] = [
+    'SubPanelViewer',
+];
+$admin_option_defs['SecurityGroups']['Popup'] = [
+    'Popup',
+];
+$admin_option_defs['ExternalOAuthProvider']['Save2'] = [
+    'Save2',
+];
+$admin_option_defs['ExternalOAuthProvider']['Delete'] = [
+    'Delete',
+];
+$admin_option_defs['ExternalOAuthProvider']['DetailView'] = [
+    'DetailView',
+];
+$admin_option_defs['ExternalOAuthProvider']['DeleteRelationship'] = [
+    'DeleteRelationship',
+];
+$admin_option_defs['ExternalOAuthConnection']['Popup'] = [
+    'Popup',
+];
+$admin_option_defs['ExternalOAuthConnection']['EditView'] = [
+    'EditView',
+];
+$admin_option_defs['ExternalOAuthConnection']['Save'] = [
+    'Save',
+];
+$admin_option_defs['ExternalOAuthConnection']['DetailView'] = [
+    'DetailView',
+];
+$admin_option_defs['ExternalOAuthConnection']['Delete'] = [
+    'Delete',
+];
+$admin_option_defs['ExternalOAuthProvider']['Popup'] = [
+    'Popup',
+];
+$admin_option_defs['EmailTemplates']['Popup'] = [
+    'Popup',
+];
+//$admin_option_defs['ACLRoles']['EditView'] = [
+//    'EditView',
+//];
+//$admin_option_defs['ACLRoles']['Save'] = [
+//    'Save',
+//];
+//$admin_option_defs['ACLRoles']['DetailView'] = [
+//    'DetailView',
+//];
+//$admin_option_defs['Schedulers']['index'] = [
+//    'index',
+//];
 
 $admin_option_defs_all[] = $admin_option_defs;
 
@@ -138,5 +225,55 @@ if (!empty($current_user)) {
         $admin_group_header = $customer_admin_group_header;
         $GLOBALS['customer_admin_group_header'] = $customer_admin_group_header;
         $GLOBALS['modulesAndActions'] = $modulesAndActions;
+
+        $GLOBALS['customerAdminModuleList'] = array(
+            'Home',
+            'Calendar',
+            'Calls',
+            'Meetings',
+            'Tasks',
+            'Notes',
+            'Leads',
+            'Contacts',
+            'Accounts',
+            'Opportunities',
+            'Emails',
+            'EmailTemplates',
+            'Campaigns',
+            'Prospects',
+            'ProspectLists',
+            'Documents',
+            'Cases',
+            'Project',
+            'Bugs',
+            'ResourceCalendar',
+            'AOBH_BusinessHours',
+            'AM_ProjectTemplates',
+            'AOK_Knowledge_Base_Categories',
+            'AOK_KnowledgeBase',
+            'FP_events',
+            'FP_Event_Locations',
+            'AOR_Reports',
+            'AOR_Scheduled_Reports',
+            'AOS_Contracts',
+            'AOS_Invoices',
+            'AOS_PDF_Templates',
+            'AOS_Product_Categories',
+            'AOS_Products',
+            'AOS_Quotes',
+            'AOW_WorkFlow',
+            'jjwg_Maps',
+            'jjwg_Markers',
+            'jjwg_Areas',
+            'jjwg_Address_Cache',
+            'SecurityGroups',
+            'Surveys',
+            'AOS_Contracts',
+            'CB2B_PMSProfiles',
+            'CB2B_Hotels',
+            'Contacts',
+            'CB2B_AutomatedMonitoring',
+            'Tasks'
+        );
     }
 }
