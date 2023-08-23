@@ -906,7 +906,13 @@ class SugarBean
                 $subquery['select'] = "SELECT";
                 foreach ($all_fields as $field) {
                     if (!isset($subquery['query_fields'][$field])) {
-                        $subquery['select'] .= " NULL $field,";
+                        if ($subquery['from_min'] === " FROM tasks " && $field === "date_end") {
+                            $subquery['select'] .= " tasks.date_due AS date_end, ";
+                        } elseif ($field === "contact_name") {
+                            $subquery['select'] .= " LTRIM(RTRIM(CONCAT(IFNULL(contacts.first_name, ''), ' ', IFNULL(contacts.last_name, '')))) AS contact_name, ";
+                        } else {
+                            $subquery['select'] .= " NULL $field,";
+                        }
                     } else {
                         $subquery['select'] .= " {$subquery['query_fields'][$field]},";
                     }
