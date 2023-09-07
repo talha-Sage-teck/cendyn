@@ -54,7 +54,7 @@ class CurlRequest {
      *
      * @return string The response received from the server.
      */
-    public function executeCurlRequest($requestType, $data = []) : string {
+    public function executeCurlRequest($requestType, $data = []) : array {
         // Initialize the cURL session.
         $curl = curl_init();
 
@@ -96,13 +96,20 @@ class CurlRequest {
 
         // Decode the response JSON and convert keys to lowercase.
         $responseData = json_decode($this->response, true);
+
+        // Add error code to the responseData
+        $responseData['errorCode'] = $this->httpCode;
+
         $responseData = array_change_key_case($responseData, CASE_LOWER);
 
         // Log the response using the "fatal" log level.
         $GLOBALS['log']->fatal("Custom Response: " . $this->response);
 
         // Check if the response status is successful (HTTP status 200 or 201).
-        if ($responseData['status'] == 200 || $responseData['status'] == 201 || isset($responseData['data'])) {
+        $status = $responseData['status'];
+        $errorcode = $responseData['errorcode'];
+        $dataExists = isset($responseData['data']);
+        if (in_array($status, [200, 201]) || $dataExists || in_array($errorcode, [200, 201])) {
             // If successful, you may optionally log the response using the "debug" log level.
             // $GLOBALS['log']->debug($this->response);
         } else {
@@ -111,11 +118,14 @@ class CurlRequest {
 
             // Create a CurlDataHandler instance and store the cURL request details.
             $dataHandler = new CurlDataHandler();
-            $dataHandler->storeCurlRequest($this->errors);
+            $errorId = $dataHandler->storeCurlRequest($this->errors);
+            if ($errorId != 0) {
+                $responseData['errorId'] = $errorId;
+            }
         }
 
         // Return the response received from the server.
-        return $this->response;
+        return $responseData;
     }
 
     private function handleError($responseData, $inputData, $errorMessage, $requestType) {
@@ -124,7 +134,7 @@ class CurlRequest {
         $resolution = null;
         $concernedTeam = "b2b_dev_team";
 
-        if ($responseData === null || $responseData === "" ) {
+        if ($responseData === null || $responseData === "" || $responseData['errorcode'] === 0 ) {
             $name = "Url malformed";
             $concernedTeam = "it_team";
             $relatedToModule = "General";
@@ -140,7 +150,13 @@ class CurlRequest {
             // Define an array that maps conditions to resolutions.
             $resolutionMap = [
                 [
-                    'condition' => !empty($responseData['error']['code']) && $responseData['error']['code'] == 'UnsupportedApiVersion',
+                    'condition' => $relatedToModule == "Accounts" && $responseData['errorcode'] > 400 && $responseData['message'] == "Account already exists",
+                    'name' => "Record Already Exist",
+                    'relatedToModule' => "Accounts",
+                    'resolution' => "Get the Account Record ID and Search the Record in eInsight, make sure the same record with the ID exist. Open the CRM Database, Search the Account Record by ID and Update the ready_to_sync flag to 2.",
+                ],
+                [
+                    'condition' => $responseData['errorcode'] && $responseData['message'] == 'Unsupported API version requested.',
                     'name' => "Unsupported API version error",
                     'relatedToModule' => "General",
                     'resolution' => "Please Check EINSIGHT_API_VERSION variable in config_override.php file. It should have the Valid API Version.",
@@ -157,39 +173,17 @@ class CurlRequest {
                     'resolution' => "eInsight Request Object should set the <id> parameter to 0."
                 ],
                 [
-                    'condition' => !empty($responseData['errors']['insertDate']) && $errorTitle === $errorEmptyValidation,
+                    'condition' => !empty($responseData['message']['insertDate']),
                     'name' => "Date Created should not be Empty or NULL",
                     'resolution' => "Get the Account Record ID and Search the Record in Database or CRM. Check <date_entered> field should not be empty for the Failed Record."
                 ],
                 [
-                    'condition' => (
-                        strpos($errorTitle, 'No data present for Account Id') !== false &&
-                        strpos($responseData['type'], 'System.Exception') !== false &&
-                        $this->context['action'] != "Create Account" &&
-                        $this->context['action'] != "Create Contact"
-                    ),
+                    'condition' => strpos($responseData['message'], 'No data present for Account Id') !== false && $responseData['errorcode'] == 404,
                     'name' => "Record does not Exist in eInsight",
                     'resolution' => "Get the Account Record ID and Search the Record in eInsight, make sure the same record with the ID does not exist. Open the CRM Database, Search the Account Record by ID and Update the ready_to_sync flag to 1."
                 ],
                 [
-                    'condition' => (
-                        strpos($errorTitle, 'No data present with Suite CRM Account Id') !== false &&
-                        strpos($responseData['type'], 'System.Exception') !== false
-                    ),
-                    'name' => "Invalid Accout Linked to PMS Profile",
-                    'resolution' => "Make sure the Post B2B Accounts Service Scheduler is Active, If not then activate the Scheduler. If the issue is not resolved automatically follow the below steps.
-                                    Get the PMS Profile Record ID and Search the Record in CRM.
-                                    Get the Related Account Record ID and Search the Record in CRM Database. 
-                                    If the Related Account Record is found in the Database set the <ready_to_sync> flag to 1.
-                                    If the Related Account Record is not found in the Database, remove the PMS Profile and Account Relationship from the accounts_cb2b_pmsprofiles_1_c table."
-                ],
-                [
-                    'condition' => (
-                        strpos($errorTitle, 'No data present for External Account Id') !== false &&
-                        strpos($responseData['type'], 'System.Exception') !== false &&
-                        $this->context['action'] != "Create Account" &&
-                        $this->context['action'] != "Create Contact"
-                    ),
+                    'condition' => (strpos($responseData['message'], 'No data present for External Account Id') !== false || strpos($responseData['message'], 'No data present with Suite CRM Account Id') !== false) && $responseData['errorcode'] == 404,
                     'name' => "Record does not Exist in eInsight",
                     'resolution' => "Make sure the Post B2B Accounts Service Scheduler is Active, If not then activate the Scheduler. If the issue is not resolved automatically follow the below steps.
                                     Get the PMS Profile Record ID and Search the Record in CRM.
@@ -198,17 +192,23 @@ class CurlRequest {
                                     If the Related Account Record is not found in the Database, remove the PMS Profile and Account Relationship from the accounts_cb2b_pmsprofiles_1_c table.",
                 ],
                 [
-                    'condition' => !empty($responseData['errors']['profileId']) && $errorTitle === $errorEmptyValidation,
+                    'condition' => !empty($responseData['message']['profileId']) && $responseData['errorcode'] == 400,
                     'name' => "ProfileId should be the 36 char length",
                     'resolution' => "PMS Profile ID should be 36 char long."
                 ],
                 [
-                    'condition' => strpos($errorTitle, 'Object reference not set to an instance of an object.') !== false,
+                    'condition' => !empty($responseData['message']['insertDate']),
+                    'name' => "Date Created should not be Empty or NULL",
+                    'resolution' => "Get the Account Record ID and Search the Record in Database or CRM.
+                    Check <date_entered> field should not be empty for the Failed Record."
+                ],
+                [
+                    'condition' => strpos($responseData['message'], 'Object reference not set to an instance of an object.') !== false,
                     'name' => "Contact Email and Account Should not be empty",
                     'resolution' => "Get the Contact Record ID and Search the Record in CRM. Check <ACCOUNT NAME> and <EMAIL ADDRESS> field should not be empty for the Failed Record."
                 ],
                 [
-                    'condition' => strpos($errorTitle, 'Value cannot be null. (Parameter \'source\')') !== false,
+                    'condition' => strpos($responseData['message'], 'Value cannot be null. (Parameter \'source\')') !== false,
                     'name' => "Contact Account Should not be empty",
                     'resolution' => "Get the Contact Record ID and Search the Record in CRM. Check <ACCOUNT NAME> field should not be empty for the Failed Record."
                 ],
@@ -223,17 +223,17 @@ class CurlRequest {
                 ],
                 [
                     'name' => 'External Account Id cannot be empty',
-                    'condition' => strpos($responseData['type'], 'System.ArgumentException') !== false && strpos($responseData['title'], 'External Account Id cannot be empty'),
+                    'condition' => $responseData['errorcode'] == 400 && $responseData['message'] = 'External Account Id cannot be empty',
                     'resolution' => "Get the Account Record ID and Search the Record in Database or CRM. Check id field should not be empty for the Failed Record.",
                 ],
                 [
                     'name' => 'Contact already exist with contact id',
-                    'condition' => strpos($responseData['type'], 'System.Exception') !== false && strpos($responseData['title'], 'Contact already exist with contact id'),
+                    'condition' => $responseData['errorcode'] == 409 && strpos($responseData['message'], 'Contact already exist with Contact Id') !== false,
                     'resolution' => "Get the Contact Record ID and Search the Record in eInsight, make sure the same record with the ID exist. Open the CRM Database, Search the Contact Record by ID and Update the ready_to_sync flag to 2.",
                 ],
                 [
-                    'name' => "Invalid Account Linked to Contact",
-                    'condition' => strpos($responseData['type'], 'System.Exception') !== false && strpos($responseData['title'], 'Accounts doesnot exist in Accounts table') !== false,
+                    'name' => 'Accounts doesnot exist in Accounts table',
+                    'condition' => $responseData['errorcode'] == 404 && strpos($responseData['message'], 'Accounts does not exist in Accounts table') !== false,
                     'resolution' => "Make sure the Post B2B Accounts Service Scheduler is Active, If not then activate the Scheduler. If the issue is not resolved automatically follow the below steps.
                                     Get the Contact Record ID and Search the Record in CRM.
                                     Get the Related Account Record ID and Search the Record in CRM Database. 
@@ -241,7 +241,7 @@ class CurlRequest {
                                     If the Related Account Record is not found in the Database, remove the Contact and Account Relationship from the accounts_contacts table.",
                 ],
                 [
-                    'condition' => strpos($responseData['type'], 'System.Exception') !== false && strpos($responseData['title'], 'No data present for EXternal Contact Id'),
+                    'condition' => $responseData['errorcode'] == 404 && strpos($responseData['message'], 'No data present for External Contact Id') !== false,
                     'resolution' => "Open the CRM Database, Search the Contact Record by ID and Update the ready_to_sync flag to 1.",
                     'name' => "No data present for EXternal Contact Id"
                 ],

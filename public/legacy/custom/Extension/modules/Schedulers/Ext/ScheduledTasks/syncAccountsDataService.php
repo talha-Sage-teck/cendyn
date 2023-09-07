@@ -33,30 +33,6 @@ function getAccountById($accountID) {
     // Need to Fix
     // If the URL Malformed, the records should not be processed further, it is a bug right now, no matter if the URL
     // is malformed, it still mark the records processed.
-
-//    $endpoint = "{$sugar_config['EINSIGHT_API_ENDPOINT']}/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/{$sugar_config['EINSIGHT_API_COMPANY_ID']}/b2b/B2BAccounts/"
-//        . $accountID;
-//    $curl = curl_init();
-//    $object = array(
-//        CURLOPT_URL => $endpoint,
-//        CURLOPT_RETURNTRANSFER => true,
-//        CURLOPT_ENCODING => '',
-//        CURLOPT_MAXREDIRS => 10,
-//        CURLOPT_TIMEOUT => 0,
-//        CURLOPT_FOLLOWLOCATION => true,
-//        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-//        CURLOPT_CUSTOMREQUEST => 'GET',
-//        CURLOPT_HTTPHEADER => array(
-//            'X-Api-Key: ' . $sugar_config['EINSIGHT_API_KEY'],
-//        ),
-//    );
-//    curl_setopt_array($curl, $object);
-//    $response = curl_exec($curl);
-//    if (curl_errno($curl)) {
-//        $GLOBALS['log']->debug('CURL ERROR -> : ' . print_r(curl_error($curl), 1));
-//    }
-//    curl_close($curl);
-//    return json_decode($response);
 }
 
 function accountExists($accountID, $action = ""): bool {
@@ -98,10 +74,6 @@ function deleteAccount($accountID) {
     ]);
 
     return $curlRequest->executeCurlRequest("POST");
-
-//    $endpoint = "{$sugar_config['EINSIGHT_API_ENDPOINT']}/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/{$sugar_config['EINSIGHT_API_COMPANY_ID']}/b2b/B2BAccounts" .
-//        "/delete/" . $accountID;
-//    return sendPostData($endpoint, null, 'Content-Length: 0');
 }
 
 function addAccountData($data, $account_id = null) {
@@ -128,10 +100,6 @@ function addAccountData($data, $account_id = null) {
     ]);
 
     return $curlRequest->executeCurlRequest("POST", $data);
-
-//    $endpoint = "{$sugar_config['EINSIGHT_API_ENDPOINT']}/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/{$sugar_config['EINSIGHT_API_COMPANY_ID']}/b2b/B2BAccounts" .
-//            (($account_id != null) ? '/update/' . $account_id : '');
-//    return sendPostData($endpoint, $data);
 }
 
 function syncAccountsDataService() {
@@ -157,13 +125,46 @@ function syncAccountsDataService() {
     //Looping over all the fetched accounts
     while ($accountRow = $db->fetchByAssoc($resultSelect)) {
         //setting the last_sync_date field
-        $accountBean = BeanFactory::getBean('Accounts', $accountRow['id'], [], false);
+        $accountBean = BeanFactory::getBean('Accounts', $accountRow['id']);
         $accountBean->last_sync_date = $GLOBALS['timedate']->nowDb();
-        //shoukat check here for name empty and assigned user empty
+
+        if ($accountBean) {
+            //making the data object to send to eInsight
+            $data = array(
+                'externalAccountId' => $accountBean->id,
+                'source' => 'SuiteCRM',
+                'externalParentAccountId' => $accountBean->parent_id,
+                'accountName' => $accountBean->name,
+                'accountBaseType' => $accountBean->account_base_type,
+                'accountType' => $accountBean->account_type,
+                'billingAddressStreet' => $accountBean->billing_address_street,
+                'billingCity' => $accountBean->billing_address_city,
+                'billingState' => $accountBean->billing_address_state,
+                'billingPostalCode' => $accountBean->billing_address_postalcode,
+                'billingCountry' => $accountBean->billing_address_country,
+                'phoneOffice' => $accountBean->phone_office,
+                'phoneFax' => $accountBean->phone_fax,
+                'website' => $accountBean->website,
+                'assignedUserId' => $accountBean->assigned_user_id,
+                'industry' => $accountBean->industry,
+                'iata' => $accountBean->iata,
+                'b2bCommission' => $accountBean->b2b_commission,
+                'priority' => $accountBean->priority,
+                'blacklist' => $accountBean->black_list,
+                'blacklistReason' => $accountBean->black_list_reason,
+                'annualRevenue' => $accountBean->annual_revenue,
+                'description' => $accountBean->description,
+                'updateDate' => $accountBean->last_sync_date,
+                'id' => 0,
+                'inactive' => $accountBean->deleted,
+                'status' => $accountBean->status,
+            );
+        }
+
         $error = array(
             'name' => null,
             'endpoint' => null,
-            'input_data' => null,
+            'input_data' => json_encode($data),
             'http_code' => null,
             'request_type' => null,
             'curl_error_message' => null,
@@ -173,7 +174,7 @@ function syncAccountsDataService() {
             'parent_id' => $accountRow['id'],
             'parent_type' => "Accounts",
             'concerned_team' => "b2b_dev_team",
-            'assigned_user_id' => 1
+            'assigned_user_id' => 1,
         );
 
         // Check for empty account name or assigned_user_id
@@ -194,111 +195,54 @@ function syncAccountsDataService() {
             $error['resolution'] = "Get the Account Record ID and Search the Record in Database or CRM. Check <assigned_user_id> field should not be empty for the Failed Record.";
 
             $dataHandler->storeCurlRequest($error);
-            continue;
-        }
-
-        //making the data object to send to eInsight
-        $data = array(
-            'externalAccountId' => $accountBean->id,
-            'source' => 'SuiteCRM',
-//            'externalParentAccountId' => '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-            // TBD
-            'externalParentAccountId' => $accountBean->parent_id,
-            'accountName' => $accountBean->name,
-//            'accountName' => null,
-            'accountBaseType' => $accountBean->account_base_type,
-            'accountType' => $accountBean->account_type,
-            'billingAddressStreet' => $accountBean->billing_address_street,
-            'billingCity' => $accountBean->billing_address_city,
-            'billingState' => $accountBean->billing_address_state,
-            'billingPostalCode' => $accountBean->billing_address_postalcode,
-            'billingCountry' => $accountBean->billing_address_country,
-            'phoneOffice' => $accountBean->phone_office,
-            'phoneFax' => $accountBean->phone_fax,
-            'website' => $accountBean->website,
-            'assignedUserId' => $accountBean->assigned_user_id,
-            'industry' => $accountBean->industry,
-            'iata' => $accountBean->iata,
-            'b2bCommission' => $accountBean->b2b_commission,
-            'priority' => $accountBean->priority,
-            'blacklist' => $accountBean->black_list,
-            'blacklistReason' => $accountBean->black_list_reason,
-            'annualRevenue' => $accountBean->annual_revenue,
-            'description' => $accountBean->description,
-            'updateDate' => $accountBean->last_sync_date,
-            'id' => 0,
-            'inactive' => $accountBean->deleted,
-            'status' => $accountBean->status,
-        );
-
-        //check value of ready_to_sync flag and call API endpoint accordingly
-        $res = false;
-        $deleted = false;
-        switch ($accountRow['ready_to_sync']) {
-            case 1:
-                // check if account already exists
-                if(accountExists($data['externalAccountId'], "Create Account")) {
-                    $error['name'] = "Record Already Exist";
-                    $error['action_type'] = "Create Account";
-                    $error['api_response'] = "Record with External Account Id: ". $data['externalAccountId'] ." already exist.";
-                    $error['resolution'] = "Get the Account Record ID and Search the Record in eInsight, make sure the same record with the ID exist.
-                    Open the CRM Database, Search the Account Record by ID and Update the ready_to_sync flag to 2.";
-
-                    $dataHandler->storeCurlRequest($error);
-                } else {
-//                    $data['insertDate'] = $accountBean->last_sync_date;
-                    $data['insertDate'] = "";
-                    $res = addAccountData($data);
-                }
-
-                break;
-            case 2:
-                if(accountExists($data['externalAccountId'], "Update Account")) {
-                    $data['id'] = $accountBean->einsight_account_id ?? 0;
-                    $res = addAccountData($data, $data['externalAccountId']);
-                }
-                else {
-                    //shoukat log here that account should already exist
-//                    $error['name'] = "Record Does not  Exist";
-//                    $error['action_type'] = ($accountBean->id != null) ? 'Update Account' : 'Create Account';
-//                    $error['api_response'] = "Record with External Account Id: ". $data['externalAccountId'] ." already exist.";
-//
-//                    $dataHandler->storeCurlRequest($error);
-
+        } else {
+            //check value of ready_to_sync flag and call API endpoint accordingly
+            $res = false;
+            $deleted = false;
+            switch ($accountRow['ready_to_sync']) {
+                case 1:
                     $data['insertDate'] = $accountBean->last_sync_date;
                     $res = addAccountData($data);
-                }
-                break;
-            case 3:
-                $deleted = true;
-                if(accountExists($data['externalAccountId'], "Delete Account")) {
+                    break;
+                case 2:
+                    $data['id'] = $accountBean->einsight_account_id ?? 0;
+                    $res = addAccountData($data, $data['externalAccountId']);
+
+                    if ($res['errorcode'] == 404 && strpos($res['message'], "No data present for External Contact Id") !== false) {
+                        $errorId = 0;
+                        if (isset($res['errorId']) != 0) {
+                            $errorId = $res['errorId'];
+                        }
+                        // create new record
+                        $res = addAccountData($data);
+
+                        if (($res['errorcode'] == 200 || $res['errorcode'] == 201) && $errorId != 0) {
+                            $customModuleBean = BeanFactory::newBean('CB2B_AutomatedMonitoring');
+                            $record = $customModuleBean->retrieve($errorId);
+                            $record->error_status = 'resolved';
+                            $record->save();
+                        }
+                    }
+                    break;
+                case 3:
+                    $deleted = true;
                     $res = deleteAccount($data['externalAccountId']);
-                }
-                else {
-                    //shoukat account does not exist
-                    $error['name'] = "Record does not exist";
-                    $error['action_type'] = "Delete Account";
-                    $error['api_response'] = "Record with External Account Id: ". $data['externalAccountId'] ." does not exist.";
+                    break;
+                default:
+                    $GLOBALS['log']->debug("syncAccountsDataService: Unexpected sync flag value in scheduler.");
+                    $GLOBALS['log']->fetal("syncAccountsDataService: Unexpected sync flag value in scheduler.");
+                    return true;
+            }
 
-                    $dataHandler->storeCurlRequest($error);
+            if(($res['errorcode'] == 200 || $res['errorcode'] == 201) && $deleted)
+                unsetFlagAfterDelete($accountBean->id, 'accounts');
 
-                    $res = true;
-                }
-                break;
-            default:
-                $GLOBALS['log']->debug("syncAccountsDataService: Unexpected sync flag value in scheduler.");
-                $GLOBALS['log']->fetal("syncAccountsDataService: Unexpected sync flag value in scheduler.");
-                return true;
+            //unsetting the read_to_sync flag, setting the skipBeforeSave flag and saving
+            if ($res['errorcode'] == 200 || $res['errorcode'] == 201)
+                $accountBean->ready_to_sync = 0;
+            $accountBean->skipBeforeSave = true;
+            $accountBean->save();
         }
-
-        if($res && $deleted)
-            unsetFlagAfterDelete($accountBean->id, 'accounts');
-
-        //unsetting the read_to_sync flag, setting the skipBeforeSave flag and saving
-        if ($res)
-            $accountBean->ready_to_sync = 0;
-        $accountBean->skipBeforeSave = true;
-        $accountBean->save();
     }
 
     return true;

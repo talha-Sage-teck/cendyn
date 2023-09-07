@@ -73,10 +73,14 @@ class CurlDataHandler
             $customModuleBean->resolution = $error['resolution'] ?? null;
             $customModuleBean->concerned_team = $error['concerned_team'] ?? "b2b_dev_team";
 
-            $customModuleBean->save();
+            if($customModuleBean->save()) {
+                return $customModuleBean->id;
+            }
         } else {
             // No record found
             // echo 'No record found.';
         }
+
+        return 0;
     }
 }
