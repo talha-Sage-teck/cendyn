@@ -8,3 +8,4 @@ $mod_strings['LBL_MANAGE_PROFILE_MATCHING_CRITERIA_TITLE'] = 'PMS Profiles Match
 $mod_strings['LBL_SETUP_STANDARD_DASHBOARD_TITLE'] = 'Standard Dashboard Setup';
 $mod_strings['LBL_SALES_REP_ID'] = 'Sales Rep Id';
 $mod_strings['LBL_LOGIN_NAME'] = 'Login Name';
+$mod_strings['LBL_CHECKBOX_CUSTOMER_ADMIN_LABEL'] = 'Customer Admin';

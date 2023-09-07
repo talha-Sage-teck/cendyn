@@ -4,6 +4,19 @@ if (!defined('sugarEntry') || !sugarEntry)
     die('Not A Valid Entry Point');
 
 class UsersLogicHooks {
+
+    function visibleFieldIfSuperAdmin($bean, $event, $arguments)
+    {
+        global $current_user, $sugar_config;
+
+        // Check if the current user is not an admin
+        if (!empty($current_user) && $bean->module_name == "Users") {
+            if ($current_user->id != $sugar_config['SUPER_ADMIN_ID'] && $current_user->customer_admin == 1) {
+                unset($bean->customer_admin);
+            }
+        }
+    }
+
     function standardDashboardSettings() {
         global $db;
         $query = "SELECT * FROM config WHERE category = 'MySettings' AND name = 'StandardDashboardConfig'";
