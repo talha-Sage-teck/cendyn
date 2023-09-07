@@ -166,8 +166,8 @@ function autoLinkingPMSProfilesAndAccounts() {
     global $db, $timedate, $sugar_config;
 
     // Get Matching Criterias from Configuration
-    $getMatchCriteriaQuery = "SELECT * FROM `config` WHERE `category`='MySettings' AND `name`='MatchCriteriaConfig'";
-    $result = $db->query($getMatchCriteriaQuery, true);
+//    $getMatchCriteriaQuery = "SELECT * FROM `config` WHERE `category`='MySettings' AND `name`='MatchCriteriaConfig'";
+//    $result = $db->query($getMatchCriteriaQuery, true);
     $error = array(
         'name' => "Found No Auto Linking Configuration",
         'endpoint' => null,
@@ -178,7 +178,7 @@ function autoLinkingPMSProfilesAndAccounts() {
         'error_status' => 'new',
         'related_to_module' => 'PMS Profile',
         'parent_id' => null,
-        'parent_type' => "PMS Profile",
+        'parent_type' => "CB2B_PMSProfiles",
         'concerned_team' => "b2b_dev_team",
         'action_type' => "Auto Link PMS Profiles and Accounts",
         'api_response' => null,
@@ -198,9 +198,9 @@ function autoLinkingPMSProfilesAndAccounts() {
 
     // Unserialize the Configurations
     $record = $db->fetchByAssoc($result);
-    $settings = unserialize(base64_decode($record['value']))['criteria'];
+    $settings = unserialize(base64_decode($record['value']));
 
-    if (!isset($settings['criteria']) || empty($settings['criteria'])) {
+    if (!isset($settings['criteria'])) {
         $dataHandler = new CurlDataHandler();
         $dataHandler->storeCurlRequest($error);
     }

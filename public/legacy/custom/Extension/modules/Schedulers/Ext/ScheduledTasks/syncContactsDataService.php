@@ -55,7 +55,7 @@ function getContactById($contactID) {
 //    return json_decode($response);
 }
 
-function contactExists($contactID) {
+function contactExists($contactID, $action = "") {
     /***
      * Checks if contact is available on eInsight
      * @Input:
@@ -63,8 +63,13 @@ function contactExists($contactID) {
      * @Output
      * Return true or false
      */
-    $contact = getContactById($contactID);
-    return !($contact->status && $contact->status != 200);
+    $contact = getContactById($contactID, $action);
+    if(isset($contact->data) && isset($contact->data->status)) {
+        return true;
+    } else {
+        return false;
+    }
+//    return !($contact->status && $contact->status != 200);
 }
 
 function sendPostData($endpoint, $postData = null, $content_length = null) {
@@ -338,7 +343,7 @@ function deleteContact($contact_id): bool {
 //    return sendPostData($endpoint, null, 'Content-Length: 0');
 }
 
-function sendContactData($data, $contact_id = null): bool {
+function sendContactData($data, $contact_id = null): array {
 
     /***
      * @Input:
@@ -353,7 +358,7 @@ function sendContactData($data, $contact_id = null): bool {
     $curlRequest = new CurlRequest($url, [
         'module' => 'Contacts',
         'action' => (($contact_id != null) ? 'Update Contact' : 'Create Contact'),
-        'record_id' => $contact_id,
+        'record_id' => ($data['externalContactId']) ? $data['externalContactId'] : $contact_id,
     ]);
 
     return $curlRequest->executeCurlRequest("POST", $data);
@@ -437,10 +442,44 @@ function syncContactsDataService() {
         //setting the last_sync_date field
         $contactBean = BeanFactory::getBean('Contacts', $contactRow['id'], [], false);
 
+        if ($contactBean) {
+            //making the data object to send to eInsight
+            $data = array(
+                'externalContactId' => $contactBean->id,
+                'firstname' => $contactBean->first_name,
+                'lastname' => $contactBean->last_name,
+                'salutation' => $contactBean->salutation,
+                'language' => $contactBean->b2b_language,
+                'priority' => $contactBean->priority,
+                'jobTitle' => $contactBean->title,
+                'department' => $contactBean->department,
+                'influence' => $contactBean->b2b_influencer,
+                'reportsTo' => $contactBean->reports_to_id,
+                'officePhone' => $contactBean->phone_work,
+                'mobile' => $contactBean->phone_mobile,
+                'booker' => $contactBean->b2b_is_booker,
+                'address1' => $contactBean->primary_address_street,
+                'city' => $contactBean->primary_address_city,
+                'state' => $contactBean->primary_address_state,
+                'country' => $contactBean->primary_address_country,
+                'postalCode' => $contactBean->primary_address_postalcode,
+                'alternateAddress1' => $contactBean->alt_address_street,
+                'alternateAddressCity' => $contactBean->alt_address_city,
+                'alternateAddressState' => $contactBean->alt_address_state,
+                'alternateAddressCountry' => $contactBean->alt_address_country,
+                'alternateAddressPostalCode' => $contactBean->alt_address_postalcode,
+                'birthDate' => $contactBean->birthdate,
+                'assignedUserId' => $contactBean->assigned_user_id,
+                'interests' => $contactBean->b2b_interests,
+                'inactive' => $contactBean->deleted,
+                'status' => $contactBean->status,
+            );
+        }
+
         $error = array(
             'name' => null,
             'endpoint' => null,
-            'input_data' => null,
+            'input_data' => json_encode($data),
             'http_code' => null,
             'request_type' => null,
             'curl_error_message' => null,
@@ -456,188 +495,142 @@ function syncContactsDataService() {
         // Check for empty account name or assigned_user_id
         $dataHandler = new CurlDataHandler();
 
-        if (empty($contactBean->name)) {
+        if (empty(trim($contactBean->name))) {
             $error['name'] = "Record Name Should Not be Empty";
-            $error['action_type'] = ($contactBean->id != null) ? 'Update Account' : 'Create Account';
+            $error['action_type'] = ($contactBean->id != null) ? 'Update Contact' : 'Create Contact';
             $error['api_response'] = "Record Name Should Not be Empty";
             $error['resolution'] = "Get the Contact Record ID and Search the Record in Database or CRM. Check <last_name> field should not be empty for the Failed Record.";
 
             $dataHandler->storeCurlRequest($error);
-        } elseif (empty($contactBean->assigned_user_id)) {
+        } elseif (empty(trim($contactBean->assigned_user_id))) {
             $error['name'] = "Record Assigned User Should Not be Empty";
-            $error['action_type'] = ($contactBean->id != null) ? 'Update Account' : 'Create Account';
+            $error['action_type'] = ($contactBean->id != null) ? 'Update Contact' : 'Create Contact';
             $error['api_response'] = "Record Assigned User Should Not be Empty";
             $error['resolution'] = "Get the Contact Record ID and Search the Record in Database or CRM. Check <assigned_user_id> field should not be empty for the Failed Record.";
 
             $dataHandler->storeCurlRequest($error);
-        }
+        } else {
+            // don't bother extracting the data for emails and accounts if we want to delete the contact
+            if($contactRow['ready_to_sync'] != 3) {
+                //getting email data
+                $emails = array();
+                $emailRelSelectQuery = "SELECT * FROM email_addr_bean_rel WHERE bean_id='{$contactBean->id}' AND bean_module='Contacts'";
+                $emailRelSelectResult = $db->query($emailRelSelectQuery);
+                while ($emailRel = $db->fetchByAssoc($emailRelSelectResult)) {
+                    $emailSelectQuery = "SELECT * FROM email_addresses WHERE id='{$emailRel['email_address_id']}'";
+                    $emailSelectResult = $db->query($emailSelectQuery);
+                    while ($email = $db->fetchByAssoc($emailSelectResult)) {
+                        $emailData = array(
+                            'email' => "{$email['email_address']}",
+                            "invalidEmail" => $email['invalid_email'],
+                            "optOut" => $email['opt_out'],
+                            "inactive" => $email['deleted'],
+                            "emailContactMapping" => array(
+                                "module" => "{$emailRel['bean_module']}",
+                                "isPrimary" => $emailRel['primary_address'],
+                                "inactive" => $emailRel['deleted']
+                            ),
+                        );
+                        $emails = deleteDups($emails, $emailData['email']);
+                        $emails[] = $emailData;
+                    }
+                }
 
-        //making the data object to send to eInsight
-        $data = array(
-            'externalContactId' => $contactBean->id,
-            'firstname' => $contactBean->first_name,
-            'lastname' => $contactBean->last_name,
-            'salutation' => $contactBean->salutation,
-            'language' => $contactBean->b2b_language,
-            'priority' => $contactBean->priority,
-            'jobTitle' => $contactBean->title,
-            'department' => $contactBean->department,
-            'influence' => $contactBean->b2b_influencer,
-            'reportsTo' => $contactBean->reports_to_id,
-            'officePhone' => $contactBean->phone_work,
-            'mobile' => $contactBean->phone_mobile,
-            'booker' => $contactBean->b2b_is_booker,
-            'address1' => $contactBean->primary_address_street,
-            'city' => $contactBean->primary_address_city,
-            'state' => $contactBean->primary_address_state,
-            'country' => $contactBean->primary_address_country,
-            'postalCode' => $contactBean->primary_address_postalcode,
-            'alternateAddress1' => $contactBean->alt_address_street,
-            'alternateAddressCity' => $contactBean->alt_address_city,
-            'alternateAddressState' => $contactBean->alt_address_state,
-            'alternateAddressCountry' => $contactBean->alt_address_country,
-            'alternateAddressPostalCode' => $contactBean->alt_address_postalcode,
-            'birthDate' => $contactBean->birthdate,
-            'assignedUserId' => $contactBean->assigned_user_id,
-            'interests' => $contactBean->b2b_interests,
-            'inactive' => $contactBean->deleted,
-            'status' => $contactBean->status,
-        );
+                //No need to include the previously deleted emails
+                $data['emails'] = json_decode(json_encode($emails), true);
 
-        // don't bother extracting the data for emails and accounts if we want to delete the contact
-        if($contactRow['ready_to_sync'] != 3) {
-            //getting email data
-            $emails = array();
-            $emailRelSelectQuery = "SELECT * FROM email_addr_bean_rel WHERE bean_id='{$contactBean->id}' AND bean_module='Contacts'";
-            $emailRelSelectResult = $db->query($emailRelSelectQuery);
-            while ($emailRel = $db->fetchByAssoc($emailRelSelectResult)) {
-                $emailSelectQuery = "SELECT * FROM email_addresses WHERE id='{$emailRel['email_address_id']}'";
-                $emailSelectResult = $db->query($emailSelectQuery);
-                while ($email = $db->fetchByAssoc($emailSelectResult)) {
-                    $emailData = array(
-                        'email' => "{$email['email_address']}",
-                        "invalidEmail" => $email['invalid_email'],
-                        "optOut" => $email['opt_out'],
-                        "inactive" => $email['deleted'],
-                        "emailContactMapping" => array(
-                            "module" => "{$emailRel['bean_module']}",
-                            "isPrimary" => $emailRel['primary_address'],
-                            "inactive" => $emailRel['deleted']
-                        ),
+
+                //getting accounts data
+                $accounts = array();
+                $contactBean->load_relationship("accounts");
+                $accountBeans = $contactBean->accounts->getBeans();
+                foreach ($accountBeans as $accountBean) {
+                    $accountsData = array(
+                        "externalAccountId" => $accountBean->id,
+                        "inactive" => $accountBean->deleted,
+                        "dateModifiedSuiteCrm" => $accountBean->date_modified
                     );
-                    $emails = deleteDups($emails, $emailData['email']);
-                    $emails[] = $emailData;
+                    $accounts[] = $accountsData;
                 }
+                $data['accounts'] = $accounts;
             }
 
-            //No need to include the previously deleted emails
-            $data['emails'] = json_decode(json_encode($emails), true);
-
-
-            //getting accounts data
-            $accounts = array();
-            $contactBean->load_relationship("accounts");
-            $accountBeans = $contactBean->accounts->getBeans();
-            foreach ($accountBeans as $accountBean) {
-                $accountsData = array(
-                    "externalAccountId" => $accountBean->id,
-                    "inactive" => $accountBean->deleted,
-                    "dateModifiedSuiteCrm" => $accountBean->date_modified
-                );
-                $accounts[] = $accountsData;
-            }
-            $data['accounts'] = $accounts;
-        }
-
-        //check value of ready_to_sync flag and call API endpoint accordingly
-        $res = false;
-        $emailSyncDone = false;
-        $deleted = false;
-        switch ($contactRow['ready_to_sync']) {
-            case 1:
-                // check if account already exists
-                if(accountExists($data['externalContactId'])) {
-                    $error['name'] = "Record Already Exist";
-                    $error['action_type'] = "Create Contact";
-                    $error['api_response'] = "Record with external Contact Id: ". $data['externalContactId'] ." already exist.";
-                    $error['resolution'] = "Get the Contact Record ID and Search the Record in eInsight, make sure the same record with the ID exist. Open the CRM Database, Search the Contact Record by ID and Update the ready_to_sync flag to 2.";
-
-                    $dataHandler->storeCurlRequest($error);
-                }
-
-                $res = sendContactData($data);
-                break;
-            case 2:
-                if(contactExists($data['externalContactId']))
-                    $res = sendContactData($data, $data['externalContactId']);
-                else
-//                    $error['name'] = "Record Already Exist";
-//                    $error['action_type'] = ($data['externalContactId'] != null) ? 'Update Contact' : 'Create Contact';
-//                    $error['api_response'] = "Record with external Contact Id: ". $data['externalContactId'] ." already exist.";
-//                    $error['resolution'] = "Get the Contact Record ID and Search the Record in eInsight, make sure the same record with the ID exist.
-//Open the CRM Database, Search the Contact Record by ID and Update the ready_to_sync flag to 2.";
-
-                    $dataHandler->storeCurlRequest($error);
-
+            //check value of ready_to_sync flag and call API endpoint accordingly
+            $res = false;
+            $emailSyncDone = false;
+            $deleted = false;
+            switch ($contactRow['ready_to_sync']) {
+                case 1:
                     $res = sendContactData($data);
-                break;
-            case 3:
-                $emailSyncDone = true;
-                $deleted = true;
-                if(contactExists($data['externalContactId']))
+                    break;
+                case 2:
+                    $res = sendContactData($data, $data['externalContactId']);
+                    if ($res['errorcode'] == 404 && strpos($res['message'], "No data present for External Contact Id") !== false) {
+                        $errorId = 0;
+                        if (isset($res['errorId']) != 0) {
+                            $errorId = $res['errorId'];
+                        }
+                        // create new record
+                        $res = sendContactData($data);
+
+                        if (($res['errorcode'] == 200 || $res['errorcode'] == 201) && $errorId != 0) {
+                            $customModuleBean = BeanFactory::newBean('CB2B_AutomatedMonitoring');
+                            $record = $customModuleBean->retrieve($errorId);
+                            $record->error_status = 'resolved';
+                            $record->save();
+                        }
+                    }
+                    break;
+                case 3:
+                    $emailSyncDone = true;
+                    $deleted = true;
                     $res = deleteContact($data['externalContactId']);
-                else
-                    $error['name'] = "Record does not exist";
-                    $error['action_type'] = "Delete Contact";
-                    $error['api_response'] = "Record with external Contact Id: ". $data['externalContactId'] ." does not exist.";
-                    $error['resolution'] = "Get the Contact Record ID and Search the Record in eInsight, make sure the same record with the ID exist.
-Open the CRM Database, Search the Contact Record by ID and Update the ready_to_sync flag to 2.";
-
-                    $dataHandler->storeCurlRequest($error);
-
-                    $res = true;
-                break;
-            case 4:
-                if(contactExists($data['externalContactId'])) {
-                    if(sizeof($data['accounts']) > 0)
-                        $res = syncAccounts($data['accounts'], $contactBean);
+                    break;
+                case 4:
+                    if(contactExists($data['externalContactId'])) {
+                        if(sizeof($data['accounts']) > 0)
+                            $res = syncAccounts($data['accounts'], $contactBean);
+                        else
+                            $res = deleteAllAccounts($contactBean->id);
+                        if($res)
+                            $contactBean->ready_to_sync = 2;
+                        $res = sendContactData($data, $data['externalContactId']);
+                    }
                     else
-                        $res = deleteAllAccounts($contactBean->id);
-                    if($res)
-                        $contactBean->ready_to_sync = 2;
-                    $res = sendContactData($data, $data['externalContactId']);
-                }
-                else
-                    $res = sendContactData($data);
-                break;
-            case 5:
-                $emailSyncDone = true;
+                        $res = sendContactData($data);
+                    break;
+                case 5:
+                    if (emailsNeedToBeAdded($data['emails'], $contactBean) && emailsNeedToBeDeleted($data['emails'], $contactBean)) {
+                        $res['errorcode'] = 200;
+                    }
+                    $emailSyncDone = true;
+//                    $res = emailsNeedToBeAdded($data['emails'], $contactBean) &&
+//                        emailsNeedToBeDeleted($data['emails'], $contactBean);
+                    break;
+                default:
+                    $GLOBALS['log']->fatal("syncContactsDataService: Unexpected sync flag value in scheduler.");
+                    return true;
+            }
+
+            if (($res['errorcode'] == 200 || $res['errorcode'] == 201) && !$emailSyncDone) {
+                $contactBean->ready_to_sync = 5;
                 $res = emailsNeedToBeAdded($data['emails'], $contactBean) &&
                     emailsNeedToBeDeleted($data['emails'], $contactBean);
-                break;
-            default:
-                $GLOBALS['log']->fatal("syncContactsDataService: Unexpected sync flag value in scheduler.");
-                return true;
+            }
+
+            //manually (sql query) set the ready_to_save to 3 after delete because $bean->save() does not work
+            if(($res['errorcode'] == 200 || $res['errorcode'] == 201) && $deleted)
+                unsetFlagAfterDelete($contactBean->id, 'contacts');
+
+            //unsetting the read_to_sync flag, setting the fromScheduler flag and saving
+            if($res['errorcode'] == 200 || $res['errorcode'] == 201) {
+                $contactBean->ready_to_sync = 0;
+                $contactBean->last_sync_date = $GLOBALS['timedate']->nowDb();
+            }
+
+            $contactBean->skipBeforeSave = true;
+            $contactBean->save();
         }
-
-        if ($res && !$emailSyncDone) {
-            $contactBean->ready_to_sync = 5;
-            $res = emailsNeedToBeAdded($data['emails'], $contactBean) &&
-                emailsNeedToBeDeleted($data['emails'], $contactBean);
-        }
-
-        //manually (sql query) set the ready_to_save to 3 after delete because $bean->save() does not work
-        if($res && $deleted)
-            unsetFlagAfterDelete($contactBean->id, 'contacts');
-
-        //unsetting the read_to_sync flag, setting the fromScheduler flag and saving
-        if($res) {
-            $contactBean->ready_to_sync = 0;
-            $contactBean->last_sync_date = $GLOBALS['timedate']->nowDb();
-        }
-
-        $contactBean->skipBeforeSave = true;
-        $contactBean->save();
     }
 
     return true;
