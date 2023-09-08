@@ -129,6 +129,8 @@ class CurlRequest {
     }
 
     private function handleError($responseData, $inputData, $errorMessage, $requestType) {
+        global $sugar_config;
+
         $relatedToModule = $this->context['module'];
 
         $resolution = null;
@@ -143,6 +145,11 @@ class CurlRequest {
             \$sugar_config['EINSIGHT_API_KEY'] = '09F26AA0-007D-4193-8D96-941171BCE9D6';
             \$sugar_config['EINSIGHT_API_VERSION'] = '1';
             \$sugar_config['EINSIGHT_API_COMPANY_ID'] = '10014'";
+        } else if (strpos($this->response, 'HTTP Error 500.30 - ANCM In-Process Start Failure') !== false) {
+            $name = "API Not Accessible";
+            $concernedTeam = "it_team";
+            $relatedToModule = "General";
+            $resolution = "Please visit " . $sugar_config['EINSIGHT_API_ENDPOINT'] . "/swagger/index.html";
         } else {
             $errorTitle = isset($responseData['title']) ? $responseData['title'] : '';
             $errorEmptyValidation = 'One or more validation errors occurred.';
@@ -276,7 +283,7 @@ class CurlRequest {
             'name' => $name,
             'endpoint' => $this->endpoint,
             'input_data' => $inputData,
-            'http_code' => ($responseData === null || $responseData === "") ? $this->httpCode : $responseData['status'],
+            'http_code' => $responseData['errorcode'],
             'api_response' => $this->response,
             'request_type' => $requestType,
             'action' => 'action',
