@@ -223,11 +223,11 @@ class CurlRequest {
                     'name' => "Contact Email and Account Should not be empty",
                     'resolution' => "Get the Contact Record ID and Search the Record in CRM. Check <ACCOUNT NAME> and <EMAIL ADDRESS> field should not be empty for the Failed Record."
                 ],
-                [
-                    'condition' => strpos($responseData['message'], 'Value cannot be null. (Parameter \'source\')') !== false,
-                    'name' => "Contact Account Should not be empty",
-                    'resolution' => "Get the Contact Record ID and Search the Record in CRM. Check <ACCOUNT NAME> field should not be empty for the Failed Record."
-                ],
+//                [
+//                    'condition' => strpos($responseData['message'], 'Value cannot be null. (Parameter \'source\')') !== false,
+//                    'name' => "Contact Account Should not be empty",
+//                    'resolution' => "Get the Contact Record ID and Search the Record in CRM. Check <ACCOUNT NAME> field should not be empty for the Failed Record."
+//                ],
                 [
                     'condition' => !empty($responseData['invalidaccountids']),
                     'name' => "Invalid Account Linked to Contact",
