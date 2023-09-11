@@ -210,7 +210,16 @@ class CurlRequest {
                     Check <date_entered> field should not be empty for the Failed Record."
                 ],
                 [
-                    'condition' => strpos($responseData['message'], 'Object reference not set to an instance of an object.') !== false,
+                    'name' => 'Accounts doesnot exist in Accounts table',
+                    'condition' => $responseData['errorcode'] == 404 && strpos($responseData['message'], 'Accounts does not exist in Accounts table') !== false,
+                    'resolution' => "Make sure the Post B2B Accounts Service Scheduler is Active, If not then activate the Scheduler. If the issue is not resolved automatically follow the below steps.
+                                    Get the Contact Record ID and Search the Record in CRM.
+                                    Get the Related Account Record ID and Search the Record in CRM Database. 
+                                    If the Related Account Record is found in the Database set the <ready_to_sync> flag to 1.
+                                    If the Related Account Record is not found in the Database, remove the Contact and Account Relationship from the accounts_contacts table.",
+                ],
+                [
+                    'condition' => strpos($responseData['message'], 'Object reference not set to an instance of an object.') !== false && is_string($responseData['message']),
                     'name' => "Contact Email and Account Should not be empty",
                     'resolution' => "Get the Contact Record ID and Search the Record in CRM. Check <ACCOUNT NAME> and <EMAIL ADDRESS> field should not be empty for the Failed Record."
                 ],
@@ -237,15 +246,6 @@ class CurlRequest {
                     'name' => 'Contact already exist with contact id',
                     'condition' => $responseData['errorcode'] == 409 && strpos($responseData['message'], 'Contact already exist with Contact Id') !== false,
                     'resolution' => "Get the Contact Record ID and Search the Record in eInsight, make sure the same record with the ID exist. Open the CRM Database, Search the Contact Record by ID and Update the ready_to_sync flag to 2.",
-                ],
-                [
-                    'name' => 'Accounts doesnot exist in Accounts table',
-                    'condition' => $responseData['errorcode'] == 404 && strpos($responseData['message'], 'Accounts does not exist in Accounts table') !== false,
-                    'resolution' => "Make sure the Post B2B Accounts Service Scheduler is Active, If not then activate the Scheduler. If the issue is not resolved automatically follow the below steps.
-                                    Get the Contact Record ID and Search the Record in CRM.
-                                    Get the Related Account Record ID and Search the Record in CRM Database. 
-                                    If the Related Account Record is found in the Database set the <ready_to_sync> flag to 1.
-                                    If the Related Account Record is not found in the Database, remove the Contact and Account Relationship from the accounts_contacts table.",
                 ],
                 [
                     'condition' => $responseData['errorcode'] == 404 && strpos($responseData['message'], 'No data present for External Contact Id') !== false,
