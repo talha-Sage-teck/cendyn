@@ -85,11 +85,12 @@ function sendLinkData($profileID, $accountID, $newAccountID = null) {
         'action' => (($is_update == 1) ? "Update Relationship" : "Add Relationship"),
         'record_id' => $profileID,
         'header' => array(
-            'Content-Length: 0'
+
         ),
     ]);
-    $GLOBALS['log']->fatal("Data of PMS Profile: ". json_encode($data));
+
     $response = $curlRequest->executeCurlRequest("POST", $data);
+    $GLOBALS['log']->fatal("Data of PMS Profile: ". json_encode($data));
     $response = json_encode($response, true);
     $GLOBALS['log']->fatal("Response of PMS Profile: ". $response);
 
@@ -124,7 +125,7 @@ function sendLinkData($profileID, $accountID, $newAccountID = null) {
 //    curl_setopt_array($curl, $object);
 //    $response = curl_exec($curl);
 //    curl_close($curl);
-    if($response['errorcode'] != 200 || $response['errorcode'] != 201) {
+    if($response['errorcode'] == 200 || $response['errorcode'] == 201) {
         $GLOBALS['log']->debug($response);
         return false;
     }
