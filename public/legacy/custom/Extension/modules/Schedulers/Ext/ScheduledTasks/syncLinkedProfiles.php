@@ -89,7 +89,8 @@ function sendLinkData($profileID, $accountID, $newAccountID = null) {
         ),
     ]);
     $GLOBALS['log']->fatal("Data of PMS Profile: ". json_encode($data));
-    $response = $curlRequest->executeCurlRequest("POST", $data);
+    $response = $curlRequest->executeCurlRequest("POST", json_encode($data));
+    $response = json_encode($response, true);
     $GLOBALS['log']->fatal("Response of PMS Profile: ". $response);
 
 //    $curl = curl_init();
@@ -123,7 +124,7 @@ function sendLinkData($profileID, $accountID, $newAccountID = null) {
 //    curl_setopt_array($curl, $object);
 //    $response = curl_exec($curl);
 //    curl_close($curl);
-    if($response != "") {
+    if($response['errorcode'] != 200 || $response['errorcode'] != 201) {
         $GLOBALS['log']->debug($response);
         return false;
     }
