@@ -57,8 +57,7 @@ function sendDeleteLinkData($profileID, $accountID) {
 //    $response = curl_exec($curl);
 //    curl_close($curl);
 
-    if($response != "") {
-        $GLOBALS['log']->debug($response);
+    if($response['errorcode'] == 200 || $response['errorcode'] == 201) {
         return false;
     }
     else {
