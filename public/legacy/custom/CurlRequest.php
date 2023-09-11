@@ -239,7 +239,7 @@ class CurlRequest {
                 ],
                 [
                     'name' => 'External Account Id cannot be empty',
-                    'condition' => $responseData['errorcode'] == 400 && $responseData['message'] = 'External Account Id cannot be empty',
+                    'condition' => $responseData['errorcode'] == 400 && $responseData['message'] == 'External Account Id cannot be empty',
                     'resolution' => "Get the Account Record ID and Search the Record in Database or CRM. Check id field should not be empty for the Failed Record.",
                 ],
                 [
