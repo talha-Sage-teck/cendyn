@@ -315,7 +315,7 @@ function emailsNeedToBeAdded($emailsArr, $contactBean) {
         return true;
 }
 
-function deleteContact($contact_id): bool {
+function deleteContact($contact_id): array {
 
     /***
      * @Input:
@@ -587,17 +587,31 @@ function syncContactsDataService() {
                     $res = deleteContact($data['externalContactId']);
                     break;
                 case 4:
-                    if(contactExists($data['externalContactId'])) {
-                        if(sizeof($data['accounts']) > 0)
-                            $res = syncAccounts($data['accounts'], $contactBean);
-                        else
-                            $res = deleteAllAccounts($contactBean->id);
-                        if($res)
+                    $emailSyncDone = true;
+                    if(sizeof($data['accounts']) > 0)
+                        $res = syncAccounts($data['accounts'], $contactBean);
+                    else {
+                        $res = deleteAllAccounts($contactBean->id);
+                        if ($res['errorcode'] == 200 || $res['errorcode'] == 201) {
                             $contactBean->ready_to_sync = 2;
-                        $res = sendContactData($data, $data['externalContactId']);
+                            $res = sendContactData($data, $data['externalContactId']);
+                        }
                     }
-                    else
+
+                    if ($res['errorcode'] > 400 && strpos($res['message'], "No data present for External Contact Id") !== false ) {
+                        $errorId = 0;
+                        if (isset($res['errorId']) != 0) {
+                            $errorId = $res['errorId'];
+                        }
+
                         $res = sendContactData($data);
+                        if (($res['errorcode'] == 200 || $res['errorcode'] == 201) && $errorId != 0) {
+                            $customModuleBean = BeanFactory::newBean('CB2B_AutomatedMonitoring');
+                            $record = $customModuleBean->retrieve($errorId);
+                            $record->error_status = 'resolved';
+                            $record->save();
+                        }
+                    }
                     break;
                 case 5:
                     if (emailsNeedToBeAdded($data['emails'], $contactBean) && emailsNeedToBeDeleted($data['emails'], $contactBean)) {
