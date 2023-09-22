@@ -51,7 +51,7 @@ $sugar_config['passwordsetting']['factoremailtmpl'] = '';
 $sugar_config['passwordsetting']['forgotpasswordON'] = '1';
 $sugar_config['authenticationClass'] = '';
 $sugar_config['list_max_entries_per_page'] = '20';
-$sugar_config['EINSIGHT_API_ENDPOINT'] = 'https://eu02b2bapi.cendyn.com';
+$sugar_config['EINSIGHT_API_ENDPOINT'] = 'https://eu02b2bapidev.cendyn.com';
 $sugar_config['EINSIGHT_API_KEY'] = '09F26AA0-007D-4193-8D96-941171BCE9D6';
 $sugar_config['EINSIGHT_API_VERSION'] = '1';
 $sugar_config['EINSIGHT_API_COMPANY_ID'] = '10017';
@@ -62,4 +62,5 @@ $sugar_config['email_confirm_opt_in_email_template_id'] = '';
 $sugar_config['email_allow_send_as_user'] = false;
 $sugar_config['legacy_email_behaviour'] = false;
 $sugar_config['email_xss'] = 'YToxMzp7czo2OiJhcHBsZXQiO3M6NjoiYXBwbGV0IjtzOjQ6ImJhc2UiO3M6NDoiYmFzZSI7czo1OiJlbWJlZCI7czo1OiJlbWJlZCI7czo0OiJmb3JtIjtzOjQ6ImZvcm0iO3M6NToiZnJhbWUiO3M6NToiZnJhbWUiO3M6ODoiZnJhbWVzZXQiO3M6ODoiZnJhbWVzZXQiO3M6NjoiaWZyYW1lIjtzOjY6ImlmcmFtZSI7czo2OiJpbXBvcnQiO3M6ODoiXD9pbXBvcnQiO3M6NToibGF5ZXIiO3M6NToibGF5ZXIiO3M6NDoibGluayI7czo0OiJsaW5rIjtzOjY6Im9iamVjdCI7czo2OiJvYmplY3QiO3M6MzoieG1wIjtzOjM6InhtcCI7czo2OiJzY3JpcHQiO3M6Njoic2NyaXB0Ijt9';
+$sugar_config['eInsightVersion'] = "1.0.0";
 /***CONFIGURATOR***/
