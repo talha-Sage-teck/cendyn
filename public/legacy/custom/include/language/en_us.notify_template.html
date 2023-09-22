@@ -65,6 +65,19 @@ Description: {ACCOUNT_DESCRIPTION}
 <p>You may <a href={URL}>review this Account</a>.</p>
 <!-- END: Account -->
 
+<!-- BEGIN: CustomAccount_Subject -->
+<p>SuiteCRM Account - {ACCOUNT_NAME}</p>
+<!-- END: CustomAccount_Subject -->
+<!-- BEGIN: CustomAccount -->
+<p><b>{ASSIGNER}</b> has assigned an Account to <b>{ASSIGNED_USER}</b>.</p>
+<p>
+    Name: {ACCOUNT_NAME}<br/>
+    Type: {ACCOUNT_TYPE}<br/>
+    Description: {ACCOUNT_DESCRIPTION}
+</p>
+<p>You may <a href={URL}>review this Account</a>.</p>
+<!-- END: CustomAccount -->
+
 <!-- BEGIN: Case_Subject -->
 <p>SuiteCRM Case - {CASE_SUBJECT}</p>
 <!-- END: Case_Subject -->
@@ -226,6 +239,21 @@ Description: {OPPORTUNITY_DESCRIPTION}
 </p>
 <p>You may <a href={URL}>review this Opportunity</a>.</p>
 <!-- END: Opportunity -->
+
+<!-- BEGIN: CustomOpportunity_Subject -->
+<p>SuiteCRM Opportunity - {OPPORTUNITY_NAME}</p>
+<!-- END: CustomOpportunity_Subject -->
+<!-- BEGIN: CustomOpportunity -->
+<p><b>{ASSIGNER}</b> has assigned an Opportunity to <b>{ASSIGNED_USER}</b>.</p>
+<p>
+    Name: {OPPORTUNITY_NAME}<br/>
+    Amount: {OPPORTUNITY_AMOUNT}<br/>
+    Expected Close Date: {OPPORTUNITY_CLOSEDATE}<br/>
+    Sales Stage: {OPPORTUNITY_STAGE}<br/>
+    Description: {OPPORTUNITY_DESCRIPTION}
+</p>
+<p>You may <a href={URL}>review this Opportunity</a>.</p>
+<!-- END: CustomOpportunity -->
 
 <!-- BEGIN: Bug_Subject -->
 <p>SuiteCRM Bug - {BUG_SUBJECT}</p>
