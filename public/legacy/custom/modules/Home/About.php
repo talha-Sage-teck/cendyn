@@ -58,10 +58,19 @@ global $sugar_config, $mod_strings;
     <h1><?php echo $mod_strings['LBL_CONTRIBUTOR_SUITECRM']; ?></h1>
     <table id="about_table" class="contentBox">
         <TR>
-            <div class="about_suite">
+            <div style="font-size: 14px;color: #777777;margin-bottom: 10px;">
                 <br>
-                <h1><a href="https://b2bdev.cendyn.com"><img src="custom/themes/default/images/company_logo.png" alt="eInsight Sales"></a></h1>
+                <h1><a href="https://b2bdev.cendyn.com"><img src="custom/themes/default/images/logo_with_name.png" alt="eInsight Sales"></a></h1>
                 <b>eInsight Sales Version <?php echo $sugar_config['eInsightVersion']; ?></b>
+                <br />
+                <h3 style="font-size: 18px;font-weight: bold;">About Cendyn eInsight Sales</h3>
+                <p>
+                    Cendyn is a catalyst for digital transformation in the hospitality industry. We help hotels around the globe drive profitability and guest loyalty through an integrated technology platform that aligns revenue, eCommerce, distribution, marketing and sales teams with centralized data, applications, and analytics, so they can capture more demand and accelerate growth. With offices located across the globe, in the United States, Germany, United Kingdom, Singapore, Bangkok, and India, Cendyn serves tens of thousands of customers across 143 countries. To find out more, visit www.cendyn.com.
+                    <br /><br />
+                    Driven by the same PMS data that powers eInsight™ CRM, eInsight Sales enables hoteliers to easily correlate guest profile, reservation, and production data from the PMS with corporate accounts and travel agent data to determine where the demand lies, learn more about their feeder markets and pinpoint opportunities and gaps across their sales and marketing strategy. With hotels looking for every opportunity to drive profitability and provide operational efficiencies, eInsight Sales and eInsight CRM offers the unique opportunity to optimally manage all demand and their sales pipeline across transient and corporate business in one single platform.
+                    <br /><br />
+                    The combined solution features chain-wide contact, activity tracking, and reporting of sales activities, contracts, sales leads and opportunities, production, and future reservations giving unrivaled visibility for Sales teams to deliver on their revenue goals.
+                </p>
             </div>
         </TR>
         <tr>
