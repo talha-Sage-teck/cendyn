@@ -136,7 +136,7 @@ class CurlRequest {
         $resolution = null;
         $concernedTeam = "b2b_dev_team";
 
-        if ($responseData === null || $responseData === "" || $responseData['errorcode'] === 0 ) {
+        if ($responseData === null || $responseData === "" || $responseData['errorcode'] === 0 || $responseData['errorcode'] === 500 || strpos($responseData['message'], 'Connections setting in app DB is not correct for company which ID is') !== false ) {
             $name = "Url malformed";
             $concernedTeam = "it_team";
             $relatedToModule = "General";
