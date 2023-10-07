@@ -134,7 +134,7 @@ function syncAccountsDataService() {
                 'externalAccountId' => $accountBean->id,
                 'source' => 'SuiteCRM',
                 'externalParentAccountId' => $accountBean->parent_id,
-                'accountName' => $accountBean->name,
+                'accountName' => trim($accountBean->name),
                 'accountBaseType' => $accountBean->account_base_type,
                 'accountType' => $accountBean->account_type,
                 'billingAddressStreet' => $accountBean->billing_address_street,
@@ -180,7 +180,7 @@ function syncAccountsDataService() {
         // Check for empty account name or assigned_user_id
         $dataHandler = new CurlDataHandler();
 
-        if (empty($accountBean->name)) {
+        if (empty(trim($accountBean->name))) {
             $error['name'] = "Record Name Should Not be Empty";
             $error['action_type'] = ($accountBean->id != null) ? 'Update Account' : 'Create Account';
             $error['api_response'] = "Record Name Should Not be Empty";
@@ -188,11 +188,18 @@ function syncAccountsDataService() {
 
             $dataHandler->storeCurlRequest($error);
             continue;
-        } elseif (empty($accountBean->assigned_user_id)) {
+        } elseif (empty(trim($accountBean->assigned_user_id))) {
             $error['name'] = "Record Assigned User Should Not be Empty";
             $error['action_type'] = ($accountBean->id != null) ? 'Update Account' : 'Create Account';
             $error['api_response'] = "Record Assigned User Should Not be Empty";
             $error['resolution'] = "Get the Account Record ID and Search the Record in Database or CRM. Check <assigned_user_id> field should not be empty for the Failed Record.";
+
+            $dataHandler->storeCurlRequest($error);
+        } elseif (empty(tirm($accountBean->date_entered))) {
+            $error['name'] = "Date Created should not be Empty or NULL";
+            $error['action_type'] = ($accountBean->id != null) ? 'Update Account' : 'Create Account';
+            $error['api_response'] = "Date Created should not be Empty or NULL";
+            $error['resolution'] = "Get the Account Record ID and Search the Record in Database or CRM. Check <date_entered> field should not be empty for the Failed Record.";
 
             $dataHandler->storeCurlRequest($error);
         } else {
