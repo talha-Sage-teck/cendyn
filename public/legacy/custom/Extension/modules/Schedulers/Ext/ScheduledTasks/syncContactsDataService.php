@@ -509,6 +509,13 @@ function syncContactsDataService() {
             $error['resolution'] = "Get the Contact Record ID and Search the Record in Database or CRM. Check <assigned_user_id> field should not be empty for the Failed Record.";
 
             $dataHandler->storeCurlRequest($error);
+        } elseif (empty(trim($contactBean->date_entered))) {
+            $error['name'] = "Date Created should not be Empty or NULL";
+            $error['action_type'] = ($contactBean->id != null) ? 'Update Contact' : 'Create Contact';
+            $error['api_response'] = "Date Created should not be Empty or NULL";
+            $error['resolution'] = "Get the Contact Record ID and Search the Record in Database or CRM. Check <date_entered> field should not be empty for the Failed Record.";
+
+            $dataHandler->storeCurlRequest($error);
         } else {
             // don't bother extracting the data for emails and accounts if we want to delete the contact
             if($contactRow['ready_to_sync'] != 3) {
