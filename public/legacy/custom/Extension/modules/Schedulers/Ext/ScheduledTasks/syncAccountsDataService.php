@@ -195,7 +195,7 @@ function syncAccountsDataService() {
             $error['resolution'] = "Get the Account Record ID and Search the Record in Database or CRM. Check <assigned_user_id> field should not be empty for the Failed Record.";
 
             $dataHandler->storeCurlRequest($error);
-        } elseif (empty(tirm($accountBean->date_entered))) {
+        } elseif (empty(trim($accountBean->date_entered))) {
             $error['name'] = "Date Created should not be Empty or NULL";
             $error['action_type'] = ($accountBean->id != null) ? 'Update Account' : 'Create Account';
             $error['api_response'] = "Date Created should not be Empty or NULL";
