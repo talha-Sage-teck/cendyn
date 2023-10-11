@@ -83,4 +83,54 @@ class CurlDataHandler
 
         return 0;
     }
+
+    function resolveError($id, $getBy, $res = null) {
+        global $db;
+
+        // Update the error_status based on $getBy and $id
+        $updateQuery = "UPDATE CB2B_AutomatedMonitoring SET error_status = 'resolved' WHERE $getBy = '$id'";
+        $db->query($updateQuery);
+
+        $specificNames = ['Unsupported API version error', 'Url malformed', 'API Not Accessible', 'Bad API key'];
+        $this->resolveErrorWithName($specificNames);
+    }
+
+    function resolveErrorWithName($errorNames, $id = null, $module = null) {
+        global $db;
+
+        // Create a comma-separated list of specific names
+        $errorNames = "'" . implode("', '", $errorNames) . "'";
+
+        // Construct the initial SQL query to select records based on specific names
+        $selectQuery = "SELECT * FROM CB2B_AutomatedMonitoring WHERE name IN ($errorNames)";
+        $selectQuery .= " AND error_status = 'new'";
+
+        // If $module is not null, add a WHERE clause to filter by relate_id
+        if (!is_null($id)) {
+            $selectQuery .= " AND related_to_module = '$module' AND parent_id = '$id'";
+        }
+
+        $rows = $db->query($selectQuery);
+
+        // Fetch rows one by one and update their error_status
+        if ($rows) {
+            while ($row = $rows->fetch_assoc()) {
+                $updateQuery = "UPDATE CB2B_AutomatedMonitoring SET error_status = 'resolved' WHERE id = '{$row['id']}'";
+                $db->query($updateQuery);
+            }
+        }
+    }
+
+    function checkForValidationAndResolve($bean, $errorsName, $module) {
+        $errorArray = [];
+
+        foreach ($errorsName as $key => $error) {
+            if (!empty(trim($bean->$key))) {
+                $errorArray[] = $error;
+            }
+        }
+
+        if(!empty($errorArray))
+            $this->resolveErrorWithName($errorArray, $bean->id, $module);
+    }
 }

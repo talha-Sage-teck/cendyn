@@ -495,27 +495,42 @@ function syncContactsDataService() {
         // Check for empty account name or assigned_user_id
         $dataHandler = new CurlDataHandler();
 
-        if (empty(trim($contactBean->name))) {
-            $error['name'] = "Record Name Should Not be Empty";
+        $errorNameArray = [
+            'last_name' => "Record Name Should Not be Empty",
+            'assigned_user_id' => "Record Assigned User Should Not be Empty",
+            'date_entered' => "Date Created should not be Empty or NULL"
+        ];
+
+        if (empty(trim($contactBean->last_name))) {
+            $error['name'] = $errorNameArray['last_name'];
             $error['action_type'] = ($contactBean->id != null) ? 'Update Contact' : 'Create Contact';
             $error['api_response'] = "Record Name Should Not be Empty";
             $error['resolution'] = "Get the Contact Record ID and Search the Record in Database or CRM. Check <last_name> field should not be empty for the Failed Record.";
 
             $dataHandler->storeCurlRequest($error);
+
+            $dataHandler->checkForValidationAndResolve($contactBean, $errorNameArray, 'Contacts');
+            continue;
         } elseif (empty(trim($contactBean->assigned_user_id))) {
-            $error['name'] = "Record Assigned User Should Not be Empty";
+            $error['name'] = $errorNameArray['assigned_user_id'];
             $error['action_type'] = ($contactBean->id != null) ? 'Update Contact' : 'Create Contact';
             $error['api_response'] = "Record Assigned User Should Not be Empty";
             $error['resolution'] = "Get the Contact Record ID and Search the Record in Database or CRM. Check <assigned_user_id> field should not be empty for the Failed Record.";
 
             $dataHandler->storeCurlRequest($error);
+
+            $dataHandler->checkForValidationAndResolve($contactBean, $errorNameArray, 'Contacts');
+            continue;
         } elseif (empty(trim($contactBean->date_entered))) {
-            $error['name'] = "Date Created should not be Empty or NULL";
+            $error['name'] = $errorNameArray['date_entered'];
             $error['action_type'] = ($contactBean->id != null) ? 'Update Contact' : 'Create Contact';
             $error['api_response'] = "Date Created should not be Empty or NULL";
             $error['resolution'] = "Get the Contact Record ID and Search the Record in Database or CRM. Check <date_entered> field should not be empty for the Failed Record.";
 
             $dataHandler->storeCurlRequest($error);
+
+            $dataHandler->checkForValidationAndResolve($contactBean, $errorNameArray, 'Contacts');
+            continue;
         } else {
             // don't bother extracting the data for emails and accounts if we want to delete the contact
             if($contactRow['ready_to_sync'] != 3) {
@@ -613,10 +628,7 @@ function syncContactsDataService() {
 
                         $res = sendContactData($data);
                         if (($res['errorcode'] == 200 || $res['errorcode'] == 201) && $errorId != 0) {
-                            $customModuleBean = BeanFactory::newBean('CB2B_AutomatedMonitoring');
-                            $record = $customModuleBean->retrieve($errorId);
-                            $record->error_status = 'resolved';
-                            $record->save();
+                            $dataHandler->resolveError($errorId, 'id');
                         }
                     }
                     break;
@@ -637,16 +649,21 @@ function syncContactsDataService() {
                 $contactBean->ready_to_sync = 5;
                 $res = emailsNeedToBeAdded($data['emails'], $contactBean) &&
                     emailsNeedToBeDeleted($data['emails'], $contactBean);
+
+                $dataHandler->resolveError($contactBean->id, 'parent_id');
             }
 
             //manually (sql query) set the ready_to_save to 3 after delete because $bean->save() does not work
-            if(($res['errorcode'] == 200 || $res['errorcode'] == 201) && $deleted)
+            if(($res['errorcode'] == 200 || $res['errorcode'] == 201) && $deleted) {
                 unsetFlagAfterDelete($contactBean->id, 'contacts');
+                $dataHandler->resolveError($accountBean->id, 'parent_id');
+            }
 
             //unsetting the read_to_sync flag, setting the fromScheduler flag and saving
             if($res['errorcode'] == 200 || $res['errorcode'] == 201) {
                 $contactBean->ready_to_sync = 0;
                 $contactBean->last_sync_date = $GLOBALS['timedate']->nowDb();
+                $dataHandler->resolveError($accountBean->id, 'parent_id');
             }
 
             $contactBean->skipBeforeSave = true;
