@@ -92,7 +92,7 @@ function addAccountData($data, $account_id = null) {
     $url = "/b2b/B2BAccounts" . (($account_id != null) ? '/update/' . $account_id : '');
     $curlRequest = new CurlRequest($url, [
         'module' => 'Accounts',
-        'action' => 'Update Account',
+        'action' => ($account_id !== null) ? 'Update Account' : 'Create Account',
         'record_id' => ($data['externalAccountId']) ? $data['externalAccountId'] : $account_id,
         'header' => array(
 
@@ -180,28 +180,42 @@ function syncAccountsDataService() {
         // Check for empty account name or assigned_user_id
         $dataHandler = new CurlDataHandler();
 
+        $errorNameArray = [
+            'name' => "Record Name Should Not be Empty",
+            'assigned_user_id' => "Record Assigned User Should Not be Empty",
+            'date_entered' => "Date Created should not be Empty or NULL"
+        ];
+
         if (empty(trim($accountBean->name))) {
-            $error['name'] = "Record Name Should Not be Empty";
+            $error['name'] = $errorNameArray['name'];
             $error['action_type'] = ($accountBean->id != null) ? 'Update Account' : 'Create Account';
             $error['api_response'] = "Record Name Should Not be Empty";
             $error['resolution'] = "Get the Account Record ID and Search the Record in Database or CRM. Check <name> field should not be empty for the Failed Record.";
 
             $dataHandler->storeCurlRequest($error);
+
+            $dataHandler->checkForValidationAndResolve($accountBean, $errorNameArray, 'Accounts');
             continue;
         } elseif (empty(trim($accountBean->assigned_user_id))) {
-            $error['name'] = "Record Assigned User Should Not be Empty";
+            $error['name'] = $errorNameArray['assigned_user_id'];
             $error['action_type'] = ($accountBean->id != null) ? 'Update Account' : 'Create Account';
             $error['api_response'] = "Record Assigned User Should Not be Empty";
             $error['resolution'] = "Get the Account Record ID and Search the Record in Database or CRM. Check <assigned_user_id> field should not be empty for the Failed Record.";
 
             $dataHandler->storeCurlRequest($error);
+
+            $dataHandler->checkForValidationAndResolve($accountBean, $errorNameArray, 'Accounts');
+            continue;
         } elseif (empty(trim($accountBean->date_entered))) {
-            $error['name'] = "Date Created should not be Empty or NULL";
+            $error['name'] = $errorNameArray['date_entered'];
             $error['action_type'] = ($accountBean->id != null) ? 'Update Account' : 'Create Account';
             $error['api_response'] = "Date Created should not be Empty or NULL";
             $error['resolution'] = "Get the Account Record ID and Search the Record in Database or CRM. Check <date_entered> field should not be empty for the Failed Record.";
 
             $dataHandler->storeCurlRequest($error);
+
+            $dataHandler->checkForValidationAndResolve($accountBean, $errorNameArray, 'Accounts');
+            continue;
         } else {
             //check value of ready_to_sync flag and call API endpoint accordingly
             $res = false;
@@ -215,7 +229,7 @@ function syncAccountsDataService() {
                     $data['id'] = $accountBean->einsight_account_id ?? 0;
                     $res = addAccountData($data, $data['externalAccountId']);
 
-                    if ($res['errorcode'] == 404 && strpos($res['message'], "No data present for External Contact Id") !== false) {
+                    if ($res['errorcode'] == 404 && strpos($res['message'], "No data present for External Account Id") !== false) {
                         $errorId = 0;
                         if (isset($res['errorId']) != 0) {
                             $errorId = $res['errorId'];
@@ -224,10 +238,7 @@ function syncAccountsDataService() {
                         $res = addAccountData($data);
 
                         if (($res['errorcode'] == 200 || $res['errorcode'] == 201) && $errorId != 0) {
-                            $customModuleBean = BeanFactory::newBean('CB2B_AutomatedMonitoring');
-                            $record = $customModuleBean->retrieve($errorId);
-                            $record->error_status = 'resolved';
-                            $record->save();
+                            $dataHandler->resolveError($errorId, 'id');
                         }
                     }
                     break;
@@ -241,12 +252,15 @@ function syncAccountsDataService() {
                     return true;
             }
 
-            if(($res['errorcode'] == 200 || $res['errorcode'] == 201) && $deleted)
+            if(($res['errorcode'] == 200 || $res['errorcode'] == 201) && $deleted) {
                 unsetFlagAfterDelete($accountBean->id, 'accounts');
+            }
 
             //unsetting the read_to_sync flag, setting the skipBeforeSave flag and saving
-            if ($res['errorcode'] == 200 || $res['errorcode'] == 201)
+            if ($res['errorcode'] == 200 || $res['errorcode'] == 201) {
                 $accountBean->ready_to_sync = 0;
+                $dataHandler->resolveError($accountBean->id, 'parent_id');
+            }
             $accountBean->skipBeforeSave = true;
             $accountBean->save();
         }

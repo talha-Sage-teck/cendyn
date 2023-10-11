@@ -103,6 +103,8 @@ class CurlRequest {
         $responseData = array_change_key_case($responseData, CASE_LOWER);
 
         // Log the response using the "fatal" log level.
+
+        $GLOBALS['log']->fatal("Response Data: " . json_encode($responseData));
         $GLOBALS['log']->fatal("Custom Response: " . $this->response);
 
         // Check if the response status is successful (HTTP status 200 or 201).
@@ -119,7 +121,7 @@ class CurlRequest {
             // Create a CurlDataHandler instance and store the cURL request details.
             $dataHandler = new CurlDataHandler();
             $errorId = $dataHandler->storeCurlRequest($this->errors);
-            if ($errorId != 0) {
+            if ($errorId !== 0) {
                 $responseData['errorId'] = $errorId;
             }
         }
