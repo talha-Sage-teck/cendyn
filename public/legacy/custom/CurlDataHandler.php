@@ -33,7 +33,7 @@ class CurlDataHandler
         $errorStatusCondition = "(error_status = " . $customModuleBean->db->quoted('new') . " OR error_status = " . $customModuleBean->db->quoted('processed') . ")";
 
         // Add the additional condition to the $errorStatusCondition
-        if ($error['related_to_module'] === 'Accounts' || $error['related_to_module'] === 'Contacts') {
+        if ($error['related_to_module'] === 'Accounts' || $error['related_to_module'] === 'Contacts' || $error['related_to_module'] == 'PMSProfiles') {
             $errorStatusCondition .= " AND (related_to_module = " . $customModuleBean->db->quoted('Accounts') . " OR related_to_module = " . $customModuleBean->db->quoted('Contacts') . ") AND parent_id = " . $customModuleBean->db->quoted($error['parent_id']);
         }
 
@@ -107,7 +107,11 @@ class CurlDataHandler
 
         // If $module is not null, add a WHERE clause to filter by relate_id
         if (!is_null($id)) {
-            $selectQuery .= " AND related_to_module = '$module' AND parent_id = '$id'";
+            $selectQuery .= " AND parent_id = '$id'";
+        }
+
+        if (!is_null($module)) {
+            $selectQuery .= " AND related_to_module = '$module'";
         }
 
         $rows = $db->query($selectQuery);

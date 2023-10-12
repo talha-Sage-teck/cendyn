@@ -175,9 +175,13 @@ function matchPMSProfiles() {
     $record = $db->fetchByAssoc($result);
     $settings = unserialize(base64_decode($record['value']));
 
+    $dataHandler = new CurlDataHandler();
+
     if (!isset($settings['criteria'])) {
-        $dataHandler = new CurlDataHandler();
         $dataHandler->storeCurlRequest($error);
+    } else {
+        $errorNameArray = ['Found No Matching Configuration'];
+        $dataHandler->resolveErrorWithName($errorNameArray, 'Accounts');
     }
 
     $sugar_config['scheduler_log'] ? $GLOBALS['log']->debug('$settings : ' . print_r($settings, 1)) : '';
