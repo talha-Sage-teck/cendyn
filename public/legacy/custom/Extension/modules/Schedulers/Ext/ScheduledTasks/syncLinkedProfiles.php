@@ -58,10 +58,10 @@ function sendDeleteLinkData($profileID, $accountID) {
 //    curl_close($curl);
 
     if($response['errorcode'] == 200 || $response['errorcode'] == 201) {
-        return false;
+        return true;
     }
     else {
-        return true;
+        return false;
     }
 }
 
@@ -90,7 +90,7 @@ function sendLinkData($profileID, $accountID, $newAccountID = null) {
 
     $response = $curlRequest->executeCurlRequest("POST", $data);
     $GLOBALS['log']->fatal("Data of PMS Profile: ". json_encode($data));
-    $response = json_encode($response, true);
+
     $GLOBALS['log']->fatal("Response of PMS Profile: ". $response);
 
 //    $curl = curl_init();
@@ -126,10 +126,10 @@ function sendLinkData($profileID, $accountID, $newAccountID = null) {
 //    curl_close($curl);
     if($response['errorcode'] == 200 || $response['errorcode'] == 201) {
         $GLOBALS['log']->debug($response);
-        return false;
+        return true;
     }
     else {
-        return true;
+        return false;
     }
 }
 
@@ -158,6 +158,9 @@ function syncLinkedProfiles() {
     $accountRel = "accounts_cb2b_pmsprofiles_1";
     $selectQuery = "SELECT * FROM cb2b_pmsprofiles WHERE ready_to_link > 0 AND deleted = 0";
     $selectResult = $db->query($selectQuery);
+
+    $dataHandler = new CurlDataHandler();
+
     while($profile = $db->fetchByAssoc($selectResult)) {
         $profileBean = BeanFactory::getBean('CB2B_PMSProfiles', $profile['id']);
         $profileBean->load_relationship($accountRel);
@@ -172,21 +175,24 @@ function syncLinkedProfiles() {
                 'curl_error_message' => null,
                 'resolution' => null,
                 'error_status' => 'new',
-                'related_to_module' => 'CB2B_PMSProfiles',
+                'related_to_module' => 'PMSProfiles',
                 'parent_id' => $profileBean->id,
-                'parent_type' => "CB2B_PMSProfiles",
+                'parent_type' => "PMSProfiles",
                 'concerned_team' => "b2b_dev_team",
                 'assigned_user_id' => 1,
                 'action_type' => 'Add Relationship',
                 'api_response' => null
             );
 
-            $dataHandler = new CurlDataHandler();
             $dataHandler->storeCurlRequest($error);
             continue;
+        } else {
+            $errorNameArray = ['ProfileId should be the 36 char length'];
+            $dataHandler->resolveErrorWithName($errorNameArray, $profileBean->id, 'CB2B_PMSProfiles');
         }
 
         $accounts = $profileBean->$accountRel->getBeans();
+
         foreach($accounts as $account) {
             $res = false;
 //            if($account->ready_to_sync == 0) {
@@ -207,6 +213,7 @@ function syncLinkedProfiles() {
                 if($res) {
                     $profileBean->ready_to_link = 0;
                     $profileBean->save();
+                    $dataHandler->resolveError($profileBean->id, 'parent_id');
                 }
                 else {
                     $GLOBALS['log']->debug("syncLinkedProfiles: Could not sync with eInsight.");
@@ -217,6 +224,7 @@ function syncLinkedProfiles() {
 //                    " is not yet synchronized with eInsight. Account ID: {$account->id}");
 //            }
         }
+        
 //        if($profileBean->ready_to_link > 0) {
 //            $res = sendDeleteLinkData($profileBean->id, getPrevAccountID($profileBean->id));
 //            if($res) {
