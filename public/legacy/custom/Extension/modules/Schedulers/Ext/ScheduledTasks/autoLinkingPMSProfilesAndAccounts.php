@@ -176,7 +176,7 @@ function autoLinkingPMSProfilesAndAccounts() {
         'request_type' => null,
         'curl_error_message' => null,
         'error_status' => 'new',
-        'related_to_module' => 'PMS Profile',
+        'related_to_module' => 'PMS_Profile',
         'parent_id' => null,
         'parent_type' => "CB2B_PMSProfiles",
         'concerned_team' => "b2b_dev_team",
@@ -200,9 +200,13 @@ function autoLinkingPMSProfilesAndAccounts() {
     $record = $db->fetchByAssoc($result);
     $settings = unserialize(base64_decode($record['value']));
 
+    $dataHandler = new CurlDataHandler();
+
     if (!isset($settings['criteria'])) {
-        $dataHandler = new CurlDataHandler();
         $dataHandler->storeCurlRequest($error);
+    } else {
+        $errorNameArray = ['Found No Auto Linking Configuration'];
+        $dataHandler->resolveErrorWithName($errorNameArray);
     }
 
     $sugar_config['scheduler_log'] ? $GLOBALS['log']->debug('$settings : ' . print_r($settings, 1)) : '';
