@@ -27,7 +27,7 @@ function sendDeleteLinkData($profileID, $accountID) {
 
     $url = "/b2b/B2BPMSProfilesToAccountsMapping/delete";
     $curlRequest = new CurlRequest($url, [
-        'module' => 'PMSProfiles',
+        'module' => 'CB2B_PMSProfiles',
         'action' => 'Delete Relationship',
         'record_id' => $profileID,
         'header' => array(
@@ -80,7 +80,7 @@ function sendLinkData($profileID, $accountID, $newAccountID = null) {
 
     $url = "/b2b/B2BPMSProfilesToAccountsMapping/" . (($is_update == 1) ? "update" : "add");
     $curlRequest = new CurlRequest($url, [
-        'module' => 'PMSProfiles',
+        'module' => 'CB2B_PMSProfiles',
         'action' => (($is_update == 1) ? "Update Relationship" : "Add Relationship"),
         'record_id' => $profileID,
         'header' => array(
@@ -175,9 +175,9 @@ function syncLinkedProfiles() {
                 'curl_error_message' => null,
                 'resolution' => null,
                 'error_status' => 'new',
-                'related_to_module' => 'PMSProfiles',
+                'related_to_module' => 'PMS_Profile',
                 'parent_id' => $profileBean->id,
-                'parent_type' => "PMSProfiles",
+                'parent_type' => "CB2B_PMSProfiles",
                 'concerned_team' => "b2b_dev_team",
                 'assigned_user_id' => 1,
                 'action_type' => 'Add Relationship',
@@ -188,7 +188,7 @@ function syncLinkedProfiles() {
             continue;
         } else {
             $errorNameArray = ['ProfileId should be the 36 char length'];
-            $dataHandler->resolveErrorWithName($errorNameArray, $profileBean->id, 'CB2B_PMSProfiles');
+            $dataHandler->resolveErrorWithName($errorNameArray, $profileBean->id, 'PMS_Profile');
         }
 
         $accounts = $profileBean->$accountRel->getBeans();

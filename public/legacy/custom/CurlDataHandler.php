@@ -33,8 +33,8 @@ class CurlDataHandler
         $errorStatusCondition = "(error_status = " . $customModuleBean->db->quoted('new') . " OR error_status = " . $customModuleBean->db->quoted('processed') . ")";
 
         // Add the additional condition to the $errorStatusCondition
-        if ($error['related_to_module'] === 'Accounts' || $error['related_to_module'] === 'Contacts' || $error['related_to_module'] == 'PMSProfiles') {
-            $errorStatusCondition .= " AND (related_to_module = " . $customModuleBean->db->quoted('Accounts') . " OR related_to_module = " . $customModuleBean->db->quoted('Contacts') . ") AND parent_id = " . $customModuleBean->db->quoted($error['parent_id']);
+        if ($error['related_to_module'] === 'Accounts' || $error['related_to_module'] === 'Contacts' || $error['related_to_module'] == 'PMS_Profile') {
+            $errorStatusCondition .= " AND (related_to_module = " . $customModuleBean->db->quoted('Accounts') . " OR related_to_module = " . $customModuleBean->db->quoted('PMS_Profile') . " OR related_to_module = " . $customModuleBean->db->quoted('Contacts') . ") AND parent_id = " . $customModuleBean->db->quoted($error['parent_id']);
         }
 
         if (!empty($conditionClauses)) {
