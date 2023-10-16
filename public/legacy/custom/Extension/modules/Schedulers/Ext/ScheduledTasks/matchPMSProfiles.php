@@ -150,9 +150,9 @@ function matchPMSProfiles() {
         'request_type' => null,
         'curl_error_message' => null,
         'error_status' => 'new',
-        'related_to_module' => 'PMS Profile',
+        'related_to_module' => 'PMS_Profile',
         'parent_id' => null,
-        'parent_type' => "PMS Profile",
+        'parent_type' => "CB2B_PMSProfiles",
         'concerned_team' => "b2b_dev_team",
         'action_type' => "PMS Profile Matching",
         'api_response' => null,
@@ -181,7 +181,7 @@ function matchPMSProfiles() {
         $dataHandler->storeCurlRequest($error);
     } else {
         $errorNameArray = ['Found No Matching Configuration'];
-        $dataHandler->resolveErrorWithName($errorNameArray, 'Accounts');
+        $dataHandler->resolveErrorWithName($errorNameArray, null, 'PMS_Profile');
     }
 
     $sugar_config['scheduler_log'] ? $GLOBALS['log']->debug('$settings : ' . print_r($settings, 1)) : '';
