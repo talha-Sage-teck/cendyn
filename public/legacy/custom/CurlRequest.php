@@ -3,6 +3,7 @@
 require_once('custom/CurlDataHandler.php');
 
 class CurlRequest {
+
     private $endpoint;
     private $header;
     private $errors = array();
@@ -11,7 +12,6 @@ class CurlRequest {
     private $context;
     private $httpCode;
     private $response;
-
 
     /**
      * Class constructor.
@@ -54,7 +54,7 @@ class CurlRequest {
      *
      * @return string The response received from the server.
      */
-    public function executeCurlRequest($requestType, $data = []) : array {
+    public function executeCurlRequest($requestType, $data = []): array {
         // Initialize the cURL session.
         $curl = curl_init();
 
@@ -103,10 +103,6 @@ class CurlRequest {
         $responseData = array_change_key_case($responseData, CASE_LOWER);
 
         // Log the response using the "fatal" log level.
-
-        $GLOBALS['log']->fatal("Response Data: " . json_encode($responseData));
-        $GLOBALS['log']->fatal("Custom Response: " . $this->response);
-
         // Check if the response status is successful (HTTP status 200 or 201).
         $status = $responseData['status'];
         $errorcode = $responseData['errorcode'];
@@ -126,6 +122,10 @@ class CurlRequest {
             }
         }
 
+//        $e = new Exception();
+//        $GLOBALS['log']->fatal("stack trace : " . print_r($e->getTraceAsString(), 1));
+//        $GLOBALS['log']->fatal("Response Data: " . json_encode($responseData));
+//        $GLOBALS['log']->fatal("Custom Response: " . $this->response);
         // Return the response received from the server.
         return $responseData;
     }
@@ -138,7 +138,7 @@ class CurlRequest {
         $resolution = null;
         $concernedTeam = "b2b_dev_team";
 
-        if ($responseData === null || $responseData === "" || $responseData['errorcode'] === 0 || $responseData['errorcode'] === 500 || strpos($responseData['message'], 'Connections setting in app DB is not correct for company which ID is') !== false ) {
+        if ($responseData === null || $responseData === "" || $responseData['errorcode'] === 0 || $responseData['errorcode'] === 500 || strpos($responseData['message'], 'Connections setting in app DB is not correct for company which ID is') !== false) {
             $name = "Url malformed";
             $concernedTeam = "it_team";
             $relatedToModule = "General";
@@ -251,12 +251,12 @@ class CurlRequest {
                 ],
                 [
                     'condition' => $responseData['errorcode'] == 404 && strpos($responseData['message'], 'No data present for External Contact Id') !== false,
-                    'resolution' => "Open the CRM Database, Search the Contact Record by ID and Update the ready_to_sync flag to 1.",
-                    'name' => "No data present for EXternal Contact Id"
+                    'resolution' => "Open the CRM Database, Search the Contact Record by ID and Update the ready_to_sync flag to 1 or to 0 if Record is already Deleted.",
+                    'name' => "No data present for External Contact Id"
                 ],
-                // Add more conditions and their corresponding resolutions as needed.
-                // ...
-                // Default resolution
+                    // Add more conditions and their corresponding resolutions as needed.
+                    // ...
+                    // Default resolution
 //                [
 //                    'condition' => true,
 //                    'name' => ($errorTitle) ? $errorTitle : "Unknown",
@@ -303,7 +303,7 @@ class CurlRequest {
         $this->addError($error);
     }
 
-    public function isServerDown() : bool {
+    public function isServerDown(): bool {
         $socket = @fsockopen($this->serverUrl, 80, $errorCode, $errorMessage, 3);
         if ($socket) {
             fclose($socket);
@@ -315,11 +315,12 @@ class CurlRequest {
         return true; // Server is down or unreachable
     }
 
-    public function getErrors() : array {
+    public function getErrors(): array {
         return $this->errors;
     }
 
     private function addError($error) {
         $this->errors = $error;
     }
+
 }

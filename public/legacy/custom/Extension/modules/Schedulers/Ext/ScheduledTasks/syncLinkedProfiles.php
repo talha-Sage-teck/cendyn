@@ -31,7 +31,6 @@ function sendDeleteLinkData($profileID, $accountID) {
         'action' => 'Delete Relationship',
         'record_id' => $profileID,
         'header' => array(
-
         ),
     ]);
 
@@ -57,10 +56,9 @@ function sendDeleteLinkData($profileID, $accountID) {
 //    $response = curl_exec($curl);
 //    curl_close($curl);
 
-    if($response['errorcode'] == 200 || $response['errorcode'] == 201) {
+    if ($response['errorcode'] == 200 || $response['errorcode'] == 201) {
         return true;
-    }
-    else {
+    } else {
         return false;
     }
 }
@@ -69,13 +67,13 @@ function sendLinkData($profileID, $accountID, $newAccountID = null) {
     global $sugar_config;
 
     $is_update = 0;
-    if($newAccountID != null)
+    if ($newAccountID != null)
         $is_update = 1;
     $data = array(
         'profileId' => $profileID,
         'externalAccountId' => $accountID
     );
-    if($is_update == 1)
+    if ($is_update == 1)
         $data['newExternalAccountId'] = $newAccountID;
 
     $url = "/b2b/B2BPMSProfilesToAccountsMapping/" . (($is_update == 1) ? "update" : "add");
@@ -84,14 +82,13 @@ function sendLinkData($profileID, $accountID, $newAccountID = null) {
         'action' => (($is_update == 1) ? "Update Relationship" : "Add Relationship"),
         'record_id' => $profileID,
         'header' => array(
-
         ),
     ]);
 
     $response = $curlRequest->executeCurlRequest("POST", $data);
-    $GLOBALS['log']->fatal("Data of PMS Profile: ". json_encode($data));
+    $GLOBALS['log']->fatal("Data of PMS Profile: " . json_encode($data));
 
-    $GLOBALS['log']->fatal("Response of PMS Profile: ". $response);
+    $GLOBALS['log']->fatal("Response of PMS Profile: " . $response);
 
 //    $curl = curl_init();
 //
@@ -124,11 +121,10 @@ function sendLinkData($profileID, $accountID, $newAccountID = null) {
 //    curl_setopt_array($curl, $object);
 //    $response = curl_exec($curl);
 //    curl_close($curl);
-    if($response['errorcode'] == 200 || $response['errorcode'] == 201) {
+    if ($response['errorcode'] == 200 || $response['errorcode'] == 201) {
         $GLOBALS['log']->debug($response);
         return true;
-    }
-    else {
+    } else {
         return false;
     }
 }
@@ -137,12 +133,11 @@ function getPrevAccountID($profileID) {
     global $db;
     $accountRel = "accounts_cb2b_pmsprofiles_1";
     $prevRelQuery = "SELECT * FROM `{$accountRel}_c` WHERE `{$accountRel}cb2b_pmsprofiles_idb`='{$profileID}'" .
-        " AND deleted = 1 ORDER BY `date_modified` DESC LIMIT 1";
+            " AND deleted = 1 ORDER BY `date_modified` DESC LIMIT 1";
     $prevRelResult = $db->query($prevRelQuery);
-    if($prevRelResult->num_rows > 0) {
+    if ($prevRelResult->num_rows > 0) {
         return $db->fetchByAssoc($prevRelResult)["{$accountRel}accounts_ida"];
-    }
-    else {
+    } else {
         $GLOBALS['log']->debug("syncLinkedProfiles: Previous Account ID not found during relationship delete");
         return 0;
     }
@@ -161,7 +156,7 @@ function syncLinkedProfiles() {
 
     $dataHandler = new CurlDataHandler();
 
-    while($profile = $db->fetchByAssoc($selectResult)) {
+    while ($profile = $db->fetchByAssoc($selectResult)) {
         $profileBean = BeanFactory::getBean('CB2B_PMSProfiles', $profile['id']);
         $profileBean->load_relationship($accountRel);
 
@@ -193,38 +188,37 @@ function syncLinkedProfiles() {
 
         $accounts = $profileBean->$accountRel->getBeans();
 
-        foreach($accounts as $account) {
+        foreach ($accounts as $account) {
             $res = false;
 //            if($account->ready_to_sync == 0) {
-                switch($profileBean->ready_to_link) {
-                    case 1:
-                        $res = sendLinkData($profileBean->id, $account->id);
-                        break;
-                    case 2:
-                        $res = sendLinkData($profileBean->id, getPrevAccountID($profileBean->id), $account->id);
-                        break;
-                    case 3:
-                        $res = sendDeleteLinkData($profileBean->id, getPrevAccountID($profileBean->id));
-                        break;
-                    default:
-                        $GLOBALS['log']->debug("syncLinkedProfiles: Unexpected flag in scheduler");
-                        break;
-                }
-                if($res) {
-                    $profileBean->ready_to_link = 0;
-                    $profileBean->save();
-                    $dataHandler->resolveError($profileBean->id, 'parent_id');
-                }
-                else {
-                    $GLOBALS['log']->debug("syncLinkedProfiles: Could not sync with eInsight.");
-                }
+            switch ($profileBean->ready_to_link) {
+                case 1:
+                    $res = sendLinkData($profileBean->id, $account->id);
+                    break;
+                case 2:
+                    $res = sendLinkData($profileBean->id, getPrevAccountID($profileBean->id), $account->id);
+                    break;
+                case 3:
+                    $res = sendDeleteLinkData($profileBean->id, getPrevAccountID($profileBean->id));
+                    break;
+                default:
+                    $GLOBALS['log']->debug("syncLinkedProfiles: Unexpected flag in scheduler");
+                    break;
+            }
+            if ($res) {
+                $profileBean->ready_to_link = 0;
+                $profileBean->save();
+                $dataHandler->resolveError($profileBean->id, 'parent_id');
+            } else {
+                $GLOBALS['log']->debug("syncLinkedProfiles: Could not sync with eInsight.");
+            }
 //            }
 //            else {
 //                $GLOBALS['log']->debug("syncLinkedProfiles: The account related to profile with ID {$profileBean->id}".
 //                    " is not yet synchronized with eInsight. Account ID: {$account->id}");
 //            }
         }
-        
+
 //        if($profileBean->ready_to_link > 0) {
 //            $res = sendDeleteLinkData($profileBean->id, getPrevAccountID($profileBean->id));
 //            if($res) {

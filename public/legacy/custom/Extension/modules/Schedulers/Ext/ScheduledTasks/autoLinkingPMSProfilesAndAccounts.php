@@ -165,9 +165,6 @@ function checkIfRelationshipAlreadyExists($pmsProfileId, $matchedAccountId, $pro
 function autoLinkingPMSProfilesAndAccounts() {
     global $db, $timedate, $sugar_config;
 
-    // Get Matching Criterias from Configuration
-//    $getMatchCriteriaQuery = "SELECT * FROM `config` WHERE `category`='MySettings' AND `name`='MatchCriteriaConfig'";
-//    $result = $db->query($getMatchCriteriaQuery, true);
     $error = array(
         'name' => "Found No Auto Linking Configuration",
         'endpoint' => null,
@@ -177,13 +174,15 @@ function autoLinkingPMSProfilesAndAccounts() {
         'curl_error_message' => null,
         'error_status' => 'new',
         'related_to_module' => 'PMS_Profile',
-        'parent_id' => null,
+        'parent_id' => "autoLinkingPMSProfiles",
         'parent_type' => "CB2B_PMSProfiles",
         'concerned_team' => "b2b_dev_team",
         'action_type' => "Auto Link PMS Profiles and Accounts",
         'api_response' => null,
         'assigned_user_id' => 1,
-        'resolution' => '"1- Go to Administration Section. 2- Find "Manage PMS Profile Matching Criteria". 3- Setup the "PMS Profiles Matching Criteria Rules."',
+        'resolution' => '1- Go to Administration Section.
+2- Find "Manage PMS Profile Matching Criteria".
+3- Setup the PMS Profiles Matching Criteria Rules.',
     );
 
     // Get Matching Criterias from Configuration
@@ -204,6 +203,7 @@ function autoLinkingPMSProfilesAndAccounts() {
 
     if (!isset($settings['criteria'])) {
         $dataHandler->storeCurlRequest($error);
+        return true;
     } else {
         $errorNameArray = ['Found No Auto Linking Configuration'];
         $dataHandler->resolveErrorWithName($errorNameArray);
@@ -214,11 +214,7 @@ function autoLinkingPMSProfilesAndAccounts() {
     $profileIds = getAllPMSProfileIds();
 //    $sugar_config['scheduler_log'] ? $GLOBALS['log']->fatal('$profileIds : ' . print_r($profileIds, 1)) : '';
 
-    $profileIds = getAllPMSProfileIds();
-//    $sugar_config['scheduler_log'] ? $GLOBALS['log']->fatal('$profileIds : ' . print_r($profileIds, 1)) : '';
-
-
-    foreach ($settings as $rule => $fields) {
+    foreach ($settings['criteria'] as $rule => $fields) {
         // Get Query for each Rule
         $selectMatchingQuery = getRuleQuery($fields);
         $selectMatchingResult = $db->query($selectMatchingQuery);

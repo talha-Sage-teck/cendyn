@@ -61,7 +61,7 @@ class AccountsLogicHook {
          */
 
         if (!$bean->skipBeforeSave) {
-            if ($bean->fetched_row != false) {
+            if ($bean->fetched_row != false && ($bean->last_sync_date != '' && !is_null($bean->last_sync_date))) {
                 $bean->ready_to_sync = 2;
                 return;
             }
@@ -79,7 +79,7 @@ class AccountsLogicHook {
 //    }
 
     public function relatePromotedAccount($bean, $events, $args) {
-        /***
+        /*         * *
          * Makes sure the promoted account is linked to the original profile
          * 1. Checks if the return module and return ID is set
          * 2. Checks if the return module is CB2B_PMSProfiles
@@ -89,8 +89,8 @@ class AccountsLogicHook {
 
         $return_module = $_REQUEST['return_module'];
         $return_id = $_REQUEST['return_id'];
-        if($return_module && $return_id && strtolower($return_module) === "cb2b_pmsprofiles") {
-            if(!$bean->accounts_cb2b_pmsprofiles_1accounts_ida || trim($bean->accounts_cb2b_pmsprofiles_1accounts_ida) == "") {
+        if ($return_module && $return_id && strtolower($return_module) === "cb2b_pmsprofiles") {
+            if (!$bean->accounts_cb2b_pmsprofiles_1accounts_ida || trim($bean->accounts_cb2b_pmsprofiles_1accounts_ida) == "") {
                 $profileBean = BeanFactory::getBean('CB2B_PMSProfiles', $return_id);
                 $bean->load_relationship('accounts_cb2b_pmsprofiles_1');
                 $bean->accounts_cb2b_pmsprofiles_1->add($profileBean);
@@ -99,7 +99,7 @@ class AccountsLogicHook {
     }
 
     public function unsetAccount($bean, $events, $args) {
-        /***
+        /*         * *
          * Set ready_to_sync flag for account and/or contact
          * @Objectives:
          * 1. Set the ready_to_sync flag for account
@@ -129,9 +129,8 @@ class AccountsLogicHook {
         $bean->save();
     }
 
-    public function processWebsiteField($bean, $events, $args)
-    {
-        /***
+    public function processWebsiteField($bean, $events, $args) {
+        /*         * *
          * @Objectives:
          * 1. Add the http:// or https:// prefix to a valid URL in website field
          * @Conditions
@@ -147,4 +146,5 @@ class AccountsLogicHook {
             }
         }
     }
+
 }

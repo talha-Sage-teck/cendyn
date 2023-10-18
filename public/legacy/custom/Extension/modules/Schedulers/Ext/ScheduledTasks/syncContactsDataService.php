@@ -10,7 +10,7 @@ require_once('custom/CurlDataHandler.php');
 $job_strings[] = 'syncContactsDataService';
 
 function getContactById($contactID) {
-    /***
+    /*     * *
      * @Input:
      * $contactId: ID of the contact to get
      * @Output
@@ -26,10 +26,9 @@ function getContactById($contactID) {
         'record_id' => $contactID,
     ]);
 
-    $response = $curlRequest->executeCurlRequest("GET");
+    return $curlRequest->executeCurlRequest("GET");
 
-    return json_decode($response);
-
+//    return json_decode($response);
 //    $endpoint = "{$sugar_config['EINSIGHT_API_ENDPOINT']}/api/v{$sugar_config['EINSIGHT_API_VERSION']}/companyid/{$sugar_config['EINSIGHT_API_COMPANY_ID']}/b2b/B2BContacts/"
 //        . $contactID;
 //    $curl = curl_init();
@@ -55,25 +54,26 @@ function getContactById($contactID) {
 //    return json_decode($response);
 }
 
-function contactExists($contactID, $action = "") {
-    /***
+function contactExists($contactID) {
+    /*     * *
      * Checks if contact is available on eInsight
      * @Input:
      * $contactId: ID of the contact to get
      * @Output
      * Return true or false
      */
-    $contact = getContactById($contactID, $action);
-    if(isset($contact->data) && isset($contact->data->status)) {
-        return true;
-    } else {
+
+    $contact = getContactById($contactID);
+    if ($contact['errorcode'] == 404)
         return false;
-    }
+    else
+        return true;
+
 //    return !($contact->status && $contact->status != 200);
 }
 
 function sendPostData($endpoint, $postData = null, $content_length = null) {
-    /***
+    /*     * *
      * @Input:
      * $endpoint: Endpoint URL of the function in eInsight API
      * $postData: Optional, post data to send
@@ -100,7 +100,7 @@ function sendPostData($endpoint, $postData = null, $content_length = null) {
         ),
     );
 
-    if($postData)
+    if ($postData)
         $object[CURLOPT_POSTFIELDS] = json_encode($postData, JSON_NUMERIC_CHECK);
 
     curl_setopt_array($curl, $object);
@@ -118,7 +118,7 @@ function sendPostData($endpoint, $postData = null, $content_length = null) {
 }
 
 function deleteAllAccounts($contactID) {
-    /***
+    /*     * *
      * @Input:
      * $contactID: The contact whose email we want to delete
      * @Output
@@ -145,7 +145,7 @@ function deleteAllAccounts($contactID) {
 }
 
 function addAccountsToContact($accountsArr, $contactBean) {
-    /***
+    /*     * *
      * @Input:
      * $accountsArr: Accounts array to send to eInsight
      * $contactBean: The contact to attach the email to in eInsight
@@ -161,7 +161,6 @@ function addAccountsToContact($accountsArr, $contactBean) {
         'action' => 'Create Contact',
         'record_id' => $contactBean->id,
         'header' => array(
-
         ),
     ]);
 
@@ -173,7 +172,7 @@ function addAccountsToContact($accountsArr, $contactBean) {
 }
 
 function addEmailsToContact($emailsArr, $contactBean) {
-    /***
+    /*     * *
      * @Input:
      * $emailArr: Emails array to send to eInsight
      * $contactBean: The contact to attach the email to in eInsight
@@ -189,7 +188,6 @@ function addEmailsToContact($emailsArr, $contactBean) {
         'action' => 'Create Contact',
         'record_id' => $contactBean->id,
         'header' => array(
-
         ),
     ]);
 
@@ -201,7 +199,7 @@ function addEmailsToContact($emailsArr, $contactBean) {
 }
 
 function syncAccounts($accounts, $contactBean) {
-    /***
+    /*     * *
      * @Input:
      * $accounts: Accounts array to send to eInsight
      * $contactBean: The contact whose email we want to update in eInsight
@@ -209,14 +207,14 @@ function syncAccounts($accounts, $contactBean) {
      * Return true if successfully deleted, otherwise false
      */
 
-    if(deleteAllAccounts($contactBean->id)) {
+    if (deleteAllAccounts($contactBean->id)) {
         return addAccountsToContact($accounts, $contactBean);
     }
     return false;
 }
 
 function deleteEmailFromContact($email, $contactBean) {
-    /***
+    /*     * *
      * @Input:
      * $emails: Emails array to delete from eInsight
      * $contactBean: The contact whose email we want to update in eInsight
@@ -244,72 +242,71 @@ function deleteEmailFromContact($email, $contactBean) {
 }
 
 function emailsNeedToBeDeleted($emailsArr, $contactBean) {
-    /***
+    /*     * *
      * @Input:
      * $emails: Emails array to send to eInsight
      * $contactBean: Contact bean that the email(s) are related to
      * @Output:
      * Return true or false
      */
-
     $eInsightCall = getContactById($contactBean->id);
-    if($eInsightCall->status && $eInsightCall->status != 200)
-        return true;
+    if ($eInsightCall['errorcode'] == 404 || $eInsightCall['errorcode'] == 400)
+        return false;
 
-    $eInsightMails = $eInsightCall->data->emails;
+    $eInsightMails = $eInsightCall['data']['emails'];
     $emails = array();
-    foreach($emailsArr as $email) {
+    foreach ($emailsArr as $email) {
         $shouldDelete = false;
         foreach ($eInsightMails as $eInsightMail) {
-            if(strtolower($eInsightMail->email) == strtolower($email['email'])) {
-                if ($eInsightMail->emailContactMapping->inactive == 0 && $email['emailContactMapping']['inactive'] == "1") {
+            if (strtolower($eInsightMail['email']) == strtolower($email['email'])) {
+                if ($eInsightMail['emailContactMapping']['inactive'] == 0 && $email['emailContactMapping']['inactive'] == "1") {
                     $shouldDelete = true;
                 }
             }
         }
-        if($shouldDelete)
+        if ($shouldDelete)
             $emails[] = $email;
     }
 
     $res = true;
-    foreach($emails as $email)
+    foreach ($emails as $email) {
         $res = $res && deleteEmailFromContact($email['email'], $contactBean);
+    }
 
     return $res;
 }
 
 function emailsNeedToBeAdded($emailsArr, $contactBean) {
-    /***
+    /*     * *
      * @Input:
      * $emails: Emails array to send to eInsight
      * $contactBean: Contact bean that the email(s) are related to
      * @Output:
      * Return true or false
      */
-
     $eInsightCall = getContactById($contactBean->id);
-    if($eInsightCall->status && $eInsightCall->status != 200)
-        return true;
+    if ($eInsightCall['errorcode'] == 404 || $eInsightCall['errorcode'] == 400)
+        return false;
 
-    $eInsightMails = $eInsightCall->data->emails;
+    $eInsightMails = $eInsightCall['data']['emails'];
     $emails = array();
-    foreach($emailsArr as $email) {
-        if($email['emailContactMapping']['inactive'] == "1")
+    foreach ($emailsArr as $email) {
+        if ($email['emailContactMapping']['inactive'] == "1")
             continue;
         $present = false;
         foreach ($eInsightMails as $eInsightMail) {
-            if(strtolower($eInsightMail->email) == strtolower($email['email'])) {
+            if (strtolower($eInsightMail['email']) == strtolower($email['email'])) {
                 $present = true;
-                if ($eInsightMail->emailContactMapping->inactive == 1) {
+                if ($eInsightMail['emailContactMapping']['inactive'] == 1) {
                     $present = false;
                 }
             }
         }
-        if(!$present)
+        if (!$present)
             $emails[] = $email;
     }
 
-    if(sizeof($emails) > 0)
+    if (sizeof($emails) > 0)
         return addEmailsToContact($emails, $contactBean);
     else
         return true;
@@ -317,7 +314,7 @@ function emailsNeedToBeAdded($emailsArr, $contactBean) {
 
 function deleteContact($contact_id): array {
 
-    /***
+    /*     * *
      * @Input:
      * contact_id: Contact ID to delete
      * @Output:
@@ -345,7 +342,7 @@ function deleteContact($contact_id): array {
 
 function sendContactData($data, $contact_id = null): array {
 
-    /***
+    /*     * *
      * @Input:
      * data: The Contact data to send to eInsight
      * contact_id: Optional, if value is set than eInsight account update endpoint will be called with this argument's
@@ -371,7 +368,7 @@ function sendContactData($data, $contact_id = null): array {
 
 function deleteDups(&$array, $email) {
 
-    /***
+    /*     * *
      * Deletes duplicate instances of the provided email
      * @Input:
      * &$array: emails array to change
@@ -382,7 +379,7 @@ function deleteDups(&$array, $email) {
 
     $subkey = "email";
     $array = array_filter($array, function ($v) use (&$array, $subkey, $email) {
-        if (!array_key_exists($subkey,$v))
+        if (!array_key_exists($subkey, $v))
             return false;
         if ($v[$subkey] == $email)
             return false;
@@ -395,7 +392,7 @@ function deleteDups(&$array, $email) {
 
 function unsetFlagAfterDelete($id, $table) {
 
-    /***
+    /*     * *
      * Unsets the ready_to_sync flag for given module
      * @Input:
      * $id: ID of the record
@@ -407,7 +404,7 @@ function unsetFlagAfterDelete($id, $table) {
     global $db;
     $updateQuery = "UPDATE {$table} SET ready_to_sync=0 WHERE id='{$id}' AND ready_to_sync=3";
     $updateResult = $db->query($updateQuery);
-    if($updateResult)
+    if ($updateResult)
         return true;
     else
         return false;
@@ -431,7 +428,6 @@ function syncContactsDataService() {
      * @Returns
      * true
      */
-
     //Fetching all the accounts that are either created or updated
     global $db;
     $selectQuery = "SELECT * FROM contacts WHERE (deleted = 0 AND ready_to_sync > 0) OR (deleted = 1 AND ready_to_sync = 3)";
@@ -533,7 +529,7 @@ function syncContactsDataService() {
             continue;
         } else {
             // don't bother extracting the data for emails and accounts if we want to delete the contact
-            if($contactRow['ready_to_sync'] != 3) {
+            if ($contactRow['ready_to_sync'] != 3) {
                 //getting email data
                 $emails = array();
                 $emailRelSelectQuery = "SELECT * FROM email_addr_bean_rel WHERE bean_id='{$contactBean->id}' AND bean_module='Contacts'";
@@ -609,36 +605,22 @@ function syncContactsDataService() {
                     $res = deleteContact($data['externalContactId']);
                     break;
                 case 4:
-                    $emailSyncDone = true;
-                    if(sizeof($data['accounts']) > 0)
-                        $res = syncAccounts($data['accounts'], $contactBean);
-                    else {
-                        $res = deleteAllAccounts($contactBean->id);
-                        if ($res['errorcode'] == 200 || $res['errorcode'] == 201) {
-                            $contactBean->ready_to_sync = 2;
-                            $res = sendContactData($data, $data['externalContactId']);
+                    if (contactExists($data['externalContactId'])) {
+                        if (sizeof($data['accounts']) > 0) {
+                            $res = syncAccounts($data['accounts'], $contactBean);
+                        } else {
+                            $res = deleteAllAccounts($contactBean->id);
                         }
-                    }
-
-                    if ($res['errorcode'] > 400 && strpos($res['message'], "No data present for External Contact Id") !== false ) {
-                        $errorId = 0;
-                        if (isset($res['errorId']) != 0) {
-                            $errorId = $res['errorId'];
-                        }
-
+                        $res = sendContactData($data, $data['externalContactId']);
+                    } else {
                         $res = sendContactData($data);
-                        if (($res['errorcode'] == 200 || $res['errorcode'] == 201) && $errorId != 0) {
-                            $dataHandler->resolveError($errorId, 'id');
-                        }
                     }
                     break;
                 case 5:
+                    $emailSyncDone = true;
                     if (emailsNeedToBeAdded($data['emails'], $contactBean) && emailsNeedToBeDeleted($data['emails'], $contactBean)) {
                         $res['errorcode'] = 200;
                     }
-                    $emailSyncDone = true;
-//                    $res = emailsNeedToBeAdded($data['emails'], $contactBean) &&
-//                        emailsNeedToBeDeleted($data['emails'], $contactBean);
                     break;
                 default:
                     $GLOBALS['log']->fatal("syncContactsDataService: Unexpected sync flag value in scheduler.");
@@ -646,24 +628,21 @@ function syncContactsDataService() {
             }
 
             if (($res['errorcode'] == 200 || $res['errorcode'] == 201) && !$emailSyncDone) {
-                $contactBean->ready_to_sync = 5;
-                $res = emailsNeedToBeAdded($data['emails'], $contactBean) &&
-                    emailsNeedToBeDeleted($data['emails'], $contactBean);
-
+                emailsNeedToBeAdded($data['emails'], $contactBean) &&
+                        emailsNeedToBeDeleted($data['emails'], $contactBean);
+                $dataHandler->resolveError($contactBean->id, 'parent_id');
+            }
+            //manually (sql query) set the read_to_sync to 3 after delete because $bean->save() does not work
+            if (($res['errorcode'] == 200 || $res['errorcode'] == 201) && $deleted) {
+                unsetFlagAfterDelete($contactBean->id, 'contacts');
                 $dataHandler->resolveError($contactBean->id, 'parent_id');
             }
 
-            //manually (sql query) set the ready_to_save to 3 after delete because $bean->save() does not work
-            if(($res['errorcode'] == 200 || $res['errorcode'] == 201) && $deleted) {
-                unsetFlagAfterDelete($contactBean->id, 'contacts');
-                $dataHandler->resolveError($accountBean->id, 'parent_id');
-            }
-
             //unsetting the read_to_sync flag, setting the fromScheduler flag and saving
-            if($res['errorcode'] == 200 || $res['errorcode'] == 201) {
+            if ($res['errorcode'] == 200 || $res['errorcode'] == 201) {
                 $contactBean->ready_to_sync = 0;
                 $contactBean->last_sync_date = $GLOBALS['timedate']->nowDb();
-                $dataHandler->resolveError($accountBean->id, 'parent_id');
+                $dataHandler->resolveError($contactBean->id, 'parent_id');
             }
 
             $contactBean->skipBeforeSave = true;

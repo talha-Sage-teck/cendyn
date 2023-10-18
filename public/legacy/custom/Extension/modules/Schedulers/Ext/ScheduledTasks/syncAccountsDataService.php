@@ -9,7 +9,7 @@ require_once('custom/CurlDataHandler.php');
 $job_strings[] = 'syncAccountsDataService';
 
 function getAccountById($accountID) {
-    /***
+    /*     * *
      * @Input:
      * $contactId: ID of the account to get
      * @Output
@@ -23,12 +23,10 @@ function getAccountById($accountID) {
         'action' => 'Create Account',
         'record_id' => $accountID,
         'header' => array(
-
         ),
     ]);
 
     $response = $curlRequest->executeCurlRequest("GET");
-    $GLOBALS['log']->fatal("getAccountById Response: ". $response);
     return json_decode($response);
     // Need to Fix
     // If the URL Malformed, the records should not be processed further, it is a bug right now, no matter if the URL
@@ -36,7 +34,7 @@ function getAccountById($accountID) {
 }
 
 function accountExists($accountID, $action = ""): bool {
-    /***
+    /*     * *
      * Checks if account is available on eInsight
      * @Input:
      * $accountID: ID of the account to get
@@ -44,14 +42,13 @@ function accountExists($accountID, $action = ""): bool {
      * Return true or false
      */
     $account = getAccountById($accountID, $action);
-    if(isset($account->data) && isset($account->data->status)) {
+    if (isset($account->data) && isset($account->data->status)) {
         return true;
     } else {
         return false;
     }
 //    return !($account->status && $account->status != 200);
 }
-
 
 function deleteAccount($accountID) {
     /*     * *
@@ -95,7 +92,6 @@ function addAccountData($data, $account_id = null) {
         'action' => ($account_id !== null) ? 'Update Account' : 'Create Account',
         'record_id' => ($data['externalAccountId']) ? $data['externalAccountId'] : $account_id,
         'header' => array(
-
         ),
     ]);
 
@@ -125,9 +121,8 @@ function syncAccountsDataService() {
     //Looping over all the fetched accounts
     while ($accountRow = $db->fetchByAssoc($resultSelect)) {
         //setting the last_sync_date field
-        $accountBean = BeanFactory::getBean('Accounts', $accountRow['id']);
-        $accountBean->last_sync_date = $GLOBALS['timedate']->nowDb();
-
+        $accountBean = BeanFactory::getBean('Accounts', $accountRow['id'], [], false);
+        $lastSyncDate = $GLOBALS['timedate']->nowDb();
         if ($accountBean) {
             //making the data object to send to eInsight
             $data = array(
@@ -154,7 +149,7 @@ function syncAccountsDataService() {
                 'blacklistReason' => $accountBean->black_list_reason,
                 'annualRevenue' => $accountBean->annual_revenue,
                 'description' => $accountBean->description,
-                'updateDate' => $accountBean->last_sync_date,
+                'updateDate' => $lastSyncDate,
                 'id' => 0,
                 'inactive' => $accountBean->deleted,
                 'status' => $accountBean->status,
@@ -166,7 +161,7 @@ function syncAccountsDataService() {
             'endpoint' => null,
             'input_data' => json_encode($data),
             'http_code' => null,
-            'request_type' => null,
+            'request_type' => "POST",
             'curl_error_message' => null,
             'resolution' => null,
             'error_status' => 'new',
@@ -222,7 +217,7 @@ function syncAccountsDataService() {
             $deleted = false;
             switch ($accountRow['ready_to_sync']) {
                 case 1:
-                    $data['insertDate'] = $accountBean->last_sync_date;
+                    $data['insertDate'] = $lastSyncDate;
                     $res = addAccountData($data);
                     break;
                 case 2:
@@ -252,13 +247,14 @@ function syncAccountsDataService() {
                     return true;
             }
 
-            if(($res['errorcode'] == 200 || $res['errorcode'] == 201) && $deleted) {
+            if (($res['errorcode'] == 200 || $res['errorcode'] == 201) && $deleted) {
                 unsetFlagAfterDelete($accountBean->id, 'accounts');
             }
 
             //unsetting the read_to_sync flag, setting the skipBeforeSave flag and saving
             if ($res['errorcode'] == 200 || $res['errorcode'] == 201) {
                 $accountBean->ready_to_sync = 0;
+                $accountBean->last_sync_date = $lastSyncDate;
                 $dataHandler->resolveError($accountBean->id, 'parent_id');
             }
             $accountBean->skipBeforeSave = true;

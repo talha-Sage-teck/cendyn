@@ -151,13 +151,15 @@ function matchPMSProfiles() {
         'curl_error_message' => null,
         'error_status' => 'new',
         'related_to_module' => 'PMS_Profile',
-        'parent_id' => null,
+        'parent_id' => "matchPMSProfiles",
         'parent_type' => "CB2B_PMSProfiles",
         'concerned_team' => "b2b_dev_team",
         'action_type' => "PMS Profile Matching",
         'api_response' => null,
         'assigned_user_id' => 1,
-        'resolution' => '1- Go to Administration Section. 2- Find Manage "PMS Profile Matching Criteria". 3- Setup the "PMS Profiles Matching Criteria Rules".'
+        'resolution' => '1- Go to Administration Section.
+2- Find "Manage PMS Profile Matching Criteria".
+3- Setup the PMS Profiles Matching Criteria Rules.'
     );
 
     // Get Matching Criterias from Configuration
@@ -179,9 +181,10 @@ function matchPMSProfiles() {
 
     if (!isset($settings['criteria'])) {
         $dataHandler->storeCurlRequest($error);
+        return true;
     } else {
         $errorNameArray = ['Found No Matching Configuration'];
-        $dataHandler->resolveErrorWithName($errorNameArray, null, 'PMS_Profile');
+        $dataHandler->resolveErrorWithName($errorNameArray);
     }
 
     $sugar_config['scheduler_log'] ? $GLOBALS['log']->debug('$settings : ' . print_r($settings, 1)) : '';
@@ -210,7 +213,7 @@ function matchPMSProfiles() {
         $existingRelationShipIds = getExistingRelationShipIds($profile['id']);
         $sugar_config['scheduler_log'] ? $GLOBALS['log']->debug('$existingRelationShipIds : ' . print_r($existingRelationShipIds, 1)) : '';
 
-        foreach ($settings as $criteria => $fields) {
+        foreach ($settings['criteria'] as $criteria => $fields) {
             $match_criteria = getMatchedCriteriaString($fields);
             $selectMatchingQuery = getMatchingProfilesPreparedQuery($profile['id'], $fields);
             $selectMatchingResult = $db->query($selectMatchingQuery);

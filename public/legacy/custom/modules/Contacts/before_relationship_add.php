@@ -10,7 +10,7 @@ class beforeRelationshipAddHandler {
         $updateFlag = false;
 
         if ($arguments['module'] == "Contacts" && $arguments['related_module'] == "Accounts") {
-            $selectContact = "SELECT * FROM contacts WHERE id='{$bean->id}'";
+            $selectContact = "SELECT * FROM contacts WHERE id='{$bean->id}' and deleted = '0'";
             $selectContactResult = $db->query($selectContact);
             $contact = $db->fetchByAssoc($selectContactResult);
             if ($contact && $contact['last_sync_date'] != null) {
@@ -30,7 +30,7 @@ class beforeRelationshipAddHandler {
                 }
 
                 if ($updateFlag) {
-                    $updateQ = "UPDATE contacts SET `ready_to_sync`='4' WHERE id='{$bean->id}'";
+                    $updateQ = "UPDATE contacts SET `ready_to_sync`='4' WHERE id='{$bean->id}' and deleted = '0'";
                     if (!$db->query($updateQ)) {
                         $GLOBALS['log']->fatal("Error updating Contact {$bean->id} on Linking.");
                     }
