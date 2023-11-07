@@ -122,12 +122,26 @@ class SubpanelDataPort
         $mappedBeans = [];
 
         foreach ($beanList as $key => $beanData) {
+            // Non-Upgrade Safe Change -- Sageteck
             if ($beanData->module_dir == "Contacts") {
                 if ($beanData->load_relationship('email_addresses_primary')) {
                     $relatedBeans = $beanData->email_addresses_primary->getBeans();
                     if (count($relatedBeans) > 0) {
                         foreach ($relatedBeans as $rel) {
                             $beanData->email1 = $rel->email_address;
+                        }
+                    }
+                }
+            }
+            if ($beanData->module_dir == "CB2B_PMSProfiles") {
+                if ($beanData->load_relationship('cb2b_pmsprofiles_cb2b_hotels_1')) {
+                    //Fetch related beans
+                    $relatedBeans = $beanData->cb2b_pmsprofiles_cb2b_hotels_1->getBeans();
+                    if (count($relatedBeans) > 0) {
+                        foreach ($relatedBeans as $rel) {
+                            // Display hotel short name of first related hotel in the HOTEL column on the list view
+                            $beanData->first_related_hotel_short_name = $rel->shortname;
+                            break;
                         }
                     }
                 }
