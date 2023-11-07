@@ -15,7 +15,10 @@ class processRecordHandler {
         //If relationship is loaded
         if ($bean->load_relationship('cb2b_pmsprofiles_cb2b_hotels_1')) {
             //Fetch related beans
-            $relatedBeans = $bean->cb2b_pmsprofiles_cb2b_hotels_1->getBeans();
+            $relatedBeans = $bean->cb2b_pmsprofiles_cb2b_hotels_1->getBeans(array(
+                'limit' => 1,
+            ));
+            $GLOBALS['log']->fatal('Data count : ' . print_r(count($relatedBeans), 1));
             if (count($relatedBeans) > 0) {
                 foreach ($relatedBeans as $rel) {
                     // Display hotel short name of first related hotel in the HOTEL column on the list view

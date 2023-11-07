@@ -136,7 +136,9 @@ class SubpanelDataPort
             if ($beanData->module_dir == "CB2B_PMSProfiles") {
                 if ($beanData->load_relationship('cb2b_pmsprofiles_cb2b_hotels_1')) {
                     //Fetch related beans
-                    $relatedBeans = $beanData->cb2b_pmsprofiles_cb2b_hotels_1->getBeans();
+                    $relatedBeans = $beanData->cb2b_pmsprofiles_cb2b_hotels_1->getBeans(array(
+                        'limit' => 1,
+                    ));
                     if (count($relatedBeans) > 0) {
                         foreach ($relatedBeans as $rel) {
                             // Display hotel short name of first related hotel in the HOTEL column on the list view
