@@ -152,6 +152,28 @@ $chart = <<<EOD
                 else
                 alert("Sorry, there has been an error with the click-through event");
             }
+            /*Non-Upgrade Safe SageTeck*/
+            function PMSProfilesByAccountLinkStatusDashletClick(e,bar)
+            {
+            if(bar['object']!== undefined && bar['object']['id']!==undefined)
+            {
+                var graphId = bar['object']['id'];
+                var divHolder = $("#"+graphId).parent();
+                var module = $(divHolder).find(".module").val();
+                var action = $(divHolder).find(".action").val();
+                var query = $(divHolder).find(".query").val();
+                var searchFormTab = $(divHolder).find(".searchFormTab").val();
+
+                var labels = bar["object"]["properties"]["chart.labels"];
+
+                var keys = window["chartHBarKeys"+graphId];
+                var clicked = encodeURI(keys[bar[5]]);
+
+                window.open('index.php?module='+module+'&action='+action+'&query='+query+'&searchFormTab='+searchFormTab+'&lead_source='+clicked,'_self');
+            }
+                else
+                alert("Sorry, there has been an error with the click-through event");
+            }
 
             function myFunnelClick(e,bar)
             {
