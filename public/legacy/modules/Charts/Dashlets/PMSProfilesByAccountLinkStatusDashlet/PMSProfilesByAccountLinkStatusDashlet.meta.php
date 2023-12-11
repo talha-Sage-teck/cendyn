@@ -1,5 +1,8 @@
 <?php
 
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -38,74 +41,12 @@
  * reasonably feasible for technical reasons, the Appropriate Legal Notices must
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
-if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
-}
+global $app_strings, $current_language;
 
-global $current_user;
-
-$dashletData['CB2B_PMSProfilesDashlet']['searchFields'] = array(
-    'date_entered' => array('default' => ''),
-    'date_modified' => array('default' => ''),
-    'type' => array(
-        'default' => '',
-        'name' => 'type',
-        'label' => 'LBL_TYPE',
-    ),
-    'assigned_user_id' => array(
-        'type' => 'assigned_user_name',
-        'default' => ''
-    ),
-    'is_assigned_account' => array(
-        'default' => '',
-        'type' => 'bool'
-    ),
-    'hotel_short_name_enum' => array(
-        'type' => 'enum',
-        'default' => '',
-    ),
-);
-$dashletData['CB2B_PMSProfilesDashlet']['columns'] = array(
-    'name' => array(
-        'width' => '30',
-        'label' => 'LBL_LIST_NAME',
-        'link' => true,
-        'default' => true
-    ),
-    'type' =>
-    array(
-        'width' => '10',
-        'label' => 'LBL_TYPE',
-        'default' => true,
-    ),
-    'hotel_short_name' =>
-    array(
-        'label' => 'LBL_HOTEL_SHORT_NAME',
-        'width' => '20',
-        'name' => 'hotel_short_name',
-        'default' => true,
-    ),
-    'accounts_cb2b_pmsprofiles_1_name' =>
-    array(
-        'label' => 'LBL_ACCOUNTS_CB2B_PMSPROFILES_1_FROM_ACCOUNTS_TITLE',
-        'width' => '20',
-        'name' => 'accounts_cb2b_pmsprofiles_1_name',
-    ),
-    'date_entered' => array(
-        'width' => '15',
-        'label' => 'LBL_DATE_ENTERED',
-        'default' => true
-    ),
-    'date_modified' => array(
-        'width' => '15',
-        'label' => 'LBL_DATE_MODIFIED'
-    ),
-    'created_by' => array(
-        'width' => '8',
-        'label' => 'LBL_CREATED'
-    ),
-    'assigned_user_name' => array(
-        'width' => '8',
-        'label' => 'LBL_LIST_ASSIGNED_USER'
-    ),
+$dashletMeta['PMSProfilesByAccountLinkStatusDashlet'] = array(
+    'title' => 'LBL_TITLE',
+    'description' => 'LBL_TITLE',
+    'icon' => 'icon_Charts_Pie_32.gif',
+    'module' => 'CB2B_PMSProfiles',
+    'category' => 'Charts'
 );

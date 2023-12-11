@@ -6,7 +6,7 @@
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ * Copyright (C) 2011 - 2019 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -42,70 +42,8 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-global $current_user;
-
-$dashletData['CB2B_PMSProfilesDashlet']['searchFields'] = array(
-    'date_entered' => array('default' => ''),
-    'date_modified' => array('default' => ''),
-    'type' => array(
-        'default' => '',
-        'name' => 'type',
-        'label' => 'LBL_TYPE',
-    ),
-    'assigned_user_id' => array(
-        'type' => 'assigned_user_name',
-        'default' => ''
-    ),
-    'is_assigned_account' => array(
-        'default' => '',
-        'type' => 'bool'
-    ),
-    'hotel_short_name_enum' => array(
-        'type' => 'enum',
-        'default' => '',
-    ),
-);
-$dashletData['CB2B_PMSProfilesDashlet']['columns'] = array(
-    'name' => array(
-        'width' => '30',
-        'label' => 'LBL_LIST_NAME',
-        'link' => true,
-        'default' => true
-    ),
-    'type' =>
-    array(
-        'width' => '10',
-        'label' => 'LBL_TYPE',
-        'default' => true,
-    ),
-    'hotel_short_name' =>
-    array(
-        'label' => 'LBL_HOTEL_SHORT_NAME',
-        'width' => '20',
-        'name' => 'hotel_short_name',
-        'default' => true,
-    ),
-    'accounts_cb2b_pmsprofiles_1_name' =>
-    array(
-        'label' => 'LBL_ACCOUNTS_CB2B_PMSPROFILES_1_FROM_ACCOUNTS_TITLE',
-        'width' => '20',
-        'name' => 'accounts_cb2b_pmsprofiles_1_name',
-    ),
-    'date_entered' => array(
-        'width' => '15',
-        'label' => 'LBL_DATE_ENTERED',
-        'default' => true
-    ),
-    'date_modified' => array(
-        'width' => '15',
-        'label' => 'LBL_DATE_MODIFIED'
-    ),
-    'created_by' => array(
-        'width' => '8',
-        'label' => 'LBL_CREATED'
-    ),
-    'assigned_user_name' => array(
-        'width' => '8',
-        'label' => 'LBL_LIST_ASSIGNED_USER'
-    ),
+$dashletStrings['PMSProfilesByAccountLinkStatusDashlet'] = array(
+    'LBL_TITLE' => 'PMS Profiles by Account Link Status',
+    'LBL_DESCRIPTION' => 'Pie Chart of PMS Profiles by Account Link Status',
+    'LBL_REFRESH' => 'Refresh Chart'
 );

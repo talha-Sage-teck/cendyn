@@ -87,3 +87,10 @@ $app_list_strings['hotel_type_list'][8] = 'Interface';
 $app_list_strings['hotel_type_list'][9] = 'Headquarter';
 $app_list_strings['PMSProfile_type_list']['A'] = 'Agent';
 $app_list_strings['PMSProfile_type_list']['C'] = 'Company';
+$app_list_strings['PMSProfile_type_list']['O'] = 'Other';
+$app_list_strings['prepare_hotels_list'] = getHotelShortNameList();
+$app_list_strings['pms_profile_auto_or_maunal_linking'] = array(
+    'Auto Linked' => 'Auto Linked',
+    'Manually Linked' => 'Manually Linked',
+    'Not Linked' => 'Not Linked',
+);

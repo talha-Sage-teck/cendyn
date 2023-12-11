@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -37,7 +38,6 @@
  * reasonably feasible for technical reasons, the Appropriate Legal Notices must
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
-
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
@@ -46,8 +46,10 @@ require_once('include/Dashlets/DashletGeneric.php');
 require_once('modules/CB2B_PMSProfiles/CB2B_PMSProfiles.php');
 
 class CB2B_PMSProfilesDashlet extends DashletGeneric {
-    function __construct($id, $def = null)
-    {
+
+    public $myItemsOnly = false;
+
+    function __construct($id, $def = null) {
         global $current_user, $app_strings;
         require('modules/CB2B_PMSProfiles/metadata/dashletviewdefs.php');
 
@@ -60,6 +62,54 @@ class CB2B_PMSProfilesDashlet extends DashletGeneric {
         $this->searchFields = $dashletData['CB2B_PMSProfilesDashlet']['searchFields'];
         $this->columns = $dashletData['CB2B_PMSProfilesDashlet']['columns'];
 
-        $this->seedBean = new CB2B_PMSProfiles();        
+        $this->seedBean = new CB2B_PMSProfiles();
     }
+
+    public function process($lvsParams = array(), $id = null) {
+        if (isset($this->filters['hotel_short_name_enum'])) {
+            $this->filters['hotel_short_name'] = $this->filters['hotel_short_name_enum'];
+            unset($this->filters['hotel_short_name_enum']);
+        }
+
+        if (isset($this->filters['is_assigned_account'])) {
+            if ($this->filters['is_assigned_account'] == 1 || $this->filters['is_assigned_account'] == 'on') {
+                $lvsParams['custom_where'] = ' AND (cb2b_pmsprofiles.id IN (SELECT 
+                        cb2b_pmsprofiles.id
+                    FROM
+                        cb2b_pmsprofiles
+                            LEFT JOIN
+                        accounts_cb2b_pmsprofiles_1_c ON cb2b_pmsprofiles.id = accounts_cb2b_pmsprofiles_1_c.accounts_cb2b_pmsprofiles_1cb2b_pmsprofiles_idb
+                            AND accounts_cb2b_pmsprofiles_1_c.deleted = 0
+                    WHERE
+                        (1 = 0
+                            AND accounts_cb2b_pmsprofiles_1_c.accounts_cb2b_pmsprofiles_1cb2b_pmsprofiles_idb IS NULL)
+                            OR (1 = 1
+                            AND accounts_cb2b_pmsprofiles_1_c.accounts_cb2b_pmsprofiles_1cb2b_pmsprofiles_idb IS NOT NULL))) ';
+            } else if ($this->filters['is_assigned_account'] == 0 || $this->filters['is_assigned_account'] == 'off') {
+                $lvsParams['custom_where'] = ' AND (cb2b_pmsprofiles.id IN (SELECT 
+                        cb2b_pmsprofiles.id
+                    FROM
+                        cb2b_pmsprofiles
+                            LEFT JOIN
+                        accounts_cb2b_pmsprofiles_1_c ON cb2b_pmsprofiles.id = accounts_cb2b_pmsprofiles_1_c.accounts_cb2b_pmsprofiles_1cb2b_pmsprofiles_idb
+                            AND accounts_cb2b_pmsprofiles_1_c.deleted = 0
+                    WHERE
+                        (0 = 0
+                            AND accounts_cb2b_pmsprofiles_1_c.accounts_cb2b_pmsprofiles_1cb2b_pmsprofiles_idb IS NULL)
+                            OR (0 = 1
+                            AND accounts_cb2b_pmsprofiles_1_c.accounts_cb2b_pmsprofiles_1cb2b_pmsprofiles_idb IS NOT NULL))) ';
+            }
+            unset($this->filters['is_assigned_account']);
+        }
+
+        $lvsParams['overrideOrder'] = true;
+        $lvsParams['orderBy'] = 'date_entered';
+        $lvsParams['sortOrder'] = 'DESC';
+
+//        $GLOBALS['log']->fatal('$lvsParams : ' . print_r($lvsParams, 1));
+//        $GLOBALS['log']->fatal('$this->filters : ' . print_r($this->filters, 1));
+
+        parent::process($lvsParams);
+    }
+
 }

@@ -1,5 +1,8 @@
 <?php
 
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -38,74 +41,27 @@
  * reasonably feasible for technical reasons, the Appropriate Legal Notices must
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
-if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
-}
-
-global $current_user;
-
-$dashletData['CB2B_PMSProfilesDashlet']['searchFields'] = array(
-    'date_entered' => array('default' => ''),
-    'date_modified' => array('default' => ''),
-    'type' => array(
+$dashletData['PMSProfilesByAccountLinkStatusDashlet']['searchFields'] = array(
+    'pmsbals_date_entered_start' => array(
+        'name' => 'pmsbals_date_entered_start',
+        'vname' => 'LBL_DATE_ENTERED_START',
+        'type' => 'datepicker',
         'default' => '',
-        'name' => 'type',
-        'label' => 'LBL_TYPE',
     ),
-    'assigned_user_id' => array(
-        'type' => 'assigned_user_name',
-        'default' => ''
-    ),
-    'is_assigned_account' => array(
+    'pmsbals_date_entered_end' => array(
+        'name' => 'pmsbals_date_entered_end',
+        'vname' => 'LBL_DATE_ENTERED_END',
+        'type' => 'datepicker',
         'default' => '',
-        'type' => 'bool'
     ),
-    'hotel_short_name_enum' => array(
+    'pmsbals_account_link_status' => array(
+        'name' => 'pmsbals_account_link_status',
+        'vname' => 'LBL_ACCOUNT_LINK_STATUS',
         'type' => 'enum',
-        'default' => '',
     ),
-);
-$dashletData['CB2B_PMSProfilesDashlet']['columns'] = array(
-    'name' => array(
-        'width' => '30',
-        'label' => 'LBL_LIST_NAME',
-        'link' => true,
-        'default' => true
-    ),
-    'type' =>
-    array(
-        'width' => '10',
-        'label' => 'LBL_TYPE',
-        'default' => true,
-    ),
-    'hotel_short_name' =>
-    array(
-        'label' => 'LBL_HOTEL_SHORT_NAME',
-        'width' => '20',
-        'name' => 'hotel_short_name',
-        'default' => true,
-    ),
-    'accounts_cb2b_pmsprofiles_1_name' =>
-    array(
-        'label' => 'LBL_ACCOUNTS_CB2B_PMSPROFILES_1_FROM_ACCOUNTS_TITLE',
-        'width' => '20',
-        'name' => 'accounts_cb2b_pmsprofiles_1_name',
-    ),
-    'date_entered' => array(
-        'width' => '15',
-        'label' => 'LBL_DATE_ENTERED',
-        'default' => true
-    ),
-    'date_modified' => array(
-        'width' => '15',
-        'label' => 'LBL_DATE_MODIFIED'
-    ),
-    'created_by' => array(
-        'width' => '8',
-        'label' => 'LBL_CREATED'
-    ),
-    'assigned_user_name' => array(
-        'width' => '8',
-        'label' => 'LBL_LIST_ASSIGNED_USER'
+    'pmsbals_ids' => array(
+        'name' => 'pmsbals_ids',
+        'vname' => 'LBL_USERS',
+        'type' => 'user_name',
     ),
 );

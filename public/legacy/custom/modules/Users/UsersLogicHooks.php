@@ -15,6 +15,8 @@ class UsersLogicHooks {
                 unset($bean->customer_admin);
             }
         }
+        
+        $bean->login_name = $bean->user_name;
     }
 
     function standardDashboardSettings() {

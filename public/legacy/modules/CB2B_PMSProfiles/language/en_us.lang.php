@@ -65,7 +65,7 @@ $mod_strings = array (
   'LBL_LIST_FORM_TITLE' => 'PMS Profiles List',
   'LBL_MODULE_NAME' => 'PMS Profiles',
   'LBL_MODULE_TITLE' => 'PMS Profiles',
-  'LBL_HOMEPAGE_TITLE' => 'My PMS Profiles',
+  'LBL_HOMEPAGE_TITLE' => 'PMS Profiles',
   'LNK_NEW_RECORD' => 'Create PMS Profiles',
   'LNK_LIST' => 'View PMS Profiles',
   'LNK_IMPORT_CB2B_B2BPMSPROFILES' => 'Import PMS Profiles',
@@ -103,6 +103,6 @@ $mod_strings = array (
   'LBL_ADDRESS_CITY' => 'City',
   'LBL_ADDRESS_COUNTRY' => 'Country',
   'LBL_CONTACTFIRSTNAME' => 'Contact First Name',
-  'LBL_TYPE' => 'Type',
+  'LBL_TYPE' => 'Base Type',
   'LBL_ADDRESS_POSTALCODE' => 'Postal Code',
 );
