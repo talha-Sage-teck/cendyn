@@ -192,6 +192,7 @@ class CustomUsersController extends CustomSugarController {
         foreach ($users as $user) {
             if ($user == '1')
                 continue;
+            $this->setDashboardInitial($user);
             $selectPreferenceQuery = "SELECT * FROM user_preferences WHERE category='Home' AND assigned_user_id = '{$user}' AND deleted = 0";
             $selectPreferenceResult = $db->query($selectPreferenceQuery);
             $prefRow = $db->fetchByAssoc($selectPreferenceResult);
@@ -270,6 +271,141 @@ class CustomUsersController extends CustomSugarController {
         }
 
         SugarApplication::redirect("index.php?module=Administration&action=index");
+    }
+
+    private function setDashboardInitial($userId){
+        require_once('include/MySugar/MySugar.php');
+
+        require('modules/Home/dashlets.php');
+        if (!is_file($cachefile = sugar_cached('dashlets/dashlets.php'))) {
+            require_once('include/Dashlets/DashletCacheBuilder.php');
+
+            $dc = new DashletCacheBuilder();
+            $dc->buildCache();
+        }
+        require $cachefile;
+        $dash_user=BeanFactory::getBean('Users',$userId);
+        $pages = $dash_user->getPreference('pages', 'Home');
+        $dashlets = $dash_user->getPreference('dashlets', 'Home');
+        $hasUserPreferences = (!isset($pages) || empty($pages) || !isset($dashlets) || empty($dashlets)) ? false : true;
+
+        if (!$hasUserPreferences) {
+            $dashlets = array();
+
+            //list of preferences to move over and to where
+            $prefstomove = array(
+                'mypbss_date_start' => 'MyPipelineBySalesStageDashlet',
+                'mypbss_date_end' => 'MyPipelineBySalesStageDashlet',
+                'mypbss_sales_stages' => 'MyPipelineBySalesStageDashlet',
+                'mypbss_chart_type' => 'MyPipelineBySalesStageDashlet',
+                'lsbo_lead_sources' => 'OpportunitiesByLeadSourceByOutcomeDashlet',
+                'lsbo_ids' => 'OpportunitiesByLeadSourceByOutcomeDashlet',
+                'pbls_lead_sources' => 'OpportunitiesByLeadSourceDashlet',
+                'pbls_ids' => 'OpportunitiesByLeadSourceDashlet',
+                'pbss_date_start' => 'PipelineBySalesStageDashlet',
+                'pbss_date_end' => 'PipelineBySalesStageDashlet',
+                'pbss_sales_stages' => 'PipelineBySalesStageDashlet',
+                'pbss_chart_type' => 'PipelineBySalesStageDashlet',
+                'obm_date_start' => 'OutcomeByMonthDashlet',
+                'obm_date_end' => 'OutcomeByMonthDashlet',
+                'obm_ids' => 'OutcomeByMonthDashlet');
+
+            //upgrading from pre-5.0 homepage
+            $old_columns = $dash_user->getPreference('columns', 'home');
+            $old_dashlets = $dash_user->getPreference('dashlets', 'home');
+
+            if (isset($old_columns) && !empty($old_columns) && isset($old_dashlets) && !empty($old_dashlets)) {
+                $columns = $old_columns;
+                $dashlets = $old_dashlets;
+
+                // resetting old columns and dashlets to have no preference and data
+                $old_columns = array();
+                $old_dashlets = array();
+                $dash_user->setPreference('columns', $old_columns, 0, 'home');
+                $dash_user->setPreference('dashlets', $old_dashlets, 0, 'home');
+            } else {
+                // This is here to get Sugar dashlets added above the rest
+                $dashlets[create_guid()] = array('className' => 'SugarFeedDashlet',
+                    'module' => 'SugarFeed',
+                    'forceColumn' => 1,
+                    'fileLocation' => $dashletsFiles['SugarFeedDashlet']['file'],
+                );
+
+                foreach ($defaultDashlets as $dashletName=>$module) {
+                    // clint - fixes bug #20398
+                    // only display dashlets that are from visibile modules and that the user has permission to list
+                    $myDashlet = new MySugar($module);
+                    $displayDashlet = $myDashlet->checkDashletDisplay();
+                    if (isset($dashletsFiles[$dashletName]) && $displayDashlet) {
+                        $options = array();
+                        $prefsforthisdashlet = array_keys($prefstomove, $dashletName);
+                        foreach ($prefsforthisdashlet as $pref) {
+                            $options[$pref] = $dash_user->getPreference($pref);
+                        }
+                        $dashlets[create_guid()] = array('className' => $dashletName,
+                            'module' => $module,
+                            'forceColumn' => 0,
+                            'fileLocation' => $dashletsFiles[$dashletName]['file'],
+                            'options' => $options);
+                    }
+                }
+
+                $count = 0;
+                $columns = array();
+                $columns[0] = array();
+                $columns[0]['width'] = '60%';
+                $columns[0]['dashlets'] = array();
+                $columns[1] = array();
+                $columns[1]['width'] = '40%';
+                $columns[1]['dashlets'] = array();
+
+                foreach ($dashlets as $guid=>$dashlet) {
+                    if ($dashlet['forceColumn'] == 0) {
+                        array_push($columns[0]['dashlets'], $guid);
+                    } else {
+                        array_push($columns[1]['dashlets'], $guid);
+                    }
+                    $count++;
+                }
+            }
+
+
+
+
+            $dash_user->setPreference('dashlets', $dashlets, 0, 'Home');
+        }
+        // handles upgrading from versions that had the 'Dashboard' module; move those items over to the Home page
+        $pagesDashboard = $dash_user->getPreference('pages', 'Dashboard');
+        $dashletsDashboard = $dash_user->getPreference('dashlets', 'Dashboard');
+        if (!empty($pagesDashboard)) {
+            // move dashlets from the dashboard to be at the end of the home screen dashlets
+            foreach ($pagesDashboard[0]['columns'] as $dashboardColumnKey => $dashboardColumn) {
+                foreach ($dashboardColumn['dashlets'] as $dashletItem) {
+                    $pages[0]['columns'][$dashboardColumnKey]['dashlets'][] = $dashletItem;
+                }
+            }
+            $pages = array_merge($pages, $pagesDashboard);
+            $dash_user->setPreference('pages', $pages, 0, 'Home');
+        }
+        if (!empty($dashletsDashboard)) {
+            $dashlets = array_merge($dashlets, $dashletsDashboard);
+            $dash_user->setPreference('dashlets', $dashlets, 0, 'Home');
+        }
+        if (!empty($pagesDashboard) || !empty($dashletsDashboard)) {
+            $dash_user->resetPreferences('Dashboard');
+        }
+
+        if (empty($pages)) {
+            $pages = array();
+            $pageIndex = 0;
+            $pages[0]['columns'] = $columns;
+            $pages[0]['numColumns'] = '3';
+            $pages[0]['pageTitleLabel'] = 'LBL_HOME_PAGE_1_NAME';	// "My Sugar"
+            $pageIndex++;
+            $dash_user->setPreference('pages', $pages, 0, 'Home');
+            $dash_user->savePreferencesToDB();
+            $activePage = 0;
+        }
     }
 
 }
