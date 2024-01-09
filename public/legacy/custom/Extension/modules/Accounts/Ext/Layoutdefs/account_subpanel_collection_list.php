@@ -6,17 +6,15 @@ $layout_defs['Accounts']['subpanel_setup']['history'] = array(
     'sort_by' => 'date_entered',
     'title_key' => 'LBL_HISTORY_SUBPANEL_TITLE',
     'type' => 'collection',
-    'subpanel_name' => 'history',   //this values is not associated with a physical file.
+    'subpanel_name' => 'history', //this values is not associated with a physical file.
     'header_definition_from_subpanel' => 'meetings',
     'module' => 'History',
-
     'top_buttons' => array(
         array('widget_class' => 'SubPanelTopCreateNoteButton'),
         array('widget_class' => 'SubPanelTopArchiveEmailButton'),
         array('widget_class' => 'SubPanelTopSummaryButton'),
         array('widget_class' => 'SubPanelTopFilterButton'),
     ),
-
     'collection_list' => array(
         'tasks' => array(
             'module' => 'Tasks',
@@ -42,9 +40,9 @@ $layout_defs['Accounts']['subpanel_setup']['history'] = array(
             'module' => 'Emails',
             'subpanel_name' => 'ForUnlinkedEmailHistory',
             'get_subpanel_data' => 'function:get_emails_by_assign_or_link',
-            'function_parameters' => array('link' => 'accounts'),
+            'function_parameters' => array('import_function_file' => 'include/utils.php', 'link' => 'contacts'),
             'generate_select' => true,
             'get_distinct_data' => true,
         ),
-    )
+    ),
 );
