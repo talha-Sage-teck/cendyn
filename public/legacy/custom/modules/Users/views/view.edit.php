@@ -268,10 +268,10 @@ EOD
         $this->ss->assign('SUBTHEME', $this->bean->getSubTheme());
 
 
-        //Check if user was created from Okta
-        if($this->bean->b2b_okta_id && trim($this->bean->b2b_okta_id) !== "") {
-            $this->ss->assign('is_okta_user', true);
-        }
+//        //Check if user was created from Okta
+//        if($this->bean->b2b_okta_id && trim($this->bean->b2b_okta_id) !== "") {
+//            $this->ss->assign('is_okta_user', true);
+//        }
 
         require_once('modules/Emails/EmailUI.php');
         $efocus = BeanFactory::newBean('Emails');

@@ -1,5 +1,5 @@
 <?php
-// created: 2022-07-15 19:39:55
+// created: 2024-01-30 14:30:19
 $searchFields['Opportunities'] = array (
   'name' => 
   array (
@@ -159,5 +159,18 @@ $searchFields['Opportunities'] = array (
   array (
     'query_type' => 'default',
     'enable_range_search' => true,
+  ),
+  'associate_hotels_opportunity' => 
+  array (
+    'db_field' => 
+    array (
+      0 => 'opportunities.id',
+    ),
+    'query_type' => 'format',
+    'operator' => 'subquery',
+    'subquery' => '
+select opportunities_cb2b_hotels_1opportunities_ida from opportunities_cb2b_hotels_1_c join cb2b_hotels on cb2b_hotels.id=opportunities_cb2b_hotels_1_c.opportunities_cb2b_hotels_1cb2b_hotels_idb
+and cb2b_hotels.deleted=0
+where opportunities_cb2b_hotels_1_c.deleted=0 and cb2b_hotels.name in (\'{0}\')',
   ),
 );

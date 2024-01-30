@@ -48,7 +48,7 @@ array (
           0 => 
           array (
             'name' => 'user_name',
-            'customCode' => '{if !$is_okta_user}<input type="text" name="user_name" id="user_name" size="30" maxlength="60" value="{$fields.user_name.value}" title="">{else}{$fields.user_name.value}{/if}',
+//            'customCode' => '{if !$is_okta_user}<input type="text" name="user_name" id="user_name" size="30" maxlength="60" value="{$fields.user_name.value}" title="">{else}{$fields.user_name.value}{/if}',
             'displayParams' => 
             array (
               'required' => true,
@@ -94,12 +94,12 @@ array (
             'name' => 'factor_auth',
             'label' => 'LBL_FACTOR_AUTH',
           ),
-          1 => 
-          array (
-            'name' => 'b2b_okta_id',
-            'studio' => true,
-            'label' => 'LBL_B2B_OKTA_ID',
-          ),
+//          1 => 
+//          array (
+//            'name' => 'b2b_okta_id',
+//            'studio' => true,
+//            'label' => 'LBL_B2B_OKTA_ID',
+//          ),
         ),
       ),
       'LBL_EMPLOYEE_INFORMATION' => 
