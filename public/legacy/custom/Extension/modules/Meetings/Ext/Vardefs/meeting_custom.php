@@ -208,3 +208,16 @@ $dictionary["Meeting"]["fields"]["sales_rep_code"] = array(
 );
 
 $dictionary['Meeting']['fields']['name']['len'] = '255';
+
+$dictionary["Meeting"]["fields"]["status"] = array(
+    'name' => 'status',
+    'vname' => 'LBL_STATUS',
+    'type' => 'enum',
+    'len' => 100,
+    'options' => 'activity_status_list',
+    'comment' => 'Meeting status (ex: Planned, Held, Not held)',
+    'default' => '',
+    'inline_edit' => true,
+    'comments' => 'Meeting status (ex: Planned, Held, Not held)',
+    'merge_filter' => 'disabled',
+);

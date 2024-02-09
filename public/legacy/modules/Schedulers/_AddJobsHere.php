@@ -783,6 +783,10 @@ class AORScheduledReportJob implements RunnableSchedulerJob
             return false;
         }
         $html = "<h1>{$report->name}</h1>" . $report->build_group_report();
+        // Sageteck non-upgrade safe
+        global $sugar_config;
+        $html = str_replace('../#/', $sugar_config['site_url'].'/#/', $html);
+        
         $html .= <<<EOF
         <style>
         h1{

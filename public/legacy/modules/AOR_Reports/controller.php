@@ -252,6 +252,9 @@ class AOR_ReportsController extends SugarController
 
         $this->bean->user_parameters = requestToUserParameters($this->bean);
         $report = $this->bean->build_group_report(-1, false);
+        // Sageteck non-upgrade safe
+        global $sugar_config;
+        $report = str_replace('../#/', $sugar_config['site_url'].'/#/', $report);
         
         ob_clean();
         try {

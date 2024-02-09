@@ -232,3 +232,22 @@ $dictionary["Call"]["fields"]["sales_rep_code"] = array(
 );
 
 $dictionary['Call']['fields']['name']['len'] = '255';
+
+$dictionary["Call"]["fields"]["status"] = array(
+    'name' => 'status',
+    'vname' => 'LBL_STATUS',
+    'type' => 'enum',
+    'len' => 100,
+    'options' => 'activity_status_list',
+    'comment' => 'The status of the call (Held, Not Held, etc.)',
+    'required' => true,
+    'importable' => 'required',
+    'default' => '',
+    'studio' =>
+    array(
+        'detailview' => false,
+    ),
+    'inline_edit' => true,
+    'comments' => 'The status of the call (Held, Not Held, etc.)',
+    'merge_filter' => 'disabled',
+);

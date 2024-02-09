@@ -354,9 +354,10 @@ class Contact extends Person implements EmailInterface
     {
         $custom_join = $this->getCustomJoin(true, true, $where);
         $custom_join['join'] .= $relate_link_join;
+        // Sageteck non-upgrade safe
         $query = "SELECT
                                 contacts.*,
-                                email_addresses.email_address email_address,
+                                email_addresses.email_address email_address, email_addresses.invalid_email, email_addresses.opt_out, email_addresses.donotemail, email_addresses.donotemail_date, email_addresses.donotemail_source,
                                 '' email_addresses_non_primary, " . // email_addresses_non_primary needed for get_field_order_mapping()
             "accounts.name as account_name,
                                 users.user_name as assigned_user_name ";

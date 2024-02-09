@@ -229,3 +229,27 @@ $dictionary["Task"]["fields"]["sales_rep_code"] = array(
 
 $dictionary['Task']['fields']['name']['importable'] = 'true';
 
+$dictionary["Task"]["fields"]["status"] = array(
+    'name' => 'status',
+    'vname' => 'LBL_STATUS',
+    'type' => 'enum',
+    'options' => 'activity_status_list',
+    'len' => 100,
+    'required' => 'true',
+    'default' => '',
+    'inline_edit' => true,
+    'merge_filter' => 'disabled',
+);
+
+$dictionary["Task"]["fields"]["priority"] = array(
+    'name' => 'priority',
+    'vname' => 'LBL_PRIORITY',
+    'type' => 'enum',
+    'options' => 'activity_priority_list',
+    'len' => 100,
+    'required' => 'true',
+    'default' => NULL,
+    'no_default' => false,
+    'inline_edit' => true,
+    'merge_filter' => 'disabled',
+);

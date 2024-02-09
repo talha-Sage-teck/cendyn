@@ -906,6 +906,7 @@ class SugarBean
                 $subquery['select'] = "SELECT";
                 foreach ($all_fields as $field) {
                     if (!isset($subquery['query_fields'][$field])) {
+                        // SageTeck Non-Upgrade Safe Change
                         if ($subquery['from_min'] === " FROM tasks " && $field === "date_end") {
                             $subquery['select'] .= " tasks.date_due AS date_end, ";
                         } elseif ($field === "contact_name") {

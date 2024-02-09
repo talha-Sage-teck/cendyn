@@ -161,7 +161,7 @@ $dictionary["Account"]["fields"]["black_list_reason"] = array(
     'merge_filter' => 'disabled',
     'len' => 100,
     'size' => '20',
-    'options' => 'black_list_reason_list',
+    'options' => 'account_blacklist_reason_list',
     'studio' => 'visible',
     'dependency' => false,
 );

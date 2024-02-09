@@ -94,7 +94,11 @@ class Task extends SugarBean
         parent::__construct();
     }
 
-
+    // Sageteck non-upgrade safe
+    public function fill_in_additional_list_fields()
+    {
+        $this->fill_in_additional_detail_fields();
+    }
 
 
     public $new_schema = true;
