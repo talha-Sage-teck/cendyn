@@ -57,11 +57,89 @@ class AOS_Contracts extends AOS_Contracts_sugar
         }
     }
 
+    // Sageteck non-upgrade safe
+    public function getGUID()
+    {
+        if (function_exists('com_create_guid')) {
+            return com_create_guid();
+        }
+        mt_srand((double)microtime()*10000);//optional for php 4.2.0 and up.
+        $charid = strtoupper(md5(uniqid(mt_rand(), true)));
+        $hyphen = chr(45);// "-"
+        $uuid = substr($charid, 0, 8).$hyphen
+            .substr($charid, 8, 4).$hyphen
+            .substr($charid, 12, 4).$hyphen
+            .substr($charid, 16, 4).$hyphen
+            .substr($charid, 20, 12);
+        return $uuid;
+    }
+    
+    // Sageteck non-upgrade safe
+    public function deleteAttachment($isduplicate = "false")
+    {
+        $removeFile = null;
 
+        if ($this->ACLAccess('edit')) {
+            if ($isduplicate == "true") {
+                return true;
+            }
+            $removeFile = "upload://{$this->id}";
+        }
 
+        if (file_exists($removeFile)) {
+            if (!unlink($removeFile)) {
+                $GLOBALS['log']->error("*** Could not unlink() file: [ {$removeFile} ]");
+            } else {
+                $this->uploadfile = '';
+                $this->filename = '';
+                $this->file_mime_type = '';
+                $this->file = '';
+                $this->save();
 
+                return true;
+            }
+        } else {
+            $this->uploadfile = '';
+            $this->filename = '';
+            $this->file_mime_type = '';
+            $this->file = '';
+            $this->save();
+
+            return true;
+        }
+
+        return false;
+    }
+
+    // Sageteck non-upgrade safe
     public function save($check_notify = false)
     {
+        global $sugar_config, $mod_strings;
+
+        if (isset($_POST['deleteAttachment']) && $_POST['deleteAttachment'] == '1') {
+            $this->attachment = '';
+        }
+
+        require_once('include/upload_file.php');
+        $GLOBALS['log']->debug('UPLOADING CONTRACTS FILE');
+
+        if(!empty($_FILES['uploadimage']['name'])) {
+            $imageFileName = $_FILES['uploadimage']['name'] ?? '';
+//            if (!has_valid_image_extension('AOS_Contracts Uploaded image file: ' . $imageFileName, $imageFileName)) {
+//                LoggerManager::getLogger()->fatal("AOS_Contracts save - Invalid image file ext : '$imageFileName'.");
+//                throw new RuntimeException('Invalid request');
+//            }
+        }
+
+        if (!empty($_FILES['uploadimage']['tmp_name']) ) {
+            if ($_FILES['uploadimage']['size'] > $sugar_config['upload_maxsize']) {
+                die($mod_strings['LBL_IMAGE_UPLOAD_FAIL'] . $sugar_config['upload_maxsize']);
+            }
+            $prefix_image = $this->getGUID() . '_';
+            $this->attachment = $sugar_config['site_url'] . '/' . $sugar_config['upload_dir'] . $prefix_image . $_FILES['uploadimage']['name'];
+            move_uploaded_file($_FILES['uploadimage']['tmp_name'], $sugar_config['upload_dir'] . $prefix_image . $_FILES['uploadimage']['name']);
+        }
+        
         if (empty($this->id) || (isset($_POST['duplicateSave']) && $_POST['duplicateSave'] == 'true')) {
             unset($_POST['group_id']);
             unset($_POST['product_id']);

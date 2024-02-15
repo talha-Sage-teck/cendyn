@@ -1,5 +1,5 @@
 <?php
- // created: 2023-01-10 12:14:03
+ // created: 2024-02-15 03:28:05
 $layout_defs["AOS_Quotes"]["subpanel_setup"]['aos_quotes_cb2b_hotels_1'] = array (
   'order' => 100,
   'module' => 'CB2B_Hotels',

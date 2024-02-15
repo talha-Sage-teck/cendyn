@@ -1,5 +1,5 @@
 <?php
-$beanList['AOS_Contracts'] = 'Override_AOS_Contracts';
-$beanFiles['Override_AOS_Contracts'] = 'custom/modules/AOS_Contracts/Override_AOS_Contracts.php';
-$moduleList[] = 'AOS_Contracts';
-$objectList['AOS_Contracts'] = 'AOS_Contracts';
+//$beanList['AOS_Contracts'] = 'Override_AOS_Contracts';
+//$beanFiles['Override_AOS_Contracts'] = 'custom/modules/AOS_Contracts/Override_AOS_Contracts.php';
+//$moduleList[] = 'AOS_Contracts';
+//$objectList['AOS_Contracts'] = 'AOS_Contracts';

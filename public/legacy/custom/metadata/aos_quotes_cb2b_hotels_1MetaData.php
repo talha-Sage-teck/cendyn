@@ -1,7 +1,7 @@
 <?php
-// created: 2023-01-10 12:14:03
+// created: 2024-02-15 03:28:05
 $dictionary["aos_quotes_cb2b_hotels_1"] = array (
-  'true_relationship_type' => 'one-to-many',
+  'true_relationship_type' => 'many-to-many',
   'from_studio' => true,
   'relationships' => 
   array (
@@ -67,20 +67,12 @@ $dictionary["aos_quotes_cb2b_hotels_1"] = array (
     ),
     1 => 
     array (
-      'name' => 'aos_quotes_cb2b_hotels_1_ida1',
-      'type' => 'index',
-      'fields' => 
-      array (
-        0 => 'aos_quotes_cb2b_hotels_1aos_quotes_ida',
-      ),
-    ),
-    2 => 
-    array (
       'name' => 'aos_quotes_cb2b_hotels_1_alt',
       'type' => 'alternate_key',
       'fields' => 
       array (
-        0 => 'aos_quotes_cb2b_hotels_1cb2b_hotels_idb',
+        0 => 'aos_quotes_cb2b_hotels_1aos_quotes_ida',
+        1 => 'aos_quotes_cb2b_hotels_1cb2b_hotels_idb',
       ),
     ),
   ),

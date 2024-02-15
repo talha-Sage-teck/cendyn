@@ -124,6 +124,19 @@ class AccountsNewByMonth extends LegacyHandler implements StatisticsProviderInte
 
         $result = $this->runQuery($query, $bean);
 
+        // Sageteck non-upgrade safe
+        global $app_list_strings;
+        $accountType = $GLOBALS["dictionary"]["Account"]["fields"]["account_type"];
+        if(is_array($accountType)){
+            if(isset($accountType["options"])){
+                foreach ($result as $key => $value) {
+                    if(!empty($value["name"])){
+                        $result[$key]["name"] = $app_list_strings[$accountType["options"]][$value["name"]];
+                    }
+                }
+            }
+        }
+        
         $nameField = 'month';
         $valueField = 'value';
         $groupingFields = 'name';

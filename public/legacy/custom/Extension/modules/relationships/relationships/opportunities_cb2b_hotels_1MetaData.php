@@ -1,7 +1,7 @@
 <?php
-// created: 2023-01-10 12:19:22
+// created: 2024-02-15 03:49:34
 $dictionary["opportunities_cb2b_hotels_1"] = array (
-  'true_relationship_type' => 'one-to-many',
+  'true_relationship_type' => 'many-to-many',
   'from_studio' => true,
   'relationships' => 
   array (
@@ -67,20 +67,12 @@ $dictionary["opportunities_cb2b_hotels_1"] = array (
     ),
     1 => 
     array (
-      'name' => 'opportunities_cb2b_hotels_1_ida1',
-      'type' => 'index',
-      'fields' => 
-      array (
-        0 => 'opportunities_cb2b_hotels_1opportunities_ida',
-      ),
-    ),
-    2 => 
-    array (
       'name' => 'opportunities_cb2b_hotels_1_alt',
       'type' => 'alternate_key',
       'fields' => 
       array (
-        0 => 'opportunities_cb2b_hotels_1cb2b_hotels_idb',
+        0 => 'opportunities_cb2b_hotels_1opportunities_ida',
+        1 => 'opportunities_cb2b_hotels_1cb2b_hotels_idb',
       ),
     ),
   ),
