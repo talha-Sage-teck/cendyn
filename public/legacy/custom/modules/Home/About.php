@@ -60,7 +60,7 @@ global $sugar_config, $mod_strings;
         <TR>
             <div style="font-size: 14px;color: #777777;margin-bottom: 10px;">
                 <br>
-                <h1><a href="https://b2bdev.cendyn.com"><img src="custom/themes/default/images/logo_with_name.png" alt="eInsight Sales"></a></h1>
+                <h1><a href="<?php echo $sugar_config['site_url']; ?>/#/home"><img src="custom/themes/default/images/company_logo.png" alt="eInsight Sales" width="235" height="80"></a></h1>
                 <b>Cendyn B2B CRM Version <?php echo $sugar_config['eInsightVersion']; ?></b>
                 <br />
                 <h3 style="font-size: 18px;font-weight: bold;">About Cendyn B2B CRM</h3>
