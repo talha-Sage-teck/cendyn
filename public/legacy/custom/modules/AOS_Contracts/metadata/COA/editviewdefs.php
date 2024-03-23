@@ -40,6 +40,11 @@ $viewdefs [$module_name] = array(
                     'newTab' => false,
                     'panelDefault' => 'expanded',
                 ),
+                'LBL_EDITVIEW_PANEL8' =>
+                array(
+                    'newTab' => false,
+                    'panelDefault' => 'expanded',
+                ),
                 'LBL_LINE_ITEMS' =>
                 array(
                     'newTab' => false,
@@ -157,10 +162,39 @@ $viewdefs [$module_name] = array(
                     0 => 'description',
                     1 => '',
                 ),
-                9 =>
+            ),
+            'lbl_editview_panel8' =>
+            array(
+                0 =>
                 array(
                     0 => 'associate_hotels_contracts',
                     1 => '',
+                ),
+                1 =>
+                array(
+                    0 =>
+                    array(
+                        'name' => 'attachment',
+                        'comment' => 'File name associated with the note (attachment)',
+                        'label' => 'LBL_ATTACHMENT',
+                        'customCode' => '{$ATTACHMENT}',
+                    ),
+                    1 => '',
+                ),
+                2 =>
+                array(
+                    0 =>
+                    array(
+                        'name' => 'payment_terms',
+                        'studio' => 'visible',
+                        'label' => 'LBL_PAYMENT_TERMS',
+                    ),
+                    1 =>
+                    array(
+                        'name' => 'special_information',
+                        'studio' => 'visible',
+                        'label' => 'LBL_SPECIAL_INFORMATION',
+                    ),
                 ),
             ),
             'lbl_line_items' =>

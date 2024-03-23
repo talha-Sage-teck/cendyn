@@ -1,5 +1,5 @@
 <?php
-// created: 2023-04-16 04:03:28
+// created: 2024-02-15 05:37:22
 $mod_strings['LBL_B2B_EXT_ACCOUNT_NO'] = 'b2bextaccountno';
 $mod_strings['LBL_B2B_EXT_CONTRACT_ID'] = 'b2bextcontractid';
 $mod_strings['LBL_RATE_CODE'] = 'Rate Code';
@@ -27,3 +27,5 @@ $mod_strings['LBL_EDITVIEW_PANEL7'] = 'Corporate Agreement';
 $mod_strings['LBL_EDITVIEW_PANEL8'] = 'Connectivity Agreement';
 $mod_strings['LBL_EDITVIEW_PANEL9'] = 'Other Agreement';
 $mod_strings['LBL_EDITVIEW_PANEL10'] = 'DMC Contract';
+$mod_strings['LBL_CONTRACT_ACCOUNT_ACCOUNT_ID'] = 'Account (related Account ID)';
+$mod_strings['LBL_CONTRACT_ACCOUNT'] = 'Account';

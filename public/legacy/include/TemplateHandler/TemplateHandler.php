@@ -159,7 +159,30 @@ class TemplateHandler
         global $theme;
 
         $this->loadSmarty();
-        $cacheDir = create_cache_directory($this->themeDir . $theme . '/' . $this->templateDir . $module . '/');
+
+        // #B2B-1676
+        // Sageteck Non-Upgrade Safe Change
+        /* BEGIN - SECURITY GROUPS */
+        //Faris look here
+        if($module=='AOS_Contracts'){
+            $groupLayout = "";
+            if(isset($_REQUEST['custom_contract_type_dv']) && !empty($_REQUEST['custom_contract_type_dv'])) {
+                $groupLayout = $_REQUEST['custom_contract_type_dv']."/"; //add group id after file name for cached versions
+            }
+            /**
+            $cacheDir = create_cache_directory($this->themeDir . $theme . '/' . $this->templateDir . $module . '/');
+             */
+            $cacheDir = create_cache_directory($this->themeDir.$theme.'/'.$this->templateDir. $module . '/' . $groupLayout);
+        }
+        else{
+            $cacheDir = create_cache_directory($this->themeDir . $theme . '/' . $this->templateDir . $module . '/');
+
+        }
+
+        /* END - SECURITY GROUPS */
+
+
+
         $file = $cacheDir . $view . '.tpl';
         $this->ss->left_delimiter = '{{';
         $this->ss->right_delimiter = '}}';
@@ -178,6 +201,7 @@ class TemplateHandler
             if ($mod === 'aCase') {
                 $mod = 'Case';
             }
+            // Sageteck Non-Upgrade Safe Change
             else if($mod === 'Override_AOS_Contracts') {
                 $mod = 'AOS_Contracts';
             }
@@ -349,7 +373,26 @@ class TemplateHandler
         }
         $view = $checkFormName ? $formName : $view;
 
-        return file_exists($this->cacheDir . $this->themeDir . $theme . '/' . $this->templateDir . $module . '/' . $view . '.tpl');
+        // #B2B-1676
+        // Sageteck Non-Upgrade Safe Change
+        if($module=='AOS_Contracts'){
+            /* BEGIN - SECURITY GROUPS */
+            //Faris look here
+            $groupLayout = "";
+            if(isset($_REQUEST['custom_contract_type_dv']) && !empty($_REQUEST['custom_contract_type_dv'])) {
+                $groupLayout = $_REQUEST['custom_contract_type_dv']."/"; //add group id after file name for cached versions
+            }
+            /**
+            $file = $this->cacheDir . $this->themeDir . $theme . '/' . $this->templateDir . $module . '/' . $view . '.tpl';
+             */
+            return file_exists($this->cacheDir.$this->themeDir.$theme.'/'.$this->templateDir . $module . '/' . $groupLayout .$view . '.tpl');
+
+            /* END - SECURITY GROUPS */
+        }
+        else{
+            return file_exists($this->cacheDir . $this->themeDir . $theme . '/' . $this->templateDir . $module . '/' . $view . '.tpl');
+        }
+
     }
 
     /**
@@ -369,7 +412,24 @@ class TemplateHandler
         if (!$this->checkTemplate($module, $view)) {
             $this->buildTemplate($module, $view, $tpl, $ajaxSave, $metaDataDefs);
         }
-        $file = $this->cacheDir . $this->themeDir . $theme . '/' . $this->templateDir . $module . '/' . $view . '.tpl';
+        // #B2B-1676
+        // Sageteck Non-Upgrade Safe Change
+        if($module=='AOS_Contracts'){
+            /* BEGIN - SECURITY GROUPS */
+            //Faris look here
+            $groupLayout = "";
+            if(isset($_REQUEST['custom_contract_type_dv']) && !empty($_REQUEST['custom_contract_type_dv'])) {
+                $groupLayout = $_REQUEST['custom_contract_type_dv']."/"; //add group id after file name for cached versions
+            }
+            /**
+            $file = $this->cacheDir . $this->themeDir . $theme . '/' . $this->templateDir . $module . '/' . $view . '.tpl';
+             */
+            $file = $this->cacheDir.$this->themeDir.$theme.'/'.$this->templateDir . $module . '/' . $groupLayout . $view . '.tpl';
+            /* END - SECURITY GROUPS */
+        }
+        else{
+            $file = $this->cacheDir . $this->themeDir . $theme . '/' . $this->templateDir . $module . '/' . $view . '.tpl';
+        }
         if (file_exists($file)) {
             return $this->ss->fetch($file);
         } else {

@@ -40,6 +40,11 @@ $viewdefs [$module_name] = array(
                     'newTab' => false,
                     'panelDefault' => 'expanded',
                 ),
+                'LBL_EDITVIEW_PANEL2' =>
+                array(
+                    'newTab' => false,
+                    'panelDefault' => 'expanded',
+                ),
                 'LBL_LINE_ITEMS' =>
                 array(
                     'newTab' => false,
@@ -157,10 +162,144 @@ $viewdefs [$module_name] = array(
                     0 => 'description',
                     1 => '',
                 ),
-                9 =>
+            ),
+            'lbl_editview_panel2' =>
+            array(
+                0 =>
                 array(
                     0 => 'associate_hotels_contracts',
                     1 => '',
+                ),
+                1 =>
+                array(
+                    0 =>
+                    array(
+                        'name' => 'effective_date',
+                        'studio' => 'visible',
+                        'label' => 'LBL_EFFECTIVE_DATE',
+                    ),
+                    1 =>
+                    array(
+                        'name' => 'signed_date',
+                        'studio' => 'visible',
+                        'label' => 'LBL_SIGNED_DATE',
+                    ),
+                ),
+                2 =>
+                array(
+                    0 =>
+                    array(
+                        'name' => 'date_of_issue',
+                        'studio' => 'visible',
+                        'label' => 'LBL_DATE_OF_ISSUE',
+                    ),
+                    1 =>
+                    array(
+                        'name' => 'date_end',
+                        'studio' => 'visible',
+                        'label' => 'LBL_END_DATE',
+                    ),
+                ),
+                3 =>
+                array(
+                    0 =>
+                    array(
+                        'name' => 'agreement_type',
+                        'studio' => 'visible',
+                        'label' => 'LBL_AGREEMENT_TYPE',
+                    ),
+                    1 =>
+                    array(
+                        'name' => 'revision_1_date',
+                        'label' => 'LBL_REVISION_1_DATE',
+                    ),
+                ),
+                4 =>
+                array(
+                    0 =>
+                    array(
+                        'name' => 'name_of_brochure',
+                        'label' => 'LBL_NAME_OF_BROCHURE',
+                    ),
+                    1 =>
+                    array(
+                        'name' => 'revision_1',
+                        'label' => 'LBL_REVISION_1',
+                    ),
+                ),
+                5 =>
+                array(
+                    0 =>
+                    array(
+                        'name' => 'coverage',
+                        'label' => 'LBL_COVERAGE',
+                    ),
+                    1 =>
+                    array(
+                        'name' => 'revision_2_date',
+                        'label' => 'LBL_REVISION_2_DATE',
+                    ),
+                ),
+                6 =>
+                array(
+                    0 =>
+                    array(
+                        'name' => 'agreed_barter_value',
+                        'studio' => 'visible',
+                        'label' => 'LBL_AGREED_BARTER_VALUE',
+                    ),
+                    1 =>
+                    array(
+                        'name' => 'revision_2',
+                        'label' => 'LBL_REVISION_2',
+                    ),
+                ),
+                7 =>
+                array(
+                    0 =>
+                    array(
+                        'name' => 'attachment',
+                        'comment' => 'File name associated with the note (attachment)',
+                        'label' => 'LBL_ATTACHMENT',
+                        'customCode' => '{$ATTACHMENT}',
+                    ),
+                    1 =>
+                    array(
+                        'name' => 'revision_3_date',
+                        'label' => 'LBL_REVISION_3_DATE',
+                    ),
+                ),
+                8 =>
+                array(
+                    0 =>
+                    array(
+                        'name' => 'special_information',
+                        'studio' => 'visible',
+                        'label' => 'LBL_SPECIAL_INFORMATION',
+                    ),
+                    1 =>
+                    array(
+                        'name' => 'revision_3',
+                        'label' => 'LBL_REVISION_3',
+                    ),
+                ),
+                9 =>
+                array(
+                    0 => '',
+                    1 =>
+                    array(
+                        'name' => 'revision_4_date',
+                        'label' => 'LBL_REVISION_4_DATE',
+                    ),
+                ),
+                10 =>
+                array(
+                    0 => '',
+                    1 =>
+                    array(
+                        'name' => 'revision_4',
+                        'label' => 'LBL_REVISION_4',
+                    ),
                 ),
             ),
             'lbl_line_items' =>

@@ -1,19 +1,44 @@
 <?php
+
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
+class AOS_ContractsViewEdit extends ViewEdit {
 
-class AOS_ContractsViewEdit extends ViewEdit
-{
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
     }
 
+    public function preDisplay() {
 
-    public function display()
-    {
+        $metadataFile = null;
+        $foundViewDefs = false;
+
+        $type = '';
+        $type = $this->bean->contract_type;
+
+        if (!empty($_REQUEST['contract_type_cc']) && $this->module == 'AOS_Contracts') {
+            //get primary group id of current user and check to see if a layout exists for that group
+            $type = $_REQUEST['contract_type_cc'];
+        }
+        $metadataFile1 = 'custom/modules/' . $this->module . '/metadata/' . $type . '/editviewdefs.php';
+        if (file_exists($metadataFile1)) {
+            $_REQUEST['custom_contract_type_dv'] = $type;
+            $metadataFile = $metadataFile1;
+        }
+
+        if (isset($metadataFile)) {
+            $foundViewDefs = true;
+        } else {
+            $metadataFile = $this->getMetaDataFile();
+        }
+        $this->ev = $this->getEditView();
+        $this->ev->ss = & $this->ss;
+        $this->ev->setup($this->module, $this->bean, $metadataFile);
+    }
+
+    public function display() {
         global $app_strings, $sugar_config;
 
         isset($this->bean->attachment) ? $image = $this->bean->attachment : $image = '';
@@ -36,6 +61,29 @@ class AOS_ContractsViewEdit extends ViewEdit
 		</span>';
 
         $this->ss->assign('ATTACHMENT', $html);
+        if (!empty($_REQUEST['contract_type_cc'])) {
+            $this->bean->contract_type = $_REQUEST['contract_type_cc'];
+        }
+
         parent::display();
+        $this->reload_on_change_type();
     }
+
+    function reload_on_change_type() {
+
+        echo <<<EOHTML
+
+<style>
+#ajaxloading_c {
+    top:350px!important;
+    left:850px!important;
+}
+
+</style>
+<script type="application/javascript" src="custom/modules/AOS_Contracts/js/reload.js"></script>
+
+
+EOHTML;
+    }
+
 }

@@ -40,6 +40,11 @@ $viewdefs [$module_name] = array(
                     'newTab' => false,
                     'panelDefault' => 'expanded',
                 ),
+                'LBL_EDITVIEW_PANEL4' =>
+                array(
+                    'newTab' => false,
+                    'panelDefault' => 'expanded',
+                ),
                 'LBL_LINE_ITEMS' =>
                 array(
                     'newTab' => false,
@@ -157,10 +162,154 @@ $viewdefs [$module_name] = array(
                     0 => 'description',
                     1 => '',
                 ),
-                9 =>
+            ),
+            'lbl_editview_panel4' =>
+            array(
+                0 =>
                 array(
                     0 => 'associate_hotels_contracts',
                     1 => '',
+                ),
+                1 =>
+                array(
+                    0 =>
+                    array(
+                        'name' => 'number_of_rooms',
+                        'studio' => 'visible',
+                        'label' => 'LBL_NUMBER_OF_ROOMS',
+                    ),
+                    1 =>
+                    array(
+                        'name' => 'date_of_issue',
+                        'studio' => 'visible',
+                        'label' => 'LBL_DATE_OF_ISSUE',
+                    ),
+                ),
+                2 =>
+                array(
+                    0 =>
+                    array(
+                        'name' => 'effective_date',
+                        'studio' => 'visible',
+                        'label' => 'LBL_EFFECTIVE_DATE',
+                    ),
+                    1 =>
+                    array(
+                        'name' => 'date_end',
+                        'studio' => 'visible',
+                        'label' => 'LBL_END_DATE',
+                    ),
+                ),
+                3 =>
+                array(
+                    0 =>
+                    array(
+                        'name' => 'cut_off_dates',
+                        'studio' => 'visible',
+                        'label' => 'LBL_CUT_OFF_DATES',
+                    ),
+                    1 =>
+                    array(
+                        'name' => 'signed_date',
+                        'studio' => 'visible',
+                        'label' => 'LBL_SIGNED_DATE',
+                    ),
+                ),
+                4 =>
+                array(
+                    0 =>
+                    array(
+                        'name' => 'black_out_dates',
+                        'studio' => 'visible',
+                        'label' => 'LBL_BLACK_OUT_DATES',
+                    ),
+                    1 =>
+                    array(
+                        'name' => 'revision_1_date',
+                        'studio' => 'visible',
+                        'label' => 'LBL_REVISION_1_DATE',
+                    ),
+                ),
+                5 =>
+                array(
+                    0 =>
+                    array(
+                        'name' => 'special_information',
+                        'studio' => 'visible',
+                        'label' => 'LBL_SPECIAL_INFORMATION',
+                    ),
+                    1 =>
+                    array(
+                        'name' => 'revision_1',
+                        'studio' => 'visible',
+                        'label' => 'LBL_REVISION_1',
+                    ),
+                ),
+                6 =>
+                array(
+                    0 =>
+                    array(
+                        'name' => 'attachment',
+                        'comment' => 'File name associated with the note (attachment)',
+                        'label' => 'LBL_ATTACHMENT',
+                        'customCode' => '{$ATTACHMENT}',
+                    ),
+                    1 =>
+                    array(
+                        'name' => 'revision_2_date',
+                        'studio' => 'visible',
+                        'label' => 'LBL_REVISION_2_DATE',
+                    ),
+                ),
+                7 =>
+                array(
+                    0 => '',
+                    1 =>
+                    array(
+                        'name' => 'revision_2',
+                        'studio' => 'visible',
+                        'label' => 'LBL_REVISION_2',
+                    ),
+                ),
+                8 =>
+                array(
+                    0 => '',
+                    1 =>
+                    array(
+                        'name' => 'revision_3_date',
+                        'studio' => 'visible',
+                        'label' => 'LBL_REVISION_3_DATE',
+                    ),
+                ),
+                9 =>
+                array(
+                    0 => '',
+                    1 =>
+                    array(
+                        'name' => 'revision_3',
+                        'studio' => 'visible',
+                        'label' => 'LBL_REVISION_3',
+                    ),
+                ),
+                10 =>
+                array(
+                    0 => '',
+                    1 =>
+                    array(
+                        'name' => 'revision_4_date',
+                        'studio' => 'visible',
+                        'label' => 'LBL_REVISION_4_DATE',
+                    ),
+                ),
+                11 =>
+                array(
+                    0 => '',
+                    1 =>
+                    array(
+                        'name' => 'revision_4',
+                        'studio' => 'visible',
+                        'label' => 'LBL_REVISION_4',
+                    ),
                 ),
             ),
             'lbl_line_items' =>

@@ -221,6 +221,13 @@
 {/foreach}
 <input type='hidden' name="sync_detail_and_edit" value='{$syncDetailEditViews}'>
 <!-- BEGIN SUGARCRM flav=ent ONLY -->
+{*
+// #B2B-1676
+// Sageteck Non-Upgrade Safe Change
+*}
+{* BEGIN - SECURITY GROUPS *}
+<input type='hidden' name='contract_type' value='{$grpLayout}'>
+{* END - SECURITY GROUPS *}
 {if $fromPortal}
     <input type='hidden' name='PORTAL' value='1'>
 {/if}

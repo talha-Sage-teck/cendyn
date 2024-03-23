@@ -113,6 +113,30 @@ class ViewLayoutView extends SugarView
             $smarty->assign($image, SugarThemeRegistry::current()->getImage($file, '', null, null, '.gif', $file)) ;
         }
 
+        // #B2B-1676
+        // Sageteck Non-Upgrade Safe Change
+        /* BEGIN - SECURITY GROUPS */
+        $groupLayout = "";
+        if($this->editModule=='AOS_Contracts'){
+            if(!empty($_REQUEST['contract_type'])) $groupLayout = $_REQUEST['contract_type'];
+            $groupName = "Default";
+            if(!isset($groupLayout) || empty($groupLayout)) {
+                $groupLayout = "";
+            } else {
+                //Get group name for display
+
+                $tmpbean=BeanFactory::newBean('AOS_Contracts');
+                $typ_opts=$tmpbean->field_defs['contract_type']['options'];
+                global $app_list_strings;
+                $typ_opts=$app_list_strings[$typ_opts];
+                $groupName=$typ_opts[$groupLayout];
+
+            }
+            $smarty->assign ( 'grpLayout', $groupLayout ) ;
+        }
+
+        /* END - SECURITY GROUPS */
+
         $requiredFields = implode(',', $parser->getRequiredFields());
         $slashedRequiredFields = addslashes($requiredFields);
         $buttons = array( ) ;
@@ -281,6 +305,13 @@ class ViewLayoutView extends SugarView
             $ajax->addCrumb(translate('LBL_STUDIO', 'ModuleBuilder'), 'ModuleBuilder.main("studio")') ;
             $ajax->addCrumb($this->translatedEditModule, 'ModuleBuilder.getContent("module=ModuleBuilder&action=wizard&view_module=' . $this->editModule . '")') ;
             $ajax->addCrumb(translate($layoutLabel, 'ModuleBuilder'), 'ModuleBuilder.getContent("module=ModuleBuilder&action=wizard&view='.$layoutView.'&view_module=' . $this->editModule . '")') ;
+            // #B2B-1676
+            // Sageteck Non-Upgrade Safe Change
+            if($this->editModule=='AOS_Contracts'){
+                /* BEGIN - SECURITY GROUPS */
+                $ajax->addCrumb ( translate ( $groupName ), '' ) ;
+                /* END - SECURITY GROUPS */
+            }
             $ajax->addCrumb($translatedViewType, '') ;
         }
 

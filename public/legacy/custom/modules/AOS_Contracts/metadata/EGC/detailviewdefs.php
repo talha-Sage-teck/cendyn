@@ -2,10 +2,35 @@
 
 $module_name = 'AOS_Contracts';
 $viewdefs [$module_name] = array(
-    'EditView' =>
+    'DetailView' =>
     array(
         'templateMeta' =>
         array(
+            'form' =>
+            array(
+                'buttons' =>
+                array(
+                    0 => 'EDIT',
+                    1 => 'DUPLICATE',
+                    2 => 'DELETE',
+                    3 => 'FIND_DUPLICATES',
+                    4 =>
+                    array(
+                        'customCode' => '<input type="button" class="button" onClick="showPopup(\'pdf\');" value="{$MOD.LBL_PRINT_AS_PDF}">',
+                    ),
+                    5 =>
+                    array(
+                        'customCode' => '<input type="button" class="button" onClick="showPopup(\'emailpdf\');" value="{$MOD.LBL_EMAIL_PDF}">',
+                    ),
+                ),
+            ),
+            'includes' =>
+            array(
+                0 =>
+                array(
+                    'file' => 'custom/modules/AOS_Contracts/js/AOS_Contracts_DetailView.js',
+                ),
+            ),
             'maxColumns' => '2',
             'widths' =>
             array(
@@ -20,22 +45,16 @@ $viewdefs [$module_name] = array(
                     'field' => '30',
                 ),
             ),
-            'form' =>
-            array(
-                'enctype' => 'multipart/form-data',
-            ),
-            'includes' =>
-            array(
-                0 =>
-                array(
-                    'file' => 'custom/modules/AOS_Contracts/js/AOS_Contracts.js',
-                ),
-            ),
             'useTabs' => false,
-            'syncDetailEditViews' => false,
+            'syncDetailEditViews' => true,
             'tabDefs' =>
             array(
                 'DEFAULT' =>
+                array(
+                    'newTab' => false,
+                    'panelDefault' => 'expanded',
+                ),
+                'LBL_EDITVIEW_PANEL3' =>
                 array(
                     'newTab' => false,
                     'panelDefault' => 'expanded',
@@ -105,10 +124,6 @@ $viewdefs [$module_name] = array(
                         'name' => 'contact',
                         'studio' => 'visible',
                         'label' => 'LBL_CONTACT',
-                        'displayParams' =>
-                        array(
-                            'initial_filter' => '&account_name="+this.form.{$fields.contract_account.name}.value+"',
-                        ),
                     ),
                 ),
                 4 =>
@@ -130,7 +145,6 @@ $viewdefs [$module_name] = array(
                     array(
                         'name' => 'renewal_reminder_date',
                         'label' => 'LBL_RENEWAL_REMINDER_DATE',
-                        'type' => 'datetimecombo',
                     ),
                     1 => '',
                 ),
@@ -150,16 +164,79 @@ $viewdefs [$module_name] = array(
                         'name' => 'company_signed_date',
                         'label' => 'LBL_COMPANY_SIGNED_DATE',
                     ),
-                    1 => '',
+                    1 =>
+                    array(
+                        'name' => 'revenue',
+                        'label' => 'LBL_REVENUE',
+                    ),
                 ),
                 8 =>
                 array(
                     0 => 'description',
                     1 => '',
                 ),
-                9 =>
+            ),
+            'lbl_editview_panel3' =>
+            array(
+                0 =>
                 array(
                     0 => 'associate_hotels_contracts',
+                    1 =>
+                    array(
+                        'name' => 'resort_type',
+                        'studio' => 'visible',
+                        'label' => 'LBL_RESORT_TYPE',
+                    ),
+                ),
+                1 =>
+                array(
+                    0 =>
+                    array(
+                        'name' => 'category',
+                        'studio' => 'visible',
+                        'label' => 'LBL_CATEGORY',
+                    ),
+                    1 =>
+                    array(
+                        'name' => 'rate',
+                        'studio' => 'visible',
+                        'label' => 'LBL_RATE',
+                    ),
+                ),
+                2 =>
+                array(
+                    0 =>
+                    array(
+                        'name' => 'category_option_1',
+                        'label' => 'LBL_CATEGORY_OPTION_1',
+                    ),
+                    1 => '',
+                ),
+                3 =>
+                array(
+                    0 =>
+                    array(
+                        'name' => 'category_option_2',
+                        'label' => 'LBL_CATEGORY_OPTION_2',
+                    ),
+                    1 => '',
+                ),
+                4 =>
+                array(
+                    0 =>
+                    array(
+                        'name' => 'category_option_3',
+                        'label' => 'LBL_CATEGORY_OPTION_3',
+                    ),
+                    1 => '',
+                ),
+                5 =>
+                array(
+                    0 =>
+                    array(
+                        'name' => 'category_option_4',
+                        'label' => 'LBL_CATEGORY_OPTION_4',
+                    ),
                     1 => '',
                 ),
             ),
@@ -216,13 +293,6 @@ $viewdefs [$module_name] = array(
                     array(
                         'name' => 'shipping_amount',
                         'label' => 'LBL_SHIPPING_AMOUNT',
-                        'displayParams' =>
-                        array(
-                            'field' =>
-                            array(
-                                'onblur' => 'calculateTotal(\'lineItems\');',
-                            ),
-                        ),
                     ),
                 ),
                 7 =>

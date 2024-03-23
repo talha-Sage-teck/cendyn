@@ -42,7 +42,6 @@ class SubpanelCustomQueryPort
 
         $spd = new SubPanelDefinitions($bean);
         $subpanel_def = $spd->load_subpanel($subpanel);
-
         if (method_exists($subpanel_def, 'isCollection')) {
 
             if (method_exists($subpanel_def, 'isDatasourceFunction')

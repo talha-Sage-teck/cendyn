@@ -40,6 +40,11 @@ $viewdefs [$module_name] = array(
                     'newTab' => false,
                     'panelDefault' => 'expanded',
                 ),
+                'LBL_EDITVIEW_PANEL11' =>
+                array(
+                    'newTab' => false,
+                    'panelDefault' => 'expanded',
+                ),
                 'LBL_LINE_ITEMS' =>
                 array(
                     'newTab' => false,
@@ -161,6 +166,36 @@ $viewdefs [$module_name] = array(
                 array(
                     0 => 'associate_hotels_contracts',
                     1 => '',
+                ),
+            ),
+            'lbl_editview_panel11' =>
+            array(
+                0 =>
+                array(
+                    0 =>
+                    array(
+                        'name' => 'sales_rep_code',
+                        'label' => 'LBL_SALES_REP_CODE',
+                    ),
+                    1 =>
+                    array(
+                        'name' => 'date_start',
+                        'studio' => 'visible',
+                        'label' => 'LBL_DATE_START',
+                    ),
+                ),
+                1 =>
+                array(
+                    0 =>
+                    array(
+                        'name' => 'category_option_1',
+                        'label' => 'LBL_CATEGORY_OPTION_1',
+                    ),
+                    1 =>
+                    array(
+                        'name' => 'category_option_2',
+                        'label' => 'LBL_CATEGORY_OPTION_2',
+                    ),
                 ),
             ),
             'lbl_line_items' =>

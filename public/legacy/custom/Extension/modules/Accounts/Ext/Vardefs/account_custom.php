@@ -227,7 +227,7 @@ $dictionary["Account"]["fields"]["iata"] = array(
     'logic' => array(
         'display' => array(
             'key' => 'displayType',
-            'modes' => array('detail', 'edit', 'create'),
+            'modes' => array('detail', 'edit', 'create','filter','massupdate'),
             'params' => array(
                 'fieldDependencies' => array(
                     'account_base_type',

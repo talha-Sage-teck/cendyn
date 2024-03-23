@@ -2,10 +2,35 @@
 
 $module_name = 'AOS_Contracts';
 $viewdefs [$module_name] = array(
-    'EditView' =>
+    'DetailView' =>
     array(
         'templateMeta' =>
         array(
+            'form' =>
+            array(
+                'buttons' =>
+                array(
+                    0 => 'EDIT',
+                    1 => 'DUPLICATE',
+                    2 => 'DELETE',
+                    3 => 'FIND_DUPLICATES',
+                    4 =>
+                    array(
+                        'customCode' => '<input type="button" class="button" onClick="showPopup(\'pdf\');" value="{$MOD.LBL_PRINT_AS_PDF}">',
+                    ),
+                    5 =>
+                    array(
+                        'customCode' => '<input type="button" class="button" onClick="showPopup(\'emailpdf\');" value="{$MOD.LBL_EMAIL_PDF}">',
+                    ),
+                ),
+            ),
+            'includes' =>
+            array(
+                0 =>
+                array(
+                    'file' => 'custom/modules/AOS_Contracts/js/AOS_Contracts_DetailView.js',
+                ),
+            ),
             'maxColumns' => '2',
             'widths' =>
             array(
@@ -20,22 +45,16 @@ $viewdefs [$module_name] = array(
                     'field' => '30',
                 ),
             ),
-            'form' =>
-            array(
-                'enctype' => 'multipart/form-data',
-            ),
-            'includes' =>
-            array(
-                0 =>
-                array(
-                    'file' => 'custom/modules/AOS_Contracts/js/AOS_Contracts.js',
-                ),
-            ),
             'useTabs' => false,
-            'syncDetailEditViews' => false,
+            'syncDetailEditViews' => true,
             'tabDefs' =>
             array(
                 'DEFAULT' =>
+                array(
+                    'newTab' => false,
+                    'panelDefault' => 'expanded',
+                ),
+                'LBL_EDITVIEW_PANEL8' =>
                 array(
                     'newTab' => false,
                     'panelDefault' => 'expanded',
@@ -105,10 +124,6 @@ $viewdefs [$module_name] = array(
                         'name' => 'contact',
                         'studio' => 'visible',
                         'label' => 'LBL_CONTACT',
-                        'displayParams' =>
-                        array(
-                            'initial_filter' => '&account_name="+this.form.{$fields.contract_account.name}.value+"',
-                        ),
                     ),
                 ),
                 4 =>
@@ -130,7 +145,6 @@ $viewdefs [$module_name] = array(
                     array(
                         'name' => 'renewal_reminder_date',
                         'label' => 'LBL_RENEWAL_REMINDER_DATE',
-                        'type' => 'datetimecombo',
                     ),
                     1 => '',
                 ),
@@ -150,17 +164,50 @@ $viewdefs [$module_name] = array(
                         'name' => 'company_signed_date',
                         'label' => 'LBL_COMPANY_SIGNED_DATE',
                     ),
-                    1 => '',
+                    1 =>
+                    array(
+                        'name' => 'revenue',
+                        'label' => 'LBL_REVENUE',
+                    ),
                 ),
                 8 =>
                 array(
                     0 => 'description',
                     1 => '',
                 ),
-                9 =>
+            ),
+            'lbl_editview_panel8' =>
+            array(
+                0 =>
                 array(
                     0 => 'associate_hotels_contracts',
                     1 => '',
+                ),
+                1 =>
+                array(
+                    0 =>
+                    array(
+                        'name' => 'attachment',
+                        'comment' => 'File name associated with the note (attachment)',
+                        'label' => 'LBL_ATTACHMENT',
+                        'customCode' => '<a href="{$fields.attachment.value}">Attachment</a>',
+                    ),
+                    1 => '',
+                ),
+                2 =>
+                array(
+                    0 =>
+                    array(
+                        'name' => 'payment_terms',
+                        'studio' => 'visible',
+                        'label' => 'LBL_PAYMENT_TERMS',
+                    ),
+                    1 =>
+                    array(
+                        'name' => 'special_information',
+                        'studio' => 'visible',
+                        'label' => 'LBL_SPECIAL_INFORMATION',
+                    ),
                 ),
             ),
             'lbl_line_items' =>
@@ -216,13 +263,6 @@ $viewdefs [$module_name] = array(
                     array(
                         'name' => 'shipping_amount',
                         'label' => 'LBL_SHIPPING_AMOUNT',
-                        'displayParams' =>
-                        array(
-                            'field' =>
-                            array(
-                                'onblur' => 'calculateTotal(\'lineItems\');',
-                            ),
-                        ),
                     ),
                 ),
                 7 =>

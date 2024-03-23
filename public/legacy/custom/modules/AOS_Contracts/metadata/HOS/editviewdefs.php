@@ -159,7 +159,12 @@ $viewdefs [$module_name] = array(
                 ),
                 9 =>
                 array(
-                    0 => 'associate_hotels_contracts',
+                    0 =>
+                    array(
+                        'name' => 'associate_hotels_contracts',
+                        'studio' => 'visible',
+                        'label' => 'LBL_ASSOCIATE_HOTELS',
+                    ),
                     1 => '',
                 ),
             ),

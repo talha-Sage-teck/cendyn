@@ -1,17 +1,17 @@
 <?php
-$searchdefs ['Accounts'] =
+$searchdefs ['Accounts'] = 
 array (
-  'layout' =>
+  'layout' => 
   array (
-    'basic_search' =>
+    'basic_search' => 
     array (
-      'name' =>
+      'name' => 
       array (
         'name' => 'name',
         'default' => true,
         'width' => '10%',
       ),
-      'status' =>
+      'status' => 
       array (
         'type' => 'enum',
         'default' => true,
@@ -19,7 +19,7 @@ array (
         'width' => '10%',
         'name' => 'status',
       ),
-      'current_user_only' =>
+      'current_user_only' => 
       array (
         'name' => 'current_user_only',
         'label' => 'LBL_CURRENT_USER_FILTER',
@@ -27,7 +27,7 @@ array (
         'default' => true,
         'width' => '10%',
       ),
-      'favorites_only' =>
+      'favorites_only' => 
       array (
         'name' => 'favorites_only',
         'label' => 'LBL_FAVORITES_FILTER',
@@ -36,15 +36,15 @@ array (
         'width' => '10%',
       ),
     ),
-    'advanced_search' =>
+    'advanced_search' => 
     array (
-      'name' =>
+      'name' => 
       array (
         'name' => 'name',
         'default' => true,
         'width' => '10%',
       ),
-      'status' =>
+      'status' => 
       array (
         'type' => 'enum',
         'default' => true,
@@ -52,13 +52,13 @@ array (
         'width' => '10%',
         'name' => 'status',
       ),
-      'website' =>
+      'website' => 
       array (
         'name' => 'website',
         'default' => true,
         'width' => '10%',
       ),
-      'phone' =>
+      'phone' => 
       array (
         'name' => 'phone',
         'label' => 'LBL_ANY_PHONE',
@@ -66,7 +66,7 @@ array (
         'default' => true,
         'width' => '10%',
       ),
-      'email' =>
+      'email' => 
       array (
         'name' => 'email',
         'label' => 'LBL_ANY_EMAIL',
@@ -74,7 +74,7 @@ array (
         'default' => true,
         'width' => '10%',
       ),
-      'address_street' =>
+      'address_street' => 
       array (
         'name' => 'address_street',
         'label' => 'LBL_ANY_ADDRESS',
@@ -82,7 +82,7 @@ array (
         'default' => true,
         'width' => '10%',
       ),
-      'address_city' =>
+      'address_city' => 
       array (
         'name' => 'address_city',
         'label' => 'LBL_CITY',
@@ -90,7 +90,7 @@ array (
         'default' => true,
         'width' => '10%',
       ),
-      'address_state' =>
+      'address_state' => 
       array (
         'name' => 'address_state',
         'label' => 'LBL_STATE',
@@ -98,7 +98,7 @@ array (
         'default' => true,
         'width' => '10%',
       ),
-      'address_postalcode' =>
+      'address_postalcode' => 
       array (
         'name' => 'address_postalcode',
         'label' => 'LBL_POSTAL_CODE',
@@ -106,7 +106,7 @@ array (
         'default' => true,
         'width' => '10%',
       ),
-      'billing_address_country' =>
+      'billing_address_country' => 
       array (
         'name' => 'billing_address_country',
         'label' => 'LBL_COUNTRY',
@@ -115,33 +115,33 @@ array (
         'default' => true,
         'width' => '10%',
       ),
-      'account_base_type' =>
+      'account_base_type' => 
       array (
         'name' => 'account_base_type',
         'default' => true,
         'width' => '10%',
       ),
-      'account_type' =>
+      'account_type' => 
       array (
         'name' => 'account_type',
         'default' => true,
         'width' => '10%',
       ),
-      'industry' =>
+      'industry' => 
       array (
         'name' => 'industry',
         'default' => true,
         'width' => '10%',
       ),
-      'assigned_user_id' =>
+      'assigned_user_id' => 
       array (
         'name' => 'assigned_user_id',
         'type' => 'enum',
         'label' => 'LBL_ASSIGNED_TO',
-        'function' =>
+        'function' => 
         array (
           'name' => 'get_user_array',
-          'params' =>
+          'params' => 
           array (
             0 => false,
           ),
@@ -149,7 +149,7 @@ array (
         'default' => true,
         'width' => '10%',
       ),
-      'priority' =>
+      'priority' => 
       array (
         'type' => 'enum',
         'default' => true,
@@ -158,7 +158,15 @@ array (
         'width' => '10%',
         'name' => 'priority',
       ),
-      'b2b_account_no' =>
+      'iata' => 
+      array (
+        'type' => 'varchar',
+        'default' => true,
+        'label' => 'LBL_IATA',
+        'width' => '10%',
+        'name' => 'iata',
+      ),
+      'b2b_account_no' => 
       array (
         'name' => 'b2b_account_no',
         'width' => '10%',
@@ -167,11 +175,11 @@ array (
       ),
     ),
   ),
-  'templateMeta' =>
+  'templateMeta' => 
   array (
     'maxColumns' => '3',
     'maxColumnsBasic' => '4',
-    'widths' =>
+    'widths' => 
     array (
       'label' => '10',
       'field' => '30',

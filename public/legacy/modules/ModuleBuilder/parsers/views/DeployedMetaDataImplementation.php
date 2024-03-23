@@ -401,6 +401,50 @@ class DeployedMetaDataImplementation extends AbstractMetaDataImplementation impl
         }
         // END ASSERTIONS
 
+        // #B2B-1676
+        // Sageteck Non-Upgrade Safe Change
+        /* BEGIN - SECURITY GROUPS */
+        if($moduleName=='AOS_Contracts'&&!empty($_REQUEST['contract_type'])){
+            $groupLayout = "";
+            if(!empty($_REQUEST['contract_type'])) $groupLayout = $_REQUEST['contract_type'];
+            if(!isset($groupLayout) || empty($groupLayout)) {
+                $groupLayout = "";
+            } else {
+                $groupLayout .= "/";
+            }
+            if($type=='custom'){
+                if(!file_exists($pathMap [ $type ] . 'modules/' . $moduleName . '/metadata/' . $groupLayout . $filenames [ $view ] . '.php')){
+                    if (!file_exists($pathMap [ $type ] . 'modules/' . $moduleName . '/metadata/' . $groupLayout )) {
+                        mkdir($pathMap [ $type ] . 'modules/' . $moduleName . '/metadata/' . $groupLayout , 0775, true);
+                    }
+
+
+                    if(file_exists($pathMap [$type] . 'modules/' . $moduleName . '/metadata/' . $filenames [$view] . '.php')){
+                        $status=copy(
+                            $pathMap [$type] . 'modules/' . $moduleName . '/metadata/' . $filenames [$view] . '.php',
+                            $pathMap [ $type ] . 'modules/' . $moduleName . '/metadata/' . $groupLayout . $filenames [ $view ] . '.php'
+                        );
+                        $error=error_get_last();
+                    }
+                    else{
+                        copy(
+                            $pathMap ['base'] . 'modules/' . $moduleName . '/metadata/' . $filenames [$view] . '.php',
+                            $pathMap [ $type ] . 'modules/' . $moduleName . '/metadata/' . $groupLayout . $filenames [ $view ] . '.php'
+                        );
+                    }
+                }
+            }
+
+            return  $pathMap [ $type ] . 'modules/' . $moduleName . '/metadata/' . $groupLayout . $filenames [ $view ] . '.php';
+            /* END - SECURITY GROUPS */
+        }
+
+
+
+
+
+
+
         // Construct filename
         return $pathMap [$type] . 'modules/' . $moduleName . '/metadata/' . $filenames [$view] . '.php';
     }

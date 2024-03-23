@@ -40,6 +40,11 @@ $viewdefs [$module_name] = array(
                     'newTab' => false,
                     'panelDefault' => 'expanded',
                 ),
+                'LBL_EDITVIEW_PANEL3' =>
+                array(
+                    'newTab' => false,
+                    'panelDefault' => 'expanded',
+                ),
                 'LBL_LINE_ITEMS' =>
                 array(
                     'newTab' => false,
@@ -157,9 +162,68 @@ $viewdefs [$module_name] = array(
                     0 => 'description',
                     1 => '',
                 ),
-                9 =>
+            ),
+            'lbl_editview_panel3' =>
+            array(
+                0 =>
                 array(
                     0 => 'associate_hotels_contracts',
+                    1 =>
+                    array(
+                        'name' => 'resort_type',
+                        'studio' => 'visible',
+                        'label' => 'LBL_RESORT_TYPE',
+                    ),
+                ),
+                1 =>
+                array(
+                    0 =>
+                    array(
+                        'name' => 'category',
+                        'studio' => 'visible',
+                        'label' => 'LBL_CATEGORY',
+                    ),
+                    1 =>
+                    array(
+                        'name' => 'rate',
+                        'studio' => 'visible',
+                        'label' => 'LBL_RATE',
+                    ),
+                ),
+                2 =>
+                array(
+                    0 =>
+                    array(
+                        'name' => 'category_option_1',
+                        'label' => 'LBL_CATEGORY_OPTION_1',
+                    ),
+                    1 => '',
+                ),
+                3 =>
+                array(
+                    0 =>
+                    array(
+                        'name' => 'category_option_2',
+                        'label' => 'LBL_CATEGORY_OPTION_2',
+                    ),
+                    1 => '',
+                ),
+                4 =>
+                array(
+                    0 =>
+                    array(
+                        'name' => 'category_option_3',
+                        'label' => 'LBL_CATEGORY_OPTION_3',
+                    ),
+                    1 => '',
+                ),
+                5 =>
+                array(
+                    0 =>
+                    array(
+                        'name' => 'category_option_4',
+                        'label' => 'LBL_CATEGORY_OPTION_4',
+                    ),
                     1 => '',
                 ),
             ),

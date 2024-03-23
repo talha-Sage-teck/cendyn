@@ -40,6 +40,11 @@ $viewdefs [$module_name] = array(
                     'newTab' => false,
                     'panelDefault' => 'expanded',
                 ),
+                'LBL_EDITVIEW_PANEL6' =>
+                array(
+                    'newTab' => false,
+                    'panelDefault' => 'expanded',
+                ),
                 'LBL_LINE_ITEMS' =>
                 array(
                     'newTab' => false,
@@ -157,9 +162,67 @@ $viewdefs [$module_name] = array(
                     0 => 'description',
                     1 => '',
                 ),
-                9 =>
+            ),
+            'lbl_editview_panel6' =>
+            array(
+                0 =>
                 array(
                     0 => 'associate_hotels_contracts',
+                    1 => '',
+                ),
+                1 =>
+                array(
+                    0 =>
+                    array(
+                        'name' => 'date_of_issue',
+                        'studio' => 'visible',
+                        'label' => 'LBL_DATE_OF_ISSUE',
+                    ),
+                    1 =>
+                    array(
+                        'name' => 'effective_date',
+                        'studio' => 'visible',
+                        'label' => 'LBL_EFFECTIVE_DATE',
+                    ),
+                ),
+                2 =>
+                array(
+                    0 =>
+                    array(
+                        'name' => 'signed_date',
+                        'studio' => 'visible',
+                        'label' => 'LBL_SIGNED_DATE',
+                    ),
+                    1 =>
+                    array(
+                        'name' => 'date_end',
+                        'studio' => 'visible',
+                        'label' => 'LBL_END_DATE',
+                    ),
+                ),
+                3 =>
+                array(
+                    0 =>
+                    array(
+                        'name' => 'commission',
+                        'studio' => 'visible',
+                        'label' => 'LBL_COMMISSION',
+                    ),
+                    1 =>
+                    array(
+                        'name' => 'value_additions',
+                        'studio' => 'visible',
+                        'label' => 'LBL_VALUE_ADDITIONS',
+                    ),
+                ),
+                4 =>
+                array(
+                    0 =>
+                    array(
+                        'name' => 'special_information',
+                        'studio' => 'visible',
+                        'label' => 'LBL_SPECIAL_INFORMATION',
+                    ),
                     1 => '',
                 ),
             ),
