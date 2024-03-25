@@ -41,26 +41,32 @@ if (!defined('sugarEntry') || !sugarEntry) {
 class AOS_ContractsViewDetail extends ViewDetail {
 
     public function preDisplay() {
-        /* BEGIN - SECURITY GROUPS */
-        $metadataFile = null;
-        $foundViewDefs = false;
 
-        $type = $this->bean->contract_type;
-        if (!empty($type) && $this->module == 'AOS_Contracts') {
-            //get primary group id of current user and check to see if a layout exists for that group
-            $metadataFile1 = 'custom/modules/' . $this->module . '/metadata/' . $type . '/detailviewdefs.php';
-            if (file_exists($metadataFile1)) {
-                $metadataFile = $metadataFile1;
-                $_REQUEST['custom_contract_type_dv'] = $type;
-            }
-        }
-
-        if (isset($metadataFile)) {
-            $foundViewDefs = true;
-        } else {
+        global $sugar_config;
+        if (empty($sugar_config['enable_contract_view'])) {
             $metadataFile = $this->getMetaDataFile();
+        } else {
+            /* BEGIN - SECURITY GROUPS */
+            $metadataFile = null;
+            $foundViewDefs = false;
+
+            $type = $this->bean->contract_type;
+            if (!empty($type) && $this->module == 'AOS_Contracts') {
+                //get primary group id of current user and check to see if a layout exists for that group
+                $metadataFile1 = 'custom/modules/' . $this->module . '/metadata/' . $type . '/detailviewdefs.php';
+                if (file_exists($metadataFile1)) {
+                    $metadataFile = $metadataFile1;
+                    $_REQUEST['custom_contract_type_dv'] = $type;
+                }
+            }
+
+            if (isset($metadataFile)) {
+                $foundViewDefs = true;
+            } else {
+                $metadataFile = $this->getMetaDataFile();
+            }
+            /* END - SECURITY GROUPS */
         }
-        /* END - SECURITY GROUPS */
         $this->dv = new DetailView2();
         $this->dv->ss = & $this->ss;
         $this->dv->setup($this->module, $this->bean, $metadataFile, get_custom_file_if_exists('include/DetailView/DetailView.tpl'));

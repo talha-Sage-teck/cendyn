@@ -83,24 +83,30 @@ class ViewEditCustom extends ViewEdit {
      * @see SugarView::preDisplay()
      */
     public function preDisplay() {
-        // #B2B-1676
-        /* BEGIN - SECURITY GROUPS */
-        $metadataFile = null;
-        $foundViewDefs = false;
-        if (!empty($_REQUEST['contract_type_cc']) && $this->module == 'AOS_Contracts') {
-            //get primary group id of current user and check to see if a layout exists for that group
-            $metadataFile1 = 'custom/modules/' . $this->module . '/metadata/' . $_REQUEST['contract_type_cc'] . '/editviewdefs.php';
-            if (file_exists($metadataFile1)) {
-                $metadataFile = $metadataFile1;
+        global $sugar_config;
+        if (empty($sugar_config['enable_contract_view'])) {
+            $metadataFile = $this->getMetaDataFile();
+        } else {
+            // #B2B-1676
+            /* BEGIN - SECURITY GROUPS */
+            $metadataFile = null;
+            $foundViewDefs = false;
+            if (!empty($_REQUEST['contract_type_cc']) && $this->module == 'AOS_Contracts') {
+                //get primary group id of current user and check to see if a layout exists for that group
+                $metadataFile1 = 'custom/modules/' . $this->module . '/metadata/' . $_REQUEST['contract_type_cc'] . '/editviewdefs.php';
+                if (file_exists($metadataFile1)) {
+                    $metadataFile = $metadataFile1;
+                }
             }
+
+            if (isset($metadataFile)) {
+                $foundViewDefs = true;
+            } else {
+                $metadataFile = $this->getMetaDataFile();
+            }
+            /* END - SECURITY GROUPS */
         }
 
-        if (isset($metadataFile)) {
-            $foundViewDefs = true;
-        } else {
-            $metadataFile = $this->getMetaDataFile();
-        }
-        /* END - SECURITY GROUPS */
         $this->ev = $this->getEditView();
         $this->ev->ss = & $this->ss;
         $this->ev->setup($this->module, $this->bean, $metadataFile);

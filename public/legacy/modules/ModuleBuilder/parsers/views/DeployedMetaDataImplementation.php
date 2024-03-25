@@ -111,7 +111,9 @@ class DeployedMetaDataImplementation extends AbstractMetaDataImplementation impl
                      MB_WORKINGMETADATALOCATION,
                      MB_HISTORYMETADATALOCATION
                  ) as $type) {
-            $this->_sourceFilename = $this->getFileName($view, $moduleName, null, $type);
+            // #B2B-1676
+            // Sageteck Non-Upgrade Safe Change
+            $this->_sourceFilename = $this->getFileName($view, $moduleName, null, $type, true);
             if ($view == MB_POPUPSEARCH || $view == MB_POPUPLIST) {
                 global $current_language;
                 $mod = return_module_language($current_language, $moduleName);
@@ -232,7 +234,9 @@ class DeployedMetaDataImplementation extends AbstractMetaDataImplementation impl
         // Check the base location first, then if nothing is there (which for example, will be the case for some QuickCreates, and some mobile layouts - see above)
         // we need to check the custom location where the derived layouts will be
         foreach (array(MB_BASEMETADATALOCATION, MB_CUSTOMMETADATALOCATION) as $type) {
-            $sourceFilename = $this->getFileName($view, $moduleName, null, $type);
+            // #B2B-1676
+            // Sageteck Non-Upgrade Safe Change
+            $sourceFilename = $this->getFileName($view, $moduleName, null, $type, true);
             if ($view == MB_POPUPSEARCH || $view == MB_POPUPLIST) {
                 global $current_language;
                 $mod = return_module_language($current_language, $moduleName);
@@ -361,7 +365,9 @@ class DeployedMetaDataImplementation extends AbstractMetaDataImplementation impl
      * @param string $type
      * @return string
      */
-    public function getFileName($view, $moduleName, $packageName, $type = MB_CUSTOMMETADATALOCATION)
+    // #B2B-1676
+    // Sageteck Non-Upgrade Safe Change
+    public function getFileName($view, $moduleName, $packageName, $type = MB_CUSTOMMETADATALOCATION, $preview=false)
     {
         $pathMap = array(
             MB_BASEMETADATALOCATION => '',
@@ -420,21 +426,36 @@ class DeployedMetaDataImplementation extends AbstractMetaDataImplementation impl
 
 
                     if(file_exists($pathMap [$type] . 'modules/' . $moduleName . '/metadata/' . $filenames [$view] . '.php')){
-                        $status=copy(
-                            $pathMap [$type] . 'modules/' . $moduleName . '/metadata/' . $filenames [$view] . '.php',
-                            $pathMap [ $type ] . 'modules/' . $moduleName . '/metadata/' . $groupLayout . $filenames [ $view ] . '.php'
-                        );
-                        $error=error_get_last();
+
+                        if($preview){
+                            $path12=$pathMap [$type] . 'modules/' . $moduleName . '/metadata/' . $filenames [$view] . '.php';
+                        }
+                        else{
+                            $status=copy(
+                                $pathMap [$type] . 'modules/' . $moduleName . '/metadata/' . $filenames [$view] . '.php',
+                                $pathMap [ $type ] . 'modules/' . $moduleName . '/metadata/' . $groupLayout . $filenames [ $view ] . '.php'
+                            );
+                            $error=error_get_last();
+                        }
+
                     }
                     else{
-                        copy(
-                            $pathMap ['base'] . 'modules/' . $moduleName . '/metadata/' . $filenames [$view] . '.php',
-                            $pathMap [ $type ] . 'modules/' . $moduleName . '/metadata/' . $groupLayout . $filenames [ $view ] . '.php'
-                        );
+                        if($preview){
+                            $path12=$pathMap ['base'] . 'modules/' . $moduleName . '/metadata/' . $filenames [$view] . '.php';
+                        }
+                        else{
+                            copy(
+                                $pathMap ['base'] . 'modules/' . $moduleName . '/metadata/' . $filenames [$view] . '.php',
+                                $pathMap [ $type ] . 'modules/' . $moduleName . '/metadata/' . $groupLayout . $filenames [ $view ] . '.php'
+                            );
+                        }
+
                     }
                 }
             }
-
+            if(!empty($path12)){
+                return $path12;
+            }
             return  $pathMap [ $type ] . 'modules/' . $moduleName . '/metadata/' . $groupLayout . $filenames [ $view ] . '.php';
             /* END - SECURITY GROUPS */
         }

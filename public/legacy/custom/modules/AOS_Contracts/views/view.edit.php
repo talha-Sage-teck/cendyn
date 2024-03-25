@@ -61,12 +61,18 @@ class AOS_ContractsViewEdit extends ViewEdit {
 		</span>';
 
         $this->ss->assign('ATTACHMENT', $html);
-        if (!empty($_REQUEST['contract_type_cc'])) {
-            $this->bean->contract_type = $_REQUEST['contract_type_cc'];
+
+        global $sugar_config;
+        if (!empty($sugar_config['enable_contract_view'])) {
+            if (!empty($_REQUEST['contract_type_cc'])) {
+                $this->bean->contract_type = $_REQUEST['contract_type_cc'];
+            }
         }
 
         parent::display();
-        $this->reload_on_change_type();
+        if (!empty($sugar_config['enable_contract_view'])) {
+            $this->reload_on_change_type();
+        }
     }
 
     function reload_on_change_type() {

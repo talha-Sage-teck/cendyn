@@ -362,48 +362,65 @@ class StudioModule
                 'icon' => 'filter'
             );
         }
+        
         // #B2B-1676
         // Sageteck Non-Upgrade Safe Change
-        if($this->module=="AOS_Contracts"){
-            global $app_list_strings;
-            $opts=$this->fields["contract_type"]["options"];
-            $all_opts=$app_list_strings[$opts];
+        global $sugar_config;
+        if(!empty($sugar_config['enable_contract_view'])){
+            if($this->module=="AOS_Contracts"&&empty($_REQUEST['is_default'])){
+                global $app_list_strings;
+                $opts=$this->fields["contract_type"]["options"];
+                $all_opts=$app_list_strings[$opts];
 
-            $layouts_default=$layouts;
-            $layouts=[
-            ];
-            $layouts['Default']=[
-                "name"=>'Default',
-                "type"=>"Folder",
-                "children"=>$layouts_default,
-                "action"=> "module=ModuleBuilder&action=wizard&view=layouts&view_module=AOS_Contracts",
-                "imageTitle"=> "Layouts",
-                "help"=> "layoutsBtn"
-            ];
-
-            foreach ($all_opts as $opt_val=>$opt_label){
-                if(!empty($opt_val)){
-
+                $layouts_default=$layouts;
+                $layouts=[
+                ];
+                $layouts['Default']=[
+                    "name"=>'Default',
+                    "type"=>"Folder",
+                    "children"=>$layouts_default,
+                    "action"=> "module=ModuleBuilder&action=wizard&view=layouts&view_module=AOS_Contracts&is_default=true",
+                    "imageTitle"=> "Layouts",
+                    "help"=> "layoutsBtn"
+                ];
+                if(!empty($_REQUEST['contract_type'])){
+                    $x=0;
+                    $opt_val=$_REQUEST['contract_type'];
                     $edit=json_decode(json_encode($layouts_default['Edit View']),true);
                     $edit['action'].='&contract_type='.$opt_val;
                     $det=json_decode(json_encode($layouts_default['Detail View']),true);
                     $det['action'].='&contract_type='.$opt_val;
-
-
-                    $layouts[$opt_label]=[
-                        "name"=>$opt_label,
-                        "type"=>"Folder",
-                        "children"=>[
-                            'Edit View'=>$edit,
-                            'Detail View'=>$det
-                        ],
-                        "action"=> "module=ModuleBuilder&action=wizard&view=layouts&view_module=AOS_Contracts".'&contract_type='.$opt_val,
-                        "imageTitle"=> "Layouts",
-                        "help"=> "layoutsBtn"
+                    $layouts=[
+                        'Edit View'=>$edit,
+                        'Detail View'=>$det
                     ];
+                    return $layouts;
+                }
+                foreach ($all_opts as $opt_val=>$opt_label){
+                    if(!empty($opt_val)){
+
+                        $edit=json_decode(json_encode($layouts_default['Edit View']),true);
+                        $edit['action'].='&contract_type='.$opt_val;
+                        $det=json_decode(json_encode($layouts_default['Detail View']),true);
+                        $det['action'].='&contract_type='.$opt_val;
+
+
+                        $layouts[$opt_label]=[
+                            "name"=>$opt_label,
+                            "type"=>"Folder",
+                            "children"=>[
+                                'Edit View'=>$edit,
+                                'Detail View'=>$det
+                            ],
+                            "action"=> "module=ModuleBuilder&action=wizard&view=layouts&view_module=AOS_Contracts".'&contract_type='.$opt_val,
+                            "imageTitle"=> "Layouts",
+                            "help"=> "layoutsBtn"
+                        ];
+
+                    }
+
 
                 }
-
 
             }
 
