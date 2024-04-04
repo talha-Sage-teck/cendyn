@@ -24,6 +24,16 @@ class CustomUsersController extends CustomSugarController {
         return true;
     }
 
+    function action_manageProductionDataSummaryCurrency() {
+        if (is_admin($GLOBALS['current_user'])) {
+            $this->view = 'manageproductiondatasummarycurrency';
+            $GLOBALS['view'] = $this->view;
+        } else {
+            sugar_die($GLOBALS['app_strings']['ERR_NOT_ADMIN']);
+        }
+        return true;
+    }
+
     function action_standardDashboardConfig() {
         if (is_admin($GLOBALS['current_user'])) {
             $this->view = 'standarddashboard';
@@ -46,6 +56,14 @@ class CustomUsersController extends CustomSugarController {
         SugarApplication::redirect("index.php?module=Administration&action=index");
     }
 
+    function action_saveManageProductionDataSummaryCurrency() {
+        $cfg = new Configurator();
+        $cfg->populateFromPost();
+        $cfg->handleOverride();
+
+        SugarApplication::redirect("index.php?module=Administration&action=index");
+    }
+
     function unsubscribeUsers($delete) {
         global $db;
         $selectQ = "SELECT * FROM user_preferences WHERE category='Home' AND deleted = 0 AND assigned_user_id <> '1'";
@@ -55,9 +73,9 @@ class CustomUsersController extends CustomSugarController {
                 $rowData = unserialize(base64_decode($row['contents']));
                 $array = $rowData['pages'];
                 $subkey = "id";
-                if(!empty($array)&&is_countable($array)){
+                if (!empty($array) && is_countable($array)) {
                     $array = array_filter($array, function ($v) use (&$array, $subkey, $delete) {
-                        if(empty($v['is_managed'])){
+                        if (empty($v['is_managed'])) {
                             return true;
                         }
                         if (!array_key_exists($subkey, $v))
@@ -84,7 +102,7 @@ class CustomUsersController extends CustomSugarController {
 
     function unsubscribeTabUsersByIds($tab, $users) {
         global $db;
-        $selected_users = array_map(function($user) {
+        $selected_users = array_map(function ($user) {
             return "'{$user}'";
         }, $users);
         $selected_users = implode(", ", $selected_users);
@@ -157,7 +175,6 @@ class CustomUsersController extends CustomSugarController {
                     "' WHERE category = 'MySettings' AND name = 'StandardDashboardConfig'";
         $db->query($query, true);
 
-
         //We only need the updated or new config from here onwards
         $updated = null;
         foreach ($dash as $d) {
@@ -167,7 +184,7 @@ class CustomUsersController extends CustomSugarController {
         $users = $updated['users'];
 
         //REMOVE TABS FROM USERS THAT MAY STILL CONTAIN TABS THAT THEY WERE DESELECTED FROM
-        $selected_users = array_map(function($user) {
+        $selected_users = array_map(function ($user) {
             return "'{$user}'";
         }, $users);
         $selected_users = implode(", ", $selected_users);
@@ -200,19 +217,19 @@ class CustomUsersController extends CustomSugarController {
             $updatePreferenceQuery = "";
             if ($rowData && is_array($rowData)) {
                 //empty out the existing managed tabs so they get re inserted in proper sequence
-                $pages=$rowData['pages'];
-                for ($i=count($pages)-1;$i>=0;$i--){
-                    $datum=$pages[$i];
-                    if (!empty($datum['is_managed'])&&$datum['is_managed']=='yes') {
+                $pages = $rowData['pages'];
+                for ($i = count($pages) - 1; $i >= 0; $i--) {
+                    $datum = $pages[$i];
+                    if (!empty($datum['is_managed']) && $datum['is_managed'] == 'yes') {
                         array_splice($pages, $i, 1);
                     }
                 }
-                $rowData['pages']=$pages;
+                $rowData['pages'] = $pages;
                 //append or replace a field
                 foreach ($updated['dashlets'] as $p => $d) {
                     $found = false;
-                    $d['is_managed']='yes';
-                    $d['managed_id']=$d['id'];
+                    $d['is_managed'] = 'yes';
+                    $d['managed_id'] = $d['id'];
                     foreach ($rowData['pages'] as $page => $datum) {
                         if ($datum['id'] && $datum['id'] == $d['id']) {
                             $found = true;
@@ -225,17 +242,16 @@ class CustomUsersController extends CustomSugarController {
                 }
 
                 //append dashlets
-                $rowData['dashlets'] = array_merge($rowData['dashlets']??[], $dashlets_);
+                $rowData['dashlets'] = array_merge($rowData['dashlets'] ?? [], $dashlets_);
                 $data = base64_encode(serialize($rowData));
 
                 $updatePreferenceQuery = "UPDATE user_preferences SET contents='{$data}' WHERE assigned_user_id = '{$user}' AND deleted=0 AND category='Home'";
-            }
-            else {
-                $n_updated=[];
+            } else {
+                $n_updated = [];
                 foreach ($updated['dashlets'] as $p => $d) {
-                    $d['is_managed']='yes';
-                    $d['managed_id']=$d['id'];
-                    $n_updated[$p]=$d;
+                    $d['is_managed'] = 'yes';
+                    $d['managed_id'] = $d['id'];
+                    $n_updated[$p] = $d;
                 }
                 $rowData = array(
                     "dashlets" => $dashlets_,
@@ -273,7 +289,7 @@ class CustomUsersController extends CustomSugarController {
         SugarApplication::redirect("index.php?module=Administration&action=index");
     }
 
-    private function setDashboardInitial($userId){
+    private function setDashboardInitial($userId) {
         require_once('include/MySugar/MySugar.php');
 
         require('modules/Home/dashlets.php');
@@ -284,7 +300,7 @@ class CustomUsersController extends CustomSugarController {
             $dc->buildCache();
         }
         require $cachefile;
-        $dash_user=BeanFactory::getBean('Users',$userId);
+        $dash_user = BeanFactory::getBean('Users', $userId);
         $pages = $dash_user->getPreference('pages', 'Home');
         $dashlets = $dash_user->getPreference('dashlets', 'Home');
         $hasUserPreferences = (!isset($pages) || empty($pages) || !isset($dashlets) || empty($dashlets)) ? false : true;
@@ -331,7 +347,7 @@ class CustomUsersController extends CustomSugarController {
                     'fileLocation' => $dashletsFiles['SugarFeedDashlet']['file'],
                 );
 
-                foreach ($defaultDashlets as $dashletName=>$module) {
+                foreach ($defaultDashlets as $dashletName => $module) {
                     // clint - fixes bug #20398
                     // only display dashlets that are from visibile modules and that the user has permission to list
                     $myDashlet = new MySugar($module);
@@ -359,7 +375,7 @@ class CustomUsersController extends CustomSugarController {
                 $columns[1]['width'] = '40%';
                 $columns[1]['dashlets'] = array();
 
-                foreach ($dashlets as $guid=>$dashlet) {
+                foreach ($dashlets as $guid => $dashlet) {
                     if ($dashlet['forceColumn'] == 0) {
                         array_push($columns[0]['dashlets'], $guid);
                     } else {
@@ -400,12 +416,11 @@ class CustomUsersController extends CustomSugarController {
             $pageIndex = 0;
             $pages[0]['columns'] = $columns;
             $pages[0]['numColumns'] = '3';
-            $pages[0]['pageTitleLabel'] = 'LBL_HOME_PAGE_1_NAME';	// "My Sugar"
+            $pages[0]['pageTitleLabel'] = 'LBL_HOME_PAGE_1_NAME'; // "My Sugar"
             $pageIndex++;
             $dash_user->setPreference('pages', $pages, 0, 'Home');
             $dash_user->savePreferencesToDB();
             $activePage = 0;
         }
     }
-
 }
