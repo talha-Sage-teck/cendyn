@@ -1,5 +1,5 @@
 <?php
-
+$GLOBALS['account_parent']=isset($bean)?$bean:$parentbean;
 function get_accounts_cb2b_production_summary_data_by_property() {
 //    global $db;
 //    $bean = $GLOBALS['app']->controller->bean;
@@ -8,21 +8,22 @@ function get_accounts_cb2b_production_summary_data_by_property() {
 //    $LeadsId = $args[0]['id'];
 
     $GLOBALS['log']->fatal('$args : ' . print_r($args, 1));
-    
+
 //    $return_array['select'] = " select cb2b_production_summary_data.* ";
 //    $return_array['from'] = " FROM cb2b_production_summary_data ";
 //    $return_array['join'] = " ";
 //    $return_array['where'] = " WHERE cb2b_production_summary_data.name is not NULL and cb2b_production_summary_data.name != '' ";
-    
+    $parent_acc=$GLOBALS['account_parent'];
     $return_array['select'] = " SELECT 
-    cb2b_hotels.id,
-    CTEInner.PropertyID,
+    cb2b_hotels.id as id,
+    cb2b_hotels.id as property_id,
+    cb2b_hotels.name as property_name,
+    CTEInner.PropertyID ,
     IFNULL(CTEInner.room_nights_sum, 0) AS room_nights,
     IFNULL(CTEInner.missed_room_nights_sum, 0) AS missed_room_nights,
     IFNULL(CTEInner.room_revenue_usdollar_sum, 0) AS room_revenue_usdollar,
     IFNULL(CTEInner.total_revenue_usdollar_sum, 0) AS total_revenue_usdollar,
-    IFNULL(CTEInner.adr_sum, 0) AS adr ";
-    $return_array['from'] = " FROM
+    IFNULL(CTEInner.adr_sum, 0) AS adr  FROM
     cb2b_hotels
         LEFT JOIN
     (SELECT 
@@ -37,28 +38,28 @@ function get_accounts_cb2b_production_summary_data_by_property() {
     FROM
         accounts_cb2b_pmsprofiles_1_c
     INNER JOIN cb2b_production_summary_data ON accounts_cb2b_pmsprofiles_1_c.accounts_cb2b_pmsprofiles_1cb2b_pmsprofiles_idb = cb2b_production_summary_data.id
-        AND cb2b_production_summary_data.deleted = 0
+        AND cb2b_production_summary_data.deleted = 0 and cb2b_production_summary_data.date_filter='ArrivalDate'
     INNER JOIN accounts ON accounts_cb2b_pmsprofiles_1_c.accounts_cb2b_pmsprofiles_1accounts_ida = accounts.id
         AND accounts.deleted = 0
     WHERE
         accounts_cb2b_pmsprofiles_1_c.deleted = 0
-            AND accounts_cb2b_pmsprofiles_1accounts_ida = '74335'
+            AND accounts_cb2b_pmsprofiles_1accounts_ida = '{$parent_acc->id}'
     GROUP BY accounts.id , accounts.name , cb2b_production_summary_data.property_id) CTEInner ON CTEInner.PropertyID = cb2b_hotels.id ";
     $return_array['join'] = " ";
     $return_array['where'] = " ";
 
 //    $return_array['join_tables'] = '';
 
-    return $return_array;
+    return $return_array['select'];
 }
 
 /*
-SELECT 
+SELECT
     cb2b_hotels.id, CTEInner.PropertyID
 FROM
     cb2b_hotels
         LEFT JOIN
-    (SELECT 
+    (SELECT
         accounts.id AS AccountID,
             accounts.name,
             cb2b_production_summary_data.property_id AS PropertyID,

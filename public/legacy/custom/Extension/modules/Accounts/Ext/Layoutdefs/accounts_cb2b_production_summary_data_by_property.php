@@ -13,5 +13,5 @@ $layout_defs["Accounts"]["subpanel_setup"]['accounts_cb2b_production_summary_dat
     'function_parameters' => array(
         'import_function_file' => 'custom/modules/cb2b_production_summary_data/customSubpanelQueries/accounts_cb2b_production_summary_data_by_property.php',
     ),
-    'generate_select' => true,
+    'generate_select' => false,
 );
