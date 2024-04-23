@@ -74,7 +74,7 @@ class SubPanelcb2b_production_summary_dataTotal extends SubpanelDataQueryHandler
         $column_name='usdollar';
         $column_name2='';
         $cur_sign='$';
-        if(empty($sugar_config['selected_pms_production_data_summary_currency'])||$sugar_config['selected_pms_production_data_summary_currency']=='USD'){
+        if(empty($sugar_config['selected_pms_production_data_summary_currency'])||$sugar_config['selected_pms_production_data_summary_currency']=='usd'){
             $column_name='usdollar';
             $column_name2='';
             $cur_sign='$';
@@ -83,7 +83,8 @@ class SubPanelcb2b_production_summary_dataTotal extends SubpanelDataQueryHandler
         else{
             $column_name='corporate';
             $column_name2='_corporate';
-            $cur_sign='€';
+            $curr=$sugar_config['corporate_currency_options'][$sugar_config['selected_corporate_currency_options']];
+            $cur_sign=explode(' ',$curr)[0];
 
         }
 
