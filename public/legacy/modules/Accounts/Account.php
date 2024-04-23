@@ -398,6 +398,7 @@ class Account extends Company implements EmailInterface
         return $query;
     }
 
+    // Sageteck Non-Upgrade Safe Change
     public function process_union_list_query($parent_bean,
         $query,
         $row_offset,
@@ -424,11 +425,19 @@ class Account extends Company implements EmailInterface
             $total=BeanFactory::newBean('cb2b_production_summary_data');
             $total->id="total_row";
             $total->property_name="Total";
-            $total->adr="0.0000";
-            $total->total_revenue_usdollar="0.0000";
-            $total->room_revenue_usdollar="0.0000";
-            $total->missed_room_nights="0";
-            $total->room_nights="0";
+            $total->adr=0;
+            $total->total_revenue_usdollar=0;
+            $total->room_revenue_usdollar=0;
+            $total->missed_room_nights=0;
+            $total->room_nights=0;
+            foreach ($rows['list'] as $dt_row){
+                $total->adr+=floatval($dt_row->adr);
+                $total->total_revenue_usdollar+=floatval($dt_row->total_revenue_usdollar);
+                $total->room_revenue_usdollar+=floatval($dt_row->room_revenue_usdollar);
+                $total->missed_room_nights+=intval($dt_row->missed_room_nights);
+                $total->room_nights+=intval($dt_row->room_nights);
+            }
+
             $rows['list']['total_row']=$total;
             return $rows;
         }
@@ -444,4 +453,5 @@ class Account extends Company implements EmailInterface
             $secondary_queries
         );
     }
+    // Sageteck Non-Upgrade Safe Change
 }
