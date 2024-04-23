@@ -437,6 +437,9 @@ class Account extends Company implements EmailInterface
                 $total->missed_room_nights+=intval($dt_row->missed_room_nights);
                 $total->room_nights+=intval($dt_row->room_nights);
             }
+            $total->adr=number_format($total->adr,4,'.','');
+            $total->total_revenue_usdollar=number_format($total->total_revenue_usdollar,4,'.','');
+            $total->room_revenue_usdollar=number_format($total->room_revenue_usdollar,4,'.','');
 
             $rows['list']['total_row']=$total;
             return $rows;
