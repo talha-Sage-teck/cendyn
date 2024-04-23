@@ -63,11 +63,14 @@
                 </th>
 
                 <td cdk-cell *cdkCellDef="let record">
-                    <scrm-field [mode]="'list'"
-                                [type]="column.type"
-                                [field]="getField(column, record)"
-                                [record]="record">
-                    </scrm-field>
+                    <div [ngStyle]="(record.module.toLowerCase() === 'cb2b_production_summary_data' && (record.attributes.id.includes('total_row') )) && {'font-weight': 900}">
+
+                        <scrm-field [mode]="'list'"
+                                    [type]="column.type"
+                                    [field]="getField(column, record)"
+                                    [record]="record">
+                        </scrm-field>
+                    </div>
                 </td>
 
             </ng-container>
