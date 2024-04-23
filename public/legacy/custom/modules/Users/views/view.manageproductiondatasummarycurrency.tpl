@@ -29,7 +29,7 @@
                            name="save"
                            onclick="return verify_data('manageProductionDataSummaryCurrency');"
                            value="  {$APP.LBL_SAVE_BUTTON_LABEL}  " >
-                    &nbsp;<input title="{$MOD.LBL_CANCEL_BUTTON_TITLE}"  onclick="document.location.href = 'index.php?module=Administration&action=index'" class="button"  type="button" name="cancel" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  " > 
+                    &nbsp;<input title="{$MOD.LBL_CANCEL_BUTTON_TITLE}"  onclick="document.location.href = 'index.php?module=Administration&action=index'" class="button"  type="button" name="cancel" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  " >
                 </div>
             </td>
         </tr>
@@ -51,6 +51,12 @@
             <td  scope="row" valign="top">{$MOD.LBL_CORPORATE_CURRENCY}: </td>
             <td>
                 {html_options name='selected_corporate_currency_options' id="selected_corporate_currency_options" selected=$config.selected_corporate_currency_options options=$CORPORATE_CURRENCY_OPTIONS}
+            </td>
+        </tr>
+        <tr id='corporate_summary_range'>
+            <td  scope="row" valign="top">{$MOD.LBL_SUMMARY_DATE_RANGE}: </td>
+            <td>
+                {html_options name='selected_production_summary_date_range' id="selected_production_summary_date_range" selected=$config.selected_production_summary_date_range_options options=$SUMMARY_DATE_RANGE_OPTIONS}
             </td>
         </tr>
     </table>

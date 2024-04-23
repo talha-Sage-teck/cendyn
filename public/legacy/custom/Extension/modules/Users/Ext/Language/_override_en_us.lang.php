@@ -13,4 +13,5 @@ $mod_strings['LBL_PMS_PRODUCTION_DATA_CURRENCY'] = 'PMS Production Data Currency
 $mod_strings['LBL_PMS_RODUCTION_DATA_SUMMARY_CURRENCY_SETTINGS'] = 'Currency Settings';
 $mod_strings['LBL_PMS_RODUCTION_DATA_SUMMARY_CURRENCY_TYPE'] = 'Currency Type';
 $mod_strings['LBL_CORPORATE_CURRENCY'] = 'Corporate Currency';
+$mod_strings['LBL_SUMMARY_DATE_RANGE'] = 'Production Data Summary Date Range';
 $mod_strings['LBL_PMS_PRODUCTION_DATA_SUMMARY_CURRENCY_SETTINGS'] = 'PMS Production Data Summary Currency Settings';

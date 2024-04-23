@@ -55,15 +55,15 @@ $subpanel_layout = array(
 //            'widget_class' => 'SubPanelDetailViewLink',
 //            'width' => '45%',
 //        ),
-        'name' =>
-        array(
-            'width' => '32%',
-            'vname' => 'LBL_NAME',
-            'default' => true,
-            'link' => true,
-            'sortable' => false,
-
-        ),
+//        'name' =>
+//        array(
+//            'width' => '32%',
+//            'vname' => 'LBL_NAME',
+//            'default' => true,
+//            'link' => true,
+//            'sortable' => false,
+//
+//        ),
         'property_name' =>
         array(
             'type' => 'relate',
@@ -72,7 +72,7 @@ $subpanel_layout = array(
             'vname' => 'LBL_PROPERTY_NAME',
             'id' => 'property_id',
             'link' => true,
-            'width' => '10%',
+            'width' => '20%',
             'module' => 'CB2B_Hotels',
             'sortable' => false,
 
@@ -81,7 +81,7 @@ $subpanel_layout = array(
         array(
             'type' => 'int',
             'vname' => 'LBL_ROOM_NIGHTS',
-            'width' => '10%',
+            'width' => '16%',
             'default' => true,
             'sortable' => false,
 
@@ -90,7 +90,7 @@ $subpanel_layout = array(
         array(
             'type' => 'int',
             'vname' => 'LBL_MISSED_ROOM_NIGHTS',
-            'width' => '10%',
+            'width' => '16%',
             'default' => true,
             'sortable' => false,
 
@@ -98,8 +98,8 @@ $subpanel_layout = array(
         'room_revenue_usdollar' =>
         array(
             'type' => 'decimal',
-            'vname' => 'LBL_ROOM_REVENUE_USDOLLAR',
-            'width' => '10%',
+            'vname' => 'LBL_ROOM_REVENUE_SUBPANEL',
+            'width' => '16%',
             'default' => true,
             'sortable' => false,
 
@@ -107,8 +107,8 @@ $subpanel_layout = array(
         'total_revenue_usdollar' =>
         array(
             'type' => 'decimal',
-            'vname' => 'LBL_TOTAL_REVENUE_USDOLLAR',
-            'width' => '10%',
+            'vname' => 'LBL_TOTAL_REVENUE_SUBPANEL',
+            'width' => '16%',
             'default' => true,
             'sortable' => false,
 
@@ -116,8 +116,8 @@ $subpanel_layout = array(
         'adr' =>
         array(
             'type' => 'decimal',
-            'vname' => 'LBL_ADR',
-            'width' => '10%',
+            'vname' => 'LBL_ADR_SUBPANEL',
+            'width' => '16%',
             'default' => true,
             'sortable' => false,
 

@@ -397,4 +397,51 @@ class Account extends Company implements EmailInterface
 			";
         return $query;
     }
+
+    public function process_union_list_query($parent_bean,
+        $query,
+        $row_offset,
+        $limit = -1,
+        $max_per_page = -1,
+        $where = '',
+        $subpanel_def = null,
+        $query_row_count = '',
+        $secondary_queries = array()
+    ){
+        if($subpanel_def->name=='accounts_cb2b_production_summary_data_by_property'){
+            $max_per_page=1000;
+
+            $rows=parent::process_union_list_query($parent_bean,
+                $query,
+                $row_offset,
+                $limit,
+                $max_per_page ,
+                $where,
+                $subpanel_def ,
+                $query_row_count ,
+                $secondary_queries
+            );
+            $total=BeanFactory::newBean('cb2b_production_summary_data');
+            $total->id="total_row";
+            $total->property_name="Total";
+            $total->adr="0.0000";
+            $total->total_revenue_usdollar="0.0000";
+            $total->room_revenue_usdollar="0.0000";
+            $total->missed_room_nights="0";
+            $total->room_nights="0";
+            $rows['list']['total_row']=$total;
+            return $rows;
+        }
+
+        return parent::process_union_list_query($parent_bean,
+            $query,
+            $row_offset,
+            $limit,
+            $max_per_page ,
+            $where,
+            $subpanel_def ,
+            $query_row_count ,
+            $secondary_queries
+        );
+    }
 }
