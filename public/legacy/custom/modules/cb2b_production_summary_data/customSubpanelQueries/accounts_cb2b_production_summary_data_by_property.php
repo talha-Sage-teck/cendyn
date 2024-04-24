@@ -6,7 +6,7 @@ function get_accounts_cb2b_production_summary_data_by_property() {
     global $sugar_config;
     $column_name='usdollar';
     $column_name2='';
-    if(empty($sugar_config['selected_pms_production_data_summary_currency'])||$sugar_config['selected_pms_production_data_summary_currency']=='USD'){
+    if(empty($sugar_config['selected_pms_production_data_summary_currency'])||$sugar_config['selected_pms_production_data_summary_currency']=='usd'){
         $column_name='usdollar';
         $column_name2='';
 
