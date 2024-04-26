@@ -140,6 +140,26 @@ class TemplateHandler
                     unlink($tplDir . $e);
                 }
             }
+            // #B2B-1676
+            // Sageteck Non-Upgrade Safe Change
+            if($module=='AOS_Contracts'&&!empty($_REQUEST['contract_type'])){
+                $key=$_REQUEST['contract_type'];
+                $tplDir = $theme . '/modules/' . $module . '/'.$key.'/';
+                if (!file_exists($tplDir)) {
+                    continue;
+                }
+                $d = dir($tplDir);
+                while ($e = $d->read()) {
+                    if (!empty($view) && $e !== $view) {
+                        continue;
+                    }
+
+                    $end = strlen($e) - 4;
+                    if ($end > 1 && is_file($tplDir . $e) && substr($e, $end) === '.tpl') {
+                        unlink($tplDir . $e);
+                    }
+                }
+            }
         }
     }
 
