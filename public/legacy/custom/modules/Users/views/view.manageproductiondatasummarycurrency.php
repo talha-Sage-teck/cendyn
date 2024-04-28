@@ -21,6 +21,19 @@ class UsersViewmanageproductiondatasummarycurrency extends SugarView {
         $this->ss->assign('config', $sugar_config);
         $this->ss->assign('CURRENCY_OPTIONS', $sugar_config['pms_production_data_summary_currency']);
         $this->ss->assign('CORPORATE_CURRENCY_OPTIONS', $sugar_config['corporate_currency_options']);
+        $this->ss->assign('SUMMARY_DATE_RANGE_OPTIONS', [
+            'This Month'=>'This Month',
+            'This quarter'=>'This quarter',
+            'Last quarter'=>'Last quarter',
+            'YTD'=>'YTD',
+            'This year'=>'This year',
+            'Last year'=>'Last year',
+            'Last 24 months'=>'Last 24 months',
+            'Next month'=>'Next month',
+            'Next quarter'=>'Next quarter',
+            'Next Year'=>'Next Year',
+
+        ]);
         echo $this->ss->fetch('custom/modules/Users/views/view.manageproductiondatasummarycurrency.tpl');
     }
 }
