@@ -56,7 +56,7 @@
         <tr id='corporate_summary_range'>
             <td  scope="row" valign="top">{$MOD.LBL_SUMMARY_DATE_RANGE}: </td>
             <td>
-                {html_options name='selected_production_summary_date_range' id="selected_production_summary_date_range" selected=$config.selected_production_summary_date_range_options options=$SUMMARY_DATE_RANGE_OPTIONS}
+                {html_options name='selected_production_summary_date_range' id="selected_production_summary_date_range" selected=$config.selected_production_summary_date_range options=$SUMMARY_DATE_RANGE_OPTIONS}
             </td>
         </tr>
     </table>

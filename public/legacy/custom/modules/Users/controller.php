@@ -64,7 +64,7 @@ class CustomUsersController extends CustomSugarController {
 
         require_once 'modules/ModuleBuilder/parsers/parser.label.php' ;
 
-        if($_REQUEST['selected_pms_production_data_summary_currency']=='USD'){
+        if($_REQUEST['selected_pms_production_data_summary_currency']=='usd'){
             ParserLabel::addLabels('en_us',[
                 'LBL_ROOM_REVENUE_SUBPANEL'=>'Room Revenue USD',
                 'LBL_TOTAL_REVENUE_SUBPANEL'=>'Total Revenue USD',
