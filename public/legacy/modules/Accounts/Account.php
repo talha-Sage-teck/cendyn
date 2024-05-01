@@ -437,11 +437,26 @@ class Account extends Company implements EmailInterface
                 $total->missed_room_nights+=intval($dt_row->missed_room_nights);
                 $total->room_nights+=intval($dt_row->room_nights);
             }
-            $total->adr=number_format($total->adr,4,'.','');
-            $total->total_revenue_usdollar=number_format($total->total_revenue_usdollar,4,'.','');
-            $total->room_revenue_usdollar=number_format($total->room_revenue_usdollar,4,'.','');
+            global $sugar_config;
+
+            $cur_sign='$';
+            if(empty($sugar_config['selected_pms_production_data_summary_currency'])||$sugar_config['selected_pms_production_data_summary_currency']=='usd'){
+
+                $cur_sign='$';
+
+            }
+            else{
+
+                $curr=$sugar_config['corporate_currency_options'][$sugar_config['selected_corporate_currency_options']];
+                $cur_sign=explode(' ',$curr)[0];
+
+            }
+            $total->adr=$cur_sign.number_format($total->adr,4,'.','');
+            $total->total_revenue_usdollar=$cur_sign.number_format($total->total_revenue_usdollar,4,'.','');
+            $total->room_revenue_usdollar=$cur_sign.number_format($total->room_revenue_usdollar,4,'.','');
 
             $rows['list']['total_row']=$total;
+            $rows['row_count']++;
             return $rows;
         }
 
