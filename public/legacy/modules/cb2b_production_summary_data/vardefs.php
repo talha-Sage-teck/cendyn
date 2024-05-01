@@ -1,0 +1,367 @@
+<?php
+
+/**
+ *
+ * SugarCRM Community Edition is a customer relationship management program developed by
+ * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
+ *
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ *
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License version 3 as published by the
+ * Free Software Foundation with the addition of the following permission added
+ * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+ * IN WHICH THE COPYRIGHT IS OWNED BY SUGARCRM, SUGARCRM DISCLAIMS THE WARRANTY
+ * OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Affero General Public License along with
+ * this program; if not, see http://www.gnu.org/licenses or write to the Free
+ * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301 USA.
+ *
+ * You can contact SugarCRM, Inc. headquarters at 10050 North Wolfe Road,
+ * SW2-130, Cupertino, CA 95014, USA. or at email address contact@sugarcrm.com.
+ *
+ * The interactive user interfaces in modified source and object code versions
+ * of this program must display Appropriate Legal Notices, as required under
+ * Section 5 of the GNU Affero General Public License version 3.
+ *
+ * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+ * these Appropriate Legal Notices must retain the display of the "Powered by
+ * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
+ * reasonably feasible for technical reasons, the Appropriate Legal Notices must
+ * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ */
+$dictionary['cb2b_production_summary_data'] = array(
+    'table' => 'cb2b_production_summary_data',
+    'audited' => true,
+    'inline_edit' => true,
+    'duplicate_merge' => true,
+    'fields' => array(
+        'property_id' =>
+        array(
+            'inline_edit' => 1,
+            'required' => false,
+            'name' => 'property_id',
+            'vname' => 'LBL_PROPERTY_ID_CB2B_HOTELS_ID',
+            'type' => 'id',
+            'massupdate' => '0',
+            'default' => NULL,
+            'no_default' => false,
+            'comments' => '',
+            'help' => '',
+            'importable' => 'true',
+            'duplicate_merge' => 'disabled',
+            'duplicate_merge_dom_value' => '0',
+            'audited' => false,
+            'reportable' => false,
+            'unified_search' => false,
+            'merge_filter' => 'disabled',
+            'len' => '36',
+            'size' => '20',
+        ),
+        'property_name' =>
+        array(
+            'inline_edit' => '1',
+            'labelValue' => 'Hotel',
+            'required' => false,
+            'source' => 'non-db',
+            'name' => 'property_name',
+            'vname' => 'LBL_PROPERTY_NAME',
+            'type' => 'relate',
+            'massupdate' => '0',
+            'default' => NULL,
+            'no_default' => false,
+            'comments' => '',
+            'help' => '',
+            'importable' => 'true',
+            'duplicate_merge' => 'disabled',
+            'duplicate_merge_dom_value' => '0',
+            'audited' => false,
+            'reportable' => true,
+            'unified_search' => false,
+            'merge_filter' => 'disabled',
+            'len' => '255',
+            'size' => '20',
+            'id_name' => 'property_id',
+            'ext2' => 'CB2B_Hotels',
+            'module' => 'CB2B_Hotels',
+            'rname' => 'name',
+            'quicksearch' => 'enabled',
+            'studio' => 'visible',
+        ),
+        'date_filter' =>
+        array(
+            'required' => false,
+            'name' => 'date_filter',
+            'vname' => 'LBL_DATE_FILTER',
+            'type' => 'varchar',
+            'massupdate' => 0,
+            'no_default' => false,
+            'comments' => '',
+            'help' => '',
+            'importable' => 'true',
+            'duplicate_merge' => 'disabled',
+            'duplicate_merge_dom_value' => '0',
+            'audited' => false,
+            'inline_edit' => true,
+            'reportable' => true,
+            'unified_search' => false,
+            'merge_filter' => 'disabled',
+            'len' => '100',
+            'size' => '20',
+        ),
+        'year' =>
+        array(
+            'required' => false,
+            'name' => 'year',
+            'vname' => 'LBL_YEAR',
+            'type' => 'int',
+            'massupdate' => 0,
+            'no_default' => false,
+            'comments' => '',
+            'help' => '',
+            'importable' => 'true',
+            'duplicate_merge' => 'disabled',
+            'duplicate_merge_dom_value' => '0',
+            'audited' => false,
+            'inline_edit' => true,
+            'reportable' => true,
+            'unified_search' => false,
+            'merge_filter' => 'disabled',
+            'len' => '4',
+            'size' => '20',
+            'enable_range_search' => false,
+            'disable_num_format' => '',
+            'min' => false,
+            'max' => false,
+        ),
+        'month' =>
+        array(
+            'required' => false,
+            'name' => 'month',
+            'vname' => 'LBL_MONTH',
+            'type' => 'int',
+            'massupdate' => 0,
+            'no_default' => false,
+            'comments' => '',
+            'help' => '',
+            'importable' => 'true',
+            'duplicate_merge' => 'disabled',
+            'duplicate_merge_dom_value' => '0',
+            'audited' => false,
+            'inline_edit' => true,
+            'reportable' => true,
+            'unified_search' => false,
+            'merge_filter' => 'disabled',
+            'len' => '2',
+            'size' => '20',
+            'enable_range_search' => false,
+            'disable_num_format' => '',
+            'min' => false,
+            'max' => false,
+        ),
+        'room_nights' =>
+        array(
+            'required' => false,
+            'name' => 'room_nights',
+            'vname' => 'LBL_ROOM_NIGHTS',
+            'type' => 'int',
+            'massupdate' => 0,
+            'no_default' => false,
+            'comments' => '',
+            'help' => '',
+            'importable' => 'true',
+            'duplicate_merge' => 'disabled',
+            'duplicate_merge_dom_value' => '0',
+            'audited' => false,
+            'inline_edit' => true,
+            'reportable' => true,
+            'unified_search' => false,
+            'merge_filter' => 'disabled',
+            'len' => '4',
+            'size' => '20',
+            'enable_range_search' => false,
+            'disable_num_format' => '',
+            'min' => false,
+            'max' => false,
+        ),
+        'missed_room_nights' =>
+        array(
+            'required' => false,
+            'name' => 'missed_room_nights',
+            'vname' => 'LBL_MISSED_ROOM_NIGHTS',
+            'type' => 'int',
+            'massupdate' => 0,
+            'no_default' => false,
+            'comments' => '',
+            'help' => '',
+            'importable' => 'true',
+            'duplicate_merge' => 'disabled',
+            'duplicate_merge_dom_value' => '0',
+            'audited' => false,
+            'inline_edit' => true,
+            'reportable' => true,
+            'unified_search' => false,
+            'merge_filter' => 'disabled',
+            'len' => '4',
+            'size' => '20',
+            'enable_range_search' => false,
+            'disable_num_format' => '',
+            'min' => false,
+            'max' => false,
+        ),
+        'room_revenue_usdollar' =>
+        array(
+            'required' => false,
+            'name' => 'room_revenue_usdollar',
+            'vname' => 'LBL_ROOM_REVENUE_USDOLLAR',
+            'type' => 'decimal',
+            'massupdate' => 0,
+            'no_default' => false,
+            'comments' => '',
+            'help' => '',
+            'importable' => 'true',
+            'duplicate_merge' => 'disabled',
+            'duplicate_merge_dom_value' => '0',
+            'audited' => false,
+            'inline_edit' => true,
+            'reportable' => true,
+            'unified_search' => false,
+            'merge_filter' => 'disabled',
+            'len' => '26',
+            'size' => '20',
+            'enable_range_search' => false,
+            'precision' => '4',
+        ),
+        'total_revenue_usdollar' =>
+        array(
+            'required' => false,
+            'name' => 'total_revenue_usdollar',
+            'vname' => 'LBL_TOTAL_REVENUE_USDOLLAR',
+            'type' => 'decimal',
+            'massupdate' => 0,
+            'no_default' => false,
+            'comments' => '',
+            'help' => '',
+            'importable' => 'true',
+            'duplicate_merge' => 'disabled',
+            'duplicate_merge_dom_value' => '0',
+            'audited' => false,
+            'inline_edit' => true,
+            'reportable' => true,
+            'unified_search' => false,
+            'merge_filter' => 'disabled',
+            'len' => '26',
+            'size' => '20',
+            'enable_range_search' => false,
+            'precision' => '4',
+        ),
+        'adr' =>
+        array(
+            'required' => false,
+            'name' => 'adr',
+            'vname' => 'LBL_ADR',
+            'type' => 'decimal',
+            'massupdate' => 0,
+            'no_default' => false,
+            'comments' => '',
+            'help' => '',
+            'importable' => 'true',
+            'duplicate_merge' => 'disabled',
+            'duplicate_merge_dom_value' => '0',
+            'audited' => false,
+            'inline_edit' => true,
+            'reportable' => true,
+            'unified_search' => false,
+            'merge_filter' => 'disabled',
+            'len' => '26',
+            'size' => '20',
+            'enable_range_search' => false,
+            'precision' => '4',
+        ),
+        'room_revenue_corporate' =>
+        array(
+            'required' => false,
+            'name' => 'room_revenue_corporate',
+            'vname' => 'LBL_ROOM_REVENUE_CORPORATE',
+            'type' => 'decimal',
+            'massupdate' => 0,
+            'no_default' => false,
+            'comments' => '',
+            'help' => '',
+            'importable' => 'true',
+            'duplicate_merge' => 'disabled',
+            'duplicate_merge_dom_value' => '0',
+            'audited' => false,
+            'inline_edit' => true,
+            'reportable' => true,
+            'unified_search' => false,
+            'merge_filter' => 'disabled',
+            'len' => '26',
+            'size' => '20',
+            'enable_range_search' => false,
+            'precision' => '4',
+        ),
+        'total_revenue_corporate' =>
+        array(
+            'required' => false,
+            'name' => 'total_revenue_corporate',
+            'vname' => 'LBL_TOTAL_REVENUE_CORPORATE',
+            'type' => 'decimal',
+            'massupdate' => 0,
+            'no_default' => false,
+            'comments' => '',
+            'help' => '',
+            'importable' => 'true',
+            'duplicate_merge' => 'disabled',
+            'duplicate_merge_dom_value' => '0',
+            'audited' => false,
+            'inline_edit' => true,
+            'reportable' => true,
+            'unified_search' => false,
+            'merge_filter' => 'disabled',
+            'len' => '26',
+            'size' => '20',
+            'enable_range_search' => false,
+            'precision' => '4',
+        ),
+        'adr_corporate' =>
+        array(
+            'required' => false,
+            'name' => 'adr_corporate',
+            'vname' => 'LBL_ADR_CORPORATE',
+            'type' => 'decimal',
+            'massupdate' => 0,
+            'no_default' => false,
+            'comments' => '',
+            'help' => '',
+            'importable' => 'true',
+            'duplicate_merge' => 'disabled',
+            'duplicate_merge_dom_value' => '0',
+            'audited' => false,
+            'inline_edit' => true,
+            'reportable' => true,
+            'unified_search' => false,
+            'merge_filter' => 'disabled',
+            'len' => '26',
+            'size' => '20',
+            'enable_range_search' => false,
+            'precision' => '4',
+        ),
+    ),
+    'relationships' => array(
+    ),
+    'optimistic_locking' => true,
+    'unified_search' => true,
+);
+if (!class_exists('VardefManager')) {
+    require_once('include/SugarObjects/VardefManager.php');
+}
+VardefManager::createVardef('cb2b_production_summary_data', 'cb2b_production_summary_data', array('basic', 'assignable', 'security_groups'));

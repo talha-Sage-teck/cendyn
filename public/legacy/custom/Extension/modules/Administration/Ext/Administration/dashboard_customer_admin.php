@@ -28,6 +28,9 @@ $admin_option_defs['Users']['Popup'] = [
 $admin_option_defs['Users']['saveMatchCriteriaConfig'] = [
     'saveMatchCriteriaConfig',
 ];
+$admin_option_defs['Users']['saveManageProductionDataSummaryCurrency'] = [
+    'saveManageProductionDataSummaryCurrency',
+];
 $admin_option_defs['Users']['standardDashboardConfig'] = [
     'standardDashboardConfig',
 ];
@@ -187,6 +190,13 @@ $admin_option_defs['Users']['manage_profile_matching_criteria'] = array(
     'index.php?module=Users&action=matchCriteriaConfig'
 );
 
+$admin_option_defs = [];
+$admin_option_defs['Users']['manage_production_data_summary_currency'] = array(
+    'manageProductionDataSummaryCurrency',
+    'Manage PMS Production Data Currency',
+    'Configure PMS Production Data Currency Settings for Subpanels',
+    'index.php?module=Users&action=manageProductionDataSummaryCurrency'
+);
 
 $customer_admin_group_header[] = array(
     'Matching Criteria',

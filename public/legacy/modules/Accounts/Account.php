@@ -397,4 +397,79 @@ class Account extends Company implements EmailInterface
 			";
         return $query;
     }
+
+    // Sageteck Non-Upgrade Safe Change
+    public function process_union_list_query($parent_bean,
+        $query,
+        $row_offset,
+        $limit = -1,
+        $max_per_page = -1,
+        $where = '',
+        $subpanel_def = null,
+        $query_row_count = '',
+        $secondary_queries = array()
+    ){
+        if($subpanel_def->name=='accounts_cb2b_production_summary_data_by_property'){
+            $max_per_page=1000;
+
+            $rows=parent::process_union_list_query($parent_bean,
+                $query,
+                $row_offset,
+                $limit,
+                $max_per_page ,
+                $where,
+                $subpanel_def ,
+                $query_row_count ,
+                $secondary_queries
+            );
+            $total=BeanFactory::newBean('cb2b_production_summary_data');
+            $total->id="total_row";
+            $total->property_name="Total";
+            $total->adr=0;
+            $total->total_revenue_usdollar=0;
+            $total->room_revenue_usdollar=0;
+            $total->missed_room_nights=0;
+            $total->room_nights=0;
+            foreach ($rows['list'] as $dt_row){
+                $total->adr+=floatval($dt_row->adr);
+                $total->total_revenue_usdollar+=floatval($dt_row->total_revenue_usdollar);
+                $total->room_revenue_usdollar+=floatval($dt_row->room_revenue_usdollar);
+                $total->missed_room_nights+=intval($dt_row->missed_room_nights);
+                $total->room_nights+=intval($dt_row->room_nights);
+            }
+            global $sugar_config;
+
+            $cur_sign='$';
+            if(empty($sugar_config['selected_pms_production_data_summary_currency'])||$sugar_config['selected_pms_production_data_summary_currency']=='usd'){
+
+                $cur_sign='$';
+
+            }
+            else{
+
+                $curr=$sugar_config['corporate_currency_options'][$sugar_config['selected_corporate_currency_options']];
+                $cur_sign=explode(' ',$curr)[0];
+
+            }
+            $total->adr=$cur_sign.number_format($total->adr,4,'.','');
+            $total->total_revenue_usdollar=$cur_sign.number_format($total->total_revenue_usdollar,4,'.','');
+            $total->room_revenue_usdollar=$cur_sign.number_format($total->room_revenue_usdollar,4,'.','');
+
+            $rows['list']['total_row']=$total;
+            $rows['row_count']++;
+            return $rows;
+        }
+
+        return parent::process_union_list_query($parent_bean,
+            $query,
+            $row_offset,
+            $limit,
+            $max_per_page ,
+            $where,
+            $subpanel_def ,
+            $query_row_count ,
+            $secondary_queries
+        );
+    }
+    // Sageteck Non-Upgrade Safe Change
 }
