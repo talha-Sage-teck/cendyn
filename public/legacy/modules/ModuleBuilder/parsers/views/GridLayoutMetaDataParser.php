@@ -477,7 +477,29 @@ class GridLayoutMetaDataParser extends AbstractMetaDataParser implements MetaDat
         foreach ($_REQUEST as $key => $displayLabel) {
             $components = explode('-', $key);
             if ($components [0] == 'panel' && $components [2] == 'label') {
+                // #B2B-1676
+                // Sageteck Non-Upgrade Safe Change
+                if(!empty($_REQUEST['contract_type'])) {
+                    if (!str_ends_with($displayLabel, $_REQUEST['contract_type'])) {
+                        $displayLabel_old = $displayLabel;
+                        $displayLabel = $displayLabel . '_' . $_REQUEST['contract_type'];
+                        global $current_language;
+                        $mod_strings_contract = return_module_language($current_language, 'AOS_Contracts');
+                        //save the label of
+                        require_once 'modules/ModuleBuilder/parsers/parser.label.php';
+                        $parser = new ParserLabel('AOS_Contracts', null);
+                        $new_lbl = $mod_strings_contract[strtoupper($displayLabel_old)];
+                        if (empty($new_lbl)) {
+                            $new_lbl = 'Default';
+                        }
+                        $req = ['label_' . strtoupper($displayLabel) => $new_lbl];
+                        $parser->handleSave($req, $current_language);
+                    }
+                }
+
+
                 $panelMap [$components ['1']] = $displayLabel;
+
             }
         }
 
