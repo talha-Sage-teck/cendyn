@@ -133,7 +133,7 @@ class SubPanelcb2b_production_summary_dataTotal extends SubpanelDataQueryHandler
     WHERE
         accounts_cb2b_pmsprofiles_1_c.deleted = 0 $where
             AND accounts_cb2b_pmsprofiles_1accounts_ida = '$id'
-    GROUP BY accounts.id , accounts.name , cb2b_production_summary_data.property_id) CTEInner ON CTEInner.PropertyID = cb2b_hotels.id) as tt";
+    GROUP BY accounts.id , accounts.name , cb2b_production_summary_data.property_id) CTEInner ON CTEInner.PropertyID = cb2b_hotels.id WHERE cb2b_hotels.deleted = 0) as tt";
         $result = $this->fetchRow($innerQuery);
 
         if (empty($result)) {

@@ -51,6 +51,7 @@ function get_accounts_cb2b_production_summary_data_by_property() {
         accounts_cb2b_pmsprofiles_1_c.deleted = 0 $where
             AND accounts_cb2b_pmsprofiles_1accounts_ida = '{$parent_acc->id}'
     GROUP BY accounts.id , accounts.name , cb2b_production_summary_data.property_id) CTEInner ON CTEInner.PropertyID = cb2b_hotels.id
+    WHERE cb2b_hotels.deleted = 0 
     ORDER BY IFNULL(CTEInner.total_revenue_usdollar_sum, 0) desc,property_name asc
 ";
 
