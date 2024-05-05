@@ -403,6 +403,16 @@ Studio2 = {
 		div.appendChild(child);
 		newPanel.appendChild(div);
 
+		// Sageteck Non-Upgrade Safe Change
+		let type=document.getElementsByName('contract_type');
+		if(type.length){
+			type='_'+type[0].value;
+			panelLabel=panelLabel+type;
+		}
+		else{
+			type='';
+		}
+
 		var img = document.createElement('button');
 		img.className = 'le_edit suitepicon suitepicon-action-edit';
 		img.style.cursor="pointer;";
@@ -411,7 +421,11 @@ Studio2 = {
 		if (document.getElementById('prepareForSave').view_package)
 		      editString += '&view_package='+document.getElementById('prepareForSave').view_package.value ;
 		var view = document.prepareForSave.view.value;
-		img.onclick = function() { var value_label = document.getElementById('le_panelname_'+newPanel.id).innerHTML;ModuleBuilder.asyncRequest( editString + '&value_label=' + value_label, ModuleBuilder.updateContent ); }
+		img.onclick = function() { 
+			debugger;
+			var value_label = document.getElementById('le_panelname_'+newPanel.id).innerHTML;
+			ModuleBuilder.asyncRequest( editString + '&value_label=' + value_label, ModuleBuilder.updateContent ); 
+		}
 		newPanel.appendChild(img);
 		return newPanel;
 	},
