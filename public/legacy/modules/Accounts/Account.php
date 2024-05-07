@@ -437,6 +437,11 @@ class Account extends Company implements EmailInterface
                 $total->missed_room_nights+=intval($dt_row->missed_room_nights);
                 $total->room_nights+=intval($dt_row->room_nights);
             }
+
+            if($total->room_nights != 0){
+                $total->adr = $total->room_revenue_usdollar / $total->room_nights;
+            }
+
             global $sugar_config;
 
             $cur_sign='$';
