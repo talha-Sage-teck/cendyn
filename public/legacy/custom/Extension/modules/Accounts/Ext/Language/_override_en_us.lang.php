@@ -43,3 +43,4 @@ $mod_strings['LBL_POBOX_POSTALCODE'] = 'Pobox PostalCode';
 $mod_strings['LBL_POBOX_COUNTRY'] = 'Pobox Country';
 $mod_strings['LBL_POBOX'] = 'Pobox';
 $mod_strings['LBL_ACCOUNTS_CB2B_PRODUCTION_SUMMARY_DATA_BY_PROPERTY'] = 'PMS Production by Property';
+$mod_strings['LBL_ACCOUNTS_CB2B_PRODUCTION_SUMMARY_DATA_BY_MONTH'] = 'PMS Production by Month';
