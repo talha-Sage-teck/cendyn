@@ -62,6 +62,8 @@ export class TableBodyComponent implements OnInit, OnDestroy {
     vm$: Observable<TableViewModel>;
     protected loadingBuffer: LoadingBuffer;
     protected subs: Subscription[] = [];
+    showHeading: boolean = false;
+    filter_name: string = '';
 
     constructor(
         protected fieldManager: FieldManager,
@@ -90,6 +92,9 @@ export class TableBodyComponent implements OnInit, OnDestroy {
                     loading
                 ]
             ) => {
+                this.showHeading = records.some(record => record.module.toLowerCase() === 'cb2b_production_summary_data');
+                const relevantRecords = records.filter(record => record.module.toLowerCase() === 'cb2b_production_summary_data');
+                this.filter_name = relevantRecords.length > 0 ? relevantRecords[relevantRecords.length - 1].attributes.description : '';
                 const displayedColumns: string[] = [];
 
                 if (selection) {
