@@ -80,7 +80,7 @@ $subpanel_layout = array(
         'room_nights' =>
         array(
             'type' => 'int',
-            'vname' => 'LBL_ROOM_NIGHTS',
+            'vname' => 'LBL_ROOM_NIGHTS_SUBPANEL',
             'width' => '16%',
             'default' => true,
             'sortable' => false,
@@ -89,7 +89,7 @@ $subpanel_layout = array(
         'missed_room_nights' =>
         array(
             'type' => 'int',
-            'vname' => 'LBL_MISSED_ROOM_NIGHTS',
+            'vname' => 'LBL_MISSED_ROOM_NIGHTS_SUBPANEL',
             'width' => '16%',
             'default' => true,
             'sortable' => false,

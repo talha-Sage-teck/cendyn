@@ -58,6 +58,58 @@ function get_accounts_cb2b_production_summary_data_by_property() {
 
     return $return_array['select'];
 }
+function get_accounts_cb2b_production_summary_data_by_month() {
+
+
+    global $sugar_config;
+    $column_name='usdollar';
+    $column_name2='';
+    if(empty($sugar_config['selected_pms_production_data_summary_currency'])||$sugar_config['selected_pms_production_data_summary_currency']=='usd'){
+        $column_name='usdollar';
+        $column_name2='';
+
+    }
+    else{
+        $column_name='corporate';
+        $column_name2='_corporate';
+
+    }
+
+    $where=get_production_date_filter();
+
+    $parent_acc=$GLOBALS['account_parent'];
+
+    $query="
+    SELECT 
+    uuid() AS id,
+    concat(cb2b_production_summary_data.year,cb2b_production_summary_data.month) as property_name,
+    cb2b_production_summary_data.year AS year,
+    cb2b_production_summary_data.month AS month,
+    SUM(cb2b_production_summary_data.room_nights) AS room_nights,
+    SUM(cb2b_production_summary_data.missed_room_nights) AS missed_room_nights,
+    SUM(cb2b_production_summary_data.room_revenue_$column_name) AS room_revenue_usdollar,
+    SUM(cb2b_production_summary_data.total_revenue_$column_name) AS total_revenue_usdollar,
+    SUM(cb2b_production_summary_data.adr$column_name2) AS adr
+FROM
+    accounts_cb2b_pmsprofiles_1_c
+        INNER JOIN
+    cb2b_production_summary_data ON accounts_cb2b_pmsprofiles_1_c.accounts_cb2b_pmsprofiles_1cb2b_pmsprofiles_idb = cb2b_production_summary_data.id
+        AND cb2b_production_summary_data.deleted = 0
+        AND cb2b_production_summary_data.date_filter = 'ArrivalDate'
+        INNER JOIN
+    accounts ON accounts_cb2b_pmsprofiles_1_c.accounts_cb2b_pmsprofiles_1accounts_ida = accounts.id
+        AND accounts.deleted = 0
+WHERE
+    accounts_cb2b_pmsprofiles_1_c.deleted = 0 $where
+        AND accounts_cb2b_pmsprofiles_1accounts_ida = '{$parent_acc->id}'
+GROUP BY accounts.id , accounts.name , cb2b_production_summary_data.year , cb2b_production_summary_data.month
+ORDER BY cb2b_production_summary_data.year , cb2b_production_summary_data.month
+    
+    
+    ";
+
+    return $query;
+}
 function get_production_date_filter(){
 
     global $sugar_config,$timedate;
