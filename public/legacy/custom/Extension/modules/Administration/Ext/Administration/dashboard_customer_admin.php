@@ -182,30 +182,30 @@ $admin_option_defs_all[] = $admin_option_defs;
 //);
 //$admin_option_defs_all[] = $admin_option_defs;
 
-$admin_option_defs = [];
-$admin_option_defs['Users']['manage_profile_matching_criteria'] = array(
-    'matchCriteriaConfig',
-    'Manage PMS Profile Matching Criteria',
-    'Configure PMS Profiles Matching Criteria',
-    'index.php?module=Users&action=matchCriteriaConfig'
-);
-
-$admin_option_defs = [];
-$admin_option_defs['Users']['manage_production_data_summary_currency'] = array(
-    'manageProductionDataSummaryCurrency',
-    'Manage PMS Production Data Currency',
-    'Configure PMS Production Data Currency Settings for Subpanels',
-    'index.php?module=Users&action=manageProductionDataSummaryCurrency'
-);
-
-$customer_admin_group_header[] = array(
-    'Matching Criteria',
-    '',
-    false,
-    $admin_option_defs,
-    ''
-);
-$admin_option_defs_all[] = $admin_option_defs;
+//$admin_option_defs = [];
+//$admin_option_defs['Users']['manage_profile_matching_criteria'] = array(
+//    'matchCriteriaConfig',
+//    'Manage PMS Profile Matching Criteria',
+//    'Configure PMS Profiles Matching Criteria',
+//    'index.php?module=Users&action=matchCriteriaConfig'
+//);
+//
+////$admin_option_defs = [];
+//$admin_option_defs['Users']['manage_production_data_summary_currency'] = array(
+//    'manageProductionDataSummaryCurrency',
+//    'Manage PMS Production Data Settings',
+//    'Configure PMS Production data currency and timeframe for Subpanels',
+//    'index.php?module=Users&action=manageProductionDataSummaryCurrency'
+//);
+//
+//$customer_admin_group_header[] = array(
+//    'PMS Profiles & Production',
+//    '',
+//    false,
+//    $admin_option_defs,
+//    ''
+//);
+//$admin_option_defs_all[] = $admin_option_defs;
 
 
 // Loop through each module in $admin_option_defs

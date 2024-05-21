@@ -553,6 +553,11 @@ class Account extends Company implements EmailInterface
             case 'This Month':
                 $months = [[$currentYear, $currentMonth]];
                 break;
+            case 'Last month':
+                $lastMonth = $currentMonth == 1 ? 12 : $currentMonth - 1;
+                $yearForLastMonth = $currentMonth == 1 ? $currentYear - 1 : $currentYear;
+                $months[] = [$yearForLastMonth, $lastMonth];
+                break;
             case 'This Quarter':
                 $startMonth = ($currentQuarter - 1) * 3 + 1;
                 $endMonth = $currentQuarter * 3;
