@@ -430,6 +430,10 @@ class Account extends Company implements EmailInterface
             $total->room_revenue_usdollar=0;
             $total->missed_room_nights=0;
             $total->room_nights=0;
+
+            global $sugar_config;
+            $total->description=$sugar_config['selected_production_summary_date_range'];
+
             foreach ($rows['list'] as $dt_row){
                 $total->adr+=floatval($dt_row->adr);
                 $total->total_revenue_usdollar+=floatval($dt_row->total_revenue_usdollar);
@@ -489,6 +493,8 @@ class Account extends Company implements EmailInterface
             $total->room_revenue_usdollar=0;
             $total->missed_room_nights=0;
             $total->room_nights=0;
+            global $sugar_config;
+            $total->description=$sugar_config['selected_production_summary_date_range'];
             foreach ($rows['list'] as $dt_row){
                 $total->adr+=floatval($dt_row->adr);
                 $total->total_revenue_usdollar+=floatval($dt_row->total_revenue_usdollar);
@@ -615,7 +621,7 @@ class Account extends Company implements EmailInterface
                 }
                 break;
             default:
-                return "Unknown filter type.";
+                return $fetchedData;
         }
 
         // Fill in missing months
