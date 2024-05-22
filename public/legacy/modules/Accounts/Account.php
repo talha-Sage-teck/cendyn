@@ -564,14 +564,14 @@ class Account extends Company implements EmailInterface
                 $yearForLastMonth = $currentMonth == 1 ? $currentYear - 1 : $currentYear;
                 $months[] = [$yearForLastMonth, $lastMonth];
                 break;
-            case 'This Quarter':
+            case 'This quarter':
                 $startMonth = ($currentQuarter - 1) * 3 + 1;
                 $endMonth = $currentQuarter * 3;
                 for ($month = $startMonth; $month <= $endMonth; $month++) {
                     $months[] = [$currentYear, $month];
                 }
                 break;
-            case 'Last Quarter':
+            case 'Last quarter':
                 $lastQuarter = $currentQuarter == 1 ? 4 : $currentQuarter - 1;
                 $yearOffset = $lastQuarter == 4 ? $currentYear - 1 : $currentYear;
                 $startMonth = ($lastQuarter - 1) * 3 + 1;
@@ -585,12 +585,12 @@ class Account extends Company implements EmailInterface
                     $months[] = [$currentYear, $month];
                 }
                 break;
-            case 'This Year':
+            case 'This year':
                 for ($month = 1; $month <= 12; $month++) {
                     $months[] = [$currentYear, $month];
                 }
                 break;
-            case 'Last Year':
+            case 'Last year':
                 for ($month = 1; $month <= 12; $month++) {
                     $months[] = [$currentYear - 1, $month];
                 }
