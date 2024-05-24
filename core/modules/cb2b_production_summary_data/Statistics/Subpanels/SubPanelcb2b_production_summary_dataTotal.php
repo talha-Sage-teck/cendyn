@@ -199,8 +199,10 @@ class SubPanelcb2b_production_summary_dataTotal extends SubpanelDataQueryHandler
                 $whereClause = "year = $lastYear";
                 break;
             case 'Last 24 months':
-                $previousYear = $currentYear - 1;
-                $whereClause = "(year = $previousYear OR year = $currentYear) AND (month >= $currentMonth OR month < $currentMonth)";
+                $startDate = date('Y-m-01', strtotime('-24 months'));
+                $endDate = date('Y-m-t'); // The end of the current month
+
+                $whereClause = "(DATE(CONCAT(year, '-', LPAD(month, 2, '0'), '-01')) BETWEEN '$startDate' AND '$endDate')";
                 break;
             case 'Next month':
                 $nextMonth = $currentMonth == 12 ? 1 : $currentMonth + 1;
