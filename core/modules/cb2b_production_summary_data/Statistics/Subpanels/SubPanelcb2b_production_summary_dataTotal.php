@@ -175,6 +175,11 @@ class SubPanelcb2b_production_summary_dataTotal extends SubpanelDataQueryHandler
             case 'This Month':
                 $whereClause = "year = $currentYear AND month = $currentMonth";
                 break;
+            case 'Last month':
+                $lastMonth = $currentMonth == 1 ? 12 : $currentMonth - 1;
+                $yearForLastMonth = $currentMonth == 1 ? $currentYear - 1 : $currentYear;
+                $whereClause = "year = $yearForLastMonth AND month = $lastMonth";
+                break;
             case 'This quarter':
                 $startMonth = ($currentQuarter - 1) * 3 + 1;
                 $endMonth = $currentQuarter * 3;
