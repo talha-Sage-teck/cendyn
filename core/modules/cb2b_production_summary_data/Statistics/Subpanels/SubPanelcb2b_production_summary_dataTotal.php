@@ -152,7 +152,7 @@ class SubPanelcb2b_production_summary_dataTotal extends SubpanelDataQueryHandler
             return $statistic;
         }
 
-        $total=intval($result['total']);
+        $total=number_format($result['total'],2,'.',',');
         $date = $cur_sign.$total;
         $statistic = $this->buildSingleValueResponse(self::KEY, 'varchar', ['value' => $date]);
         $this->addMetadata($statistic, ['tooltip_title_key' => $label]);
