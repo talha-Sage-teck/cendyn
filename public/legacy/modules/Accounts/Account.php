@@ -519,7 +519,7 @@ class Account extends Company implements EmailInterface
 
 
             foreach ($rows['list'] as $dt_row){
-                if(!empty($dt_row)){
+                if(!empty($dt_row->dummy_row)){
                     continue;
                 }
                 $total->adr+=floatval($dt_row->adr);
