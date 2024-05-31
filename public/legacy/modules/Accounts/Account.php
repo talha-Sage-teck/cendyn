@@ -449,12 +449,12 @@ class Account extends Company implements EmailInterface
 
             foreach ($rows['list'] as $dt_row){
                 $total->adr+=floatval($dt_row->adr);
-                $dt_row->adr=$cur_sign.$dt_row->adr;
+                $dt_row->adr=$cur_sign.number_format($dt_row->adr,2,'.',',');
 
                 $total->total_revenue_usdollar+=floatval($dt_row->total_revenue_usdollar);
-                $dt_row->total_revenue_usdollar=$cur_sign.$dt_row->total_revenue_usdollar;
+                $dt_row->total_revenue_usdollar=$cur_sign.number_format($dt_row->total_revenue_usdollar,2,'.',',');
                 $total->room_revenue_usdollar+=floatval($dt_row->room_revenue_usdollar);
-                $dt_row->room_revenue_usdollar=$cur_sign.$dt_row->room_revenue_usdollar;
+                $dt_row->room_revenue_usdollar=$cur_sign.number_format($dt_row->room_revenue_usdollar,2,'.',',');
                 $total->missed_room_nights+=intval($dt_row->missed_room_nights);
                 $total->room_nights+=intval($dt_row->room_nights);
             }
@@ -466,9 +466,9 @@ class Account extends Company implements EmailInterface
             global $sugar_config;
 
             
-            $total->adr=$cur_sign.number_format($total->adr,4,'.','');
-            $total->total_revenue_usdollar=$cur_sign.number_format($total->total_revenue_usdollar,4,'.','');
-            $total->room_revenue_usdollar=$cur_sign.number_format($total->room_revenue_usdollar,4,'.','');
+            $total->adr=$cur_sign.number_format($total->adr,2,'.',',');
+            $total->total_revenue_usdollar=$cur_sign.number_format($total->total_revenue_usdollar,2,'.',',');
+            $total->room_revenue_usdollar=$cur_sign.number_format($total->room_revenue_usdollar,2,'.',',');
 
             $rows['list']['total_row']=$total;
             $rows['row_count']++;
@@ -523,12 +523,12 @@ class Account extends Company implements EmailInterface
                     continue;
                 }
                 $total->adr+=floatval($dt_row->adr);
-                $dt_row->adr=$cur_sign.$dt_row->adr;
+                $dt_row->adr=$cur_sign.number_format($dt_row->adr,2,'.',',');
 
                 $total->total_revenue_usdollar+=floatval($dt_row->total_revenue_usdollar);
-                $dt_row->total_revenue_usdollar=$cur_sign.$dt_row->total_revenue_usdollar;
+                $dt_row->total_revenue_usdollar=$cur_sign.number_format($dt_row->total_revenue_usdollar,2,'.',',');
                 $total->room_revenue_usdollar+=floatval($dt_row->room_revenue_usdollar);
-                $dt_row->room_revenue_usdollar=$cur_sign.$dt_row->room_revenue_usdollar;
+                $dt_row->room_revenue_usdollar=$cur_sign.number_format($dt_row->room_revenue_usdollar,2,'.',',');
                 $total->missed_room_nights+=intval($dt_row->missed_room_nights);
                 $total->room_nights+=intval($dt_row->room_nights);
             }
@@ -538,9 +538,9 @@ class Account extends Company implements EmailInterface
             }
 
             
-            $total->adr=$cur_sign.number_format($total->adr,4,'.','');
-            $total->total_revenue_usdollar=$cur_sign.number_format($total->total_revenue_usdollar,4,'.','');
-            $total->room_revenue_usdollar=$cur_sign.number_format($total->room_revenue_usdollar,4,'.','');
+            $total->adr=$cur_sign.number_format($total->adr,2,'.',',');
+            $total->total_revenue_usdollar=$cur_sign.number_format($total->total_revenue_usdollar,2,'.',',');
+            $total->room_revenue_usdollar=$cur_sign.number_format($total->room_revenue_usdollar,2,'.',',');
 
             $rows['list']['total_row']=$total;
             $rows['row_count']++;
