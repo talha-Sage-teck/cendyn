@@ -434,20 +434,6 @@ class Account extends Company implements EmailInterface
             global $sugar_config;
             $total->description=$sugar_config['selected_production_summary_date_range'];
 
-            foreach ($rows['list'] as $dt_row){
-                $total->adr+=floatval($dt_row->adr);
-                $total->total_revenue_usdollar+=floatval($dt_row->total_revenue_usdollar);
-                $total->room_revenue_usdollar+=floatval($dt_row->room_revenue_usdollar);
-                $total->missed_room_nights+=intval($dt_row->missed_room_nights);
-                $total->room_nights+=intval($dt_row->room_nights);
-            }
-
-            if($total->room_nights != 0){
-                $total->adr = $total->room_revenue_usdollar / $total->room_nights;
-            }
-
-            global $sugar_config;
-
             $cur_sign='$';
             if(empty($sugar_config['selected_pms_production_data_summary_currency'])||$sugar_config['selected_pms_production_data_summary_currency']=='usd'){
 
@@ -460,6 +446,26 @@ class Account extends Company implements EmailInterface
                 $cur_sign=explode(' ',$curr)[0];
 
             }
+
+            foreach ($rows['list'] as $dt_row){
+                $total->adr+=floatval($dt_row->adr);
+                $dt_row->adr=$cur_sign.$dt_row->adr;
+
+                $total->total_revenue_usdollar+=floatval($dt_row->total_revenue_usdollar);
+                $dt_row->total_revenue_usdollar=$cur_sign.$dt_row->total_revenue_usdollar;
+                $total->room_revenue_usdollar+=floatval($dt_row->room_revenue_usdollar);
+                $dt_row->room_revenue_usdollar=$cur_sign.$dt_row->room_revenue_usdollar;
+                $total->missed_room_nights+=intval($dt_row->missed_room_nights);
+                $total->room_nights+=intval($dt_row->room_nights);
+            }
+
+            if($total->room_nights != 0){
+                $total->adr = $total->room_revenue_usdollar / $total->room_nights;
+            }
+
+            global $sugar_config;
+
+            
             $total->adr=$cur_sign.number_format($total->adr,4,'.','');
             $total->total_revenue_usdollar=$cur_sign.number_format($total->total_revenue_usdollar,4,'.','');
             $total->room_revenue_usdollar=$cur_sign.number_format($total->room_revenue_usdollar,4,'.','');
@@ -495,17 +501,6 @@ class Account extends Company implements EmailInterface
             $total->room_nights=0;
             global $sugar_config;
             $total->description=$sugar_config['selected_production_summary_date_range'];
-            foreach ($rows['list'] as $dt_row){
-                $total->adr+=floatval($dt_row->adr);
-                $total->total_revenue_usdollar+=floatval($dt_row->total_revenue_usdollar);
-                $total->room_revenue_usdollar+=floatval($dt_row->room_revenue_usdollar);
-                $total->missed_room_nights+=intval($dt_row->missed_room_nights);
-                $total->room_nights+=intval($dt_row->room_nights);
-            }
-
-            if($total->room_nights != 0){
-                $total->adr = $total->room_revenue_usdollar / $total->room_nights;
-            }
 
             global $sugar_config;
 
@@ -521,6 +516,25 @@ class Account extends Company implements EmailInterface
                 $cur_sign=explode(' ',$curr)[0];
 
             }
+
+
+            foreach ($rows['list'] as $dt_row){
+                $total->adr+=floatval($dt_row->adr);
+                $dt_row->adr=$cur_sign.$dt_row->adr;
+
+                $total->total_revenue_usdollar+=floatval($dt_row->total_revenue_usdollar);
+                $dt_row->total_revenue_usdollar=$cur_sign.$dt_row->total_revenue_usdollar;
+                $total->room_revenue_usdollar+=floatval($dt_row->room_revenue_usdollar);
+                $dt_row->room_revenue_usdollar=$cur_sign.$dt_row->room_revenue_usdollar;
+                $total->missed_room_nights+=intval($dt_row->missed_room_nights);
+                $total->room_nights+=intval($dt_row->room_nights);
+            }
+
+            if($total->room_nights != 0){
+                $total->adr = $total->room_revenue_usdollar / $total->room_nights;
+            }
+
+            
             $total->adr=$cur_sign.number_format($total->adr,4,'.','');
             $total->total_revenue_usdollar=$cur_sign.number_format($total->total_revenue_usdollar,4,'.','');
             $total->room_revenue_usdollar=$cur_sign.number_format($total->room_revenue_usdollar,4,'.','');
