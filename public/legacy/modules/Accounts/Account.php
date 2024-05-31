@@ -519,6 +519,9 @@ class Account extends Company implements EmailInterface
 
 
             foreach ($rows['list'] as $dt_row){
+                if(!empty($dt_row)){
+                    continue;
+                }
                 $total->adr+=floatval($dt_row->adr);
                 $dt_row->adr=$cur_sign.$dt_row->adr;
 
@@ -662,6 +665,8 @@ class Account extends Company implements EmailInterface
                 $emptyBean->name=$date->format('F Y');
 
                 $emptyBean->id="";
+                $emptyBean->dummy_row=true;
+
                 $emptyBean->adr='';
                 $emptyBean->total_revenue_usdollar='';
                 $emptyBean->room_revenue_usdollar='';
