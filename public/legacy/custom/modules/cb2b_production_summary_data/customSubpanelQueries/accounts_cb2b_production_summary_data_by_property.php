@@ -40,7 +40,7 @@ function get_accounts_cb2b_production_summary_data_by_property() {
             SUM(cb2b_production_summary_data.missed_room_nights) AS missed_room_nights_sum,
             SUM(cb2b_production_summary_data.room_revenue_$column_name) AS room_revenue_usdollar_sum,
             SUM(cb2b_production_summary_data.total_revenue_$column_name) AS total_revenue_usdollar_sum,
-            SUM(cb2b_production_summary_data.adr$column_name2) AS adr_sum
+            SUM(cb2b_production_summary_data.room_revenue_$column_name)/SUM(cb2b_production_summary_data.room_nights) AS adr_sum
     FROM
         accounts_cb2b_pmsprofiles_1_c
     INNER JOIN cb2b_production_summary_data ON accounts_cb2b_pmsprofiles_1_c.accounts_cb2b_pmsprofiles_1cb2b_pmsprofiles_idb = cb2b_production_summary_data.id
@@ -89,7 +89,7 @@ function get_accounts_cb2b_production_summary_data_by_month() {
     SUM(cb2b_production_summary_data.missed_room_nights) AS missed_room_nights,
     SUM(cb2b_production_summary_data.room_revenue_$column_name) AS room_revenue_usdollar,
     SUM(cb2b_production_summary_data.total_revenue_$column_name) AS total_revenue_usdollar,
-    SUM(cb2b_production_summary_data.adr$column_name2) AS adr
+    SUM(cb2b_production_summary_data.room_revenue_$column_name)/SUM(cb2b_production_summary_data.room_nights) AS adr
 FROM
     accounts_cb2b_pmsprofiles_1_c
         INNER JOIN
