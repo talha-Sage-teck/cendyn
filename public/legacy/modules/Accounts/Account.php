@@ -527,14 +527,18 @@ class Account extends Company implements EmailInterface
                     continue;
                 }
                 $total->adr+=floatval($dt_row->adr);
-                $dt_row->adr=$cur_sign.number_format($dt_row->adr,2,'.',',');
+                $dt_row->adr=empty(floatval($dt_row->adr))?'':$cur_sign.number_format($dt_row->adr,2,'.',',');
 
                 $total->total_revenue_usdollar+=floatval($dt_row->total_revenue_usdollar);
-                $dt_row->total_revenue_usdollar=$cur_sign.number_format($dt_row->total_revenue_usdollar,2,'.',',');
+                $dt_row->total_revenue_usdollar=empty(floatval($dt_row->total_revenue_usdollar))?'':$cur_sign.number_format($dt_row->total_revenue_usdollar,2,'.',',');
                 $total->room_revenue_usdollar+=floatval($dt_row->room_revenue_usdollar);
-                $dt_row->room_revenue_usdollar=$cur_sign.number_format($dt_row->room_revenue_usdollar,2,'.',',');
+                $dt_row->room_revenue_usdollar=empty(floatval($dt_row->room_revenue_usdollar))?'':$cur_sign.number_format($dt_row->room_revenue_usdollar,2,'.',',');
                 $total->missed_room_nights+=intval($dt_row->missed_room_nights);
                 $total->room_nights+=intval($dt_row->room_nights);
+
+                $dt_row->room_nights=empty(intval($dt_row->room_nights))?'':$dt_row->room_nights;
+                $dt_row->missed_room_nights=empty(intval($dt_row->missed_room_nights))?'':$dt_row->missed_room_nights;
+
             }
 
             if($total->room_nights != 0){
