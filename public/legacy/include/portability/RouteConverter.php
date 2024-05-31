@@ -67,6 +67,7 @@ class RouteConverter
     {
         if (empty($module)) {
             //throw new InvalidArgumentException('No module defined');
+            // Sageteck Non-Upgrade Safe Change
             return '';
         }
 
