@@ -28,6 +28,12 @@ $admin_option_defs['Users']['Popup'] = [
 $admin_option_defs['Users']['saveMatchCriteriaConfig'] = [
     'saveMatchCriteriaConfig',
 ];
+$admin_option_defs['Users']['manageProductionDataSummaryCurrency'] = [
+    'manageProductionDataSummaryCurrency',
+];
+$admin_option_defs['Users']['matchCriteriaConfig'] = [
+    'matchCriteriaConfig',
+];
 $admin_option_defs['Users']['saveManageProductionDataSummaryCurrency'] = [
     'saveManageProductionDataSummaryCurrency',
 ];
