@@ -492,6 +492,11 @@ class AOR_Report extends Basic
             } else {
                 $select_field = $this->db->quoteIdentifier($table_alias) . '.' . $field->field;
             }
+            if($data['type']=='multirelate'){
+                $multi_table_alias=$this->db->quoteIdentifier($table_alias);
+                $multi_sql=str_replace('{{table_name}}',$multi_table_alias,$data['report_query']);
+                $select_field=$multi_sql;
+            }
 
             if ($field->sort_by != '') {
                 $query_array['sort_by'][] = $field_label . ' ' . $field->sort_by;
@@ -570,7 +575,31 @@ class AOR_Report extends Basic
             }
             $result = $this->db->query($query);
 
+            $all_rows=[];
             while ($row = $this->db->fetchByAssoc($result)) {
+                $all_rows[]=$row;
+            }
+            if($data['type']=='multirelate'){
+                $new_all_rows=[];
+                foreach ($all_rows as $rrr){
+                    $rrr=explode('^,^',$rrr[$field_label]);
+                    foreach ($rrr as $rr){
+                        $rr=trim($rr,'^');
+                        $new_all_rows[$rr]=$rr;
+                    }
+                }
+                if($field->sort_order=='asc'){
+                    ksort($new_all_rows);
+                }
+                elseif ($field->sort_order='desc'){
+                    krsort($new_all_rows);
+                }
+                $all_rows=[];
+                foreach ($new_all_rows as $rrr){
+                    $all_rows[]=[$field_label=>$rrr];
+                }
+            }
+            foreach ($all_rows as $row){
                 if ($html !== '') {
                     $html .= '<br />';
                 }
@@ -1307,6 +1336,11 @@ class AOR_Report extends Basic
                 } else {
                     $select_field = $this->db->quoteIdentifier($table_alias) . '.' . $field->field;
                 }
+                if($data['type']=='multirelate'){
+                    $multi_table_alias=$this->db->quoteIdentifier($table_alias);
+                    $multi_sql=str_replace('{{table_name}}',$multi_table_alias,$data['report_query']);
+                    $select_field=$multi_sql;
+                }
                 $select_field_db = $select_field;
 
                 if ($field->format && in_array($data['type'], array('date', 'datetime', 'datetimecombo'))) {
@@ -1349,7 +1383,12 @@ class AOR_Report extends Basic
                     if ($group_value === '_empty') {
                         $query['where'][] = '(' . $select_field . " = '' OR " . $select_field . ' IS NULL) AND ';
                     } else {
-                        $query['where'][] = $select_field . " = '" . $group_value . "' AND ";
+                        if($data['type']=='multirelate'){
+                            $query['where'][] = $select_field . " LIKE CONCAT('%^','" . $group_value . "','^%') AND ";
+                        }
+                        else{
+                            $query['where'][] = $select_field . " = '" . $group_value . "' AND ";
+                        }
                     }
                 }
 
@@ -1553,6 +1592,13 @@ class AOR_Report extends Basic
                     } else {
                         $field = $this->db->quoteIdentifier($table_alias) . '.' . $condition->field;
                     }
+                    if($data['type']=='multirelate'){
+                        $multi_table_alias=$this->db->quoteIdentifier($table_alias);
+                        $multi_sql=str_replace('{{table_name}}',$multi_table_alias,$data['report_query_where']);
+
+                        $field=$multi_sql;
+                    }
+
 
                     if (!empty($this->user_parameters[$condition->id]) && $condition->parameter) {
                         $condParam = $this->user_parameters[$condition->id];
@@ -1733,10 +1779,15 @@ class AOR_Report extends Basic
                                     $day_ahead = $dateTime->modify('+1 day');
                                     $equal_query .= "' AND '" . $this->db->quote($day_ahead->format('Y-m-d H:i:s')) . "' ) ";
                                     $query['where'][] = ($tiltLogicOp ? '' : ($condition->logic_op ? $condition->logic_op . ' ' : 'AND ')) . $equal_query;
-                                } else {
+                                } elseif($data['type']=='multirelate'){
+                                    $value = "CONCAT('%', '" . $this->db->quote($condition->value) . "' ,'%')";
+                                    break;
+                                }
+                                else {
                                     $value = "'" . $this->db->quote($condition->value) . "'";
                                     break;
                                 }
+
                                 $where_set = true;
                             } elseif ($condition->operator === 'Not_Equal_To') {
                                 if ($dateTime !== false) {
@@ -1751,7 +1802,11 @@ class AOR_Report extends Basic
                                     $day_ahead = $dateTime->modify('+1 day');
                                     $not_equal_query .= "' AND '" . $this->db->quote($day_ahead->format('Y-m-d H:i:s')) . "' ) ";
                                     $query['where'][] = ($tiltLogicOp ? '' : ($condition->logic_op ? $condition->logic_op . ' ' : 'AND ')) . $not_equal_query;
-                                } else {
+                                } elseif($data['type']=='multirelate'){
+                                    $value = "CONCAT('%', '" . $this->db->quote($condition->value) . "' ,'%')";
+                                    break;
+                                }
+                                else {
                                     $value = "'" . $this->db->quote($condition->value) . "'";
                                     break;
                                 }
@@ -1888,7 +1943,15 @@ class AOR_Report extends Basic
                             }
                         } else {
                             if (!$where_set) {
+                                if($data['type']=='multirelate'){
+                                    $aor_sql_operator_list['Equal_To'] = 'LIKE';
+                                    $aor_sql_operator_list['Not_Equal_To'] = 'NOT LIKE';
+                                }
                                 $query['where'][] = ($tiltLogicOp ? '' : ($condition->logic_op ? $condition->logic_op . ' ' : 'AND ')) . $field . ' ' . $aor_sql_operator_list[$condition->operator] . ' ' . $value;
+                                if($data['type']=='multirelate'){
+                                    $aor_sql_operator_list['Equal_To'] = '=';
+                                    $aor_sql_operator_list['Not_Equal_To'] = '!=';
+                                }
                             }
                         }
                     }
