@@ -52,4 +52,30 @@ $dictionary['AOS_Quotes']['fields']['associate_hotels_quotes'] = array (
     'studio' => 'visible',
     'relation' => 'aos_quotes_cb2b_hotels_1',
     'id' => 'AOS_Quotesassociate_hotels_quotes',
+    'report_query'=>"(SELECT 
+                    GROUP_CONCAT(concat('^',aaa.name,'^')
+                    ORDER 
+                    BY aos_quotes_cb2b_hotels_1_c.date_modified
+                    SEPARATOR ',')
+        FROM
+            aos_quotes_cb2b_hotels_1_c
+                JOIN
+            cb2b_hotels aaa ON aaa.id = aos_quotes_cb2b_hotels_1_c.aos_quotes_cb2b_hotels_1cb2b_hotels_idb and aaa.deleted=0
+        WHERE
+            aos_quotes_cb2b_hotels_1_c.deleted = 0
+                AND aos_quotes_cb2b_hotels_1_c.aos_quotes_cb2b_hotels_1aos_quotes_ida = {{table_name}}.id
+        GROUP BY aos_quotes_cb2b_hotels_1aos_quotes_ida)",
+    'report_query_where'=>"(SELECT 
+                    GROUP_CONCAT(concat('^',aaa.id,'^')
+                    ORDER 
+                    BY aos_quotes_cb2b_hotels_1_c.date_modified
+                    SEPARATOR ',')
+        FROM
+            aos_quotes_cb2b_hotels_1_c
+                JOIN
+            cb2b_hotels aaa ON aaa.id = aos_quotes_cb2b_hotels_1_c.aos_quotes_cb2b_hotels_1cb2b_hotels_idb and aaa.deleted=0
+        WHERE
+            aos_quotes_cb2b_hotels_1_c.deleted = 0
+                AND aos_quotes_cb2b_hotels_1_c.aos_quotes_cb2b_hotels_1aos_quotes_ida = {{table_name}}.id
+        GROUP BY aos_quotes_cb2b_hotels_1aos_quotes_ida)"
 );
