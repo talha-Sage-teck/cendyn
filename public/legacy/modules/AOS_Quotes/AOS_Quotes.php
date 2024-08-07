@@ -89,7 +89,7 @@ class AOS_Quotes extends AOS_Quotes_sugar
         (SELECT 
                     GROUP_CONCAT(aaa.name
                     ORDER 
-                    BY aos_quotes_cb2b_hotels_1_c.date_modified
+                    BY aos_quotes_cb2b_hotels_1_c.date_modified asc
                     SEPARATOR ',')
         FROM
             aos_quotes_cb2b_hotels_1_c
