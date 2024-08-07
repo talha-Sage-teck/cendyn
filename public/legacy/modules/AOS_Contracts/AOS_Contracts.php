@@ -241,7 +241,7 @@ class AOS_Contracts extends AOS_Contracts_sugar
         }
     }
 
-
+    // Sageteck non-upgrade safe
     public function create_export_query($order_by, $where)
     {
         $query=parent::create_export_query($order_by, $where);

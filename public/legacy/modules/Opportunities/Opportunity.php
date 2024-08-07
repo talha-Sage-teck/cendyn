@@ -170,10 +170,11 @@ class Opportunity extends SugarBean
     {
         $custom_join = $this->getCustomJoin(true, true, $where);
         $custom_join['join'] .= $relate_link_join;
+	// Sageteck non-upgrade safe
         $query = "SELECT
                                 opportunities.*,
                                 accounts.name as account_name,
-                                users.user_name as assigned_user_name ,
+                                users.user_name as assigned_user_name,
                                 (SELECT 
                     GROUP_CONCAT(aaa.name
                     ORDER 
@@ -278,7 +279,7 @@ class Opportunity extends SugarBean
         return $this->build_related_list2($query, $contact, $temp);
     }
 
-
+        
 
     public function update_currency_id($fromid, $toid)
     {

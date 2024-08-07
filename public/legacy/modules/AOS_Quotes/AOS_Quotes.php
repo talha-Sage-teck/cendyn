@@ -79,6 +79,8 @@ class AOS_Quotes extends AOS_Quotes_sugar
         $productQuote->mark_lines_deleted($this);
         parent::mark_deleted($id);
     }
+
+    // Sageteck non-upgrade safe
     public function create_export_query($order_by, $where)
     {
         $query=parent::create_export_query($order_by, $where);

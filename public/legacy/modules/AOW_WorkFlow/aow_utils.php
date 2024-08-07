@@ -105,6 +105,7 @@ function getModuleFields(
                             $unset[] = $arr['id_name'];
                         }
                     }
+		    // Sageteck non-upgrade safe
                     if($arr['type']=='multirelate'&&!empty($arr['report_query'])){
                         $fields[$name] = rtrim(translate($arr['vname'], $mod->module_dir), ':');
 
@@ -371,6 +372,7 @@ function getModuleField(
             $focus = new $beanList[$module];
             $vardef = $focus->getFieldDefinition($fieldname);
         }
+	// Sageteck non-upgrade safe
         if($vardef['type']=='multirelate'&&$view=='DetailView'){
             $vardef['type']='multienum';
             $vardef['backup_type']='multirelate';
@@ -531,6 +533,7 @@ function getModuleField(
         $focus->field_defs[$fieldname]['options'] = $focus->field_defs[$vardefFields[$fieldname]['group']]['options'];
     }
     foreach ($vardefFields as $name => $properties) {
+	// Sageteck non-upgrade safe
         if($properties['type']=='multirelate'){
             $properties['type']='multienum';
             $properties['backup_type']='multirelate';
@@ -679,6 +682,7 @@ function getModuleField(
 
         return($sfh->displaySmarty($parentfieldlist, $fieldlist[$fieldname], 'ListView', $displayParams));
     }
+    // Sageteck non-upgrade safe
     if($fieldlist[$aow_field]['backup_type']=='multirelate'&&$value!=null){
         $fieldlist[$aow_field]['value']=$value;
         $vals=explode('^,^',$value);
