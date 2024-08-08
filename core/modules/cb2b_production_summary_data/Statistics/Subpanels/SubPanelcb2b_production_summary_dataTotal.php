@@ -130,7 +130,7 @@ class SubPanelcb2b_production_summary_dataTotal extends SubpanelDataQueryHandler
             SUM(cb2b_production_summary_data.adr$column_name2) AS adr_sum
     FROM
         accounts_cb2b_pmsprofiles_1_c
-    INNER JOIN cb2b_production_summary_data ON accounts_cb2b_pmsprofiles_1_c.accounts_cb2b_pmsprofiles_1cb2b_pmsprofiles_idb = cb2b_production_summary_data.id
+    INNER JOIN cb2b_production_summary_data ON accounts_cb2b_pmsprofiles_1_c.accounts_cb2b_pmsprofiles_1cb2b_pmsprofiles_idb = cb2b_production_summary_data.cb2b_pms_profile_id
         AND cb2b_production_summary_data.deleted = 0 and cb2b_production_summary_data.date_filter='ArrivalDate'
     INNER JOIN accounts ON accounts_cb2b_pmsprofiles_1_c.accounts_cb2b_pmsprofiles_1accounts_ida = accounts.id
         AND accounts.deleted = 0
