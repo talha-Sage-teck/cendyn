@@ -177,8 +177,6 @@ class Opportunity extends SugarBean
                                 users.user_name as assigned_user_name,
                                 (SELECT 
                     GROUP_CONCAT(aaa.name
-                    ORDER 
-                    BY opportunities_cb2b_hotels_1_c.date_modified asc
                     SEPARATOR ',')
         FROM
             opportunities_cb2b_hotels_1_c

@@ -42,8 +42,6 @@ $dictionary['Opportunity']['fields']['associate_hotels_opportunity'] = array (
     'id' => 'Opportunityassociate_hotels_opportunity',
     'report_query'=>"(SELECT 
                     GROUP_CONCAT(concat('^',aaa.name,'^')
-                    ORDER 
-                    BY opportunities_cb2b_hotels_1_c.date_modified asc
                     SEPARATOR ',')
         FROM
             opportunities_cb2b_hotels_1_c

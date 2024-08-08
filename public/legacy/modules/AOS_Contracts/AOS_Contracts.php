@@ -249,8 +249,6 @@ class AOS_Contracts extends AOS_Contracts_sugar
         $parts[0]=$parts[0].','."
         (SELECT 
                     GROUP_CONCAT(aaa.name
-                    ORDER 
-                    BY aos_contracts_cb2b_hotels_2_c.date_modified asc
                     SEPARATOR ',')
         FROM
             aos_contracts_cb2b_hotels_2_c

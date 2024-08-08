@@ -54,8 +54,6 @@ $dictionary['AOS_Contracts']['fields']['associate_hotels_contracts'] = array (
     'id' => 'AOS_Contractsassociate_hotels_contracts',
     'report_query'=>"(SELECT 
                     GROUP_CONCAT(concat('^',aaa.name,'^')
-                    ORDER 
-                    BY aos_contracts_cb2b_hotels_2_c.date_modified asc
                     SEPARATOR ',')
         FROM
             aos_contracts_cb2b_hotels_2_c
