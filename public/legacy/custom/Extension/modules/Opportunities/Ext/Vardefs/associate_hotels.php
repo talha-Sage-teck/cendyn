@@ -40,4 +40,28 @@ $dictionary['Opportunity']['fields']['associate_hotels_opportunity'] = array (
     'studio' => 'visible',
     'relation' => 'opportunities_cb2b_hotels_1',
     'id' => 'Opportunityassociate_hotels_opportunity',
+    'report_query'=>"(SELECT 
+                    GROUP_CONCAT(concat('^',aaa.name,'^')
+                    SEPARATOR ',')
+        FROM
+            opportunities_cb2b_hotels_1_c
+                JOIN
+            cb2b_hotels aaa ON aaa.id = opportunities_cb2b_hotels_1_c.opportunities_cb2b_hotels_1cb2b_hotels_idb
+        WHERE
+            opportunities_cb2b_hotels_1_c.deleted = 0
+                AND opportunities_cb2b_hotels_1_c.opportunities_cb2b_hotels_1opportunities_ida = {{table_name}}.id
+        GROUP BY opportunities_cb2b_hotels_1opportunities_ida)",
+    'report_query_where'=>"(SELECT 
+                    GROUP_CONCAT(concat('^',aaa.id,'^')
+                    ORDER 
+                    BY opportunities_cb2b_hotels_1_c.date_modified
+                    SEPARATOR ',')
+        FROM
+            opportunities_cb2b_hotels_1_c
+                JOIN
+            cb2b_hotels aaa ON aaa.id = opportunities_cb2b_hotels_1_c.opportunities_cb2b_hotels_1cb2b_hotels_idb
+        WHERE
+            opportunities_cb2b_hotels_1_c.deleted = 0
+                AND opportunities_cb2b_hotels_1_c.opportunities_cb2b_hotels_1opportunities_ida = {{table_name}}.id
+        GROUP BY opportunities_cb2b_hotels_1opportunities_ida)",
 );

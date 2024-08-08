@@ -269,7 +269,8 @@ class SubPanel
         $spd = new SubPanelDefinitions($mod);
         $tabs = $spd->get_available_tabs(true);
         $ret_tabs = array();
-        $reject_tabs = array('history'=>1, 'activities'=>1);
+        // Sageteck Non-Upgrade Safe Change
+        $reject_tabs = array('history'=>1, 'activities'=>1, 'accounts_cb2b_production_summary_data_by_month'=>1, 'accounts_cb2b_production_summary_data_by_property'=>1);
         foreach ($tabs as $key=>$tab) {
             foreach ($tab as $k=>$v) {
                 if (! isset($reject_tabs [$k])) {

@@ -105,6 +105,11 @@ function getModuleFields(
                             $unset[] = $arr['id_name'];
                         }
                     }
+		    // Sageteck non-upgrade safe
+                    if($arr['type']=='multirelate'&&!empty($arr['report_query'])){
+                        $fields[$name] = rtrim(translate($arr['vname'], $mod->module_dir), ':');
+
+                    }
                 }
             } //End loop.
 
@@ -367,6 +372,15 @@ function getModuleField(
             $focus = new $beanList[$module];
             $vardef = $focus->getFieldDefinition($fieldname);
         }
+	// Sageteck non-upgrade safe
+        if($vardef['type']=='multirelate'&&$view=='DetailView'){
+            $vardef['type']='multienum';
+            $vardef['backup_type']='multirelate';
+        }
+        if($vardef['type']=='multirelate'&&$view=='EditView'){
+            $vardef['type']='relate';
+            $vardef['backup_type']='multirelate';
+        }
 
         // Bug: check for AOR value SecurityGroups value missing
         if (stristr($fieldname, 'securitygroups') != false && empty($vardef)) {
@@ -519,6 +533,11 @@ function getModuleField(
         $focus->field_defs[$fieldname]['options'] = $focus->field_defs[$vardefFields[$fieldname]['group']]['options'];
     }
     foreach ($vardefFields as $name => $properties) {
+	// Sageteck non-upgrade safe
+        if($properties['type']=='multirelate'){
+            $properties['type']='multienum';
+            $properties['backup_type']='multirelate';
+        }
         $fieldlist[$name] = $properties;
         // fill in enums
         if (isset($fieldlist[$name]['options']) && is_string($fieldlist[$name]['options']) && isset($app_list_strings[$fieldlist[$name]['options']])) {
@@ -663,7 +682,17 @@ function getModuleField(
 
         return($sfh->displaySmarty($parentfieldlist, $fieldlist[$fieldname], 'ListView', $displayParams));
     }
-
+    // Sageteck non-upgrade safe
+    if($fieldlist[$aow_field]['backup_type']=='multirelate'&&$value!=null){
+        $fieldlist[$aow_field]['value']=$value;
+        $vals=explode('^,^',$value);
+        $vals_clean=[];
+        foreach ($vals as $vv){
+            $vv=trim($vv,'^');
+            $vals_clean[$vv]=$vv;
+        }
+        $fieldlist[$aow_field]['options']=$vals_clean;
+    }
     $ss->assign("QS_JS", $quicksearch_js);
     $ss->assign("fields", $fieldlist);
     $ss->assign("form_name", $view);

@@ -40,10 +40,10 @@ function get_accounts_cb2b_production_summary_data_by_property() {
             SUM(cb2b_production_summary_data.missed_room_nights) AS missed_room_nights_sum,
             SUM(cb2b_production_summary_data.room_revenue_$column_name) AS room_revenue_usdollar_sum,
             SUM(cb2b_production_summary_data.total_revenue_$column_name) AS total_revenue_usdollar_sum,
-            SUM(cb2b_production_summary_data.adr$column_name2) AS adr_sum
+            SUM(cb2b_production_summary_data.room_revenue_$column_name)/SUM(cb2b_production_summary_data.room_nights) AS adr_sum
     FROM
         accounts_cb2b_pmsprofiles_1_c
-    INNER JOIN cb2b_production_summary_data ON accounts_cb2b_pmsprofiles_1_c.accounts_cb2b_pmsprofiles_1cb2b_pmsprofiles_idb = cb2b_production_summary_data.id
+    INNER JOIN cb2b_production_summary_data ON accounts_cb2b_pmsprofiles_1_c.accounts_cb2b_pmsprofiles_1cb2b_pmsprofiles_idb = cb2b_production_summary_data.cb2b_pms_profile_id
         AND cb2b_production_summary_data.deleted = 0 and cb2b_production_summary_data.date_filter='ArrivalDate'
     INNER JOIN accounts ON accounts_cb2b_pmsprofiles_1_c.accounts_cb2b_pmsprofiles_1accounts_ida = accounts.id
         AND accounts.deleted = 0
@@ -51,11 +51,64 @@ function get_accounts_cb2b_production_summary_data_by_property() {
         accounts_cb2b_pmsprofiles_1_c.deleted = 0 $where
             AND accounts_cb2b_pmsprofiles_1accounts_ida = '{$parent_acc->id}'
     GROUP BY accounts.id , accounts.name , cb2b_production_summary_data.property_id) CTEInner ON CTEInner.PropertyID = cb2b_hotels.id
+    WHERE cb2b_hotels.deleted = 0 
     ORDER BY IFNULL(CTEInner.total_revenue_usdollar_sum, 0) desc,property_name asc
 ";
 
 
     return $return_array['select'];
+}
+function get_accounts_cb2b_production_summary_data_by_month() {
+
+
+    global $sugar_config;
+    $column_name='usdollar';
+    $column_name2='';
+    if(empty($sugar_config['selected_pms_production_data_summary_currency'])||$sugar_config['selected_pms_production_data_summary_currency']=='usd'){
+        $column_name='usdollar';
+        $column_name2='';
+
+    }
+    else{
+        $column_name='corporate';
+        $column_name2='_corporate';
+
+    }
+
+    $where=get_production_date_filter();
+
+    $parent_acc=$GLOBALS['account_parent'];
+
+    $query="
+    SELECT 
+    uuid() AS id,
+    concat(cb2b_production_summary_data.year,cb2b_production_summary_data.month) as property_name,
+    cb2b_production_summary_data.year AS year,
+    cb2b_production_summary_data.month AS month,
+    SUM(cb2b_production_summary_data.room_nights) AS room_nights,
+    SUM(cb2b_production_summary_data.missed_room_nights) AS missed_room_nights,
+    SUM(cb2b_production_summary_data.room_revenue_$column_name) AS room_revenue_usdollar,
+    SUM(cb2b_production_summary_data.total_revenue_$column_name) AS total_revenue_usdollar,
+    SUM(cb2b_production_summary_data.room_revenue_$column_name)/SUM(cb2b_production_summary_data.room_nights) AS adr
+FROM
+    accounts_cb2b_pmsprofiles_1_c
+        INNER JOIN
+    cb2b_production_summary_data ON accounts_cb2b_pmsprofiles_1_c.accounts_cb2b_pmsprofiles_1cb2b_pmsprofiles_idb = cb2b_production_summary_data.cb2b_pms_profile_id
+        AND cb2b_production_summary_data.deleted = 0
+        AND cb2b_production_summary_data.date_filter = 'ArrivalDate'
+        INNER JOIN
+    accounts ON accounts_cb2b_pmsprofiles_1_c.accounts_cb2b_pmsprofiles_1accounts_ida = accounts.id
+        AND accounts.deleted = 0
+WHERE
+    accounts_cb2b_pmsprofiles_1_c.deleted = 0 $where
+        AND accounts_cb2b_pmsprofiles_1accounts_ida = '{$parent_acc->id}'
+GROUP BY accounts.id , accounts.name , cb2b_production_summary_data.year , cb2b_production_summary_data.month
+ORDER BY cb2b_production_summary_data.year , cb2b_production_summary_data.month
+    
+    
+    ";
+
+    return $query;
 }
 function get_production_date_filter(){
 
@@ -70,6 +123,11 @@ function get_production_date_filter(){
     switch ($sugar_config['selected_production_summary_date_range']) {
         case 'This Month':
             $whereClause = "year = $currentYear AND month = $currentMonth";
+            break;
+        case 'Last month':
+            $lastMonth = $currentMonth == 1 ? 12 : $currentMonth - 1;
+            $yearForLastMonth = $currentMonth == 1 ? $currentYear - 1 : $currentYear;
+            $whereClause = "year = $yearForLastMonth AND month = $lastMonth";
             break;
         case 'This quarter':
             $startMonth = ($currentQuarter - 1) * 3 + 1;
@@ -95,8 +153,10 @@ function get_production_date_filter(){
             $whereClause = "year = $lastYear";
             break;
         case 'Last 24 months':
-            $previousYear = $currentYear - 1;
-            $whereClause = "(year = $previousYear OR year = $currentYear) AND (month >= $currentMonth OR month < $currentMonth)";
+            $startDate = date('Y-m-01', strtotime('-24 months'));
+            $endDate = date('Y-m-t'); // The end of the current month
+
+            $whereClause = "(DATE(CONCAT(year, '-', LPAD(month, 2, '0'), '-01')) BETWEEN '$startDate' AND '$endDate')";
             break;
         case 'Next month':
             $nextMonth = $currentMonth == 12 ? 1 : $currentMonth + 1;
@@ -137,7 +197,7 @@ FROM
             SUM(cb2b_production_summary_data.room_revenue_usdollar) AS room_revenue_usdollar_sum
     FROM
         accounts_cb2b_pmsprofiles_1_c
-    INNER JOIN cb2b_production_summary_data ON accounts_cb2b_pmsprofiles_1_c.accounts_cb2b_pmsprofiles_1cb2b_pmsprofiles_idb = cb2b_production_summary_data.id
+    INNER JOIN cb2b_production_summary_data ON accounts_cb2b_pmsprofiles_1_c.accounts_cb2b_pmsprofiles_1cb2b_pmsprofiles_idb = cb2b_production_summary_data.cb2b_pms_profile_id
         AND cb2b_production_summary_data.deleted = 0
     INNER JOIN accounts ON accounts_cb2b_pmsprofiles_1_c.accounts_cb2b_pmsprofiles_1accounts_ida = accounts.id
         AND accounts.deleted = 0

@@ -52,4 +52,29 @@ $dictionary['AOS_Contracts']['fields']['associate_hotels_contracts'] = array (
     'studio' => 'visible',
     'relation' => 'aos_contracts_cb2b_hotels_2',
     'id' => 'AOS_Contractsassociate_hotels_contracts',
+    'report_query'=>"(SELECT 
+                    GROUP_CONCAT(concat('^',aaa.name,'^')
+                    SEPARATOR ',')
+        FROM
+            aos_contracts_cb2b_hotels_2_c
+                JOIN
+            cb2b_hotels aaa ON aaa.id = aos_contracts_cb2b_hotels_2_c.aos_contracts_cb2b_hotels_2cb2b_hotels_idb and aaa.deleted=0
+        WHERE
+            aos_contracts_cb2b_hotels_2_c.deleted = 0
+                AND aos_contracts_cb2b_hotels_2_c.aos_contracts_cb2b_hotels_2aos_contracts_ida = {{table_name}}.id
+        GROUP BY aos_contracts_cb2b_hotels_2aos_contracts_ida)",
+    'report_query_where'=>"(SELECT 
+                    GROUP_CONCAT(concat('^',aaa.id,'^')
+                    ORDER 
+                    BY aos_contracts_cb2b_hotels_2_c.date_modified
+                    SEPARATOR ',')
+        FROM
+            aos_contracts_cb2b_hotels_2_c
+                JOIN
+            cb2b_hotels aaa ON aaa.id = aos_contracts_cb2b_hotels_2_c.aos_contracts_cb2b_hotels_2cb2b_hotels_idb and aaa.deleted=0
+        WHERE
+            aos_contracts_cb2b_hotels_2_c.deleted = 0
+                AND aos_contracts_cb2b_hotels_2_c.aos_contracts_cb2b_hotels_2aos_contracts_ida = {{table_name}}.id
+        GROUP BY aos_contracts_cb2b_hotels_2aos_contracts_ida)",
+
 );

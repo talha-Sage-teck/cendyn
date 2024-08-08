@@ -119,11 +119,37 @@ YAHOO.extend(Studio2.PanelDD, YAHOO.util.DDProxy, {
 					var newRow = Studio2.newRow(false);
 					srcEl.appendChild(newRow);
 					// bug 16470: change the panel title to make it unique
+					// #B2B-1676
+					// Sageteck Non-Upgrade Safe Change
+					let type=document.getElementsByName('contract_type');
+					let panelLabel_tmp = document.getElementById("le_panelid_"+srcEl.id).childNodes[0].nodeValue;
+					if(type.length){
+						if(!panelLabel_tmp.endsWith(type[0].value)){
+							type='_'+type[0].value;
+
+						}
+						else{
+							type='';
+						}
+					}
+					else{
+						type='';
+					}
+
+
+
 					var view = document.getElementById('prepareForSave').view.value;
-					var view_module = document.getElementById('prepareForSave').view_module.value
+					var view_module = document.getElementById('prepareForSave').view_module.value;
 					var panelLabel = document.getElementById("le_panelid_"+srcEl.id).childNodes[0].nodeValue.toUpperCase() ;
 					var panelLabelNoID = 'lbl_' + view +  '_panel';
+
+
                     var panelNumber = panelLabel.substring(panelLabelNoID.length) ;
+					if(type){
+						panelLabel=panelLabel+type;
+						document.getElementById("le_panelid_"+srcEl.id).childNodes[0].nodeValue=panelLabel;
+
+					}
 					var panelDisplay = SUGAR.language.get('ModuleBuilder', 'LBL_NEW_PANEL') + ' ' + panelNumber ;
 					document.getElementById("le_panelname_"+srcEl.id).childNodes[0].nodeValue =  panelDisplay ;
 					var params = { module: 'ModuleBuilder' , action: 'saveProperty', view_module: view_module }

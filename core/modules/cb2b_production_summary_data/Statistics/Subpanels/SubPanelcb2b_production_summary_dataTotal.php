@@ -96,14 +96,18 @@ class SubPanelcb2b_production_summary_dataTotal extends SubpanelDataQueryHandler
         $relateId = $db->quote($id);
 
         $where=$this->getDateFilter();
-//        $queries = $this->getQueries($module, $id, $subpanel);
-//        $parts = $queries[0];
-//        $parts['select'] = 'SELECT q.`expiration`';
-//        $parts['from'] = ' FROM aos_quotes as q ';
-//        $parts['where'] = " WHERE q.`expiration` >= '$dateNow' AND q.deleted = 0  AND (q.billing_account_id = '$relateId' OR q.billing_contact_id = '$relateId') ";
-//        $parts['order_by'] = ' ORDER BY q.expiration ASC LIMIT 1 ';
+
+        if($subpanelName=='accounts_cb2b_production_summary_data_by_month'){
+            $label='LBL_CB2B_PRODUCTION_SUMMARY_TOOLTIP_MONTH';
+            $column_sum_name='room_revenue_usdollar';
+
+        }
+        else{
+            $label='LBL_CB2B_PRODUCTION_SUMMARY_TOOLTIP';
+            $column_sum_name='total_revenue_usdollar';
+        }
         $innerQuery = "
-         SELECT sum(tt.total_revenue_usdollar) as total FROM (SELECT 
+         SELECT sum(tt.$column_sum_name) as total FROM (SELECT 
     cb2b_hotels.id as id,
     cb2b_hotels.id as property_id,
     cb2b_hotels.name as property_name,
@@ -126,32 +130,33 @@ class SubPanelcb2b_production_summary_dataTotal extends SubpanelDataQueryHandler
             SUM(cb2b_production_summary_data.adr$column_name2) AS adr_sum
     FROM
         accounts_cb2b_pmsprofiles_1_c
-    INNER JOIN cb2b_production_summary_data ON accounts_cb2b_pmsprofiles_1_c.accounts_cb2b_pmsprofiles_1cb2b_pmsprofiles_idb = cb2b_production_summary_data.id
+    INNER JOIN cb2b_production_summary_data ON accounts_cb2b_pmsprofiles_1_c.accounts_cb2b_pmsprofiles_1cb2b_pmsprofiles_idb = cb2b_production_summary_data.cb2b_pms_profile_id
         AND cb2b_production_summary_data.deleted = 0 and cb2b_production_summary_data.date_filter='ArrivalDate'
     INNER JOIN accounts ON accounts_cb2b_pmsprofiles_1_c.accounts_cb2b_pmsprofiles_1accounts_ida = accounts.id
         AND accounts.deleted = 0
     WHERE
         accounts_cb2b_pmsprofiles_1_c.deleted = 0 $where
             AND accounts_cb2b_pmsprofiles_1accounts_ida = '$id'
-    GROUP BY accounts.id , accounts.name , cb2b_production_summary_data.property_id) CTEInner ON CTEInner.PropertyID = cb2b_hotels.id) as tt";
+    GROUP BY accounts.id , accounts.name , cb2b_production_summary_data.property_id) CTEInner ON CTEInner.PropertyID = cb2b_hotels.id WHERE cb2b_hotels.deleted = 0) as tt";
         $result = $this->fetchRow($innerQuery);
+
 
         if (empty($result)) {
             $this->close();
 
             $date = $cur_sign.'0';
             $statistic = $this->buildSingleValueResponse(self::KEY, 'varchar', ['value' => $date]);
-            $this->addMetadata($statistic, ['tooltip_title_key' => 'LBL_CB2B_PRODUCTION_SUMMARY_TOOLTIP']);
-            $this->addMetadata($statistic, ['descriptionKey' => 'LBL_CB2B_PRODUCTION_SUMMARY_TOOLTIP']);
+            $this->addMetadata($statistic, ['tooltip_title_key' => $label]);
+            $this->addMetadata($statistic, ['descriptionKey' => $label]);
 
             return $statistic;
         }
 
-        $total=intval($result['total']);
+        $total=number_format($result['total'],2,'.',',');
         $date = $cur_sign.$total;
         $statistic = $this->buildSingleValueResponse(self::KEY, 'varchar', ['value' => $date]);
-        $this->addMetadata($statistic, ['tooltip_title_key' => 'LBL_CB2B_PRODUCTION_SUMMARY_TOOLTIP']);
-        $this->addMetadata($statistic, ['descriptionKey' => 'LBL_CB2B_PRODUCTION_SUMMARY_TOOLTIP']);
+        $this->addMetadata($statistic, ['tooltip_title_key' => $label]);
+        $this->addMetadata($statistic, ['descriptionKey' => $label]);
 
         return $statistic;
     }
@@ -169,6 +174,11 @@ class SubPanelcb2b_production_summary_dataTotal extends SubpanelDataQueryHandler
         switch ($sugar_config['selected_production_summary_date_range']) {
             case 'This Month':
                 $whereClause = "year = $currentYear AND month = $currentMonth";
+                break;
+            case 'Last month':
+                $lastMonth = $currentMonth == 1 ? 12 : $currentMonth - 1;
+                $yearForLastMonth = $currentMonth == 1 ? $currentYear - 1 : $currentYear;
+                $whereClause = "year = $yearForLastMonth AND month = $lastMonth";
                 break;
             case 'This quarter':
                 $startMonth = ($currentQuarter - 1) * 3 + 1;
@@ -194,8 +204,10 @@ class SubPanelcb2b_production_summary_dataTotal extends SubpanelDataQueryHandler
                 $whereClause = "year = $lastYear";
                 break;
             case 'Last 24 months':
-                $previousYear = $currentYear - 1;
-                $whereClause = "(year = $previousYear OR year = $currentYear) AND (month >= $currentMonth OR month < $currentMonth)";
+                $startDate = date('Y-m-01', strtotime('-24 months'));
+                $endDate = date('Y-m-t'); // The end of the current month
+
+                $whereClause = "(DATE(CONCAT(year, '-', LPAD(month, 2, '0'), '-01')) BETWEEN '$startDate' AND '$endDate')";
                 break;
             case 'Next month':
                 $nextMonth = $currentMonth == 12 ? 1 : $currentMonth + 1;

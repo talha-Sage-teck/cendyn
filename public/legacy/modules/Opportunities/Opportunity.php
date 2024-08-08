@@ -170,10 +170,22 @@ class Opportunity extends SugarBean
     {
         $custom_join = $this->getCustomJoin(true, true, $where);
         $custom_join['join'] .= $relate_link_join;
+	// Sageteck non-upgrade safe
         $query = "SELECT
                                 opportunities.*,
                                 accounts.name as account_name,
-                                users.user_name as assigned_user_name ";
+                                users.user_name as assigned_user_name,
+                                (SELECT 
+                    GROUP_CONCAT(aaa.name
+                    SEPARATOR ',')
+        FROM
+            opportunities_cb2b_hotels_1_c
+                JOIN
+            cb2b_hotels aaa ON aaa.id = opportunities_cb2b_hotels_1_c.opportunities_cb2b_hotels_1cb2b_hotels_idb
+        WHERE
+            opportunities_cb2b_hotels_1_c.deleted = 0
+                AND opportunities_cb2b_hotels_1_c.opportunities_cb2b_hotels_1opportunities_ida = opportunities.id
+        GROUP BY opportunities_cb2b_hotels_1opportunities_ida) as associate_hotels_opportunity";
         $query .= $custom_join['select'];
         $query .= " FROM opportunities ";
         $query .= 				"LEFT JOIN users

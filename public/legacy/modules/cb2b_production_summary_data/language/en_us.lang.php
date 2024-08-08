@@ -86,4 +86,5 @@ $mod_strings = array (
   'LBL_ROOM_REVENUE_CORPORATE' => 'Room Revenue Corporate',
   'LBL_TOTAL_REVENUE_CORPORATE' => 'Total Revenue Corporate',
   'LBL_ADR_CORPORATE' => 'ADR Corporate',
+  'LBL_CB2B_PMS_PROFILE_ID' => 'PMS Profile ID',
 );

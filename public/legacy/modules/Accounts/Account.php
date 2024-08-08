@@ -430,13 +430,82 @@ class Account extends Company implements EmailInterface
             $total->room_revenue_usdollar=0;
             $total->missed_room_nights=0;
             $total->room_nights=0;
+
+            global $sugar_config;
+            $total->description=$sugar_config['selected_production_summary_date_range'];
+
+            $cur_sign='$';
+            if(empty($sugar_config['selected_pms_production_data_summary_currency'])||$sugar_config['selected_pms_production_data_summary_currency']=='usd'){
+
+                $cur_sign='$';
+
+            }
+            else{
+
+                $curr=$sugar_config['corporate_currency_options'][$sugar_config['selected_corporate_currency_options']];
+                $cur_sign=explode(' ',$curr)[0];
+
+            }
+
             foreach ($rows['list'] as $dt_row){
                 $total->adr+=floatval($dt_row->adr);
+                $dt_row->adr=empty(floatval($dt_row->adr))?'':$cur_sign.number_format($dt_row->adr,2,'.',',');
+
                 $total->total_revenue_usdollar+=floatval($dt_row->total_revenue_usdollar);
+                $dt_row->total_revenue_usdollar=empty(floatval($dt_row->total_revenue_usdollar))?'':$cur_sign.number_format($dt_row->total_revenue_usdollar,2,'.',',');
                 $total->room_revenue_usdollar+=floatval($dt_row->room_revenue_usdollar);
+                $dt_row->room_revenue_usdollar=empty(floatval($dt_row->room_revenue_usdollar))?'':$cur_sign.number_format($dt_row->room_revenue_usdollar,2,'.',',');
                 $total->missed_room_nights+=intval($dt_row->missed_room_nights);
                 $total->room_nights+=intval($dt_row->room_nights);
+
+                $dt_row->room_nights=empty(intval($dt_row->room_nights))?'':$dt_row->room_nights;
+                $dt_row->missed_room_nights=empty(intval($dt_row->missed_room_nights))?'':$dt_row->missed_room_nights;
+
             }
+
+            if($total->room_nights != 0){
+                $total->adr = $total->room_revenue_usdollar / $total->room_nights;
+            }
+
+            global $sugar_config;
+
+            
+            $total->adr=$cur_sign.number_format($total->adr,2,'.',',');
+            $total->total_revenue_usdollar=$cur_sign.number_format($total->total_revenue_usdollar,2,'.',',');
+            $total->room_revenue_usdollar=$cur_sign.number_format($total->room_revenue_usdollar,2,'.',',');
+
+            $rows['list']['total_row']=$total;
+            $rows['row_count']++;
+            return $rows;
+        }
+        if($subpanel_def->name=='accounts_cb2b_production_summary_data_by_month'){
+            $max_per_page=1000;
+
+            $rows=parent::process_union_list_query($parent_bean,
+                $query,
+                $row_offset,
+                $limit,
+                $max_per_page ,
+                $where,
+                $subpanel_def ,
+                $query_row_count ,
+                $secondary_queries
+            );
+
+            $rows['list']=$this->fillMissingMonths($rows['list']);
+            $rows['row_count']=count($rows['list']);
+
+            $total=BeanFactory::newBean('cb2b_production_summary_data');
+            $total->id="total_row";
+            $total->name="Total";
+            $total->adr=0;
+            $total->total_revenue_usdollar=0;
+            $total->room_revenue_usdollar=0;
+            $total->missed_room_nights=0;
+            $total->room_nights=0;
+            global $sugar_config;
+            $total->description=$sugar_config['selected_production_summary_date_range'];
+
             global $sugar_config;
 
             $cur_sign='$';
@@ -451,9 +520,35 @@ class Account extends Company implements EmailInterface
                 $cur_sign=explode(' ',$curr)[0];
 
             }
-            $total->adr=$cur_sign.number_format($total->adr,4,'.','');
-            $total->total_revenue_usdollar=$cur_sign.number_format($total->total_revenue_usdollar,4,'.','');
-            $total->room_revenue_usdollar=$cur_sign.number_format($total->room_revenue_usdollar,4,'.','');
+
+
+            foreach ($rows['list'] as $dt_row){
+                if(!empty($dt_row->dummy_row)){
+                    continue;
+                }
+                $total->adr+=floatval($dt_row->adr);
+                $dt_row->adr=empty(floatval($dt_row->adr))?'':$cur_sign.number_format($dt_row->adr,2,'.',',');
+
+                $total->total_revenue_usdollar+=floatval($dt_row->total_revenue_usdollar);
+                $dt_row->total_revenue_usdollar=empty(floatval($dt_row->total_revenue_usdollar))?'':$cur_sign.number_format($dt_row->total_revenue_usdollar,2,'.',',');
+                $total->room_revenue_usdollar+=floatval($dt_row->room_revenue_usdollar);
+                $dt_row->room_revenue_usdollar=empty(floatval($dt_row->room_revenue_usdollar))?'':$cur_sign.number_format($dt_row->room_revenue_usdollar,2,'.',',');
+                $total->missed_room_nights+=intval($dt_row->missed_room_nights);
+                $total->room_nights+=intval($dt_row->room_nights);
+
+                $dt_row->room_nights=empty(intval($dt_row->room_nights))?'':$dt_row->room_nights;
+                $dt_row->missed_room_nights=empty(intval($dt_row->missed_room_nights))?'':$dt_row->missed_room_nights;
+
+            }
+
+            if($total->room_nights != 0){
+                $total->adr = $total->room_revenue_usdollar / $total->room_nights;
+            }
+
+            
+            $total->adr=$cur_sign.number_format($total->adr,2,'.',',');
+            $total->total_revenue_usdollar=$cur_sign.number_format($total->total_revenue_usdollar,2,'.',',');
+            $total->room_revenue_usdollar=$cur_sign.number_format($total->room_revenue_usdollar,2,'.',',');
 
             $rows['list']['total_row']=$total;
             $rows['row_count']++;
@@ -471,5 +566,131 @@ class Account extends Company implements EmailInterface
             $secondary_queries
         );
     }
+
+
+    function fillMissingMonths($fetchedData)
+    {
+        global $sugar_config;
+        $filterType=$sugar_config['selected_production_summary_date_range'];
+        $currentDate = new DateTime();
+        $currentYear = intval($currentDate->format('Y'));
+        $currentMonth = intval($currentDate->format('m'));
+        $currentQuarter = ceil($currentMonth / 3);
+
+        $months = [];
+
+        // Determine the range of months and years based on the filter type
+        switch ($filterType) {
+            case 'This Month':
+                $months = [[$currentYear, $currentMonth]];
+                break;
+            case 'Last month':
+                $lastMonth = $currentMonth == 1 ? 12 : $currentMonth - 1;
+                $yearForLastMonth = $currentMonth == 1 ? $currentYear - 1 : $currentYear;
+                $months[] = [$yearForLastMonth, $lastMonth];
+                break;
+            case 'This quarter':
+                $startMonth = ($currentQuarter - 1) * 3 + 1;
+                $endMonth = $currentQuarter * 3;
+                for ($month = $startMonth; $month <= $endMonth; $month++) {
+                    $months[] = [$currentYear, $month];
+                }
+                break;
+            case 'Last quarter':
+                $lastQuarter = $currentQuarter == 1 ? 4 : $currentQuarter - 1;
+                $yearOffset = $lastQuarter == 4 ? $currentYear - 1 : $currentYear;
+                $startMonth = ($lastQuarter - 1) * 3 + 1;
+                $endMonth = $lastQuarter * 3;
+                for ($month = $startMonth; $month <= $endMonth; $month++) {
+                    $months[] = [$yearOffset, $month];
+                }
+                break;
+            case 'YTD':
+                for ($month = 1; $month <= $currentMonth; $month++) {
+                    $months[] = [$currentYear, $month];
+                }
+                break;
+            case 'This year':
+                for ($month = 1; $month <= 12; $month++) {
+                    $months[] = [$currentYear, $month];
+                }
+                break;
+            case 'Last year':
+                for ($month = 1; $month <= 12; $month++) {
+                    $months[] = [$currentYear - 1, $month];
+                }
+                break;
+            case 'Last 24 months':
+                for ($i = 23; $i >= 0; $i--) {
+                    $date = (new DateTime())->modify("-$i months");
+                    $months[] = [$date->format('Y'), intval($date->format('m'))];
+                }
+                break;
+            case 'Next month':
+                $nextMonth = $currentMonth == 12 ? 1 : $currentMonth + 1;
+                $yearForNextMonth = $currentMonth == 12 ? $currentYear + 1 : $currentYear;
+                $months[] = [$yearForNextMonth, $nextMonth];
+                break;
+            case 'Next quarter':
+                $nextQuarter = $currentQuarter == 4 ? 1 : $currentQuarter + 1;
+                $yearForNextQuarter = $currentQuarter == 4 ? $currentYear + 1 : $currentYear;
+                $startMonth = ($nextQuarter - 1) * 3 + 1;
+                $endMonth = $nextQuarter * 3;
+                for ($month = $startMonth; $month <= $endMonth; $month++) {
+                    $months[] = [$yearForNextQuarter, $month];
+                }
+                break;
+            case 'Next Year':
+                for ($month = 1; $month <= 12; $month++) {
+                    $months[] = [$currentYear + 1, $month];
+                }
+                break;
+            default:
+                return $fetchedData;
+        }
+
+        // Fill in missing months
+        $completeData = [];
+        foreach ($months as $yearMonth) {
+            list($year, $month) = $yearMonth;
+            $found = false;
+            foreach ($fetchedData as $data) {
+                if ($data->year == $year && $data->month == $month) {
+
+                    $date = DateTime::createFromFormat('Y-m', "$year-$month");
+                    // Format the date into the desired format 'F Y' (Month Year)
+                    $data->name=$date->format('F Y');
+                    $completeData[] = $data;
+                    $found = true;
+                    break;
+                }
+            }
+            if (!$found) {
+
+
+                $emptyBean=BeanFactory::newBean('cb2b_production_summary_data');
+                $date = DateTime::createFromFormat('Y-m', "$year-$month");
+                $emptyBean->name=$date->format('F Y');
+
+                $emptyBean->id="";
+                $emptyBean->dummy_row=true;
+
+                $emptyBean->adr='';
+                $emptyBean->total_revenue_usdollar='';
+                $emptyBean->room_revenue_usdollar='';
+                $emptyBean->missed_room_nights='';
+                $emptyBean->room_nights='';
+                $emptyBean->year=$year;
+                $emptyBean->month=$month;
+
+
+                $completeData[]=$emptyBean;
+            }
+        }
+        return $completeData;
+    }
+
+
+
     // Sageteck Non-Upgrade Safe Change
 }
