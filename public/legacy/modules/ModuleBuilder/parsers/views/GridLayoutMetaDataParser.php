@@ -653,7 +653,14 @@ class GridLayoutMetaDataParser extends AbstractMetaDataParser implements MetaDat
                             } //Otherwise make up a viewdef for it from field_defs
                             else {
                                 if (isset($fieldDefinitions [$fieldname])) {
-                                    $newRow [$colID - $offset] = self::_trimFieldDefs($fieldDefinitions [$fieldname]);
+                                    $trimmedFieldDef= self::_trimFieldDefs($fieldDefinitions [$fieldname]);
+                                    // Sageteck non-upgrade change
+                                    if (isset($trimmedFieldDef['group'])) {
+                                        if(str_contains($trimmedFieldDef['group'], 'address')){
+                                            $trimmedFieldDef['type'] = 'address';
+                                        }
+                                    }
+                                    $newRow [$colID - $offset] = $trimmedFieldDef;
                                 } //No additional info on this field can be found, jsut use the name;
                                 else {
                                     $newRow [$colID - $offset] = $fieldname;
@@ -847,7 +854,9 @@ class GridLayoutMetaDataParser extends AbstractMetaDataParser implements MetaDat
                 'customCode' => true,
                 'customLabel' => true,
                 'tabindex' => true,
-                'hideLabel' => true
+                'hideLabel' => true,
+                //Sageteck non-upgrade change
+                'group' => true,
             )
         );
         if (!empty($fieldDefinitions['vname']) && empty($fieldDefinitions['label'])) {
