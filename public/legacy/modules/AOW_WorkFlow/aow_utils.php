@@ -666,17 +666,17 @@ function getModuleField(
             require_once('include/SugarFields/SugarFieldHandler.php');
             $sfh = new SugarFieldHandler();
         }
-
-        if ($currency_id != '' && !stripos($fieldname, '_USD')) {
-            $userCurrencyId = $current_user->getPreference('currency');
-            if ($currency_id != $userCurrencyId) {
-                $currency = BeanFactory::newBean('Currencies');
-                $currency->retrieve($currency_id);
-                $value = $currency->convertToDollar($value);
-                $currency->retrieve($userCurrencyId);
-                $value = $currency->convertFromDollar($value);
-            }
-        }
+        // Sageteck Non-Upgrade change
+        // if ($currency_id != '' && !stripos($fieldname, '_USD')) {
+        //     $userCurrencyId = $current_user->getPreference('currency');
+        //     if ($currency_id != $userCurrencyId) {
+        //         $currency = BeanFactory::newBean('Currencies');
+        //         $currency->retrieve($currency_id);
+        //         $value = $currency->convertToDollar($value);
+        //         $currency->retrieve($userCurrencyId);
+        //         $value = $currency->convertFromDollar($value);
+        //     }
+        // }
 
         $parentfieldlist[strtoupper($fieldname)] = $value;
 

@@ -838,30 +838,56 @@ class AOR_Report extends Basic
                     if ($att['function'] == 'COUNT' || !empty($att['format'])) {
                         $html .= $row[$name];
                     } else {
-                        // Make sure the `{$module}_id` key exists on $row, to prevent PHP notices.
-                        if (isset($row[$att['alias'] . '_id'])) {
-                            $params = array('record_id' => $row[$att['alias'] . '_id']);
-                        } else {
-                            $params = [];
-                        }
+
                         
-                        // Sageteck non-upgrade safe
-                        $fieldValue = trim(getModuleField(
-                            $att['module'],
-                            $att['field'],
-                            $att['field'],
-                            'DetailView',
-                            $row[$name],
-                            '',
-                            $currency_id,
-                            $params
-                        ));
+                        // Sageteck Non-Upgrade change
+                        ////////////////////////////////////////////////////////////////////
+                        $field_string = getModuleField($att['module'], $att['field'], $att['field'], 'DetailView', $row[$name], '', $currency_id);   
+
+                        //For problematic cases ONLY, otherwise it will simply add values to the field_string 
+                        if (!stripos($att['field'], '_USD')) {//(preg_match('/^Opportunity_Amount\d+$/', $name) || preg_match('/^Contract_Value\d+$/', $name))) {//$currency_id != '-99' && 
+
+                            //Get Currencies
+                            $currency = BeanFactory::newBean('Currencies');
+
+                            //To retrieve Currency_id associated with users
+                            global $current_user;
+                            $current_user_id = $current_user->id;
+
+                            // Load the user bean
+                            $user = BeanFactory::getBean('Users', $current_user_id);
+
+                            // Get the currency ID from the user settings
+                            $user_currency_id = $user->getPreference('currency');
+
+                            // Load the currency bean for User preference
+                            $currency->retrieve($user_currency_id);
+
+                            // Get the currency symbol for the user default that needs to be replaced
+                            $user_default_symbol = $currency->symbol;
+
+                            // Load the currency bean for required currency
+                            $currency->retrieve($currency_id);
+                            //Load the required symbol
+                            $targetsymbol = $currency->symbol;
+
+                            //Fix Symbol
+                            if (strpos($field_string, $user_default_symbol) !== false) {
+
+                                $field_string = str_replace($user_default_symbol, $targetsymbol, $field_string);
+
+                            }
+
+
+                        }//End of solution
+                        //Changes also added in aow_utils.php in getModuleField()
+                        ////////////////////////////////////////////////////////////////////
                         
                         if(str_contains($name, 'Currency')){
-                            $fieldValue = str_replace('<script>function CurrencyConvertAll() { return; }</script>', '', $fieldValue);
+                            $field_string= str_replace('<script>function CurrencyConvertAll() { return; }</script>', '', $field_string);
                         }
                         
-                        $html .= $fieldValue;
+                        $html .= $field_string;
                     }
 
                     if ($att['total']) {
@@ -1123,15 +1149,53 @@ class AOR_Report extends Basic
                     if ($att['function'] != '' || $att['format'] != '') {
                         $csv .= $this->encloseForCSV($row[$name]);
                     } else {
-                        $t = getModuleField(
-                            $att['module'],
-                            $att['field'],
-                            $att['field'],
-                            'DetailView',
-                            $row[$name],
-                            '',
-                            $currency_id
-                        );
+                        
+                        // Sageteck Non-Upgrade change
+                        ////////////////////////////////////////////////////////////////////
+                        $t = getModuleField($att['module'], $att['field'], $att['field'], 'DetailView', $row[$name], '', $currency_id);
+
+
+                        //For problematic cases ONLY, otherwise it will simply add values to the field_string 
+                        if (!stripos($att['field'], '_USD')) {//(preg_match('/^Opportunity_Amount\d+$/', $name) || preg_match('/^Contract_Value\d+$/', $name))) {//$currency_id != '-99' && 
+
+                            //Get Currencies
+                            $currency = BeanFactory::newBean('Currencies');
+
+                            //To retrieve Currency_id associated with users
+                            global $current_user;
+
+                            $current_user_id = $current_user->id;
+
+                            // Load the user bean
+                            $user = BeanFactory::getBean('Users', $current_user_id);
+
+                            // Get the currency ID from the user settings
+                            $user_currency_id = $user->getPreference('currency');
+
+                            // Load the currency bean for User preference
+                            $currency->retrieve($user_currency_id);
+
+                            // Get the currency symbol for the user default that needs to be replaced
+                            $user_default_symbol = $currency->symbol;
+
+                            // Load the currency bean for required currency
+                            $currency->retrieve($currency_id);
+                            //Load the required symbol
+                            $targetsymbol = $currency->symbol;
+
+
+                            $t = getModuleField($att['module'], $att['field'], $att['field'], 'DetailView', $row[$name], '', $currency_id);
+
+                            //Fix Symbol
+                            if (strpos($t, $user_default_symbol) !== false) {
+
+                                $t = str_replace($user_default_symbol, $targetsymbol, $t);
+
+                            }
+
+
+                        }//End of solution
+                        ////////////////////////////////////////////////////////////////////
                         if (false !== strpos($t, 'checkbox')) {
                             $csv .= $row[$name];
                         } else {
