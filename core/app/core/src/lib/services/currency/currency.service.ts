@@ -86,7 +86,8 @@ export class CurrencyService {
     }
 
     getCurrencyId(record: Record): string {
-        return record?.fields?.currency_id?.value ?? null;
+        // Sageteck Non-upgrade change
+        return record?.attributes?.currency_id ?? null;
     }
 
     isBase(field: Field): boolean {
