@@ -584,6 +584,7 @@ class AOR_Report extends Basic
 	    // Sageteck non-upgrade safe
             if($data['type']=='multirelate'){
                 $new_all_rows=[];
+                $new_all_rows['']='';
                 foreach ($all_rows as $rrr){
                     $rrr=explode('^,^',$rrr[$field_label]);
                     foreach ($rrr as $rr){
@@ -592,10 +593,10 @@ class AOR_Report extends Basic
                     }
                 }
                 if($field->sort_order=='asc'){
-                    ksort($new_all_rows);
+                    ksort($new_all_rows,SORT_STRING);
                 }
                 elseif ($field->sort_order=='desc'){
-                    krsort($new_all_rows);
+                    krsort($new_all_rows,SORT_STRING);
                 }
                 $all_rows=[];
                 foreach ($new_all_rows as $rrr){
