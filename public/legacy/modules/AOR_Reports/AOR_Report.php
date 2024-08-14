@@ -594,7 +594,7 @@ class AOR_Report extends Basic
                 if($field->sort_order=='asc'){
                     ksort($new_all_rows);
                 }
-                elseif ($field->sort_order='desc'){
+                elseif ($field->sort_order=='desc'){
                     krsort($new_all_rows);
                 }
                 $all_rows=[];
