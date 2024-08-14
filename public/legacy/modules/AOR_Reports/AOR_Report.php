@@ -584,24 +584,30 @@ class AOR_Report extends Basic
 	    // Sageteck non-upgrade safe
             if($data['type']=='multirelate'){
                 $new_all_rows=[];
-                $new_all_rows['']='';
                 foreach ($all_rows as $rrr){
                     $rrr=explode('^,^',$rrr[$field_label]);
                     foreach ($rrr as $rr){
                         $rr=trim($rr,'^');
-                        $new_all_rows[$rr]=$rr;
+                        $new_all_rows[]=$rr;
                     }
                 }
                 if($field->sort_order=='asc'){
-                    ksort($new_all_rows,SORT_STRING);
+                    sort($new_all_rows,SORT_STRING);
+
                 }
                 elseif ($field->sort_order=='desc'){
-                    krsort($new_all_rows,SORT_STRING);
+                    array_unshift($new_all_rows , '');
+                    rsort($new_all_rows,SORT_STRING);
+                }
+                else{
+                    $new_all_rows[]='';
+
                 }
                 $all_rows=[];
                 foreach ($new_all_rows as $rrr){
                     $all_rows[]=[$field_label=>$rrr];
                 }
+                $GLOBALS['log']->fatal('Report Log:'.json_encode($all_rows));
             }
 	    // Sageteck non-upgrade safe
             foreach ($all_rows as $row){
