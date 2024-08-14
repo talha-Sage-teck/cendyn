@@ -588,21 +588,18 @@ class AOR_Report extends Basic
                     $rrr=explode('^,^',$rrr[$field_label]);
                     foreach ($rrr as $rr){
                         $rr=trim($rr,'^');
-                        $new_all_rows[]=$rr;
+                        $new_all_rows[$rr]=$rr;
                     }
                 }
-                if($field->sort_order=='asc'){
+                $new_all_rows['']='';
+                if($field->sort_by=='ASC'){
                     sort($new_all_rows,SORT_STRING);
 
                 }
-                elseif ($field->sort_order=='desc'){
-                    array_unshift($new_all_rows , '');
+                elseif ($field->sort_by=='DESC'){
                     rsort($new_all_rows,SORT_STRING);
                 }
-                else{
-                    $new_all_rows[]='';
 
-                }
                 $all_rows=[];
                 foreach ($new_all_rows as $rrr){
                     $all_rows[]=[$field_label=>$rrr];
