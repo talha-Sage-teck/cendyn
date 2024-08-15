@@ -185,7 +185,7 @@ function export($type, $records = null, $members = false, $sample=false)
             $where = substr(trim($where), 5, strlen($where));
         }
 
-        $query = $focus->create_export_query($order_by, $where);
+        $query = $focus->create_export_query($order_by, $where, 'ForExportSample');
     }
 
     $result = '';

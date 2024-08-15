@@ -593,11 +593,11 @@ class AOR_Report extends Basic
                 }
                 $new_all_rows['']='';
                 if($field->sort_by=='ASC'){
-                    sort($new_all_rows,SORT_STRING);
+                    sort($new_all_rows,SORT_STRING | SORT_FLAG_CASE);
 
                 }
                 elseif ($field->sort_by=='DESC'){
-                    rsort($new_all_rows,SORT_STRING);
+                    rsort($new_all_rows,SORT_STRING | SORT_FLAG_CASE);
                 }
 
                 $all_rows=[];
