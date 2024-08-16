@@ -17,17 +17,23 @@ class ContactsLogicHooks {
          * 1. An unsaved contact bean
          * @Returns
          * Function returns void
+         * 
          */
-
         if (!$bean->skipBeforeSave) {
-            if ($bean->fetched_row != false && ($bean->last_sync_date != '' && !is_null($bean->last_sync_date))) {
+
+            if ($bean->fetched_row != false && ($bean->fetched_row['last_sync_date'] != '' && !is_null($bean->fetched_row['last_sync_date']))) {
                 $bean->ready_to_sync = 2;
+                $bean->last_sync_date = $bean->fetched_row['last_sync_date'];
                 return;
             }
             $bean->ready_to_sync = 1;
         }
-    }
+        
 
+    }
+    
+
+    
     public function beforeDelete($bean, $events, $args) {
         /*         * *
          * This function sets the readToSync flag before a contact is deleted
@@ -43,6 +49,7 @@ class ContactsLogicHooks {
         // If the record is not already synced then there is no need to make the delete API Call.
         if ($bean->last_sync_date != '' && !is_null($bean->last_sync_date)) {
             $bean->ready_to_sync = 3;
+            $bean->last_sync_date = $bean->fetched_row['last_sync_date'];
         } else {
             $bean->ready_to_sync = 0;
         }

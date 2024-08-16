@@ -20,11 +20,13 @@ class beforeRelationshipAddHandler {
                 if ($rel = $db->fetchByAssoc($selectAccountResult1)) {
                     if ($rel['account_id'] != $arguments['related_id']) {
                         $bean->ready_to_sync = 4;
+                        $bean->last_sync_date = $contact['last_sync_date'];
                         $bean->skipBeforeSave = true;
                         $updateFlag = true;
                     }
                 } else if ($selectAccountResult1->num_rows == 0) {
                     $bean->ready_to_sync = 4;
+                    $bean->last_sync_date = $contact['last_sync_date'];
                     $bean->skipBeforeSave = true;
                     $updateFlag = true;
                 }
