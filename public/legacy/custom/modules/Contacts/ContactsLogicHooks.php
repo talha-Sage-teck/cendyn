@@ -1,8 +1,10 @@
 <?php
 
-class ContactsLogicHooks {
+class ContactsLogicHooks
+{
 
-    public function setSyncFlag($bean, $events, $args) {
+    public function setSyncFlag($bean, $events, $args)
+    {
         /*         * *
          * This function sets the readToSync flag when a new contact is created or updated
          * @LogicHook Before Save
@@ -17,18 +19,24 @@ class ContactsLogicHooks {
          * 1. An unsaved contact bean
          * @Returns
          * Function returns void
+         * 
          */
-
         if (!$bean->skipBeforeSave) {
-            if ($bean->fetched_row != false && ($bean->last_sync_date != '' && !is_null($bean->last_sync_date))) {
+            if ($bean->fetched_row != false && ($bean->fetched_row['last_sync_date'] != '' && !is_null($bean->fetched_row['last_sync_date']))) {
                 $bean->ready_to_sync = 2;
+                $bean->last_sync_date = $bean->fetched_row['last_sync_date'];
                 return;
             }
             $bean->ready_to_sync = 1;
         }
+
+
     }
 
-    public function beforeDelete($bean, $events, $args) {
+
+
+    public function beforeDelete($bean, $events, $args)
+    {
         /*         * *
          * This function sets the readToSync flag before a contact is deleted
          * @LogicHook Before Delete
@@ -43,6 +51,7 @@ class ContactsLogicHooks {
         // If the record is not already synced then there is no need to make the delete API Call.
         if ($bean->last_sync_date != '' && !is_null($bean->last_sync_date)) {
             $bean->ready_to_sync = 3;
+            $bean->last_sync_date = $bean->fetched_row['last_sync_date'];
         } else {
             $bean->ready_to_sync = 0;
         }
@@ -50,7 +59,8 @@ class ContactsLogicHooks {
         $bean->save();
     }
 
-    private function updateEmailRow($email, $donotemail, $donotemail_date, $donotemail_source) {
+    private function updateEmailRow($email, $donotemail, $donotemail_date, $donotemail_source)
+    {
         global $db;
         $email_caps = trim(strtoupper($email));
         $findQ = "SELECT * FROM email_addresses WHERE email_address_caps='$email_caps' AND deleted = 0";
@@ -63,7 +73,8 @@ class ContactsLogicHooks {
         }
     }
 
-    public function populateImportedEmails($bean, $events, $args) {
+    public function populateImportedEmails($bean, $events, $args)
+    {
         /**
          * For primary emails there is no prefix, for all other emails; property is followed by email number/prefix
          */
@@ -87,7 +98,8 @@ class ContactsLogicHooks {
         }
     }
 
-    private function makeStringFromEmailsArray($emails): string {
+    private function makeStringFromEmailsArray($emails): string
+    {
         $str = "";
         $emails = (array) $emails;
 
@@ -101,7 +113,7 @@ class ContactsLogicHooks {
                 (intval($email['primary_address']) === 1 || $email['primary_address'] == "true") ? 'Primary' : '',
                 (intval($email['opt_out']) === 1 || $email['opt_out'] == "true") ? 'Opt Out' : '',
                 (intval($email['invalid_email']) === 1 || $email['invalid_email'] == "true") ? 'Invalid' : '',
-                            ), 'strlen'));
+            ), 'strlen'));
 
             if (trim($flags) !== '')
                 $str .= " (" . $flags . ")";
@@ -109,7 +121,8 @@ class ContactsLogicHooks {
         return $str;
     }
 
-    public function addEmailsToAudit($bean, $events, $args) {
+    public function addEmailsToAudit($bean, $events, $args)
+    {
         /*         * *
          * This function adds all the emails to audit table
          * @LogicHook Before Save
@@ -148,10 +161,11 @@ class ContactsLogicHooks {
                 for ($i = 0; $i < sizeof($newSet); ++$i) {
                     $newEmail = (array) $newSet[$i];
                     $prevEmail = (array) $prevSet[$i];
-                    if ($newEmail['email_address'] == $prevEmail['email_address'] &&
-                            intval(filter_var($newEmail['primary_address'], FILTER_VALIDATE_BOOLEAN)) == intval(filter_var($prevEmail['primary_address'], FILTER_VALIDATE_BOOLEAN)) &&
-                            intval(filter_var($newEmail['opt_out'], FILTER_VALIDATE_BOOLEAN)) == intval(filter_var($prevEmail['opt_out'], FILTER_VALIDATE_BOOLEAN)) &&
-                            intval(filter_var($newEmail['invalid_email'], FILTER_VALIDATE_BOOLEAN)) == intval(filter_var($prevEmail['invalid_email'], FILTER_VALIDATE_BOOLEAN))
+                    if (
+                        $newEmail['email_address'] == $prevEmail['email_address'] &&
+                        intval(filter_var($newEmail['primary_address'], FILTER_VALIDATE_BOOLEAN)) == intval(filter_var($prevEmail['primary_address'], FILTER_VALIDATE_BOOLEAN)) &&
+                        intval(filter_var($newEmail['opt_out'], FILTER_VALIDATE_BOOLEAN)) == intval(filter_var($prevEmail['opt_out'], FILTER_VALIDATE_BOOLEAN)) &&
+                        intval(filter_var($newEmail['invalid_email'], FILTER_VALIDATE_BOOLEAN)) == intval(filter_var($prevEmail['invalid_email'], FILTER_VALIDATE_BOOLEAN))
                     )
                         continue;
                     $isChange = true;

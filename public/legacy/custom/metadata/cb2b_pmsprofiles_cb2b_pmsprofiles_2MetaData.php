@@ -1,6 +1,6 @@
 <?php
 
-// created: 2022-11-15 18:10:53
+// created: 2022-11-15 18:10:53 
 $dictionary["cb2b_pmsprofiles_cb2b_pmsprofiles_2"] = array(
     'true_relationship_type' => 'many-to-many',
     'from_studio' => true,
@@ -54,12 +54,12 @@ $dictionary["cb2b_pmsprofiles_cb2b_pmsprofiles_2"] = array(
             'type' => 'varchar',
             'len' => 36,
         ),
-        4 =>
+        5 =>
         array(
             'name' => 'match_criteria',
             'type' => 'varchar',
         ),
-        5 =>
+        6 =>
         array(
             'name' => 'date_entered',
             'type' => 'datetime',
