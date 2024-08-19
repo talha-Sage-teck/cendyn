@@ -6,7 +6,7 @@ require_once ('custom/pushtechCurlDataHandler.php');
 // Define the pushtechCurlRequest class.
 class pushtechCurlRequest
 {
-    // Define private class properties.
+    // Define private class properties. 
     private $endpoint;
     private $header;
     private $errors = [];

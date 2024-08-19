@@ -28,6 +28,7 @@ function getContactByIdPushtech($contactID)
 
     // Execute the request and return the response
     $response = $curlRequest->executeCurlRequest("GET");
+    //$GLOBALS['log']->info("getContactByIdPushtech: Contact ID: $contactID - Response: " . print_r($response, true));
 
     return $response;
 }
@@ -132,6 +133,7 @@ function deleteContactPushtech($contact_id, $data): array
 
     // Execute the request and return the response
     $response = $pushtechCurlRequest->executeCurlRequest("POST", $data);
+    //$GLOBALS['log']->info("deleteContactPushtech: Contact ID: $contact_id - Response: " . print_r($response, true));
 
     return $response;
 }
@@ -154,7 +156,8 @@ function sendContactDataPushtech($data, $contact_id = null): array
 
     // Execute the request and return the response
     $response = $curlRequest->executeCurlRequest("POST", $data);
-   
+    //$GLOBALS['log']->info("sendContactDataPushtech: Data: " . print_r($data, true) . " - Response: " . print_r($response, true));
+
     return $response;
 }
 

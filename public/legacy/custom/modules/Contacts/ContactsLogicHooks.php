@@ -20,7 +20,6 @@ class ContactsLogicHooks {
          * 
          */
         if (!$bean->skipBeforeSave) {
-
             if ($bean->fetched_row != false && ($bean->fetched_row['last_sync_date'] != '' && !is_null($bean->fetched_row['last_sync_date']))) {
                 $bean->ready_to_sync = 2;
                 $bean->last_sync_date = $bean->fetched_row['last_sync_date'];

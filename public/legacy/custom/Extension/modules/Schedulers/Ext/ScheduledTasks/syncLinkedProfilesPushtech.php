@@ -89,6 +89,10 @@ function getPrevAccountIDPushTech($profileID) {
     }
 }
 
+// Function to check if the input string is a valid GUID format
+// function is_valid_guid($guid) {
+//     return preg_match('/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/', $guid);
+// }
 
 function syncLinkedProfilesPushTech() {
     global $db;
@@ -102,6 +106,31 @@ function syncLinkedProfilesPushTech() {
         $profileBean = BeanFactory::getBean('CB2B_PMSProfiles', $profile['id']);
         $profileBean->load_relationship($accountRel);
 
+        // if (!is_valid_guid($profileBean->id)) {
+        //     $error = array(
+        //         'name' => "ProfileId should be the 36 char length",
+        //         'endpoint' => null,
+        //         'input_data' => null,
+        //         'http_code' => null,
+        //         'request_type' => null,
+        //         'curl_error_message' => null,
+        //         'resolution' => null,
+        //         'error_status' => 'new',
+        //         'related_to_module' => 'PMS_Profile',
+        //         'parent_id' => $profileBean->id,
+        //         'parent_type' => "CB2B_PMSProfiles",
+        //         'concerned_team' => "b2b_dev_team",
+        //         'assigned_user_id' => 1,
+        //         'action_type' => 'Add Relationship',
+        //         'api_response' => null
+        //     );
+
+        //     $dataHandler->storeCurlRequest($error);
+        //     continue;
+        // } else {
+        //     $errorNameArray = ['ProfileId should be the 36 char length'];
+        //     $dataHandler->resolveErrorWithName($errorNameArray, $profileBean->id, 'PMS_Profile');
+        // }
 
         $accounts = $profileBean->$accountRel->getBeans();
 
@@ -124,6 +153,7 @@ function syncLinkedProfilesPushTech() {
             if ($res) {
                 $profileBean->ready_to_link = 0;
                 $profileBean->save();
+                //$dataHandler->resolveError($profileBean->id, 'parent_id');
             } else {
                 $GLOBALS['log']->debug("syncLinkedProfilesPushTech: Could not sync with PushTech.");
             }

@@ -10,7 +10,7 @@ class pushtechCurlDataHandler {
     }
 
     /**
-     * Store cURL request errors in the custom module.
+     * Store cURL request errors in the custom module. 
      *
      * @param array $error The error details to be stored.
      * @return int The ID of the stored error log.

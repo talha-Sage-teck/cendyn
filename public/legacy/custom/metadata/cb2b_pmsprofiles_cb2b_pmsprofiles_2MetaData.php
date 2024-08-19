@@ -1,6 +1,6 @@
 <?php
 
-// created: 2022-11-15 18:10:53
+// created: 2022-11-15 18:10:53 
 $dictionary["cb2b_pmsprofiles_cb2b_pmsprofiles_2"] = array(
     'true_relationship_type' => 'many-to-many',
     'from_studio' => true,

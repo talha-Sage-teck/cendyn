@@ -5,7 +5,7 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-
+ 
 // Include required custom classes for handling cURL requests and data handling
 require_once('custom/pushtechCurlRequest.php');
 require_once('custom/pushtechCurlDataHandler.php');

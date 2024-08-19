@@ -2,7 +2,7 @@
 
 if (!defined('sugarEntry') || !sugarEntry)
     die('Not A Valid Entry Point');
-
+ 
 class beforeRelationshipAddHandler {
 
     function setReadyToLink(&$bean, $event, $arguments) {
