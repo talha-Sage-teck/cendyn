@@ -2,10 +2,12 @@
 
 if (!defined('sugarEntry') || !sugarEntry)
     die('Not A Valid Entry Point');
- 
-class beforeRelationshipAddHandler {
 
-    function setReadyToLink(&$bean, $event, $arguments) {
+class beforeRelationshipAddHandler
+{
+
+    function setReadyToLink(&$bean, $event, $arguments)
+    {
         global $db;
         $updateFlag = false;
 
@@ -15,7 +17,7 @@ class beforeRelationshipAddHandler {
             $contact = $db->fetchByAssoc($selectContactResult);
             if ($contact && $contact['last_sync_date'] != null) {
                 $selectAccountQuery = "SELECT * FROM accounts_contacts WHERE contact_id='{$bean->id}' "
-                        . "and deleted='0' ORDER BY date_modified DESC LIMIT 1";
+                    . "and deleted='0' ORDER BY date_modified DESC LIMIT 1";
                 $selectAccountResult1 = $db->query($selectAccountQuery);
                 if ($rel = $db->fetchByAssoc($selectAccountResult1)) {
                     if ($rel['account_id'] != $arguments['related_id']) {

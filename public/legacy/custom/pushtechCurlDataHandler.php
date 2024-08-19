@@ -79,20 +79,6 @@ class pushtechCurlDataHandler {
     }
 
     /**
-     * Resolve error by updating its status to 'resolved'.
-     *
-     * @param string $id The ID of the error to be resolved.
-     * @param string $getBy The field to match for the update.
-     * @param string|null $res Additional resolution details.
-     */
-    public function resolveError(string $id, string $getBy, ?string $res = null) {
-        global $db;
-
-        $updateQuery = "UPDATE cb2b_automatedmonitoring SET error_status = 'resolved' WHERE $getBy = " . $db->quoted($id);
-        $db->query($updateQuery);
-    }
-
-    /**
      * Resolve errors with specific names by updating their status to 'resolved'.
      *
      * @param array $errorNames List of error names to be resolved.
@@ -120,26 +106,4 @@ class pushtechCurlDataHandler {
             $db->query($updateQuery);
         }
     }
-
-    /**
-     * Check for validation and resolve errors based on provided details.
-     *
-     * @param object $bean The bean object to check.
-     * @param array $errorsName List of error names to check.
-     * @param string $module The module name for filtering.
-     */
-    public function checkForValidationAndResolve($bean, array $errorsName, string $module) {
-        $errorArray = [];
-
-        foreach ($errorsName as $key => $error) {
-            if (!empty(trim($bean->$key))) {
-                $errorArray[] = $error;
-            }
-        }
-
-        if (!empty($errorArray)) {
-            $this->resolveErrorWithName($errorArray, $bean->id, $module);
-        }
-    }
 }
-

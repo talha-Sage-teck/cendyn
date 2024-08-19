@@ -3,9 +3,11 @@
 if (!defined('sugarEntry') || !sugarEntry)
     die('Not A Valid Entry Point');
 
-class afterRelationshipDeleteHandler {
+class afterRelationshipDeleteHandler
+{
 
-    function setReadyToLinkAfterDelete(&$bean, $event, $arguments) {
+    function setReadyToLinkAfterDelete(&$bean, $event, $arguments)
+    {
         global $db;
         if ($arguments['module'] == "Contacts" && $arguments['related_module'] == "Accounts") {
             $selectContact = "SELECT * FROM contacts WHERE id='{$bean->id}' and deleted = '0'";
@@ -24,6 +26,4 @@ class afterRelationshipDeleteHandler {
             }
         }
     }
-
 }
- 

@@ -5,8 +5,8 @@ if (!defined('sugarEntry') || !sugarEntry)
     die('Not A Valid Entry Point');
 
 // Include necessary files for cURL requests and data handling
-require_once ('custom/pushtechCurlRequest.php');
-require_once ('custom/pushtechCurlDataHandler.php');
+require_once('custom/pushtechCurlRequest.php');
+require_once('custom/pushtechCurlDataHandler.php');
 
 // Register the job string for the scheduler
 $job_strings[] = 'syncContactsDataServicePushtech';
@@ -28,7 +28,6 @@ function getContactByIdPushtech($contactID)
 
     // Execute the request and return the response
     $response = $curlRequest->executeCurlRequest("GET");
-    //$GLOBALS['log']->info("getContactByIdPushtech: Contact ID: $contactID - Response: " . print_r($response, true));
 
     return $response;
 }
@@ -39,7 +38,7 @@ function deleteAllAccountsPushtech($contactID)
 
     // Fetch the most recent externalAccountID for the given contactID
     $query = "SELECT ac.account_id FROM accounts_contacts ac WHERE ac.contact_id = '{$contactID}' AND ac.deleted = 1 ORDER BY ac.date_modified DESC LIMIT 1";
-    
+
     $result = $db->query($query);
     $row = $db->fetchByAssoc($result);
 
@@ -68,20 +67,20 @@ function deleteAllAccountsPushtech($contactID)
 // Function to add accounts to a contact in PushTech
 function addAccountsToContactPushtech($accountsArr, $contactBean)
 {
-    
+
     global $sugar_config;
 
     $url = $sugar_config['PUSHTECH_API_ENDPOINT'] . "/v2/account/" . $sugar_config['PUSHTECH_API_COMPANY_ID'] . "/suite_crm_company_contact_map";
 
 
-     // Prepare the data array with the necessary fields
-    
-        $dataAcc = [
-            'externalContactId' => $contactBean->id,
-            'externalAccountId' => $accountsArr->id,
-            "inactive" => $accountsArr->deleted,
-            "dateModifiedSuiteCrm" => $accountsArr->date_modified
-        ];
+    // Prepare the data array with the necessary fields
+
+    $dataAcc = [
+        'externalContactId' => $contactBean->id,
+        'externalAccountId' => $accountsArr->id,
+        "inactive" => $accountsArr->deleted,
+        "dateModifiedSuiteCrm" => $accountsArr->date_modified
+    ];
 
     $curlRequest = new pushtechCurlRequest($url, [
         'module' => 'Contacts',
@@ -128,12 +127,8 @@ function deleteContactPushtech($contact_id, $data): array
     // Initialize the cURL request
     $pushtechCurlRequest = new pushtechCurlRequest($url, $payload);
 
-    // Log the action for debugging
-    //$GLOBALS['log']->fatal("Attempting to delete account with ID: " . $contact_id);
-
     // Execute the request and return the response
     $response = $pushtechCurlRequest->executeCurlRequest("POST", $data);
-    //$GLOBALS['log']->info("deleteContactPushtech: Contact ID: $contact_id - Response: " . print_r($response, true));
 
     return $response;
 }
@@ -156,7 +151,6 @@ function sendContactDataPushtech($data, $contact_id = null): array
 
     // Execute the request and return the response
     $response = $curlRequest->executeCurlRequest("POST", $data);
-    //$GLOBALS['log']->info("sendContactDataPushtech: Data: " . print_r($data, true) . " - Response: " . print_r($response, true));
 
     return $response;
 }
@@ -240,13 +234,16 @@ function syncContactsDataServicePushtech()
         $deleted = false;
         switch ($contactRow['ready_to_sync']) {
             case 1: // Create contact
-                if (!empty($data['accounts'])) {
-                    $res = addAccountsToContactPushtech($accountBean, $contactBean);
-                    if($res['errorcode']==400){
+                $data['accounts'] = array();
+                $res = sendContactDataPushtech($data);
+                $data['accounts'] = $accounts;
+                if (sizeof($data['accounts']) > 0) {
+                    $res = syncAccountsPushtech($accountBean, $contactBean);
+                    if ($res['errorcode'] == 400) {
                         break;
                     }
+                    $res = sendContactDataPushtech($data);
                 }
-                $res = sendContactDataPushtech($data);
                 break;
             case 2: // Update contact
                 $res = sendContactDataPushtech($data, $data['externalContactId']);
@@ -261,7 +258,7 @@ function syncContactsDataServicePushtech()
             case 4: // Sync accounts linked to contact
                 if (sizeof($data['accounts']) > 0) {
                     $res = syncAccountsPushtech($accountBean, $contactBean);
-                    if($res['errorcode']==400){
+                    if ($res['errorcode'] == 400) {
                         break;
                     }
                 } else {
@@ -289,9 +286,9 @@ function syncContactsDataServicePushtech()
             $contactBean->save();
 
             // Resolve any errors related to specific fields if they exist
-            $errorNameArray = [ "Empty Field Error", "Account Not Synced", "JSON Format Error", "Invalid Company ID", "Authorization Failure", "Invalid API Route", "Invalid API Endpoint"];
+            $errorNameArray = ["Empty Field Error", "Account Not Synced", "JSON Format Error", "Invalid Company ID", "Authorization Failure", "Invalid API Route", "Invalid API Endpoint"];
             $dataHandler = new pushtechCurlDataHandler();
-            $dataHandler->resolveErrorWithName($errorNameArray, $contactBean->id);  
+            $dataHandler->resolveErrorWithName($errorNameArray, $contactBean->id);
         }
     }
 

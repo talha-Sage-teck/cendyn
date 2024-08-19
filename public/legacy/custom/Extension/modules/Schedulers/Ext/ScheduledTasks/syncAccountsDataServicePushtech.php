@@ -5,7 +5,7 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
- 
+
 // Include required custom classes for handling cURL requests and data handling
 require_once('custom/pushtechCurlRequest.php');
 require_once('custom/pushtechCurlDataHandler.php');
@@ -17,7 +17,7 @@ $job_strings[] = 'syncAccountsDataServicePushtech';
 function getAccountByIdPushtech($accountID)
 {
     global $sugar_config;
-    
+
     // Construct the API URL using the account ID and company ID from the SugarCRM config
     $url = $sugar_config['PUSHTECH_API_ENDPOINT'] . "/v2/account/" . $sugar_config['PUSHTECH_API_COMPANY_ID'] . "/suite_crm_companies/" . $accountID;
 
@@ -122,6 +122,7 @@ function syncAccountsDataServicePushtech()
             'blacklistReason' => $accountBean->black_list_reason,
             'annualRevenue' => $accountBean->annual_revenue,
             'description' => $accountBean->description,
+            'insertDate' => $accountBean->date_entered,
             'updateDate' => $lastSyncDate,
             'inactive' => $accountBean->deleted, // Set inactive flag if the account is deleted
             'status' => $accountBean->status,
@@ -152,7 +153,7 @@ function syncAccountsDataServicePushtech()
                 $accountBean->save(false);
             }
             // Handle any potential errors related to data fields and resolve them using the data handler
-            $errorNameArray = [ "Empty Field Error", "Account Not Synced", "JSON Format Error", "Invalid Company ID", "Authorization Failure", "Invalid API Route", "Invalid API Endpoint"];
+            $errorNameArray = ["Empty Field Error", "Account Not Synced", "JSON Format Error", "Invalid Company ID", "Authorization Failure", "Invalid API Route", "Invalid API Endpoint"];
             $dataHandler = new pushtechCurlDataHandler();
             $dataHandler->resolveErrorWithName($errorNameArray, $accountBean->id);
         }
