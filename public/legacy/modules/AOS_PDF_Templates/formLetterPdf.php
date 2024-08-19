@@ -126,6 +126,7 @@ foreach ($recordIds as $recordId) {
         '@&(gt|#62);@i',
         '@&(nbsp|#160);@i',
         '@&(iexcl|#161);@i',
+        '@&(apos|#039);@i',// Sageteck Non-upgade change
         '@<address[^>]*?>@si'
     );
 
@@ -139,6 +140,7 @@ foreach ($recordIds as $recordId) {
         '>',
         ' ',
         chr(161),
+        "'",// Sageteck Non-upgade change
         '<br>'
     );
 
