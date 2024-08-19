@@ -191,6 +191,19 @@ $viewdefs ['Accounts'] =
                                             ),
                                         1 => '',
                                     ),
+                                9 =>
+                                    array (
+                                        0 =>
+                                            array (
+                                                'name' => 'parent_name',
+                                                'label' => 'LBL_MEMBER_OF',
+                                            ),
+                                        1 => array (
+                                            'name' => 'interests_c',
+                                            'label' => 'LBL_INTERESTS',
+                                        ),
+
+                                    ),
                             ),
                         'LBL_PANEL_ADVANCED' =>
                             array (
