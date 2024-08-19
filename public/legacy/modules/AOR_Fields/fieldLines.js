@@ -94,7 +94,11 @@ function loadFieldLine(field){
     var prefix = 'aor_fields_';
     var ln = 0;
 
-    ln = insertFieldLine();
+    let is_multi=false;
+    if(field.field_type=='multirelate'){
+        is_multi=true;
+    }
+    ln = insertFieldLine(is_multi);
 
     for(var a in field){
 
@@ -274,7 +278,7 @@ function insertFieldHeader(){
     });
 }
 
-function insertFieldLine(){
+function insertFieldLine(is_multi=false){
 
     if (document.getElementById('fieldLines_head') == null) {
         insertFieldHeader();
@@ -336,8 +340,12 @@ function insertFieldLine(){
     g.style.width = '10%';
 
     var h=x.insertCell(8);
+    let disp_none='';
+    if(is_multi){
+        disp_none='style="display:none';
+    }
     h.innerHTML = "<input name='aor_fields_group_by["+ fieldln +"]' value='0' type='hidden'>";
-    h.innerHTML += "<input id='aor_fields_group_by" + fieldln + "' name='aor_fields_group_by["+ fieldln +"]' value='1' type='checkbox'>";
+    h.innerHTML += "<input id='aor_fields_group_by" + fieldln + "' name='aor_fields_group_by["+ fieldln +"]' "+disp_none+" value='1' type='checkbox'>";
     h.style.width = '10%';
 
     var i=x.insertCell(9);

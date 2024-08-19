@@ -1994,6 +1994,12 @@ EOHTML;
         if ($bean) {
             foreach ($bean->field_defs as $field_name => $def) {
                 $data[$module_dir][$field_name] = $def;
+                // Sageteck non-upgrade change
+                // Modify the 'country' field for any address type field ending with '_country' or '_country_c'
+                if (preg_match('/_country_c?$/', $field_name)) {
+                    $data[$module_dir][$field_name]['type'] = 'enum'; // Change type to 'enum'
+                    $data[$module_dir][$field_name]['options'] = 'cendyn_country_list'; // Set to your dropdown list
+                }
                 if (isset($def['required'])) {
                     $data[$module_dir][$field_name]['required'] = $def['required'];
                 } else {

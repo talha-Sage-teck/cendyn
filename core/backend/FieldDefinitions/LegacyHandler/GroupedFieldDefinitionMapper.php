@@ -169,6 +169,10 @@ class GroupedFieldDefinitionMapper implements FieldDefinitionMapperInterface, Gr
 
             $trimmedLayout[] = $item;
         }
+        // Sageteck non-upgrade change
+        if(empty($trimmedLayout)){
+            $trimmedLayout=$groupedFields;
+        }
 
         $fieldDefinition['layout'] = $trimmedLayout;
     }

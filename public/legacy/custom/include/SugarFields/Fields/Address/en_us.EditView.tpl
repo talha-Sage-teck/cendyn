@@ -127,10 +127,20 @@
                 {/if}
             </td>
             <td>
+
+                {if (!isset($config.enable_autocomplete) || $config.enable_autocomplete==false) && isset($fields.{{$country}}.options)}
+                <select name="{{$country}}" id="{{$country}}" title=''>
+                    {if isset($fields.{{$country}}.value) && $fields.{{$country}}.value != ''}
+                        {html_options options=$fields.{{$country}}.options selected=$fields.{{$country}}.value}
+                    {else}
+                        {html_options options=$fields.{{$country}}.options selected=$fields.{{$country}}.default}
+                    {/if}
+                </select>
+                {else}
                 <input type="text" name="{{$country}}" id="{{$country}}" title='{$fields.{{$country}}.help}' size="{{$displayParams.size|default:30}}"
                        {{if !empty($vardef.len)}}maxlength='{{$vardef.len}}'{{/if}} value='{$fields.{{$country}}.value}'
                        tabindex="{{$tabindex}}">
-
+                {/if}
 
             </td>
         </tr>

@@ -185,7 +185,7 @@ function export($type, $records = null, $members = false, $sample=false)
             $where = substr(trim($where), 5, strlen($where));
         }
 
-        $query = $focus->create_export_query($order_by, $where);
+        $query = $focus->create_export_query($order_by, $where, 'ForExportSample');
     }
 
     $result = '';
@@ -276,7 +276,37 @@ function export($type, $records = null, $members = false, $sample=false)
                     //if our value is a currency field, then apply the users locale
                     case 'currency':
                         require_once('modules/Currencies/Currency.php');
-                        $value = currency_format_number($value);
+                            // Sageteck Non-Upgrade change
+                            //////////////////////////////////////////////////////////////
+                            $currency = BeanFactory::newBean('Currencies');
+
+                            if (!stripos($fieldNameMapKey, '_USD')) {
+
+                                $currency->retrieve($val['currency_id']);
+
+                                //Fix Symbol
+                                $params['symbol_override'] = $currency->symbol;
+                                $value = currency_format_number($value, $params);
+
+                            } else {//Converts the usDollar fields to default currency of the user
+                                //Fix conversion Value
+                                /* 1. Get Exchange rate preferred by User*/
+                                global $current_user;
+                                // Load the user bean
+                                $user = BeanFactory::getBean('Users', $current_user->id);
+
+
+                                // Get the currency ID from the user settings
+                                $user_currency_id = $user->getPreference('currency');
+
+                                // Load the currency bean for User preference
+                                $currency->retrieve($user_currency_id);
+
+                                $newAmount = floatval($value) * floatval($currency->conversion_rate);
+                                $newAmount = number_format($newAmount, 2, '.', '');
+                                $value = currency_format_number($newAmount);
+                            }
+                            //////////////////////////////////////////////////////////////
                         break;
 
                     //if our value is a datetime field, then apply the users locale
