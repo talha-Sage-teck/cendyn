@@ -141,6 +141,18 @@ $viewdefs [$module_name] = array(
                         'label' => 'LBL_DATE_MODIFIED',
                     ),
                 ),
+                7 =>
+                    array (
+                        0 =>
+                            array (
+                                'name' => 'interests',
+                                'label' => 'LBL_INTERESTS',
+                            ),
+                        1 => array (
+                            'name' => 'member',
+                            'label' => 'LBL_MEMBER',
+                        ),
+                    ),
             ),
         ),
     ),
