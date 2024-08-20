@@ -352,12 +352,10 @@ array (
             'studio' => 'visible',
             'label' => 'LBL_CONSORTIA',
           ),
-          1 => 
-          array (
-            'name' => 'interests_c',
-            'studio' => 'visible',
-            'label' => 'LBL_INTERESTS',
-          ),
+            1 => array (
+                'name' => 'interests',
+                'label' => 'LBL_INTERESTS',
+            ),
         ),
         2 => 
         array (
