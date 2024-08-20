@@ -22,22 +22,12 @@ class AccountsViewConvertProfileEdit extends ViewEdit {
             $focus->phone_office = $profileBean->phone;
             $focus->email1 = $profileBean->email1;
             $focus->assigned_user_id = $current_user->id;
-            $focus->interests_c = $profileBean->interests;
+            $focus->interests = $profileBean->interests;
             $focus->parent_name = $profileBean->member;
             $focus->parent_id = $profileBean->member_id;
             $focus->last_parent_id = $profileBean->member_id;
         }
         $this->ev->setup($this->module, $focus, $metadataFile, 'include/EditView/EditView.tpl', true,
             'convertprofileeditviewdefs');
-//        if (!empty($profileBean->member)) {
-//            $focus->parent_name = $profileBean->member;
-//        }
-//
-//        // Add JavaScript to ensure the parent_name field is set in the form
-//        echo '<script>
-//            $(document).ready(function() {
-//                $("#parent_name").val("' . addslashes($focus->parent_name) . '");
-//            });
-//        </script>';
     }
 }
