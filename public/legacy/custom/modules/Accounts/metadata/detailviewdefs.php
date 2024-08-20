@@ -325,7 +325,16 @@ array (
             'name' => 'parent_name',
             'label' => 'LBL_MEMBER_OF',
           ),
-          1 => '',
+          1 => 
+          array (
+            'name' => 'shipping_address_street',
+            'label' => 'LBL_SHIPPING_ADDRESS',
+            'type' => 'address',
+            'displayParams' => 
+            array (
+              'key' => 'shipping',
+            ),
+          ),
         ),
       ),
       'LBL_PANEL_ADVANCED' => 
@@ -352,10 +361,11 @@ array (
             'studio' => 'visible',
             'label' => 'LBL_CONSORTIA',
           ),
-            1 => array (
-                'name' => 'interests',
-                'label' => 'LBL_INTERESTS',
-            ),
+          1 => 
+          array (
+            'name' => 'interests',
+            'label' => 'LBL_INTERESTS',
+          ),
         ),
         2 => 
         array (

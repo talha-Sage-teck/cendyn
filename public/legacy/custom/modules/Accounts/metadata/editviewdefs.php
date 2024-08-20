@@ -180,7 +180,20 @@ array (
         8 => 
         array (
           0 => 'parent_name',
-          1 => '',
+          1 => 
+          array (
+            'name' => 'shipping_address_street',
+            'hideLabel' => true,
+            'type' => 'address',
+            'displayParams' => 
+            array (
+              'key' => 'shipping',
+              'copy' => 'billing',
+              'rows' => 2,
+              'cols' => 30,
+              'maxlength' => 150,
+            ),
+          ),
         ),
       ),
       'LBL_PANEL_ADVANCED' => 
@@ -202,10 +215,11 @@ array (
             'studio' => 'visible',
             'label' => 'LBL_CONSORTIA',
           ),
-            1 => array (
-                'name' => 'interests',
-                'label' => 'LBL_INTERESTS',
-            ),
+          1 => 
+          array (
+            'name' => 'interests',
+            'label' => 'LBL_INTERESTS',
+          ),
         ),
         2 => 
         array (
