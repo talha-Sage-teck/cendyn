@@ -128,3 +128,23 @@ $dictionary['CB2B_Hotels']['fields']['is_update'] = array(
     'reportable' => false,
     'comment' => 'is_update = 0 in case of Create & is_update = 1 in case of Update',
 );
+
+$dictionary["CB2B_Hotels"]['fields']['cenres_hotel_id'] = array(
+    'name' => 'cenres_hotel_id',
+    'vname' => 'LBL_CENRES_HOTEL_ID',
+    'type' => 'varchar',
+    'required' => false,
+    'inline_edit' => false,
+    'len' => '255',
+    'size' => '36',
+);
+
+$dictionary["CB2B_Hotels"]['fields']['ccrm_hotel_id'] = array(
+    'name' => 'ccrm_hotel_id',
+    'vname' => 'LBL_CCRM_HOTEL_ID',
+    'type' => 'varchar',
+    'required' => false,
+    'inline_edit' => false,
+    'len' => '255',
+    'size' => '36',
+);

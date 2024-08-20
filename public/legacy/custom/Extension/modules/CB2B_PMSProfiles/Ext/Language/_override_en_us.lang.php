@@ -11,3 +11,5 @@ $mod_strings['LBL_FIRST_RELATED_HOTEL_SHORT_NAME'] = 'Hotel';
 $mod_strings['LBL_CB2B_PMSPROFILES_CB2B_PMSPROFILES_2_FROM_CB2B_PMSPROFILES_R_TITLE'] = 'Matching PMS Profiles';
 $mod_strings['LBL_INTERESTS'] = 'Interests';
 $mod_strings['LBL_MEMBER'] = 'Member';
+$mod_strings['LBL_CENRES_PMS_PROFILE_ID'] = 'CenRes PMS Profile ID (Unique ID)';
+$mod_strings['LBL_CCRM_PMS_PROFILE_ID'] = 'Cendyn CRM PMS Profile ID (Unique ID)';

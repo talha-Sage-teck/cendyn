@@ -8,3 +8,5 @@ $mod_strings['LBL_HOTEL_ADDRESS_POSTALCODE'] = 'Postal Code';
 $mod_strings['LBL_HOTEL_ADDRESS_COUNTRY'] = 'Country';
 $mod_strings['LBL_HOTEL_ADDRESS_STREET'] = 'Address';
 $mod_strings['LBL_IS_UPDATE'] = 'Is Update';
+$mod_strings['LBL_CENRES_HOTEL_ID'] = 'CenRes Hotel ID (Unique ID)';
+$mod_strings['LBL_CCRM_HOTEL_ID'] = 'Cendyn CRM Hotel ID (Unique ID)';
