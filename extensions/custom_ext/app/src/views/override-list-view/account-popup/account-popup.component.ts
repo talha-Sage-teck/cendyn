@@ -16,8 +16,8 @@ export class AccountPopupComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input("marked") marked: string = "";
   titleKey: string;
   closeButton: ButtonInterface;
-  keys: string[] = ['name', 'account_base_type', 'city', 'country', 'b2b_account', 'iata'];
-  displayedColumns: object = {name: 'Name', account_base_type: 'Base Type', city: 'City', country: 'Country', b2b_account: 'Account', iata: 'IATA'};
+  keys: string[] = ['name', 'account_base_type', 'city', 'country', 'street', 'iata'];
+  displayedColumns: object = {name: 'Name', account_base_type: 'Base Type', city: 'City', country: 'Country', street: 'Street', iata: 'IATA'};
   dataSource$: Promise<AccountRow[]>;
   loading: boolean = true;
   showCount: number = 500;
@@ -71,7 +71,7 @@ export class AccountPopupComponent implements OnInit, AfterViewInit, OnDestroy {
         account_base_type: account['account_base_type'],
         city: account['billing_address_city'],
         country: account['billing_address_country'],
-        b2b_account: account['b2b_account_no'],
+        street: account['billing_address_street'],
         iata: account['iata'],
         ind: account['ind'],
         marked: account['marked']

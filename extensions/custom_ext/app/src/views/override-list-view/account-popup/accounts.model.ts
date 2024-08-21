@@ -4,7 +4,7 @@ export interface AccountRow {
     account_base_type: string;
     city: string;
     country: string;
-    b2b_account: string;
+    street: string;
     iata: string;
     ind: number;
     marked: number;
