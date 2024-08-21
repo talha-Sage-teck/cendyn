@@ -62,7 +62,9 @@ function makeDatabase($databaseResult): array
     global $db;
     $database = [];
     $children=[];
+    global $app_list_strings;
     while($row = $db->fetchByAssoc($databaseResult)) {
+        $row['account_base_type'] = $app_list_strings['account_base_list'][$row['account_base_type']];
         $database[$row['id']] = $row;
         if(!isset($children[$row['parent_id']])) {
             $children[$row['parent_id']]=[];
@@ -74,7 +76,7 @@ function makeDatabase($databaseResult): array
 
 global $db, $sugar_config;
 //$recordIds = $_REQUEST['records'];
-$databaseQuery = "SELECT id, name, account_base_type, billing_address_city, billing_address_country, b2b_account_no, iata, parent_id FROM accounts WHERE deleted = 0";
+$databaseQuery = "SELECT id, name, account_base_type, billing_address_city, billing_address_country,  billing_address_street, iata, parent_id FROM accounts WHERE deleted = 0";
 $databaseResult = $db->query($databaseQuery);
 list($database, $children) = makeDatabase($databaseResult);
 //$recordIdsArr = explode(',', $recordIds);
