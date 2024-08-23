@@ -9,7 +9,7 @@ use Api\V8\JsonApi\Repository\Sort as SortRepository;
 
 $paramsMiddlewareFactory = $app->getContainer()->get(ParamsMiddlewareFactory::class);
 
- 
+
 // Define routes for processing data into different tables
 $app->post('/recordlist/cb2b_production_summary_data', function ($request, $response) {
     $parseddata = $request->getParsedBody();  // Parse the JSON input data
@@ -71,19 +71,21 @@ function processdata($table, $parseddata, $response)
     }
 
     // Return the response with success and error details
-    return $response->withJson([
-        'successfullData' => [
-            'success_count' => count($successRecords),
-            'records' => $successRecords
+    return $response->withJson(
+        [
+            'Total Successful Records' => count($successRecords),
+            'Total Failed Records' => count($failedRecords),
+            'successfulData' => [
+                'records' => $successRecords
+            ],
+            'failedData' => [
+                'errors' => $errors,
+                'records' => $failedRecords
+            ]
         ],
-        'failedData' => [
-            'fail_count' => count($failedRecords),
-            'errors' => $errors,
-            'records' => $failedRecords
-        ]
-    ], !empty($errors) ? 400 : 201);
+        !empty($errors) ? 400 : 201
+    );
 }
-
 
 // Function to process a batch of data and insert it into the database
 function processBatch($table, $batchdata, &$errors, &$successRecords, $failedRecords)
