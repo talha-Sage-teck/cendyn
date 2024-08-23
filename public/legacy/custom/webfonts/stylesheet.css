@@ -1,0 +1,297 @@
+@font-face {
+    font-family: 'Inter-SemiBold';
+    src: url('Inter-SemiBold.eot');
+    src: url('Inter-SemiBold.eot?#iefix') format('embedded-opentype'),
+        url('Inter-SemiBold.woff2') format('woff2'),
+        url('Inter-SemiBold.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'PitchSans-Regular';
+    src: url('PitchSans-Regular.eot');
+    src: url('PitchSans-Regular.eot?#iefix') format('embedded-opentype'),
+        url('PitchSans-Regular.woff2') format('woff2'),
+        url('PitchSans-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Inter-Thin';
+    src: url('Inter-Thin.eot');
+    src: url('Inter-Thin.eot?#iefix') format('embedded-opentype'),
+        url('Inter-Thin.woff2') format('woff2'),
+        url('Inter-Thin.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Inter-Medium';
+    src: url('Inter-Medium.eot');
+    src: url('Inter-Medium.eot?#iefix') format('embedded-opentype'),
+        url('Inter-Medium.woff2') format('woff2'),
+        url('Inter-Medium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Inter-ExtraBold';
+    src: url('Inter-ExtraBold.eot');
+    src: url('Inter-ExtraBold.eot?#iefix') format('embedded-opentype'),
+        url('Inter-ExtraBold.woff2') format('woff2'),
+        url('Inter-ExtraBold.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Inter-Light';
+    src: url('Inter-Light.eot');
+    src: url('Inter-Light.eot?#iefix') format('embedded-opentype'),
+        url('Inter-Light.woff2') format('woff2'),
+        url('Inter-Light.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Inter-ExtraLight';
+    src: url('Inter-ExtraLight.eot');
+    src: url('Inter-ExtraLight.eot?#iefix') format('embedded-opentype'),
+        url('Inter-ExtraLight.woff2') format('woff2'),
+        url('Inter-ExtraLight.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'FSEmeric-Core';
+    src: url('FSEmeric-Core.eot');
+    src: url('FSEmeric-Core.eot?#iefix') format('embedded-opentype'),
+        url('FSEmeric-Core.woff2') format('woff2'),
+        url('FSEmeric-Core.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Inter-Black';
+    src: url('Inter-Black.eot');
+    src: url('Inter-Black.eot?#iefix') format('embedded-opentype'),
+        url('Inter-Black.woff2') format('woff2'),
+        url('Inter-Black.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'FSEmeric-ExtraLight';
+    src: url('FSEmeric-ExtraLight.eot');
+    src: url('FSEmeric-ExtraLight.eot?#iefix') format('embedded-opentype'),
+        url('FSEmeric-ExtraLight.woff2') format('woff2'),
+        url('FSEmeric-ExtraLight.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'FSEmeric-Medium';
+    src: url('FSEmeric-Medium.eot');
+    src: url('FSEmeric-Medium.eot?#iefix') format('embedded-opentype'),
+        url('FSEmeric-Medium.woff2') format('woff2'),
+        url('FSEmeric-Medium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'ColumbiaSansW-Light';
+    src: url('ColumbiaSansW-Light.eot');
+    src: url('ColumbiaSansW-Light.eot?#iefix') format('embedded-opentype'),
+        url('ColumbiaSansW-Light.woff2') format('woff2'),
+        url('ColumbiaSansW-Light.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'FSEmeric-ExtraBold';
+    src: url('FSEmeric-ExtraBold.eot');
+    src: url('FSEmeric-ExtraBold.eot?#iefix') format('embedded-opentype'),
+        url('FSEmeric-ExtraBold.woff2') format('woff2'),
+        url('FSEmeric-ExtraBold.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'FSEmeric-Light';
+    src: url('FSEmeric-Light.eot');
+    src: url('FSEmeric-Light.eot?#iefix') format('embedded-opentype'),
+        url('FSEmeric-Light.woff2') format('woff2'),
+        url('FSEmeric-Light.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'FSEmeric';
+    src: url('FSEmeric.eot');
+    src: url('FSEmeric.eot?#iefix') format('embedded-opentype'),
+        url('FSEmeric.woff2') format('woff2'),
+        url('FSEmeric.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'ColumbiaSansW-ExtraLight';
+    src: url('ColumbiaSansW-ExtraLight.eot');
+    src: url('ColumbiaSansW-ExtraLight.eot?#iefix') format('embedded-opentype'),
+        url('ColumbiaSansW-ExtraLight.woff2') format('woff2'),
+        url('ColumbiaSansW-ExtraLight.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'ColumbiaSans-ExtraLight';
+    src: url('ColumbiaSans-ExtraLight.eot');
+    src: url('ColumbiaSans-ExtraLight.eot?#iefix') format('embedded-opentype'),
+        url('ColumbiaSans-ExtraLight.woff2') format('woff2'),
+        url('ColumbiaSans-ExtraLight.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'ColumbiaSans-Light';
+    src: url('ColumbiaSans-Light.eot');
+    src: url('ColumbiaSans-Light.eot?#iefix') format('embedded-opentype'),
+        url('ColumbiaSans-Light.woff2') format('woff2'),
+        url('ColumbiaSans-Light.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Inter-MediumItalic';
+    src: url('Inter-MediumItalic.eot');
+    src: url('Inter-MediumItalic.eot?#iefix') format('embedded-opentype'),
+        url('Inter-MediumItalic.woff2') format('woff2'),
+        url('Inter-MediumItalic.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Inter-LightItalic';
+    src: url('Inter-LightItalic.eot');
+    src: url('Inter-LightItalic.eot?#iefix') format('embedded-opentype'),
+        url('Inter-LightItalic.woff2') format('woff2'),
+        url('Inter-LightItalic.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Inter-Italic';
+    src: url('Inter-Italic.eot');
+    src: url('Inter-Italic.eot?#iefix') format('embedded-opentype'),
+        url('Inter-Italic.woff2') format('woff2'),
+        url('Inter-Italic.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Inter-BoldItalic';
+    src: url('Inter-BoldItalic.eot');
+    src: url('Inter-BoldItalic.eot?#iefix') format('embedded-opentype'),
+        url('Inter-BoldItalic.woff2') format('woff2'),
+        url('Inter-BoldItalic.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Inter-ExtraLightItalic';
+    src: url('Inter-ExtraLightItalic.eot');
+    src: url('Inter-ExtraLightItalic.eot?#iefix') format('embedded-opentype'),
+        url('Inter-ExtraLightItalic.woff2') format('woff2'),
+        url('Inter-ExtraLightItalic.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Inter-ExtraBoldItalic';
+    src: url('Inter-ExtraBoldItalic.eot');
+    src: url('Inter-ExtraBoldItalic.eot?#iefix') format('embedded-opentype'),
+        url('Inter-ExtraBoldItalic.woff2') format('woff2'),
+        url('Inter-ExtraBoldItalic.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'FSEmeric-Bold';
+    src: url('FSEmeric-Bold.eot');
+    src: url('FSEmeric-Bold.eot?#iefix') format('embedded-opentype'),
+        url('FSEmeric-Bold.woff2') format('woff2'),
+        url('FSEmeric-Bold.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Inter-BlackItalic';
+    src: url('Inter-BlackItalic.eot');
+    src: url('Inter-BlackItalic.eot?#iefix') format('embedded-opentype'),
+        url('Inter-BlackItalic.woff2') format('woff2'),
+        url('Inter-BlackItalic.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Inter-Bold';
+    src: url('Inter-Bold.eot');
+    src: url('Inter-Bold.eot?#iefix') format('embedded-opentype'),
+        url('Inter-Bold.woff2') format('woff2'),
+        url('Inter-Bold.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
