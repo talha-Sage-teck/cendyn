@@ -108,7 +108,7 @@ class TCPDF_FONTS {
 		if (empty($fonttype)) {
 			if (TCPDF_STATIC::_getULONG($font, 0) == 0x10000) {
 				// True Type (Unicode or not)
-				$fonttype = 'TrueTypeUnicode';
+				$fonttype = 'TrueType';
 			} elseif (substr($font, 0, 4) == 'OTTO') {
 				// Open Type (Unicode or not)
 				//Unsupported font format: OpenType with CFF data
@@ -136,6 +136,7 @@ class TCPDF_FONTS {
 			}
 			case 'TrueType': {
 				$fmetric['type'] = 'TrueType';
+				
 				break;
 			}
 			case 'TrueTypeUnicode':
@@ -144,6 +145,7 @@ class TCPDF_FONTS {
 				break;
 			}
 		}
+
 		// set encoding maps (if any)
 		$fmetric['enc'] = preg_replace('/[^A-Za-z0-9_\-]/', '', $enc);
 		$fmetric['diff'] = '';
