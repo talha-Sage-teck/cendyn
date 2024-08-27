@@ -132,12 +132,11 @@ class TCPDF_FONTS {
 				if (empty($enc) AND (($flags & 4) == 0)) {
 					$enc = 'cp1252';
 				}
-				echo "Type1";
 				break;
 			}
 			case 'TrueType': {
 				$fmetric['type'] = 'TrueType';
-				echo "TrueType";
+				
 				break;
 			}
 			case 'TrueTypeUnicode':
