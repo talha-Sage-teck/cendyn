@@ -147,7 +147,6 @@ class TCPDF_FONTS {
 			}
 		}
 
-		echo $fmetric['type'];
 		// set encoding maps (if any)
 		$fmetric['enc'] = preg_replace('/[^A-Za-z0-9_\-]/', '', $enc);
 		$fmetric['diff'] = '';
