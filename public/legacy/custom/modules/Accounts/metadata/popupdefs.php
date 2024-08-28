@@ -23,7 +23,7 @@ $popupMeta = array (
   7 => 'email',
   8 => 'assigned_user_id',
   9 => 'account_base_type',
-  10 => 'account_base_type',
+  10 => 'iata',
 ),
     'create' => array (
   'formBase' => 'AccountFormBase.php',
