@@ -294,4 +294,146 @@
     font-style: normal;
     font-display: swap;
 }
+@font-face {
+    font-family: 'TimesNewRomanPSMT';
+    src: url('url/legacy/custom/webfonts/TimesNewRomanPSMT.eot');
+    src: url('url/legacy/custom/webfonts/TimesNewRomanPSMT.eot?#iefix') format('embedded-opentype'),
+        url('url/legacy/custom/webfonts/TimesNewRomanPSMT.woff2') format('woff2'),
+        url('url/legacy/custom/webfonts/TimesNewRomanPSMT.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Terminal';
+    src: url('url/legacy/custom/webfonts/Terminal.eot');
+    src: url('url/legacy/custom/webfonts/Terminal.eot?#iefix') format('embedded-opentype'),
+        url('url/legacy/custom/webfonts/Terminal.woff2') format('woff2'),
+        url('url/legacy/custom/webfonts/Terminal.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'TrebuchetMS';
+    src: url('url/legacy/custom/webfonts/TrebuchetMS.eot');
+    src: url('url/legacy/custom/webfonts/TrebuchetMS.eot?#iefix') format('embedded-opentype'),
+        url('url/legacy/custom/webfonts/TrebuchetMS.woff2') format('woff2'),
+        url('url/legacy/custom/webfonts/TrebuchetMS.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Webdings';
+    src: url('url/legacy/custom/webfonts/Webdings.eot');
+    src: url('url/legacy/custom/webfonts/Webdings.eot?#iefix') format('embedded-opentype'),
+        url('url/legacy/custom/webfonts/Webdings.woff2') format('woff2'),
+        url('url/legacy/custom/webfonts/Webdings.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Wingdings-Regular';
+    src: url('url/legacy/custom/webfonts/Wingdings-Regular.eot');
+    src: url('url/legacy/custom/webfonts/Wingdings-Regular.eot?#iefix') format('embedded-opentype'),
+        url('url/legacy/custom/webfonts/Wingdings-Regular.woff2') format('woff2'),
+        url('url/legacy/custom/webfonts/Wingdings-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Verdana';
+    src: url('url/legacy/custom/webfonts/Verdana.eot');
+    src: url('url/legacy/custom/webfonts/Verdana.eot?#iefix') format('embedded-opentype'),
+        url('url/legacy/custom/webfonts/Verdana.woff2') format('woff2'),
+        url('url/legacy/custom/webfonts/Verdana.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'ArialMT';
+    src: url('url/legacy/custom/webfonts/ArialMT.eot');
+    src: url('url/legacy/custom/webfonts/ArialMT.eot?#iefix') format('embedded-opentype'),
+        url('url/legacy/custom/webfonts/ArialMT.woff2') format('woff2'),
+        url('url/legacy/custom/webfonts/ArialMT.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Georgia';
+    src: url('url/legacy/custom/webfonts/Georgia.eot');
+    src: url('url/legacy/custom/webfonts/Georgia.eot?#iefix') format('embedded-opentype'),
+        url('url/legacy/custom/webfonts/Georgia.woff2') format('woff2'),
+        url('url/legacy/custom/webfonts/Georgia.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Arial-Black';
+    src: url('url/legacy/custom/webfonts/Arial-Black.eot');
+    src: url('url/legacy/custom/webfonts/Arial-Black.eot?#iefix') format('embedded-opentype'),
+        url('url/legacy/custom/webfonts/Arial-Black.woff2') format('woff2'),
+        url('url/legacy/custom/webfonts/Arial-Black.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'AndaleMono';
+    src: url('url/legacy/custom/webfonts/AndaleMono.eot');
+    src: url('url/legacy/custom/webfonts/AndaleMono.eot?#iefix') format('embedded-opentype'),
+        url('url/legacy/custom/webfonts/AndaleMono.woff2') format('woff2'),
+        url('url/legacy/custom/webfonts/AndaleMono.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'ComicSansMS';
+    src: url('url/legacy/custom/webfonts/ComicSansMS.eot');
+    src: url('url/legacy/custom/webfonts/ComicSansMS.eot?#iefix') format('embedded-opentype'),
+        url('url/legacy/custom/webfonts/ComicSansMS.woff2') format('woff2'),
+        url('url/legacy/custom/webfonts/ComicSansMS.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Impact';
+    src: url('url/legacy/custom/webfonts/Impact.eot');
+    src: url('url/legacy/custom/webfonts/Impact.eot?#iefix') format('embedded-opentype'),
+        url('url/legacy/custom/webfonts/Impact.woff2') format('woff2'),
+        url('url/legacy/custom/webfonts/Impact.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'BookAntiqua';
+    src: url('url/legacy/custom/webfonts/BookAntiqua.eot');
+    src: url('url/legacy/custom/webfonts/BookAntiqua.eot?#iefix') format('embedded-opentype'),
+        url('url/legacy/custom/webfonts/BookAntiqua.woff2') format('woff2'),
+        url('url/legacy/custom/webfonts/BookAntiqua.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
 
