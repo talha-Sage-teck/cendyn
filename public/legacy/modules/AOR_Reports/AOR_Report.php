@@ -142,27 +142,35 @@ class AOR_Report extends Basic
 
     public function load_report_beans()
     {
-        global $beanList, $app_list_strings;
+        global $beanList, $app_list_strings, $current_user;
 
         $app_list_strings['aor_moduleList'] = $app_list_strings['moduleList'];
 
         foreach ($app_list_strings['aor_moduleList'] as $mkey => $mvalue) {
+            // Exclude modules starting with 'AOR_' or 'AOW_'
             if (!isset($beanList[$mkey]) || str_begin($mkey, 'AOR_') || str_begin($mkey, 'AOW_')) {
                 unset($app_list_strings['aor_moduleList'][$mkey]);
             }
+            // Exclude modules based on ACL access
             if (!ACLController::checkAccess($mkey, 'list', true)) {
                 unset($app_list_strings['aor_moduleList'][$mkey]);
             }
         }
+        // Sageteck Non-Upgrade change
+        // Custom logic for User module and fields
+        if (!$current_user->isAdmin() || $current_user->customer_admin) {
+            unset($app_list_strings['aor_moduleList']['Users']);
+        }
 
+        // Ensure the list has a default empty option at the top
         $app_list_strings['aor_moduleList'] = array_merge(
-            (array)array('' => ''),
-            (array)$app_list_strings['aor_moduleList']
+            array('' => ''),
+            $app_list_strings['aor_moduleList']
         );
 
+        // Sort the list
         asort($app_list_strings['aor_moduleList']);
     }
-
 
     public function getReportFields()
     {
@@ -339,12 +347,12 @@ class AOR_Report extends Basic
                             $moduleFieldByGroupValue = $this->getModuleFieldByGroupValue(
                                 $beanList,
                                 $value[$pth['field_id_name']]
-                                );
+                            );
                             $moduleFieldByGroupValue = $this->addDataIdValueToInnertext($moduleFieldByGroupValue);
                             $html .= $this->getMultiGroupFrameHTML(
                                 $moduleFieldByGroupValue,
                                 $this->build_group_report($offset, $links)
-                                );
+                            );
                         }
                     }
 
@@ -373,7 +381,7 @@ class AOR_Report extends Basic
         // escape values for query
 
         $_id = $this->db->quote($reportId);
-        $_level = (int)$level;
+        $_level = (int) $level;
 
         // get results array
 
@@ -466,10 +474,11 @@ class AOR_Report extends Basic
                 $field->field = $data['id_name'];
             }
 
-            if ($data['type'] == 'currency' && !stripos(
-                $field->field,
-                '_USD'
-            ) && isset($field_module->field_defs['currency_id'])
+            if (
+                $data['type'] == 'currency' && !stripos(
+                    $field->field,
+                    '_USD'
+                ) && isset($field_module->field_defs['currency_id'])
             ) {
                 if ((isset($field_module->field_defs['currency_id']['source']) && $field_module->field_defs['currency_id']['source'] == 'custom_fields')) {
                     $query_array['select'][$table_alias . '_currency_id'] = $table_alias . '_cstm' . ".currency_id AS '" . $table_alias . "_currency_id'";
@@ -492,11 +501,11 @@ class AOR_Report extends Basic
             } else {
                 $select_field = $this->db->quoteIdentifier($table_alias) . '.' . $field->field;
             }
-	    // Sageteck non-upgrade safe
-            if($data['type']=='multirelate'){
-                $multi_table_alias=$this->db->quoteIdentifier($table_alias);
-                $multi_sql=str_replace('{{table_name}}',$multi_table_alias,$data['report_query']);
-                $select_field=$multi_sql;
+            // Sageteck non-upgrade safe
+            if ($data['type'] == 'multirelate') {
+                $multi_table_alias = $this->db->quoteIdentifier($table_alias);
+                $multi_sql = str_replace('{{table_name}}', $multi_table_alias, $data['report_query']);
+                $select_field = $multi_sql;
             }
 
             if ($field->sort_by != '') {
@@ -575,39 +584,38 @@ class AOR_Report extends Basic
                 $query .= ' ' . $query_sort_by;
             }
             $result = $this->db->query($query);
-	    // Sageteck non-upgrade safe
-            $all_rows=[];
+            // Sageteck non-upgrade safe
+            $all_rows = [];
             while ($row = $this->db->fetchByAssoc($result)) {
-		// Sageteck non-upgrade safe
-                $all_rows[]=$row;
+                // Sageteck non-upgrade safe
+                $all_rows[] = $row;
             }
-	    // Sageteck non-upgrade safe
-            if($data['type']=='multirelate'){
-                $new_all_rows=[];
-                foreach ($all_rows as $rrr){
-                    $rrr=explode('^,^',$rrr[$field_label]);
-                    foreach ($rrr as $rr){
-                        $rr=trim($rr,'^');
-                        $new_all_rows[$rr]=$rr;
+            // Sageteck non-upgrade safe
+            if ($data['type'] == 'multirelate') {
+                $new_all_rows = [];
+                foreach ($all_rows as $rrr) {
+                    $rrr = explode('^,^', $rrr[$field_label]);
+                    foreach ($rrr as $rr) {
+                        $rr = trim($rr, '^');
+                        $new_all_rows[$rr] = $rr;
                     }
                 }
-                $new_all_rows['']='';
-                if($field->sort_by=='ASC'){
-                    sort($new_all_rows,SORT_STRING | SORT_FLAG_CASE);
+                $new_all_rows[''] = '';
+                if ($field->sort_by == 'ASC') {
+                    sort($new_all_rows, SORT_STRING | SORT_FLAG_CASE);
 
-                }
-                elseif ($field->sort_by=='DESC'){
-                    rsort($new_all_rows,SORT_STRING | SORT_FLAG_CASE);
+                } elseif ($field->sort_by == 'DESC') {
+                    rsort($new_all_rows, SORT_STRING | SORT_FLAG_CASE);
                 }
 
-                $all_rows=[];
-                foreach ($new_all_rows as $rrr){
-                    $all_rows[]=[$field_label=>$rrr];
+                $all_rows = [];
+                foreach ($new_all_rows as $rrr) {
+                    $all_rows[] = [$field_label => $rrr];
                 }
-                $GLOBALS['log']->fatal('Report Log:'.json_encode($all_rows));
+                $GLOBALS['log']->fatal('Report Log:' . json_encode($all_rows));
             }
-	    // Sageteck non-upgrade safe
-            foreach ($all_rows as $row){
+            // Sageteck non-upgrade safe
+            foreach ($all_rows as $row) {
                 if ($html !== '') {
                     $html .= '<br />';
                 }
@@ -688,9 +696,9 @@ class AOR_Report extends Basic
                 $total_rows = $assoc['c'];
             }
         }
-        
+
         $html = '<div class="list-view-rounded-corners">';
-        $html.='<table id="report_table_'.$tableIdentifier.$group_value.'" width="100%" border="0" class="list view table-responsive aor_reports">';
+        $html .= '<table id="report_table_' . $tableIdentifier . $group_value . '" width="100%" border="0" class="list view table-responsive aor_reports">';
 
         $sql = "SELECT id FROM aor_fields WHERE aor_report_id = '" . $this->id . "' AND deleted = 0 ORDER BY field_order ASC";
         $result = $this->db->query($sql);
@@ -773,17 +781,17 @@ class AOR_Report extends Basic
             $html .= '<td nowrap="nowrap" align="right" class="paginationChangeButtons" width="1%">';
             if ($offset == 0) {
                 $html .= "<button type='button' id='listViewStartButton_top' name='listViewStartButton' title='Start' class='list-view-pagination-button' disabled='disabled'>
-                ".SugarThemeRegistry::current()->getImage('paginate_first')."
+                " . SugarThemeRegistry::current()->getImage('paginate_first') . "
                 </button>
                 <button type='button' id='listViewPrevButton_top' name='listViewPrevButton' class='list-view-pagination-button' title='Previous' disabled='disabled'>
-                ".SugarThemeRegistry::current()->getImage('paginate_previous')."
+                " . SugarThemeRegistry::current()->getImage('paginate_previous') . "
                 </button>";
             } else {
                 $html .= "<button type='button' id='listViewStartButton_top' name='listViewStartButton' title='Start' class='list-view-pagination-button' onclick='changeReportPage(\"" . $this->id . '",0,"' . $group_value . '","' . $tableIdentifier . "\")'>
-                ".SugarThemeRegistry::current()->getImage('paginate_first')."
+                " . SugarThemeRegistry::current()->getImage('paginate_first') . "
                 </button>
                 <button type='button' id='listViewPrevButton_top' name='listViewPrevButton' class='list-view-pagination-button' title='Previous' onclick='changeReportPage(\"" . $this->id . '",' . $previous_offset . ',"' . $group_value . '","' . $tableIdentifier . "\")'>
-                ".SugarThemeRegistry::current()->getImage('paginate_previous')."
+                " . SugarThemeRegistry::current()->getImage('paginate_previous') . "
                 </button>";
             }
             $html .= '</td><td style="vertical-align:middle" nowrap="nowrap" width="1%" class="paginationActionButtons">';
@@ -791,17 +799,17 @@ class AOR_Report extends Basic
             $html .= '</td><td nowrap="nowrap" align="right" class="paginationActionButtons" width="1%">';
             if ($next_offset < $total_rows) {
                 $html .= "<button type='button' id='listViewNextButton_top' name='listViewNextButton' title='Next' class='list-view-pagination-button' onclick='changeReportPage(\"" . $this->id . '",' . $next_offset . ',"' . $group_value . '","' . $tableIdentifier . "\")'>
-                ".SugarThemeRegistry::current()->getImage('paginate_next')."
+                " . SugarThemeRegistry::current()->getImage('paginate_next') . "
                     </button>
                      <button type='button' id='listViewEndButton_top' name='listViewEndButton' title='End' class='list-view-pagination-button' onclick='changeReportPage(\"" . $this->id . '",' . $last_offset . ',"' . $group_value . '","' . $tableIdentifier . "\")'>
-                     ".SugarThemeRegistry::current()->getImage('paginate_last')."
+                     " . SugarThemeRegistry::current()->getImage('paginate_last') . "
                     </button>";
             } else {
                 $html .= "<button type='button' id='listViewNextButton_top' name='listViewNextButton' title='Next' class='list-view-pagination-button'  disabled='disabled'>
-                ".SugarThemeRegistry::current()->getImage('paginate_next')."
+                " . SugarThemeRegistry::current()->getImage('paginate_next') . "
                     </button>
                      <button type='button' id='listViewEndButton_top' name='listViewEndButton' title='End' class='list-view-pagination-button'  disabled='disabled'>
-                     ".SugarThemeRegistry::current()->getImage('paginate_last')."
+                     " . SugarThemeRegistry::current()->getImage('paginate_last') . "
                     </button>";
             }
 
@@ -843,10 +851,10 @@ class AOR_Report extends Basic
                         $html .= $row[$name];
                     } else {
 
-                        
+
                         // Sageteck Non-Upgrade change
                         ////////////////////////////////////////////////////////////////////
-                        $field_string = getModuleField($att['module'], $att['field'], $att['field'], 'DetailView', $row[$name], '', $currency_id);   
+                        $field_string = getModuleField($att['module'], $att['field'], $att['field'], 'DetailView', $row[$name], '', $currency_id);
 
                         //For problematic cases ONLY, otherwise it will simply add values to the field_string 
                         if (!stripos($att['field'], '_USD')) {//(preg_match('/^Opportunity_Amount\d+$/', $name) || preg_match('/^Contract_Value\d+$/', $name))) {//$currency_id != '-99' && 
@@ -886,11 +894,11 @@ class AOR_Report extends Basic
                         }//End of solution
                         //Changes also added in aow_utils.php in getModuleField()
                         ////////////////////////////////////////////////////////////////////
-                        
-                        if(str_contains($name, 'Currency')){
-                            $field_string= str_replace('<script>function CurrencyConvertAll() { return; }</script>', '', $field_string);
+
+                        if (str_contains($name, 'Currency')) {
+                            $field_string = str_replace('<script>function CurrencyConvertAll() { return; }</script>', '', $field_string);
                         }
-                        
+
                         $html .= $field_string;
                     }
 
@@ -964,7 +972,7 @@ class AOR_Report extends Basic
                 } elseif ($field_def['type'] == 'enum') {
                     $moduleFieldByGroupValues[] = $app_list_strings[$field_def['options']][$group_value];
                 } else {
-                     $moduleFieldByGroupValues[] = $group_value;
+                    $moduleFieldByGroupValues[] = $group_value;
                 }
                 continue;
                 // End
@@ -1153,7 +1161,7 @@ class AOR_Report extends Basic
                     if ($att['function'] != '' || $att['format'] != '') {
                         $csv .= $this->encloseForCSV($row[$name]);
                     } else {
-                        
+
                         // Sageteck Non-Upgrade change
                         ////////////////////////////////////////////////////////////////////
                         $t = getModuleField($att['module'], $att['field'], $att['field'], 'DetailView', $row[$name], '', $currency_id);
@@ -1204,7 +1212,7 @@ class AOR_Report extends Basic
                             $csv .= $row[$name];
                         } else {
                             // Sageteck non-upgrade safe
-                            if(str_contains($name, 'Currency')){
+                            if (str_contains($name, 'Currency')) {
                                 $t = str_replace('<script>function CurrencyConvertAll() { return; }</script>', '', $t);
                             }
                             $csv .= $this->encloseForCSV(trim(strip_tags($t)));
@@ -1397,7 +1405,7 @@ class AOR_Report extends Basic
                     $field->field = 'id';
                 }
 
-                if ($data['type'] == 'currency' && isset($field_module->field_defs['currency_id']) && !stripos($field->field,'_USD')) {
+                if ($data['type'] == 'currency' && isset($field_module->field_defs['currency_id']) && !stripos($field->field, '_USD')) {
                     if ((isset($field_module->field_defs['currency_id']['source']) && $field_module->field_defs['currency_id']['source'] == 'custom_fields')) {
                         $query['select'][$table_alias . '_currency_id'] = $this->db->quoteIdentifier($table_alias . '_cstm') . ".currency_id AS '" . $table_alias . "_currency_id'";
                         $query['second_group_by'][] = $this->db->quoteIdentifier($table_alias . '_cstm') . ".currency_id";
@@ -1420,11 +1428,11 @@ class AOR_Report extends Basic
                 } else {
                     $select_field = $this->db->quoteIdentifier($table_alias) . '.' . $field->field;
                 }
-		// Sageteck non-upgrade safe
-                if($data['type']=='multirelate'){
-                    $multi_table_alias=$this->db->quoteIdentifier($table_alias);
-                    $multi_sql=str_replace('{{table_name}}',$multi_table_alias,$data['report_query']);
-                    $select_field=$multi_sql;
+                // Sageteck non-upgrade safe
+                if ($data['type'] == 'multirelate') {
+                    $multi_table_alias = $this->db->quoteIdentifier($table_alias);
+                    $multi_sql = str_replace('{{table_name}}', $multi_table_alias, $data['report_query']);
+                    $select_field = $multi_sql;
                 }
                 $select_field_db = $select_field;
 
@@ -1468,11 +1476,10 @@ class AOR_Report extends Basic
                     if ($group_value === '_empty') {
                         $query['where'][] = '(' . $select_field . " = '' OR " . $select_field . ' IS NULL) AND ';
                     } else {
-			// Sageteck non-upgrade safe
-                        if($data['type']=='multirelate'){
+                        // Sageteck non-upgrade safe
+                        if ($data['type'] == 'multirelate') {
                             $query['where'][] = $select_field . " LIKE CONCAT('%^','" . $group_value . "','^%') AND ";
-                        }
-                        else{
+                        } else {
                             $query['where'][] = $select_field . " = '" . $group_value . "' AND ";
                         }
                     }
@@ -1502,7 +1509,7 @@ class AOR_Report extends Basic
                     $customTable = $module->get_custom_table_name();
                     $query['join'][$alias] =
                         'LEFT JOIN ' .
-                        $db->quoteIdentifier($customTable) .' '. $db->quoteIdentifier($alias) .
+                        $db->quoteIdentifier($customTable) . ' ' . $db->quoteIdentifier($alias) .
                         ' ON ' .
                         $db->quoteIdentifier($parentAlias) . '.id = ' . $db->quoteIdentifier($name) . '.id_c ';
                     break;
@@ -1678,12 +1685,12 @@ class AOR_Report extends Basic
                     } else {
                         $field = $this->db->quoteIdentifier($table_alias) . '.' . $condition->field;
                     }
-		    // Sageteck non-upgrade safe
-                    if($data['type']=='multirelate'){
-                        $multi_table_alias=$this->db->quoteIdentifier($table_alias);
-                        $multi_sql=str_replace('{{table_name}}',$multi_table_alias,$data['report_query_where']);
+                    // Sageteck non-upgrade safe
+                    if ($data['type'] == 'multirelate') {
+                        $multi_table_alias = $this->db->quoteIdentifier($table_alias);
+                        $multi_sql = str_replace('{{table_name}}', $multi_table_alias, $data['report_query_where']);
 
-                        $field=$multi_sql;
+                        $field = $multi_sql;
                     }
 
 
@@ -1817,7 +1824,7 @@ class AOR_Report extends Basic
                             if (!empty($multi_values)) {
                                 $value = '(';
                                 if ($data['type'] == 'multienum') {
-                                    $multi_operator =  $condition->operator == 'Equal_To' ? 'LIKE' : 'NOT LIKE';
+                                    $multi_operator = $condition->operator == 'Equal_To' ? 'LIKE' : 'NOT LIKE';
                                     foreach ($multi_values as $multi_value) {
                                         if ($value != '(') {
                                             $value .= $sep;
@@ -1866,12 +1873,11 @@ class AOR_Report extends Basic
                                     $day_ahead = $dateTime->modify('+1 day');
                                     $equal_query .= "' AND '" . $this->db->quote($day_ahead->format('Y-m-d H:i:s')) . "' ) ";
                                     $query['where'][] = ($tiltLogicOp ? '' : ($condition->logic_op ? $condition->logic_op . ' ' : 'AND ')) . $equal_query;
-				// Sageteck non-upgrade safe
-                                } elseif($data['type']=='multirelate'){
+                                    // Sageteck non-upgrade safe
+                                } elseif ($data['type'] == 'multirelate') {
                                     $value = "CONCAT('%', '" . $this->db->quote($condition->value) . "' ,'%')";
                                     break;
-                                }
-                                else {
+                                } else {
                                     $value = "'" . $this->db->quote($condition->value) . "'";
                                     break;
                                 }
@@ -1889,12 +1895,11 @@ class AOR_Report extends Basic
                                     $day_ahead = $dateTime->modify('+1 day');
                                     $not_equal_query .= "' AND '" . $this->db->quote($day_ahead->format('Y-m-d H:i:s')) . "' ) ";
                                     $query['where'][] = ($tiltLogicOp ? '' : ($condition->logic_op ? $condition->logic_op . ' ' : 'AND ')) . $not_equal_query;
-				// Sageteck non-upgrade safe
-                                } elseif($data['type']=='multirelate'){
+                                    // Sageteck non-upgrade safe
+                                } elseif ($data['type'] == 'multirelate') {
                                     $value = "CONCAT('%', '" . $this->db->quote($condition->value) . "' ,'%')";
                                     break;
-                                }
-                                else {
+                                } else {
                                     $value = "'" . $this->db->quote($condition->value) . "'";
                                     break;
                                 }
@@ -2020,7 +2025,7 @@ class AOR_Report extends Basic
                                     $query['where'][] = $field . " BETWEEN " . $value . " AND " . "'" . $this->db->quote($date) . "'";
                                     break;
                                 case "!=":
-                                    $query['where'][] = $field . " NOT BETWEEN " . $value . " AND " . "'" . $this->db->quote($date)  . "'";
+                                    $query['where'][] = $field . " NOT BETWEEN " . $value . " AND " . "'" . $this->db->quote($date) . "'";
                                     break;
                                 case ">":
                                 case "<":
@@ -2031,14 +2036,14 @@ class AOR_Report extends Basic
                             }
                         } else {
                             if (!$where_set) {
-				// Sageteck non-upgrade safe
-                                if($data['type']=='multirelate'){
+                                // Sageteck non-upgrade safe
+                                if ($data['type'] == 'multirelate') {
                                     $aor_sql_operator_list['Equal_To'] = 'LIKE';
                                     $aor_sql_operator_list['Not_Equal_To'] = 'NOT LIKE';
                                 }
                                 $query['where'][] = ($tiltLogicOp ? '' : ($condition->logic_op ? $condition->logic_op . ' ' : 'AND ')) . $field . ' ' . $aor_sql_operator_list[$condition->operator] . ' ' . $value;
-				// Sageteck non-upgrade safe
-                                if($data['type']=='multirelate'){
+                                // Sageteck non-upgrade safe
+                                if ($data['type'] == 'multirelate') {
                                     $aor_sql_operator_list['Equal_To'] = '=';
                                     $aor_sql_operator_list['Not_Equal_To'] = '!=';
                                 }
