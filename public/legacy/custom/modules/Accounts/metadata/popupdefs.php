@@ -22,6 +22,8 @@ $popupMeta = array (
   6 => 'billing_address_country',
   7 => 'email',
   8 => 'assigned_user_id',
+  9 => 'account_base_type',
+  10 => 'account_base_type',
 ),
     'create' => array (
   'formBase' => 'AccountFormBase.php',
@@ -39,6 +41,18 @@ $popupMeta = array (
   array (
     'name' => 'name',
     'width' => '10%',
+  ),
+  'account_base_type' => 
+  array (
+    'name' => 'account_base_type',
+    'width' => '10%',
+    'label' => 'LBL_ACCOUNT_BASE_TYPE',
+    
+  ),
+  'iata' =>
+  array (
+    'name' => 'iata',
+    'label' => 'LBL_IATA',
   ),
   'account_type' => 
   array (
@@ -90,57 +104,57 @@ $popupMeta = array (
     'width' => '10%',
   ),
 ),
-    'listviewdefs' => array (
-  'B2B_EXT_ACCOUNT_NO' =>
-  array (
-    'type' => 'varchar',
-    'default' => true,
-    'label' => 'LBL_B2B_EXT_ACCOUNT_NO',
-    'width' => '10%',
-  ),
-  'NAME' => 
-  array (
-    'width' => '40%',
-    'label' => 'LBL_LIST_ACCOUNT_NAME',
-    'link' => true,
-    'default' => true,
-    'name' => 'name',
-  ),
-  'ACCOUNT_TYPE' => 
-  array (
-    'type' => 'enum',
-    'label' => 'LBL_TYPE',
-    'width' => '10%',
-    'default' => true,
-    'name' => 'account_type',
-  ),
-  'BILLING_ADDRESS_CITY' => 
-  array (
-    'width' => '10%',
-    'label' => 'LBL_LIST_CITY',
-    'default' => true,
-    'name' => 'billing_address_city',
-  ),
-  'BILLING_ADDRESS_STATE' => 
-  array (
-    'width' => '7%',
-    'label' => 'LBL_STATE',
-    'default' => true,
-    'name' => 'billing_address_state',
-  ),
-  'BILLING_ADDRESS_COUNTRY' => 
-  array (
-    'width' => '10%',
-    'label' => 'LBL_COUNTRY',
-    'default' => true,
-    'name' => 'billing_address_country',
-  ),
-  'ASSIGNED_USER_NAME' => 
-  array (
-    'width' => '2%',
-    'label' => 'LBL_LIST_ASSIGNED_USER',
-    'default' => true,
-    'name' => 'assigned_user_name',
-  ),
-),
+    'listviewdefs' =>  array (
+      'B2B_EXT_ACCOUNT_NO' =>
+      array (
+        'type' => 'varchar',
+        'default' => true,
+        'label' => 'LBL_B2B_EXT_ACCOUNT_NO',
+        'width' => '10%',
+      ),
+      'NAME' => 
+      array (
+        'width' => '40%',
+        'label' => 'LBL_LIST_ACCOUNT_NAME',
+        'link' => true,
+        'default' => true,
+        'name' => 'name',
+      ),
+      'ACCOUNT_TYPE' => 
+      array (
+        'type' => 'enum',
+        'label' => 'LBL_TYPE',
+        'width' => '10%',
+        'default' => true,
+        'name' => 'account_type',
+      ),
+      'BILLING_ADDRESS_CITY' => 
+      array (
+        'width' => '10%',
+        'label' => 'LBL_LIST_CITY',
+        'default' => true,
+        'name' => 'billing_address_city',
+      ),
+      'BILLING_ADDRESS_STATE' => 
+      array (
+        'width' => '7%',
+        'label' => 'LBL_STATE',
+        'default' => true,
+        'name' => 'billing_address_state',
+      ),
+      'BILLING_ADDRESS_COUNTRY' => 
+      array (
+        'width' => '10%',
+        'label' => 'LBL_COUNTRY',
+        'default' => true,
+        'name' => 'billing_address_country',
+      ),
+      'ASSIGNED_USER_NAME' => 
+      array (
+        'width' => '2%',
+        'label' => 'LBL_LIST_ASSIGNED_USER',
+        'default' => true,
+        'name' => 'assigned_user_name',
+      ),
+    ),
 );
