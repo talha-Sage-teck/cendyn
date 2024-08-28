@@ -363,7 +363,8 @@ array (
           ),
           1 => 
           array (
-            'name' => 'interests',
+            'name' => 'interests_c',
+            'studio' => 'visible',
             'label' => 'LBL_INTERESTS',
           ),
         ),

@@ -91,18 +91,18 @@ $viewdefs [$module_name] = array(
                         'name' => 'accounts_cb2b_pmsprofiles_1_name',
                     ),
                 ),
-                6 =>
-                    array (
-                        0 =>
-                            array (
-                                'name' => 'interests',
-                                'label' => 'LBL_INTERESTS',
-                            ),
-                        1 => array (
-                            'name' => 'member',
-                            'label' => 'LBL_MEMBER',
-                        ),
-                    ),
+//                6 =>
+//                    array (
+//                        0 =>
+//                            array (
+//                                'name' => 'interests',
+//                                'label' => 'LBL_INTERESTS',
+//                            ),
+//                        1 => array (
+//                            'name' => 'member',
+//                            'label' => 'LBL_MEMBER',
+//                        ),
+//                    ),
             ),
         ),
     ),

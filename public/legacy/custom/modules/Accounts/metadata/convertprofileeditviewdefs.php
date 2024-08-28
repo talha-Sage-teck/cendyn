@@ -199,7 +199,7 @@ $viewdefs ['Accounts'] =
                                                 'label' => 'LBL_MEMBER_OF',
                                             ),
                                         1 => array (
-                                            'name' => 'interests',
+                                            'name' => 'interests_c',
                                             'label' => 'LBL_INTERESTS',
                                         ),
 
