@@ -65,6 +65,7 @@ function makeDatabase($databaseResult): array
     global $app_list_strings;
     while($row = $db->fetchByAssoc($databaseResult)) {
         $row['account_base_type'] = $app_list_strings['account_base_list'][$row['account_base_type']];
+        $row['billing_address_country'] = $app_list_strings['cendyn_country_list'][$row['billing_address_country']];
         $database[$row['id']] = $row;
         if(!isset($children[$row['parent_id']])) {
             $children[$row['parent_id']]=[];

@@ -185,7 +185,14 @@ function export($type, $records = null, $members = false, $sample=false)
             $where = substr(trim($where), 5, strlen($where));
         }
 
-        $query = $focus->create_export_query($order_by, $where, 'ForExportSample');
+        // Sageteck Non-Upgrade change
+        $forExportSample = '';
+        if (isset($_REQUEST['module'])) {
+            if (in_array($_REQUEST['module'], array('AOS_Contracts', 'AOS_Quotes', 'Opportunities'))) {
+                $forExportSample = 'ForExportSample';
+            }
+        }
+        $query = $focus->create_export_query($order_by, $where, $forExportSample);
     }
 
     $result = '';
