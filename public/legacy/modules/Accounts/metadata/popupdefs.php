@@ -59,14 +59,11 @@ $popupMeta = array(
   0 => 'name',
   1 => 'billing_address_city',
   3 => 'account_type',
-  
   4 => 'industry',
   5 => 'billing_address_state',
   6 => 'billing_address_country',
   7 => 'email',
   8 => 'assigned_user_id',
-  9 => 'account_base_type',
-  10=> 'iata',
 ),
     'create' => array(
   'formBase' => 'AccountFormBase.php',
@@ -91,18 +88,6 @@ $popupMeta = array(
     'label' => 'LBL_TYPE',
     'width' => '10%',
     'name' => 'account_type',
-  ),
-  'account_base_type' =>
-  array(
-    'name' => 'account_base_type',
-    'label' => 'LBL_ACCOUNT_BASE_TYPE',
-    'width' => '10%',
-  ),
-  'iata' =>
-  array(
-    'name' => 'iata',
-    'label' => 'LBL_IATA',
-    'width' => '10%',
   ),
   'industry' =>
   array(
