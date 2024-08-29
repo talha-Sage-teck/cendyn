@@ -68,6 +68,8 @@ class AOW_WorkFlow extends Basic
     public $flow_run_on;
     public $multiple_runs;
 
+   
+    private $module_not_allowed; // SageTeck Non-Upgrade Change
     /**
      * return an SQL operator
      * @param $key name of SQL operator
@@ -109,8 +111,16 @@ class AOW_WorkFlow extends Basic
     {
         parent::__construct();
         if ($init) {
+            // SageTeck Non-Upgrade Change
+            require('custom/modules/AOW_WorkFlow/InvalidModules.php');
+            $this->module_not_allowed = $module_not_allowed;
             $this->load_flow_beans();
+            
             require_once('modules/AOW_WorkFlow/aow_utils.php');
+            
+            
+            
+            
         }
     }
 
@@ -165,14 +175,19 @@ class AOW_WorkFlow extends Basic
     {
         global $beanList, $app_list_strings;
 
+        
+
         if (!empty($app_list_strings['moduleList'])) {
             $app_list_strings['aow_moduleList'] = $app_list_strings['moduleList'];
+            asort($app_list_strings['aow_moduleList']);
             foreach ($app_list_strings['aow_moduleList'] as $mkey => $mvalue) {
-                if (!isset($beanList[$mkey]) || str_begin($mkey, 'AOW_')) {
+                 // SageTeck Non-Upgrade Change
+                if (in_array($mkey, $this->module_not_allowed) ||!isset($beanList[$mkey]) || str_begin($mkey, 'AOW_')) {
                     unset($app_list_strings['aow_moduleList'][$mkey]);
                 }
             }
         }
+        
 
         $app_list_strings['aow_moduleList'] = array_merge((array)array(''=>''), (array)$app_list_strings['aow_moduleList']);
 

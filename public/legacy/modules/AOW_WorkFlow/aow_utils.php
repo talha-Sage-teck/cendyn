@@ -41,7 +41,7 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-
+//require_once('custom/modules/AOW_WorkFlow/InvalidModules.php');
 
 function getModuleFields(
     $module,
@@ -255,6 +255,9 @@ function getModuleRelationships($module, $view = 'EditView', $value = '')
 {
     global $beanList, $app_list_strings;
 
+    // SageTeck Non-Upgrade Change
+    require('custom/modules/AOW_WorkFlow/InvalidModules.php');
+           
     $fields = array($module => $app_list_strings['moduleList'][$module]);
     $sort_fields = array();
     $invalid_modules = array();
@@ -267,12 +270,16 @@ function getModuleRelationships($module, $view = 'EditView', $value = '')
                 $fields['Audit'] = translate('LBL_AUDIT_TABLE','AOR_Fields');
             }*/
             foreach ($mod->get_linked_fields() as $name => $arr) {
+
+                
                 if (isset($arr['module']) && $arr['module'] != '') {
                     $rel_module = $arr['module'];
                 } elseif ($mod->load_relationship($name)) {
                     $rel_module = $mod->$name->getRelatedModuleName();
                 }
-                if (!in_array($rel_module, $invalid_modules)) {
+
+                // SageTeck Non-Upgrade Change
+                if (!in_array($rel_module, $invalid_modules) && !in_array($rel_module, $module_not_allowed)) {
                     $relModuleName = isset($app_list_strings['moduleList'][$rel_module]) ? $app_list_strings['moduleList'][$rel_module] : $rel_module;
                     if (isset($arr['vname']) && $arr['vname'] != '') {
                         $sort_fields[$name] = $relModuleName . ' : ' . translate($arr['vname'], $mod->module_dir);
