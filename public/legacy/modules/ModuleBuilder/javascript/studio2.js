@@ -421,8 +421,7 @@ Studio2 = {
 		if (document.getElementById('prepareForSave').view_package)
 		      editString += '&view_package='+document.getElementById('prepareForSave').view_package.value ;
 		var view = document.prepareForSave.view.value;
-		img.onclick = function() { 
-			debugger;
+		img.onclick = function() {
 			var value_label = document.getElementById('le_panelname_'+newPanel.id).innerHTML;
 			ModuleBuilder.asyncRequest( editString + '&value_label=' + value_label, ModuleBuilder.updateContent ); 
 		}

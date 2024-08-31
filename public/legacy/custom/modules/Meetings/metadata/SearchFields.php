@@ -140,4 +140,8 @@ $searchFields['Meetings'] = array (
     'enable_range_search' => true,
     'is_date_field' => true,
   ),
+  'description' => 
+  array (
+    'query_type' => 'default',
+  ),
 );

@@ -130,8 +130,6 @@
                 <input type="text" name="{{$country}}" id="{{$country}}" title='{$fields.{{$country}}.help}' size="{{$displayParams.size|default:30}}"
                        {{if !empty($vardef.len)}}maxlength='{{$vardef.len}}'{{/if}} value='{$fields.{{$country}}.value}'
                        tabindex="{{$tabindex}}">
-
-
             </td>
         </tr>
 

@@ -144,4 +144,20 @@ $searchFields['Calls'] = array (
       0 => 'id',
     ),
   ),
+  'description' => 
+  array (
+    'query_type' => 'default',
+  ),
+  'duration_hours' => 
+  array (
+    'query_type' => 'default',
+  ),
+  'duration_minutes' => 
+  array (
+    'query_type' => 'default',
+  ),
+  'direction' => 
+  array (
+    'query_type' => 'default',
+  ),
 );

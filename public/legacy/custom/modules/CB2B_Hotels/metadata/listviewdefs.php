@@ -2,13 +2,6 @@
 $module_name = 'CB2B_Hotels';
 $listViewDefs [$module_name] = 
 array (
-  'B2BHOTELID' => 
-  array (
-    'type' => 'varchar',
-    'label' => 'LBL_B2BHOTELID',
-    'width' => '10%',
-    'default' => true,
-  ),
   'NAME' => 
   array (
     'width' => '32%',
@@ -37,17 +30,18 @@ array (
     'width' => '10%',
     'default' => true,
   ),
-  'ADDRESS_CITY' => 
+  'HOTEL_ADDRESS_CITY' => 
   array (
     'type' => 'varchar',
-    'label' => 'LBL_ADDRESS_CITY',
+    'default' => true,
+    'label' => 'LBL_HOTEL_ADDRESS_CITY',
     'width' => '10%',
     'default' => true,
   ),
-  'ADDRESS_COUNTRY' => 
+  'HOTEL_ADDRESS_COUNTRY' => 
   array (
     'type' => 'varchar',
-    'label' => 'LBL_ADDRESS_COUNTRY',
+    'label' => 'LBL_HOTEL_ADDRESS_COUNTRY',
     'width' => '10%',
     'default' => true,
   ),
@@ -66,24 +60,27 @@ array (
     'width' => '10%',
     'default' => false,
   ),
-  'ADDRESS' => 
+  'HOTEL_ADDRESS_STREET' => 
   array (
     'type' => 'varchar',
-    'label' => 'LBL_ADDRESS',
+    'default' => false,
+    'label' => 'LBL_HOTEL_ADDRESS_STREET',
     'width' => '10%',
     'default' => false,
   ),
-  'ADDRESS_STATE' => 
+  'HOTEL_ADDRESS_STATE' => 
   array (
     'type' => 'varchar',
-    'label' => 'LBL_ADDRESS_STATE',
+    'default' => false,
+    'label' => 'LBL_HOTEL_ADDRESS_STATE',
     'width' => '10%',
     'default' => false,
   ),
-  'ADDRESS_POSTALCODE' => 
+  'HOTEL_ADDRESS_POSTALCODE' => 
   array (
     'type' => 'varchar',
-    'label' => 'LBL_ADDRESS_POSTALCODE',
+    'default' => false,
+    'label' => 'LBL_HOTEL_ADDRESS_POSTALCODE',
     'width' => '10%',
     'default' => false,
   ),
@@ -161,5 +158,4 @@ array (
     'default' => false,
   ),
 );
-;
 ?>
