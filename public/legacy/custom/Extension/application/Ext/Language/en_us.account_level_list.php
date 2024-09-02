@@ -1,7 +1,7 @@
 <?php
 $app_list_strings['Account_Level_list']=array (
     '' => '',
-    'ACC' => 'Standalone Account',
+    'ACC' => 'Parent Account',
     'MAC' => 'Master Account',
-    'SUB' => 'Subsidiary',
+    'SUB' => 'Sub-Account',
 );
