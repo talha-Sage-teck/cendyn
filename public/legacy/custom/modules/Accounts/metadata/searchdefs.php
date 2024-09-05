@@ -35,6 +35,13 @@ array (
         'default' => true,
         'width' => '10%',
       ),
+      'account_level' => 
+      array(
+        'name' => 'account_level',
+        'label' => 'LBL_ACCOUNT_LEVEL',
+        'type' => 'enum',
+        'options' => 'account_level_dom',
+      ),
     ),
     'advanced_search' => 
     array (
@@ -172,6 +179,13 @@ array (
         'width' => '10%',
         'label' => 'LBL_B2B_ACCOUNT_NO',
         'default' => true,
+      ),
+      'account_level' => 
+      array(
+        'name' => 'account_level',
+        'label' => 'LBL_ACCOUNT_LEVEL',
+        'type' => 'enum',
+        'options' => 'account_level_dom',
       ),
     ),
   ),
