@@ -62,27 +62,21 @@ class CustomUsersController extends CustomSugarController {
         $cfg->handleOverride();
 
 
-        require_once 'modules/ModuleBuilder/parsers/parser.label.php' ;
+        require_once 'modules/ModuleBuilder/parsers/parser.label.php';
 
-        if($_REQUEST['selected_pms_production_data_summary_currency']=='usd'){
-            ParserLabel::addLabels('en_us',[
-                'LBL_ROOM_REVENUE_SUBPANEL'=>'Room Revenue USD',
-                'LBL_TOTAL_REVENUE_SUBPANEL'=>'Total Revenue USD',
-                'LBL_ADR_SUBPANEL'=>'ADR USD',
-
-            ],'cb2b_production_summary_data');
+        if ($_REQUEST['selected_pms_production_data_summary_currency'] == 'usd') {
+            ParserLabel::addLabels('en_us', [
+                'LBL_ROOM_REVENUE_SUBPANEL' => 'Room Revenue USD',
+                'LBL_TOTAL_REVENUE_SUBPANEL' => 'Total Revenue USD',
+                'LBL_ADR_SUBPANEL' => 'ADR USD',
+                    ], 'cb2b_production_summary_data');
+        } else {
+            ParserLabel::addLabels('en_us', [
+                'LBL_ROOM_REVENUE_SUBPANEL' => 'Room Revenue Corporate',
+                'LBL_TOTAL_REVENUE_SUBPANEL' => 'Total Revenue Corporate',
+                'LBL_ADR_SUBPANEL' => 'ADR Corporate',
+                    ], 'cb2b_production_summary_data');
         }
-        else{
-            ParserLabel::addLabels('en_us',[
-                'LBL_ROOM_REVENUE_SUBPANEL'=>'Room Revenue Corporate',
-                'LBL_TOTAL_REVENUE_SUBPANEL'=>'Total Revenue Corporate',
-                'LBL_ADR_SUBPANEL'=>'ADR Corporate',
-
-            ],'cb2b_production_summary_data');
-        }
-
-
-
 
         SugarApplication::redirect("index.php?module=Administration&action=index");
     }
@@ -446,4 +440,5 @@ class CustomUsersController extends CustomSugarController {
             $activePage = 0;
         }
     }
+
 }

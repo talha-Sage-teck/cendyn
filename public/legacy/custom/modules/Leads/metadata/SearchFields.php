@@ -215,4 +215,52 @@ $searchFields['Leads'] = array (
     'enable_range_search' => true,
     'is_date_field' => true,
   ),
+  'primary_address_city' => 
+  array (
+    'query_type' => 'default',
+  ),
+  'primary_address_postalcode' => 
+  array (
+    'query_type' => 'default',
+  ),
+  'primary_address_country' => 
+  array (
+    'query_type' => 'default',
+  ),
+  'alt_address_postalcode' => 
+  array (
+    'query_type' => 'default',
+  ),
+  'alt_address_city' => 
+  array (
+    'query_type' => 'default',
+  ),
+  'alt_address_country' => 
+  array (
+    'query_type' => 'default',
+  ),
+  'description' => 
+  array (
+    'query_type' => 'default',
+  ),
+  'phone_work' => 
+  array (
+    'query_type' => 'default',
+  ),
+  'phone_mobile' => 
+  array (
+    'query_type' => 'default',
+  ),
+  'status_description' => 
+  array (
+    'query_type' => 'default',
+  ),
+  'opportunity_amount' => 
+  array (
+    'query_type' => 'default',
+  ),
+  'lead_source_description' => 
+  array (
+    'query_type' => 'default',
+  ),
 );

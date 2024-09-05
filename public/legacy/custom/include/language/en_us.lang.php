@@ -2,9 +2,9 @@
 
 $app_list_strings['account_level_list'] = array(
     '' => '',
-    'ACC' => 'Standalone Account',
+    'ACC' => 'Parent Account',
     'MAC' => 'Master Account',
-    'SUB' => 'Subsidiary',
+    'SUB' => 'Sub-Account',
 );
 $app_list_strings['cendyn_country_list'] = array(
     '' => '',

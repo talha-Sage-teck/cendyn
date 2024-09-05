@@ -237,6 +237,7 @@ HTML;
         $tiny = new SugarTinyMCE();
         $tinyMCE = $tiny->getConfig();
 
+        // Sageteck non-upgrade safe change
         $js =<<<JS
 		<script language="javascript" type="text/javascript">
 		$tinyMCE

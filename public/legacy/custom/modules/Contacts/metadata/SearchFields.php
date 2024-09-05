@@ -202,4 +202,48 @@ $searchFields['Contacts'] = array (
     'enable_range_search' => true,
     'is_date_field' => true,
   ),
+  'phone_work' => 
+  array (
+    'query_type' => 'default',
+  ),
+  'phone_mobile' => 
+  array (
+    'query_type' => 'default',
+  ),
+  'primary_address_postalcode' => 
+  array (
+    'query_type' => 'default',
+  ),
+  'primary_address_city' => 
+  array (
+    'query_type' => 'default',
+  ),
+  'primary_address_country' => 
+  array (
+    'query_type' => 'default',
+  ),
+  'alt_address_postalcode' => 
+  array (
+    'query_type' => 'default',
+  ),
+  'alt_address_city' => 
+  array (
+    'query_type' => 'default',
+  ),
+  'alt_address_country' => 
+  array (
+    'query_type' => 'default',
+  ),
+  'description' => 
+  array (
+    'query_type' => 'default',
+  ),
+  'assistant_phone' => 
+  array (
+    'query_type' => 'default',
+  ),
+  'primary_address_street' => 
+  array (
+    'query_type' => 'default',
+  ),
 );

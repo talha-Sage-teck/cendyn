@@ -173,4 +173,8 @@ select opportunities_cb2b_hotels_1opportunities_ida from opportunities_cb2b_hote
 and cb2b_hotels.deleted=0
 where opportunities_cb2b_hotels_1_c.deleted=0 and cb2b_hotels.name in (\'{0}\')',
   ),
+  'description' => 
+  array (
+    'query_type' => 'default',
+  ),
 );

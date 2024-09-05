@@ -195,6 +195,11 @@ function formSubmitCheck(){ldelim}if(check_form(\'EditView\')){ldelim}document.E
             'comment' => 'Full text of the note',
             'label' => 'LBL_DESCRIPTION',
           ),
+          1 => 
+          array (
+            'name' => 'remarks',
+            'label' => 'LBL_REMARKS',
+          ),
         ),
       ),
       'LBL_PANEL_ASSIGNMENT' => 

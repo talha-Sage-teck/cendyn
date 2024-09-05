@@ -188,7 +188,7 @@ function export($type, $records = null, $members = false, $sample=false)
         // Sageteck Non-Upgrade change
         $forExportSample = '';
         if (isset($_REQUEST['module'])) {
-            if (in_array($_REQUEST['module'], array('AOS_Contracts', 'AOS_Quotes', 'Opportunities'))) {
+            if (in_array($_REQUEST['module'], array('AOS_Contracts', 'AOS_Quotes', 'Opportunities')) && $sample==true) {
                 $forExportSample = 'ForExportSample';
             }
         }
@@ -209,10 +209,15 @@ function export($type, $records = null, $members = false, $sample=false)
 
     $fields_array = $db->getFieldsArray($result, true);
 
+
     //set up the order on the header row
     $fields_array = get_field_order_mapping($focus->module_dir, $fields_array);
 
-
+    
+    // Sageteck Non-Upgrade change
+    if (in_array($_REQUEST['module'], array('AOS_Contracts', 'AOS_Quotes', 'Opportunities')) && $sample==true) {//Will add missing field for sample exports
+            $fields_array[] = 'Associated Hotels (related ID)';
+    }
 
     //set up labels to be used for the header row
     $field_labels = array();
