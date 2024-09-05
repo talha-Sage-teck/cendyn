@@ -20,7 +20,7 @@ foreach ($updates as $tableName => $fieldName) {
 
     // Update the specified field for the current currency_id
     $updateQuery = "UPDATE {$tableName}
-                    SET {$fieldName} = {$baseFieldName}/{$exchange_rate}
+                    SET {$fieldName} = ROUND({$baseFieldName}/{$exchange_rate}, 6)
                     WHERE currency_id = '{$currency_id}'";
     $db->query($updateQuery);
 }
