@@ -109,7 +109,7 @@ if (empty($focus->id)) {
 }
 
 echo getClassicModuleTitle($focus->module_dir, $params, true);
-
+# Sageteck non-upgrade change
 // if (!$focus->ACLAccess('EditView') || (!is_admin($current_user) && isset($focus->type) && $focus->type === 'system')) {
 //     ACLController::displayNoAccess(true);
 //     sugar_cleanup(true);
