@@ -91,6 +91,9 @@ $admin_option_defs['ExternalOAuthProvider']['Popup'] = [
 $admin_option_defs['EmailTemplates']['Popup'] = [
     'Popup',
 ];
+$admin_option_defs['Audit']['Popup'] = [
+    'Popup',
+];
 //$admin_option_defs['ACLRoles']['EditView'] = [
 //    'EditView',
 //];
