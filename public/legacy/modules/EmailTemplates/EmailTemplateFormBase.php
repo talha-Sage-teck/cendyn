@@ -431,10 +431,9 @@ EOQ;
                 $type = $template->type;
             }
         }
-        # Sageteck non-upgrade change
-        // if ($type === 'system' && !is_admin($current_user)) {
-        //     ACLController::displayNoAccess(true);
-        //     sugar_cleanup(true);
-        // }
+        if ($type === 'system' && !is_admin($current_user)) {
+            ACLController::displayNoAccess(true);
+            sugar_cleanup(true);
+        }
     }
 }
