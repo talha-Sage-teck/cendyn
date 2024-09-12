@@ -431,6 +431,7 @@ EOQ;
                 $type = $template->type;
             }
         }
+
         if ($type === 'system' && !is_admin($current_user)) {
             ACLController::displayNoAccess(true);
             sugar_cleanup(true);
