@@ -107,7 +107,7 @@ class ParentMapper implements TypeMapperInterface
         $id = $relate['id'] ?? '';
         $value = $relate[$rName] ?? '';
 
-        if ($idFieldName !== '') {
+        if (!empty($relate) && $idFieldName !== '') {
             $container[$idFieldName] = $id;
         }
 
