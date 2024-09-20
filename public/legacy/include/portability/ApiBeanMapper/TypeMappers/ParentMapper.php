@@ -106,8 +106,9 @@ class ParentMapper implements TypeMapperInterface
         $relate = $container[$name] ?? [];
         $id = $relate['id'] ?? '';
         $value = $relate[$rName] ?? '';
-
-        if ($idFieldName !== '') {
+        
+        //SageTeck Non-upgrade change
+        if (!empty($relate) && $idFieldName !== '') {
             $container[$idFieldName] = $id;
         }
 
