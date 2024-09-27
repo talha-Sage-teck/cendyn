@@ -75,10 +75,10 @@ class AOR_Report extends Basic
         parent::__construct();
         require_once('modules/AOW_WorkFlow/aow_utils.php');
         require_once('modules/AOR_Reports/aor_utils.php');
-
+        // Sageteck non-upgrade change
         $this->dataMap = array();
     }
-
+    // Sageteck non-upgrade change
     public function getModulefieldsMapped(
         $module,
         $fieldname,
@@ -302,6 +302,7 @@ class AOR_Report extends Basic
                 $currency_id = isset($row[$att['alias'] . '_currency_id']) ? $row[$att['alias'] . '_currency_id'] : '';
 
                 if ($att['function'] != 'COUNT' && empty($att['format']) && !is_numeric($row[$name])) {
+                    // Sageteck non-upgrade change
                     $row[$name] = trim(strip_tags($this->getModulefieldsMapped(
                         $att['module'],
                         $att['field'],
@@ -743,6 +744,7 @@ class AOR_Report extends Basic
 
         $fields = array();
         $i = 0;
+        // Sageteck non-upgrade change
         if(!empty($this->fields)){
             $fields=$this->fields;
         }
@@ -876,7 +878,7 @@ class AOR_Report extends Basic
         }
 
         $row_class = 'oddListRowS1';
-
+        // Sageteck non-upgrade change
         //////////////
         //Get Currencies
         $currency = BeanFactory::newBean('Currencies');
@@ -1091,6 +1093,7 @@ class AOR_Report extends Basic
                 switch ($type) {
                     case 'SUM':
                     case 'AVG':
+                        // Sageteck non-upgrade change
                         $total = $this->getModulefieldsMapped(
                             $field['module'],
                             $field['field'],
@@ -1241,7 +1244,7 @@ class AOR_Report extends Basic
                             //Load the required symbol
                             $targetsymbol = $currency->symbol;
 
-
+                            // Sageteck non-upgrade change
                             $t = $this->getModulefieldsMapped($att['module'], $att['field'], $att['field'], 'DetailView', $row[$name], '', $currency_id);
 
                             //Fix Symbol
