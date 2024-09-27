@@ -75,9 +75,47 @@ class AOR_Report extends Basic
         parent::__construct();
         require_once('modules/AOW_WorkFlow/aow_utils.php');
         require_once('modules/AOR_Reports/aor_utils.php');
+
+        $this->dataMap = array();
     }
 
-
+    public function getModulefieldsMapped(
+        $module,
+        $fieldname,
+        $aow_field,
+        $view = 'EditView',
+        $value = '',
+        $alt_type = '',
+        $currency_id = '',
+        $params = array()
+    ) {
+        // Create a unique key for caching
+        $key = $module . '-' . $fieldname . '-' . $value . '-' . $currency_id . '-' . $view;
+    
+        // Check if the key exists in the cache
+        if (isset($this->dataMap[$key])) {
+            return $this->dataMap[$key];
+        }
+    
+        // Fetch the field value using getModuleField
+        $fetched_value = getModuleField(
+            $module,
+            $fieldname,
+            $aow_field,
+            $view,
+            $value,
+            $alt_type,
+            $currency_id,
+            $params
+        );
+        
+        // Store the fetched value in the cache for future use
+        $this->dataMap[$key] = $fetched_value;
+    
+        return $fetched_value;
+    }
+    
+    
 
 
     public function bean_implements($interface)
@@ -264,7 +302,7 @@ class AOR_Report extends Basic
                 $currency_id = isset($row[$att['alias'] . '_currency_id']) ? $row[$att['alias'] . '_currency_id'] : '';
 
                 if ($att['function'] != 'COUNT' && empty($att['format']) && !is_numeric($row[$name])) {
-                    $row[$name] = trim(strip_tags(getModuleField(
+                    $row[$name] = trim(strip_tags($this->getModulefieldsMapped(
                         $att['module'],
                         $att['field'],
                         $att['field'],
@@ -700,55 +738,61 @@ class AOR_Report extends Basic
         $html = '<div class="list-view-rounded-corners">';
         $html .= '<table id="report_table_' . $tableIdentifier . $group_value . '" width="100%" border="0" class="list view table-responsive aor_reports">';
 
-        $sql = "SELECT id FROM aor_fields WHERE aor_report_id = '" . $this->id . "' AND deleted = 0 ORDER BY field_order ASC";
-        $result = $this->db->query($sql);
-
         $html .= '<thead>';
         $html .= '<tr>';
 
         $fields = array();
         $i = 0;
-        while ($row = $this->db->fetchByAssoc($result)) {
-            $field = BeanFactory::newBean('AOR_Fields');
-            $field->retrieve($row['id']);
-
-            $path = unserialize(base64_decode($field->module_path));
-
-            $field_bean = new $beanList[$this->report_module]();
-
-            $field_module = $this->report_module;
-            $field_alias = $field_bean->table_name;
-            if ($path[0] != $this->report_module) {
-                foreach ($path as $rel) {
-                    if (empty($rel)) {
-                        continue;
+        if(!empty($this->fields)){
+            $fields=$this->fields;
+        }
+        else{
+            $sql = "SELECT id FROM aor_fields WHERE aor_report_id = '" . $this->id . "' AND deleted = 0 ORDER BY field_order ASC";
+            $result = $this->db->query($sql);
+            while ($row = $this->db->fetchByAssoc($result)) {
+                $field = BeanFactory::newBean('AOR_Fields');
+                $field->retrieve($row['id']);
+    
+                $path = unserialize(base64_decode($field->module_path));
+    
+                $field_bean = new $beanList[$this->report_module]();
+    
+                $field_module = $this->report_module;
+                $field_alias = $field_bean->table_name;
+                if ($path[0] != $this->report_module) {
+                    foreach ($path as $rel) {
+                        if (empty($rel)) {
+                            continue;
+                        }
+                        $field_module = getRelatedModule($field_module, $rel);
+                        $field_alias = $field_alias . ':' . $rel;
                     }
-                    $field_module = getRelatedModule($field_module, $rel);
-                    $field_alias = $field_alias . ':' . $rel;
                 }
+                $label = str_replace(' ', '_', $field->label) . $i;
+                $fields[$label]['field'] = $field->field;
+                $fields[$label]['label'] = $field->label;
+                $fields[$label]['display'] = $field->display;
+                $fields[$label]['function'] = $field->field_function;
+                $fields[$label]['module'] = $field_module;
+                $fields[$label]['alias'] = $field_alias;
+                $fields[$label]['link'] = $field->link;
+                $fields[$label]['total'] = $field->total;
+                $fields[$label]['format'] = $field->format;
+                $fields[$label]['params'] = [];
+    
+    
+                if ($fields[$label]['display']) {
+                    // Fix #5427
+                    $html .= "<th scope='col'>";
+                    // End
+                    $html .= "<div>";
+                    $html .= $field->label;
+                    $html .= "</div></th>";
+                }
+                ++$i;
             }
-            $label = str_replace(' ', '_', $field->label) . $i;
-            $fields[$label]['field'] = $field->field;
-            $fields[$label]['label'] = $field->label;
-            $fields[$label]['display'] = $field->display;
-            $fields[$label]['function'] = $field->field_function;
-            $fields[$label]['module'] = $field_module;
-            $fields[$label]['alias'] = $field_alias;
-            $fields[$label]['link'] = $field->link;
-            $fields[$label]['total'] = $field->total;
-            $fields[$label]['format'] = $field->format;
-            $fields[$label]['params'] = [];
 
-
-            if ($fields[$label]['display']) {
-                // Fix #5427
-                $html .= "<th scope='col'>";
-                // End
-                $html .= "<div>";
-                $html .= $field->label;
-                $html .= "</div></th>";
-            }
-            ++$i;
+            $this->fields=$fields;
         }
 
         $html .= '</tr>';
@@ -833,7 +877,33 @@ class AOR_Report extends Basic
 
         $row_class = 'oddListRowS1';
 
+        //////////////
+        //Get Currencies
+        $currency = BeanFactory::newBean('Currencies');
 
+        //To retrieve Currency_id associated with users
+        global $current_user;
+        $current_user_id = $current_user->id;
+
+        // Load the user bean
+        $user = BeanFactory::getBean('Users', $current_user_id);
+
+        // Get the currency ID from the user settings
+        $user_currency_id = $user->getPreference('currency');
+
+        // Load the currency bean for User preference
+        $currency->retrieve($user_currency_id);
+
+        // Get the currency symbol for the user default that needs to be replaced
+        $user_default_symbol = $currency->symbol;
+
+        // Load the currency bean for required currency
+        $currency->retrieve($currency_id);
+        //Load the required symbol
+        $targetsymbol = $currency->symbol;
+        //////////////
+        
+        
         $totals = array();
         while ($fieldCount && $row = $this->db->fetchByAssoc($result)) {
             $html .= "<tr class='" . $row_class . "' height='20'>";
@@ -854,35 +924,11 @@ class AOR_Report extends Basic
 
                         // Sageteck Non-Upgrade change
                         ////////////////////////////////////////////////////////////////////
-                        $field_string = getModuleField($att['module'], $att['field'], $att['field'], 'DetailView', $row[$name], '', $currency_id);
+                        $field_string = $this->getModulefieldsMapped($att['module'], $att['field'], $att['field'], 'DetailView', $row[$name], '', $currency_id);
+
 
                         //For problematic cases ONLY, otherwise it will simply add values to the field_string 
                         if (!stripos($att['field'], '_USD')) {//(preg_match('/^Opportunity_Amount\d+$/', $name) || preg_match('/^Contract_Value\d+$/', $name))) {//$currency_id != '-99' && 
-
-                            //Get Currencies
-                            $currency = BeanFactory::newBean('Currencies');
-
-                            //To retrieve Currency_id associated with users
-                            global $current_user;
-                            $current_user_id = $current_user->id;
-
-                            // Load the user bean
-                            $user = BeanFactory::getBean('Users', $current_user_id);
-
-                            // Get the currency ID from the user settings
-                            $user_currency_id = $user->getPreference('currency');
-
-                            // Load the currency bean for User preference
-                            $currency->retrieve($user_currency_id);
-
-                            // Get the currency symbol for the user default that needs to be replaced
-                            $user_default_symbol = $currency->symbol;
-
-                            // Load the currency bean for required currency
-                            $currency->retrieve($currency_id);
-                            //Load the required symbol
-                            $targetsymbol = $currency->symbol;
-
                             //Fix Symbol
                             if (strpos($field_string, $user_default_symbol) !== false) {
 
@@ -995,7 +1041,7 @@ class AOR_Report extends Basic
             }
 
             $currency_id = isset($row[$field_alias . '_currency_id']) ? $row[$field_alias . '_currency_id'] : '';
-            $moduleFieldByGroupValues[] = getModuleField(
+            $moduleFieldByGroupValues[] = $this->getModulefieldsMapped(
                 $this->report_module,
                 $field->field,
                 $field->field,
@@ -1045,7 +1091,7 @@ class AOR_Report extends Basic
                 switch ($type) {
                     case 'SUM':
                     case 'AVG':
-                        $total = getModuleField(
+                        $total = $this->getModulefieldsMapped(
                             $field['module'],
                             $field['field'],
                             $field['field'],
@@ -1164,7 +1210,7 @@ class AOR_Report extends Basic
 
                         // Sageteck Non-Upgrade change
                         ////////////////////////////////////////////////////////////////////
-                        $t = getModuleField($att['module'], $att['field'], $att['field'], 'DetailView', $row[$name], '', $currency_id);
+                        $t = $this->getModulefieldsMapped($att['module'], $att['field'], $att['field'], 'DetailView', $row[$name], '', $currency_id);
 
 
                         //For problematic cases ONLY, otherwise it will simply add values to the field_string 
@@ -1196,7 +1242,7 @@ class AOR_Report extends Basic
                             $targetsymbol = $currency->symbol;
 
 
-                            $t = getModuleField($att['module'], $att['field'], $att['field'], 'DetailView', $row[$name], '', $currency_id);
+                            $t = $this->getModulefieldsMapped($att['module'], $att['field'], $att['field'], 'DetailView', $row[$name], '', $currency_id);
 
                             //Fix Symbol
                             if (strpos($t, $user_default_symbol) !== false) {
