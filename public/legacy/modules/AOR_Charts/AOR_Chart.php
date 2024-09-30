@@ -690,13 +690,16 @@ EOF;
         $usedKeys = array();
         foreach ($reportData as $key => $row) {
             $filter = $row[$xName];
-            foreach ($reportData as $key2 => $row2) {
-                if ($row2[$xName] == $filter && !in_array($key, $usedKeys)) {
-                    $data      [ $row[$xName]  ]   [] = (float) $row[$yName];
-                    $tooltips  [ $row[$xName]  ]   [] = isset($row[$zName]) ? $row[$zName] : null;
-                    $usedKeys[] = $key;
-                }
+            // Sageteck non-upgrade change
+            // Collect data and tooltips for the current row
+            $data[$filter][] = (float) $row[$yName];
+
+            if (isset($row[$zName])) {
+                $tooltips[$filter][] = isset($row[$zName]) ? $row[$zName] : null;
             }
+
+            // Add the key to usedKeys immediately
+            $usedKeys[] = $key;
         }
 
         $_data = array();
