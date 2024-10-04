@@ -899,11 +899,11 @@ class AOR_Report extends Basic
         // Get the currency symbol for the user default that needs to be replaced
         $user_default_symbol = $currency->symbol;
 
-        // Load the currency bean for required currency
-        $currency->retrieve($currency_id);
-        //Load the required symbol
-        $targetsymbol = $currency->symbol;
-        //////////////
+//        // Load the currency bean for required currency
+//        $currency->retrieve($currency_id);
+//        //Load the required symbol
+//        $targetsymbol = $currency->symbol;
+//        //////////////
         
         
         $totals = array();
@@ -933,7 +933,13 @@ class AOR_Report extends Basic
                         if (!stripos($att['field'], '_USD')) {//(preg_match('/^Opportunity_Amount\d+$/', $name) || preg_match('/^Contract_Value\d+$/', $name))) {//$currency_id != '-99' && 
                             //Fix Symbol
                             if (strpos($field_string, $user_default_symbol) !== false) {
-
+                                // Sageteck non-upgrade change
+                                // Load the currency bean for required currency
+                                $currency->retrieve($currency_id);
+                                //Load the required symbol
+                                $targetsymbol = $currency->symbol;
+                                //////////////
+                                
                                 $field_string = str_replace($user_default_symbol, $targetsymbol, $field_string);
 
                             }

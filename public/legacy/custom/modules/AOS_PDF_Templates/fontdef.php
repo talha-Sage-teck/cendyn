@@ -1,9 +1,10 @@
 <?php
+
 // All fonts that are to be added for the frontend will be added here
 global $sugar_config;
-$url=$sugar_config['site_url'];
+$url = $sugar_config['site_url'];
 
-$font_def="@font-face {
+$font_def = "@font-face {
             font-family: 'Inter Semi Bold';
             src: url('{$url}/legacy/custom/webfonts/Inter-SemiBold.eot');
             src: url('{$url}/legacy/custom/webfonts/Inter-SemiBold.eot?#iefix') format('embedded-opentype'),
@@ -202,15 +203,15 @@ $font_def="@font-face {
         }
 
         @font-face {
-        font-family: 'Inter Medium Italic';
-        src: url('{$url}/legacy/custom/webfonts/Inter-MediumItalic.eot');
-        src: url('{$url}/legacy/custom/webfonts/Inter-MediumItalic.eot?#iefix') format('embedded-opentype'),
-            url('{$url}/legacy/custom/webfonts/Inter-MediumItalic.woff2') format('woff2'),
-            url('{$url}/legacy/custom/webfonts/Inter-MediumItalic.woff') format('woff');
-        font-weight: normal;
-        font-style: normal;
-        font-display: swap;
-    }
+            font-family: 'Inter Medium Italic';
+            src: url('{$url}/legacy/custom/webfonts/Inter-MediumItalic.eot');
+            src: url('{$url}/legacy/custom/webfonts/Inter-MediumItalic.eot?#iefix') format('embedded-opentype'),
+                url('{$url}/legacy/custom/webfonts/Inter-MediumItalic.woff2') format('woff2'),
+                url('{$url}/legacy/custom/webfonts/Inter-MediumItalic.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
 
         @font-face {
             font-family: 'Inter Light Italic';
@@ -442,36 +443,33 @@ $font_def="@font-face {
             font-style: normal;
             font-display: swap;
         }
-        @font-face {
-    font-family: 'symbol';
-    src: url('{$url}/legacy/custom/webfonts/symbol.eot');
-    src: url('{$url}/legacy/custom/webfonts/symbol.eot?#iefix') format('embedded-opentype'),
-        url('{$url}/legacy/custom/webfonts/symbol.woff2') format('woff2'),
-        url('{$url}/legacy/custom/webfonts/symbol.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-}    
-
-@font-face {
-    font-family: 'helvetica';
-    src: url('Helvetica.woff2') format('woff2'),
-        url('Helvetica.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'helvetica neue';
-    src: url('HelveticaNeueRegular.woff2') format('woff2'),
-        url('HelveticaNeueRegular.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-}
-        ";
         
-
-
+        @font-face {
+            font-family: 'symbol';
+            src: url('{$url}/legacy/custom/webfonts/symbol.eot');
+            src: url('{$url}/legacy/custom/webfonts/symbol.eot?#iefix') format('embedded-opentype'),
+                url('{$url}/legacy/custom/webfonts/symbol.woff2') format('woff2'),
+                url('{$url}/legacy/custom/webfonts/symbol.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        @font-face {
+            font-family: 'helvetica';
+            src: url('{$url}/legacy/custom/webfonts/Helvetica.woff2') format('woff2'),
+                url('{$url}/legacy/custom/webfonts/Helvetica.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        @font-face {
+            font-family: 'helvetica neue';
+            src: url('{$url}/legacy/custom/webfonts/HelveticaNeueRegular.woff2') format('woff2'),
+                url('{$url}/legacy/custom/webfonts/HelveticaNeueRegular.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }";
 

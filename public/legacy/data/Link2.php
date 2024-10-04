@@ -627,6 +627,10 @@ class Link2
             if (!($related_id instanceof SugarBean)) {
                 $related_id = $this->getRelatedBean($related_id);
             }
+            // Sageteck Non-Upgrade change
+            if (!$related_id) {
+                return false;
+            }
             if ($this->getSide() == REL_LHS) {
                 return $this->relationship->remove($this->focus, $related_id);
             } else {
