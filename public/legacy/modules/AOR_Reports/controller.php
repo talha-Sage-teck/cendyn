@@ -272,7 +272,7 @@ class AOR_ReportsController extends SugarController
             LoggerManager::getLogger()->warn('PDFException: ' . $e->getMessage());
         }
     }
-    
+
     protected function action_getModuleFunctionField()
     {
         global $app_list_strings;
