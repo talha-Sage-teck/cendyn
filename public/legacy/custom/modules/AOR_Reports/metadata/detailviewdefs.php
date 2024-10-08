@@ -52,6 +52,9 @@ $viewdefs['AOR_Reports']['DetailView'] = array(
                     'customCode' => '{if $can_export}<input type="button" class="button" id="download_pdf_button_old" value="{$MOD.LBL_DOWNLOAD_PDF}">{/if}',
                 ),
                 array(
+                    'customCode' => '{if $can_export}<input type="button" class="button" id="download_chart_button_old" value="{$MOD.LBL_DOWNLOAD_CHART}">{/if}',
+                ),
+                array(
                     'customCode' => '<input type="button" class="button" onClick="openProspectPopup();" value="{$MOD.LBL_ADD_TO_PROSPECT_LIST}">',
                 ),
             ),

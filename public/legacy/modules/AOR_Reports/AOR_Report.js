@@ -36,20 +36,6 @@ $(document).ready(function () {
 
     $("#formDetailView #graphsForPDF").remove();
   });
-  //Sageteck non-upgrade change
-  $('#download_chart_button_old').click(function () {
-
-    var _form = addParametersToForm('DownloadChart');
-
-    var rGraphs = document.getElementsByClassName('resizableCanvas');
-    for (var i = 0; i < rGraphs.length; i++) {
-      _form.append('<input type="hidden" id="graphsForPDF" name="graphsForPDF[]" value=' + rGraphs[i].toDataURL() + '>');
-    }
-
-    
-    _form.submit();
-  });
-
   $('#download_csv_button_old').click(function () {
 
     var _form = addParametersToForm('Export');

@@ -77,7 +77,6 @@ $mod_strings = array(
     'LBL_ADD_CONDITION' => 'Add Condition',
     'LBL_EXPORT' => 'Export',
     'LBL_DOWNLOAD_PDF' => 'Download PDF',
-    'LBL_DOWNLOAD_CHART' => 'Download Chart',
     'LBL_ADD_TO_PROSPECT_LIST' => 'Add To Target List',
     'LBL_AOR_MODULETREE_SUBPANEL_TITLE' => 'Module tree',
     'LBL_AOR_FIELDS_SUBPANEL_TITLE' => 'Fields',

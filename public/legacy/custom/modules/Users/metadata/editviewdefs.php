@@ -118,7 +118,7 @@ array (
           0 => 
           array (
             'name' => 'title',
-            'customCode' => '{if $IS_ADMIN}@@FIELD@@{else}{$TITLE_READONLY}{/if}',
+            'customCode' => '{if $IS_ADMIN}@@FIELD@@{else}@@FIELD@@{/if}',
           ),
           1 => 'phone_work',
         ),
@@ -127,7 +127,7 @@ array (
           0 => 
           array (
             'name' => 'department',
-            'customCode' => '{if $IS_ADMIN}@@FIELD@@{else}{$DEPT_READONLY}{/if}',
+            'customCode' => '{if $IS_ADMIN}@@FIELD@@{else}@@FIELD@@{/if}',
           ),
           1 => 'phone_mobile',
         ),
@@ -136,7 +136,7 @@ array (
           0 => 
           array (
             'name' => 'reports_to_name',
-            'customCode' => '{if $IS_ADMIN}@@FIELD@@{else}{$REPORTS_TO_READONLY}{/if}',
+            'customCode' => '{if $IS_ADMIN}@@FIELD@@{else}@@FIELD@@{/if}',
           ),
           1 => 'phone_other',
         ),
