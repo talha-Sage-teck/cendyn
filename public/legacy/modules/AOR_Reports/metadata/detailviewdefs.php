@@ -63,7 +63,7 @@ $viewdefs['AOR_Reports']['DetailView'] = array(
             array('label' => '10', 'field' => '30')
         ),
         'includes' => array(
-            array('file' => 'custom/modules/AOR_Reports/AOR_Report.js'),
+            array('file' => 'modules/AOR_Reports/AOR_Report.js'),
         ),
         'tabDefs' =>
             array(

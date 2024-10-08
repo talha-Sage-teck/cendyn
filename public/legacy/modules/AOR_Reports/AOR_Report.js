@@ -36,6 +36,7 @@ $(document).ready(function () {
 
     $("#formDetailView #graphsForPDF").remove();
   });
+  
   $('#download_csv_button_old').click(function () {
 
     var _form = addParametersToForm('Export');
