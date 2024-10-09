@@ -97,6 +97,10 @@ class CleanCSV
             return $cell;
         }
 
+        //SageTeck non-upgrade change
+        // Replace all single quotes with double quotes
+        $cell = str_replace('"', '""', $cell);
+    
         if (in_array($cell[0], $this->startingChars, true)) {
             return $this->escapeChar . $cell;
         }
