@@ -1,0 +1,17 @@
+<?php
+require_once ('encryption_script.php');
+
+$encryptionKey = 'your_strong_encryption_key_here';
+
+global $dbconfig_decrypted,$DBurl_decrypted;
+
+//DB credentials that are stored inside config.php
+$dbconfig_encryption="3vK8lsXPV6xMWkhr94bdum1GNk9kcnQwYTFEcWc2Y01ENUd0UHA2bnoxQnEydlowc2lsV09ZRTd3QzRGd0o3MU9uTjRSK0tERGE2bklDei9odk83YStsS1k5TFVJNTdWMXhvZGw2K0xmdWJieWZaODBOTWRpZzU3Y1JkZXJGbzJMcjFLb1YyUGFDczhiSU9xaTd5Y3JXMjE2T1NzTW43OWY4ZnVCOHg5R25EQzlBWUtXWHYyektqcXJJSnZKUlMxaURrU3lhbWprUzc5L05RTWM3K3hTYXZrdHlyQU1iWVgzRWFnWHgvVXMwb2c1YXNvcGg5Zkd4VjZWMFA5VUo3SlQ2c3hkalFjSktRMnNEZ0FFVUFrQjcyWjdzOVVPZlUzUGN5d2tCT1hGZXV1VmNQRDZ4VGdrSUxGb0pnPQ==";
+
+//The DB url that is contained inside .env.local
+$DBurl_encryption="MzWBAP6ByOWMKi5SUhhcT3BPbklyNEszdnQ3T3hOaTFuY2ZUTVFWUGRiSDl2ZW81M1BUYW9SRWFiaUZqNVpOWFlTUm1IMkNZMGVyV0NqaHc1bnkwYkRZaWRON0dsWkJSVjJPQlZnPT0=";
+
+//Decrypted Outputs
+$dbconfig_decrypted=decryptDbConfig($dbconfig_encryption , $encryptionKey);
+
+$DBurl_decrypted=decryptDbConfig($DBurl_encryption , $encryptionKey);
