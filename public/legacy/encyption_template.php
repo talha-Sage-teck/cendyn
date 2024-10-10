@@ -1,5 +1,5 @@
 <?php
-//Utility Functions for Encryption and Decryption
+//Use this for encypting the data and then pasting it in encyption_value.php
 
 //Encrypts given data with specified key
 function encryptDbConfig($data, $key) {
@@ -34,7 +34,13 @@ function decryptDbConfig($encryptedData, $key) {
 
 }
 
-/*
-    Output of the Encryption function should be placed respectively inside encryption_values.php
+$encryptionKey = 'your_strong_encryption_key_here';
 
-*/
+//Can be of any type: string, array, integer etc.....
+$value_to_be_encrypted="";
+
+$encyption=encryptDbConfig($value_to_be_encrypted,$encryptionKey);
+
+
+printf("This is your encrypted value: %s \n" ,$encyption);
+

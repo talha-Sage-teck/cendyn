@@ -136,8 +136,6 @@ final class Dotenv
         if (is_file($p = "$path.$env.local")) {
             $this->load($p);
         }
-
-
     }
 
     /**
@@ -207,8 +205,8 @@ final class Dotenv
                 require_once ('encryption_values.php');
                 global $DBurl_decrypted;
                 $value=$DBurl_decrypted;
-
             }
+
             $_ENV[$name] = $value;
             if ($notHttpName) {
                 $_SERVER[$name] = $value;
