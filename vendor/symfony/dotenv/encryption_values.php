@@ -1,7 +1,8 @@
 <?php
 require_once ('encryption_script.php');
 
-$encryptionKey = 'your_strong_encryption_key_here';
+
+$encryptionKey = 'ad7b94838eed72a88c0d177b053188c8';
 
 global $dbconfig_decrypted,$DBurl_decrypted;
 
