@@ -202,7 +202,7 @@ final class Dotenv
                 putenv("$name=$value");
             }
 
-
+            //SageTeck non-upgrade safe
             if($name=="DATABASE_URL"){
                 require_once ('encryption_values.php');
                 global $DBurl_decrypted;
