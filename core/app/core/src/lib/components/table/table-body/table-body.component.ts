@@ -94,8 +94,12 @@ export class TableBodyComponent implements OnInit, OnDestroy {
             ) => {
                 const relevantRecords = records.filter(record => record.module.toLowerCase() === 'cb2b_production_summary_data');
                 this.filter_name = relevantRecords.length > 0 ? relevantRecords[relevantRecords.length - 1].attributes.description : '';
-                this.showHeading = records.some(record => record.module.toLowerCase() === 'cb2b_production_summary_data')&& this.filter_name !== '';
 
+                //if showHeading is true then only check whether the heading should be shown or not, if false then don't even try
+                if (this.showHeading){
+                    this.showHeading = records.some(record => record.module.toLowerCase() === 'cb2b_production_summary_data')&& this.filter_name !== '';
+                }
+                
                 const displayedColumns: string[] = [];
 
                 if (selection) {
