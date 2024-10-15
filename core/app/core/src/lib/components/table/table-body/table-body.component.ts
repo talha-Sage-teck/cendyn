@@ -41,7 +41,7 @@ import {TableConfig} from '../table.model';
 import {SortDirectionDataSource} from '../../sort-button/sort-button.model';
 import {LoadingBufferFactory} from '../../../services/ui/loading-buffer/loading-buffer.factory';
 import {LoadingBuffer} from '../../../services/ui/loading-buffer/loading-buffer.service';
-
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 interface TableViewModel {
     columns: ColumnDefinition[];
     selection: RecordSelection;
@@ -63,9 +63,12 @@ export class TableBodyComponent implements OnInit, OnDestroy {
     protected loadingBuffer: LoadingBuffer;
     protected subs: Subscription[] = [];
     showHeading: boolean = false;
+    showPDSInfo: boolean;
     filter_name: string = '';
+    responseData: any;
 
     constructor(
+        private http: HttpClient,
         protected fieldManager: FieldManager,
         protected loadingBufferFactory: LoadingBufferFactory
     ) {
@@ -75,6 +78,18 @@ export class TableBodyComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         const selection$ = this.config.selection$ || of(null).pipe(shareReplay(1));
         let loading$ = this.initLoading();
+
+        //Sageteck non-upgrade safe
+        // Fetch the boolean value from the controller
+        this.http.get<{ showPDSInfo: boolean }>('legacy/index.php?entryPoint=getBoolForHeading').subscribe(
+            response => {
+                this.responseData = response; // Store the entire response in a variable
+                this.showPDSInfo=this.responseData.showPDSInfo;
+            },
+            error => {
+                console.error('Error fetching config:', error);
+            }
+        );
 
         this.vm$ = combineLatest([
             this.config.columns,
@@ -95,6 +110,10 @@ export class TableBodyComponent implements OnInit, OnDestroy {
                 const relevantRecords = records.filter(record => record.module.toLowerCase() === 'cb2b_production_summary_data');
                 this.filter_name = relevantRecords.length > 0 ? relevantRecords[relevantRecords.length - 1].attributes.description : '';
 
+                //Sageteck non-upgrade safe
+                this.showHeading=this.showPDSInfo;
+        
+                //Sageteck non-upgrade safe
                 //if showHeading is true then only check whether the heading should be shown or not, if false then don't even try
                 if (this.showHeading){
                     this.showHeading = records.some(record => record.module.toLowerCase() === 'cb2b_production_summary_data')&& this.filter_name !== '';
