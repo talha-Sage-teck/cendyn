@@ -164,6 +164,21 @@ class UserViewHelper
         if ($admin_edit_self) {
             $this->ss->assign('ADMIN_EDIT_SELF', '1');
         }
+        
+        // Sageteck non-upgrade change
+        // Assign read-only field values for non-admin users
+        if (!$this->is_current_admin) {
+            $this->ss->assign('LICENSE_START_DATE_READONLY', "<input type='text' name='license_start_date_c' value='{$this->bean->license_start_date_c}' readonly='readonly'>");
+            $this->ss->assign('LICENSE_END_DATE_READONLY', "<input type='text' name='license_end_date_c' value='{$this->bean->license_end_date_c}' readonly='readonly'>");
+            $this->ss->assign('IS_CENDYN_INTERNAL_USER_READONLY', "<input type='checkbox' name='is_cendyn_internal_user_c' " . ($this->bean->is_cendyn_internal_user_c ? "checked='checked'" : "") . " disabled='disabled'>");
+            $this->ss->assign('USER_NAME_READONLY', "<input type='text' name='user_name' value='{$this->bean->user_name}' readonly='readonly'>");
+        } else {
+            // For admins, no read-only values are assigned
+            $this->ss->assign('LICENSE_START_DATE_READONLY', '');
+            $this->ss->assign('LICENSE_END_DATE_READONLY', '');
+            $this->ss->assign('IS_CENDYN_INTERNAL_USER_READONLY', '');
+            $this->ss->assign('USER_NAME_READONLY', '');
+        }
     }
 
     protected function setupButtonsAndTabs()

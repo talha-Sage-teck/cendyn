@@ -48,7 +48,7 @@ array (
           0 => 
           array (
             'name' => 'user_name',
-//            'customCode' => '{if !$is_okta_user}<input type="text" name="user_name" id="user_name" size="30" maxlength="60" value="{$fields.user_name.value}" title="">{else}{$fields.user_name.value}{/if}',
+            'customCode' => '{if $IS_ADMIN}@@FIELD@@{else}{$USER_NAME_READONLY}{/if}',
             'displayParams' => 
             array (
               'required' => true,
@@ -85,21 +85,36 @@ array (
         ),
         3 => 
         array (
-          0 => 'photo',
+          0 => 
+          array (
+            'name' => 'license_start_date_c',
+            'label' => 'LBL_LICENSE_START_DATE',
+            'customCode' => '{if $IS_ADMIN}@@FIELD@@{else}{$LICENSE_START_DATE_READONLY}{/if}',
+          ),
+          1 => 
+          array (
+            'name' => 'license_end_date_c',
+            'label' => 'LBL_LICENSE_END_DATE',
+            'customCode' => '{if $IS_ADMIN}@@FIELD@@{else}{$LICENSE_END_DATE_READONLY}{/if}',
+          ),
         ),
         4 => 
+        array (
+          0 => 'photo',
+          1 => 
+          array (
+            'name' => 'is_cendyn_internal_user_c',
+            'label' => 'LBL_IS_CENDYN_INTERNAL_USER',
+            'customCode' => '{if $IS_ADMIN}@@FIELD@@{else}{$IS_CENDYN_INTERNAL_USER_READONLY}{/if}',
+          ),
+        ),
+        5 => 
         array (
           0 => 
           array (
             'name' => 'factor_auth',
             'label' => 'LBL_FACTOR_AUTH',
           ),
-//          1 => 
-//          array (
-//            'name' => 'b2b_okta_id',
-//            'studio' => true,
-//            'label' => 'LBL_B2B_OKTA_ID',
-//          ),
         ),
       ),
       'LBL_EMPLOYEE_INFORMATION' => 

@@ -15,3 +15,6 @@ $mod_strings['LBL_PMS_RODUCTION_DATA_SUMMARY_CURRENCY_TYPE'] = 'Currency Type';
 $mod_strings['LBL_CORPORATE_CURRENCY'] = 'Corporate Currency';
 $mod_strings['LBL_SUMMARY_DATE_RANGE'] = 'Production Data Summary Date Range';
 $mod_strings['LBL_PMS_PRODUCTION_DATA_SUMMARY_CURRENCY_SETTINGS'] = 'PMS Production Data Summary Currency Settings';
+$mod_strings['LBL_LICENSE_START_DATE'] = 'License Start Date';
+$mod_strings['LBL_LICENSE_END_DATE'] = 'License End Date';
+$mod_strings['LBL_IS_CENDYN_INTERNAL_USER'] = 'Cendyn Internal User';

@@ -65,18 +65,36 @@
                 {$MOD.LBL_EMAIL_LINK_TYPE}:&nbsp;{sugar_help text=$MOD.LBL_EMAIL_LINK_TYPE_HELP WIDTH=450}
             </td>
             <td>
-                <select id="email_link_type" name="email_link_type" tabindex='410'>
-                    {$EMAIL_LINK_TYPE}
-                </select>
+                <!-- Sageteck non-upgrade change -->
+                {if $IS_ADMIN}
+                    <!-- Admin can edit -->
+                    <select id="email_link_type" name="email_link_type" tabindex='410'>
+                        {$EMAIL_LINK_TYPE}
+                    </select>
+                {else}
+                    <!-- Non-admins cannot edit, so the field is disabled -->
+                    <select id="email_link_type" name="email_link_type" tabindex='410' disabled="disabled">
+                        {$EMAIL_LINK_TYPE}
+                    </select>
+                {/if}
             </td>
         </tr>
 
         <tr>
             <td scope="row" width="17%">{$MOD.LBL_EDITOR_TYPE}</td>
             <td width="83%">
-                <select id="editor_type" name="editor_type" tabindex='410'>
-                    {$EDITOR_TYPE}
-                </select>
+                <!-- Sageteck non-upgrade change -->
+                {if $IS_ADMIN}
+                    <!-- Admin can edit -->
+                    <select id="editor_type" name="editor_type" tabindex='410'>
+                        {$EDITOR_TYPE}
+                    </select>
+                {else}
+                    <!-- Non-admins cannot edit, so the field is disabled -->
+                    <select id="editor_type" name="editor_type" tabindex='410' disabled="disabled">
+                        {$EDITOR_TYPE}
+                    </select>
+                {/if}
             </td>
         </tr>
     </table>
