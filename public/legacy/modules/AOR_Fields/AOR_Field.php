@@ -78,19 +78,40 @@ class AOR_Field extends Basic
         parent::__construct();
     }
 
+    public function custom_save_campaign($post_data, $parent, $key = '',$line_count){
 
+        $host = '127.0.0.1';
+        $username = 'root';
+        $password = '12345';
+        $database = 'cedyn'; // Specify your database name here
+        // Create connection
+        $conn = new mysqli($host, $username, $password, $database);
+        // Check connection
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+        echo "Connected successfully";
+        
+
+
+        $conn->close();
+
+    }
 
 
     public function save_lines($post_data, $parent, $key = '')
     {
         require_once('modules/AOW_WorkFlow/aow_utils.php');
-
-        if (!isset($post_data[$key . 'field'])) {
+        echo '<pre>';
+        print_r($post_data);
+        echo '</pre>';
+           if (!isset($post_data[$key . 'field'])) {
             $line_count = 0;
             LoggerManager::getLogger()->warn('AOR Field trying to save lines but post data key not found: ' . $key . 'field');
         } else {
             $line_count = count($post_data[$key . 'field']);
         }
+        $this->custom_save_campaign($post_data, $parent, $key, $line_count);
         for ($i = 0; $i < $line_count; ++$i) {
             if (!isset($post_data[$key . 'deleted'][$i])) {
                 LoggerManager::getLogger()->warn('AOR field save line error: Post data deleted key not found at index. Key and index were: [' . $key . '], [' . $i . ']');
