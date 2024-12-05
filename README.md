@@ -60,6 +60,6 @@ SuiteCRM is an open-source project. If you require help with support then please
 ### License [![AGPLv3](https://img.shields.io/github/license/suitecrm/suitecrm.svg)](./LICENSE.txt)
 
 SuiteCRM is published under the AGPLv3 license.
-
+$2y$10$C3j9rQganhyWB4T3ej6cdehvLbde9vuovj2eDF6e6KR30fMms398C
 
 
